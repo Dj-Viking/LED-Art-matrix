@@ -1,5 +1,5 @@
 //IMPORT REACT
-import Reach from 'react';
+import React from 'react';
 
 const SketchTwo = () => {
   return (
