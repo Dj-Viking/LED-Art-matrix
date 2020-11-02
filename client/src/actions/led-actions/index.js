@@ -2,45 +2,68 @@
 export const loadUserSplashConfig = (preset) => {
   return {
     type: 'LOAD_USER_SPLASH_CONFIG',
-    red: preset.red,
-    green: preset.green,
-    blue: preset.blue,
-    alpha: preset.alpha
+    payload: {
+      isAnimating: preset.isAnimating,
+      presetName: preset.presetName
+    }
   };
 };
-export const fadeUpRed = (data) => {
+export const presetSwitch = (data) => {
   return {
-    type: 'FADE_UP_RED',
+    type: 'PRESET_SWITCH',
+    payload: data.presetName
+  };
+};
+export const presetSpeedChange = (data) => {
+  return {
+    type: 'PRESET_SPEED_CHANGE',
+    payload: data.presetSpeed
+  }
+}
+export const redFaderChange = (data) => {
+  return {
+    type: 'RED_FADER_CHANGE',
     payload: data.red
   };
 };
-export const fadeDownRed = (data) => {
+export const greenFaderChange = (data) => {
   return {
-    type: 'FADE_DOWN_RED',
-    payload: data.red
-  };
-};
-export const fadeUpGreen = (data) => {
-  return {
-    type: 'FADE_UP_GREEN',
+    type: 'GREEN_FADER_CHANGE',
     payload: data.green
   };
 };
-export const fadeDownGreen = (data) => {
+export const blueFaderChange = (data) => {
   return {
-    type: 'FADE_DOWN_GREEN',
-    payload: data.green
-  };
-};
-export const fadeUpBlue = (data) => {
-  return {
-    type: 'FADE_UP_BLUE',
+    type: 'BLUE_FADER_CHANGE',
     payload: data.blue
   };
 };
-export const fadeDownBlue = (data) => {
+export const alphaFaderChange = (data) => {
   return {
-    type: 'FADE_DOWN_BLUE',
-    payload: data.blue
+    type: 'ALPHA_FADER_CHANGE',
+    payload: data
+  };
+};
+//save class property values that are changed by faders?
+//animation duration
+export const savePresetName = (data) => {
+  return {
+    type: 'SAVE_PRESET_NAME',
+    payload: data
+  };
+};
+//on mouse up?? transition from position in 
+// animation to beginning of current animation or 
+export const isAnimating = (data) => {
+  return {
+    type: 'IS_ANIMATING',
+    payload: data
+  };
+};
+//on click (mouse down and up)???
+export const stopAnimating = (data) => {
+  return {
+    type: 'STOP_ANIMATING',
+    payload: data
   };
 };
