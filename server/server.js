@@ -46,13 +46,13 @@ if (process.env.NODE_ENV === 'production') {
     )
   );
   // IF TRAVELS ANY ROUTE OUTSIDE REACT'S CURRENT PAGE REDIRECT TO ROOT
-  app.get('*', (req, res) => {
-    res.sendFile(
-      path.join(
-        __dirname, '../client/build/index.html'
-      )
-    )
-  });
+  // app.get('*', (req, res) => {
+  //   res.sendFile(
+  //     path.join(
+  //       __dirname, '../client/build/index.html'
+  //     )
+  //   )
+  // });
 }
 
 //OPEN DATABASE AND THEN START SERVER
