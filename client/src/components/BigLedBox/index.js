@@ -1,5 +1,6 @@
 //IMPORT REACT
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import './rainbowV2/styles/style.css';
 import './rainbowStart/styles/style.css';
 
 //REDUX
@@ -10,7 +11,7 @@ import {
   loadUserSplashConfig,
   presetSwitch,
   animationDelayChange,
-  animationSpeedChange,
+  animationDurationChange,
   alphaFaderChange,
 } from '../../actions/led-actions';
 
@@ -32,8 +33,8 @@ const BigLedBox = () => {
   const {
     alpha,
     isAnimating,
-    presetname,
-    animationSpeed,
+    presetName,
+    animationDurationState,
     animationDelay
   } = ledChangeState;
   
@@ -47,10 +48,15 @@ const BigLedBox = () => {
   } 
 
   const [animationSpeedState, setAnimationSpeedState] = useState(0);
+  
   function animationSpeedSliderChange(event) {
     setAnimationSpeedState(event.target.value);
-    dispatchREDUX(animationSpeedChange((event.target.value / 100).toString()));
+    dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
   }
+  useEffect(() => {
+
+  }, [animationDurationState])
+
   const leds = [];
   function createLedObjectsArray() {
     for (let i = 1; i < 33; i++) {
@@ -137,7 +143,20 @@ const BigLedBox = () => {
         />
         <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
       </div>
-      <button>rainbowTest</button>
+      <button
+        onClick={() => {
+          dispatchREDUX(presetSwitch(''))
+        }}
+      >
+        rainbowTest
+      </button>
+      <button
+        onClick={() => {
+          dispatchREDUX(presetSwitch('V2'))
+        }}
+      >
+        rainbowV2
+      </button>
       {
         rows.map((row, index) => (
           <div key={`row${index + 1}`} className={`row${index + 1}`}>
@@ -145,7 +164,8 @@ const BigLedBox = () => {
               leds.map((led, index) => (
                 <div 
                   key={`led${led.ledNumber}-${index + 1}`} 
-                  className={`led${index + 1}-${row.rowNumber}`}
+                  className={`led${index + 1}-${row.rowNumber}${presetName}`}
+                  style={{animationDuration: `${animationDurationState}`}}
                 ></div>
               ))
             }

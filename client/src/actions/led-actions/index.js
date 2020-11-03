@@ -3,22 +3,21 @@ export const loadUserSplashConfig = (preset) => {
   return {
     type: 'LOAD_USER_SPLASH_CONFIG',
     payload: {
-      isAnimating: preset.isAnimating,
       presetName: preset.presetName,
-      animationDelay: preset.animationDelay,
-      animationSpeed: preset.animationSpeed
+      animationDelayState: preset.animationDelayState,
+      animationDurationState: preset.animationDurationState
     }
   };
 };
 export const presetSwitch = (data) => {
   return {
     type: 'PRESET_SWITCH',
-    payload: data.presetName
+    payload: data
   };
 };
-export const animationSpeedChange = (data) => {
+export const animationDurationChange = (data) => {
   return {
-    type: 'ANIMATION_SPEED_CHANGE',
+    type: 'ANIMATION_DURATION_CHANGE',
     payload: data
   }
 }

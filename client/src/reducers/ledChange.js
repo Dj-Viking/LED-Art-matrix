@@ -2,9 +2,8 @@ const ledChangeReducer = (
   state = {
     alpha: 1,
     presetName: '',
-    animationSpeed: '4s',
-    animationDelay: '.5s',
-    isAnimating: false
+    animationDurationState: '4s',
+    animationDelayState: '.5s',
   },
   action) => 
 {
@@ -14,9 +13,8 @@ const ledChangeReducer = (
       let newState = {
         alpha: action.payload.alpha,
         presetName: action.payload.presetName,
-        animationSpeed: action.payload.animationSpeed,
-        animationDelay: action.payload.animationDelay,
-        isAnimating: action.payload.isAnimating
+        animationDurationState: action.payload.animationDuration,
+        animationDelayState: action.payload.animationDelay,
       }
       return {
         ...state,
@@ -30,25 +28,17 @@ const ledChangeReducer = (
     case 'PRESET_SWITCH':
       return {
         ...state,
-        isAnimating: action.payload.isAnimating,
-        presetName: action.payload.presetName
+        presetName: action.payload
       }
     case 'ANIMATION_DELAY_CHANGE':
       return {
         ...state,
-        animationDelay: action.payload
+        animationDelayState: action.payload
       }
-    case 'ANIMATION_SPEED_CHANGE':
+    case 'ANIMATION_DURATION_CHANGE':
       return {
         ...state,
-        animationSpeed: action.payload
-      }
-    case 'IS_ANIMATING':
-      //on mouse up
-      //after some time after stopping animation on click 
-      return {
-        ...state,
-        isAnimating: action.payload
+        animationDurationState: action.payload
       }
     case 'STOP_ANIMATING':
       //on click happen first before preset animation starts again
