@@ -4,7 +4,9 @@ export const loadUserSplashConfig = (preset) => {
     type: 'LOAD_USER_SPLASH_CONFIG',
     payload: {
       isAnimating: preset.isAnimating,
-      presetName: preset.presetName
+      presetName: preset.presetName,
+      animationDelay: preset.animationDelay,
+      animationSpeed: preset.animationSpeed
     }
   };
 };
@@ -14,30 +16,18 @@ export const presetSwitch = (data) => {
     payload: data.presetName
   };
 };
-export const presetSpeedChange = (data) => {
+export const animationSpeedChange = (data) => {
   return {
-    type: 'PRESET_SPEED_CHANGE',
-    payload: data.presetSpeed
+    type: 'ANIMATION_SPEED_CHANGE',
+    payload: data
   }
 }
-export const redFaderChange = (data) => {
+export const animationDelayChange = (data) => {
   return {
-    type: 'RED_FADER_CHANGE',
-    payload: data.red
-  };
-};
-export const greenFaderChange = (data) => {
-  return {
-    type: 'GREEN_FADER_CHANGE',
-    payload: data.green
-  };
-};
-export const blueFaderChange = (data) => {
-  return {
-    type: 'BLUE_FADER_CHANGE',
-    payload: data.blue
-  };
-};
+    type: 'ANIMATION_DELAY_CHANGE',
+    payload: data
+  }
+}
 export const alphaFaderChange = (data) => {
   return {
     type: 'ALPHA_FADER_CHANGE',
