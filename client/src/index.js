@@ -6,6 +6,19 @@ import './components/BigLedBox/rainbowV2/styles/style.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
+//something to consider...
+// import React from 'react';
+
+// const MyComponents = {
+//   DatePicker: function DatePicker(props) {
+//     return <div>Imagine a {props.color} datepicker here.</div>;
+//   }
+// }
+
+// function BlueDatePicker() {
+//   return <MyComponents.DatePicker color="blue" />;
+// }
+
 //REDUX
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
