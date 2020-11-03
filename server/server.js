@@ -32,13 +32,6 @@ app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
 //IF-ENV IN DEPLOYMENT
 if (process.env.NODE_ENV === 'production') {
-  //REDIRECT HTTP TRAFFIC TO HTTPS
-  app.use((req, res, next) => {
-    if (req.header('x-forwarded-proto') !== 'https') {
-      res.redirect(`https://${req.header('host')}${req.url}`);
-    }
-    next();
-  });
   //STATIC ASSETS FROM REACT BUILD FOLDER
   app.use(
     express.static(
@@ -46,13 +39,20 @@ if (process.env.NODE_ENV === 'production') {
     )
   );
   // IF TRAVELS ANY ROUTE OUTSIDE REACT'S CURRENT PAGE REDIRECT TO ROOT
-  // app.get('*', (req, res) => {
-  //   res.sendFile(
-  //     path.join(
-  //       __dirname, '../client/build/index.html'
-  //     )
-  //   )
-  // });
+  app.get('*', (req, res) => {
+    res.sendFile(
+      path.join(
+        __dirname, '../client/build/index.html'
+      )
+    )
+  });
+  //REDIRECT HTTP TRAFFIC TO HTTPS
+  app.use((req, res, next) => {
+    if (req.header('x-forwarded-proto') !== 'https') {
+      res.redirect(`https://${req.header('host')}${req.url}`);
+    }
+    next();
+  });
 }
 
 //OPEN DATABASE AND THEN START SERVER
