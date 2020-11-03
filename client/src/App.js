@@ -11,9 +11,8 @@ import './index.css';
 
 
 //COMPONENTS
+import AudioPlayer from './components/AudioPlayer';
 import BigLedBox from './components/BigLedBox';
-import SketchOne from './components/SketchOne';
-import SketchTwo from './components/SketchTwo';
 
 //establish apollo client with apollo server
 const client = new ApolloClient({
@@ -32,8 +31,7 @@ const App = () => {
   return (
     <>
       <ApolloProvider client={client}>
-        <SketchOne />
-        <SketchTwo />
+        <AudioPlayer/>
         <BigLedBox />
       </ApolloProvider>
     </>

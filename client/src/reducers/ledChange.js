@@ -1,11 +1,9 @@
 const ledChangeReducer = (
   state = {
-    red: 0,
-    green: 0,
-    blue: 0,
     alpha: 1,
     presetName: '',
-    presetSpeed: 0,
+    animationSpeed: '4s',
+    animationDelay: '.5s',
     isAnimating: false
   },
   action) => 
@@ -13,15 +11,20 @@ const ledChangeReducer = (
   switch(action.type) {
 
     case 'LOAD_USER_SPLASH_CONFIG':
-      let newState = {...action.payload}
+      let newState = {
+        alpha: action.payload.alpha,
+        presetName: action.payload.presetName,
+        animationSpeed: action.payload.animationSpeed,
+        animationDelay: action.payload.animationDelay,
+        isAnimating: action.payload.isAnimating
+      }
       return {
         ...state,
-        // red: action.red,
-        // green: action.green,
-        // blue: action.blue,
-        // alpha: action.alpha,
-        // presetName: action.presetName,
-        // isAnimating: action.isAnimating
+        // alpha: action.payload.alpha,
+        // presetName: action.payload.presetName,
+        // animationSpeed: action.payload.animationSpeed,
+        // animationDelay: action.payload.animationDelay,
+        // isAnimating: action.payload.isAnimating
         newState
       }
     case 'PRESET_SWITCH':
@@ -30,11 +33,15 @@ const ledChangeReducer = (
         isAnimating: action.payload.isAnimating,
         presetName: action.payload.presetName
       }
-    case 'PRESET_SPEED_CHANGE':
+    case 'ANIMATION_DELAY_CHANGE':
       return {
         ...state,
-        isAnimating: true,
-        presetSpeed: action.payload
+        animationDelay: action.payload
+      }
+    case 'ANIMATION_SPEED_CHANGE':
+      return {
+        ...state,
+        animationSpeed: action.payload
       }
     case 'IS_ANIMATING':
       //on mouse up
@@ -49,21 +56,6 @@ const ledChangeReducer = (
       return {
         ...state,
         isAnimating: action.payload
-      }
-    case 'RED_FADER_CHANGE':
-      return {
-        ...state,
-        red: action.payload
-      }
-    case 'GREEN_FADER_CHANGE':
-      return {
-        ...state,
-        green: action.payload
-      }
-    case 'BLUE_FADER_CHANGE':
-      return {
-        ...state,
-        blue: action.payload
       }
     case 'ALPHA_FADER_CHANGE':
       return {
