@@ -1,7 +1,7 @@
 //IMPORT REACT
 import React, { useState, useEffect } from 'react';
-// import './rainbowV2/styles/style.css';
-// import './rainbowStart/styles/style.css';
+import './rainbowV2/styles/style.css';
+import './rainbowStart/styles/style.css';
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
@@ -165,7 +165,7 @@ const BigLedBox = () => {
                 <div 
                   key={`led${led.ledNumber}-${index + 1}`} 
                   className={`led${index + 1}-${row.rowNumber}${presetName}`}
-                  style={{animationDuration: `${animationDurationState}`}}
+                  // style={{animationDuration: `${animationDurationState}`}}
                 ></div>
               ))
             }

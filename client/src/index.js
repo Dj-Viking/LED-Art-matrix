@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './index.css';
-import './components/BigLedBox/rainbowStart/styles/style.css';
-import './components/BigLedBox/rainbowV2/styles/style.css';
+// import './components/BigLedBox/rainbowStart/styles/style.css';
+// import './components/BigLedBox/rainbowV2/styles/style.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
 
@@ -34,7 +34,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <Router>
-        <Route exact path="/" component={App} />
+        <Switch>
+          <Route exact path="/" component={App} />
+        </Switch>
       </Router>
     </Provider>
   </React.StrictMode>,
