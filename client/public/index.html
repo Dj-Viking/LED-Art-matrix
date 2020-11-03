@@ -39,28 +39,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  <script>
-      navigator.getUserMedia = 
-      navigator.getUserMedia ||                   
-      navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia;
-
-      if (navigator.getUserMedia) {
-        navigator.getUserMedia({ audio: true, video: false },
-          function(stream) {
-            // var video = document.querySelector('video');
-            // video.srcObject = stream;
-            // video.onloadedmetadata = function(e) {
-            //   video.play();
-            // };
-          },
-          function(err) {
-            console.log("The following error occurred: " + err.name);
-          }
-        );//end of getUserMedia();
-      } else {
-        console.log("getUserMedia not supported");
-      }
-  </script>
   </body>
 </html>
