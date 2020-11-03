@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import './components/BigLedBox/rainbowStart/styles/style.css';
+import './components/BigLedBox/rainbowV2/styles/style.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
 

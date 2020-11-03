@@ -1,7 +1,7 @@
 //IMPORT REACT
 import React, { useState, useEffect } from 'react';
-import './rainbowV2/styles/style.css';
-import './rainbowStart/styles/style.css';
+// import './rainbowV2/styles/style.css';
+// import './rainbowStart/styles/style.css';
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
