@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Sketch from 'react-p5';
 
-const Sketch = () => {
+const SketchMain = () => {
   return (
     <>
     <p>sketch</p>
@@ -9,4 +9,4 @@ const Sketch = () => {
   );
 };
 
-export default Sketch;
+export default SketchMain;
