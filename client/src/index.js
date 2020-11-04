@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import './index.css';
-// import './components/BigLedBox/rainbowStart/styles/style.css';
-// import './components/BigLedBox/rainbowV2/styles/style.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-//something to consider...
+//something to consider, 
+// different way to make component hooks
 // import React from 'react';
 
 // const MyComponents = {
