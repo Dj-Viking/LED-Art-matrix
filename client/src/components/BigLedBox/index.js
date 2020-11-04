@@ -16,6 +16,7 @@ import {
   animationDelayChange,
   animationDurationChange,
   alphaFaderChange,
+  isInverted//feature after signing up
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
@@ -59,6 +60,12 @@ const BigLedBox = () => {
 
   }, [animationDurationState])
 
+  /**
+   * array of led objects that only contain the information needed
+   * use .map() in react to create elements with unique keys
+   * react needs key properties on JSX in order to clean up during
+   * mounting and unmounting elements
+   */
   const leds = [];
   function createLedObjectsArray() {
     for (let i = 1; i < 33; i++) {
@@ -71,7 +78,6 @@ const BigLedBox = () => {
         // </>
         {
           ledNumber: i,
-          ledRowNumber: 33 - i
         }
       );
     }
@@ -94,6 +100,17 @@ const BigLedBox = () => {
   //   ))
   // }
 
+  /**
+   * array of row objects only containing information for
+   * react to use .map() and make unique keys for the
+   * JSX elements and contain a horizontal rows of leds
+   * in each row the nested .map() is inserting all 32 leds
+   * into a single rows.map() iteration.
+   * 
+   * 32 rows, 32 leds per row
+   * 
+   * 32x32 2D grid
+   */
   const rows = [];
   function createLedRowsArray(num) {
     for (let i = 1; i < num; i++) {
