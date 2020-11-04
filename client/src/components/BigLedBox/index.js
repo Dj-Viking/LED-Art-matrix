@@ -16,7 +16,7 @@ import {
   animationDelayChange,
   animationDurationChange,
   alphaFaderChange,
-  isInverted//feature after signing up
+  invertSwitch//feature after signing up
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
