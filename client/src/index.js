@@ -6,6 +6,7 @@ import './index.css';
 // import './components/BigLedBox/rainbowV2/styles/style.css';
 import App from './App';
 // import reportWebVitals from './reportWebVitals';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 //something to consider...
 // import React from 'react';
@@ -47,3 +48,5 @@ ReactDOM.render(
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
+
+serviceWorkerRegistration.register();
