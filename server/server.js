@@ -1,6 +1,7 @@
 //NODE IMPORTS
 const path = require('path');
-
+require('dotenv').config();
+// console.log(process.env.NODE_ENV);
 //EXPRESS IMPORTS AND SERVER PORT ASSIGN
 const PORT = process.env.PORT || 3001;
 const express = require('express');
@@ -35,11 +36,12 @@ if (process.env.NODE_ENV === 'production') {
   //STATIC ASSETS FROM REACT BUILD FOLDER
   app.use(
     express.static(
-      path.join(__dirname, '/client/build/index.html')
+      path.join(__dirname, '../client/build')
     )
   );
   // IF TRAVELS ANY ROUTE OUTSIDE REACT'S CURRENT PAGE REDIRECT TO ROOT
-  app.get('/', (req, res) => {
+  app.get('*', (req, res) => {
+    console.log("IN THE GET STAR");
     res.sendFile(
       path.join(
         __dirname, '../client/build/index.html'
