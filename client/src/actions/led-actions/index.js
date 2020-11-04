@@ -9,6 +9,12 @@ export const loadUserSplashConfig = (preset) => {
     }
   };
 };
+export const invertSwitch = (data) => {
+  return {
+    type: 'INVERT_SWITCH',
+    payload: data
+  }
+}
 export const presetSwitch = (data) => {
   return {
     type: 'PRESET_SWITCH',

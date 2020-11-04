@@ -4,6 +4,7 @@ const ledChangeReducer = (
     presetName: '',
     animationDurationState: '4s',
     animationDelayState: '.5s',
+    isInverted: false
   },
   action) => 
 {
@@ -24,6 +25,11 @@ const ledChangeReducer = (
         // animationDelay: action.payload.animationDelay,
         // isAnimating: action.payload.isAnimating
         newState
+      }
+    case 'INVERT_SWITCH': 
+      return {
+        ...state,
+        isInverted: !action.payload
       }
     case 'PRESET_SWITCH':
       return {
