@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import './rainbowV2/styles/style.css';
 import './rainbowStart/styles/style.css';
+import './waves/styles/style.css';
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
@@ -157,6 +158,13 @@ const BigLedBox = () => {
       >
         rainbowV2
       </button>
+      <button
+        onClick={() => {
+          dispatchREDUX(presetSwitch('waves'))
+        }}
+      >
+        waves
+      </button>
       {
         rows.map((row, index) => (
           <div key={`row${index + 1}`} className={`row${index + 1}`}>
@@ -165,7 +173,10 @@ const BigLedBox = () => {
                 <div 
                   key={`led${led.ledNumber}-${index + 1}`} 
                   className={`led${index + 1}-${row.rowNumber}${presetName}`}
-                  // style={{animationDuration: `${animationDurationState}`}}
+                  style={{
+                    // animationDuration: `${(index / 64) + ( index / row.rowNumber * (.05 * index))}`,
+                    // animationDelay: `${(index / 16) + index / (row.rowNumber / index - (4 * row.rowNumber))}`
+                  }}
                 ></div>
               ))
             }

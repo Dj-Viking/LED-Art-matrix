@@ -1,0 +1,803 @@
+@mixin rainbowV2 {
+        @keyframes rainbowV2Anim {
+          0% {
+            background-color: rgba(255, 0, 0, 1);
+            /* left: 0px; top: 0px; */
+            /* border-radius: 0 0 0 0; */
+          }
+          25% {
+            background-color: rgba(255, 100, 0, 1);
+            /* left: 30px;
+            top: 0px; */
+            /* border-radius: 50% 0 0 0 */
+          }
+          50% {
+            background-color: rgba(0, 255, 0, 1);
+            /* left: 30px;
+            top: 30px; */
+            /* border-radius: 50% 50% 0 0 */
+          }
+          75% {
+            background-color: rgba(0, 0, 255, 1);
+            /* left: 0px;
+            top: 30px; */
+            /* border-radius: 50% 0 50% 50% */
+          }
+          100% {
+            background-color: rgba(255, 0, 200, 1);
+            /* left: 0px;
+            top: 0px; */
+            /* border-radius: 50% 50% 50% 50% */
+          }
+        }
+      }
+      
+    @mixin row1-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: -0.2708333333333333s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row2-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.7071067811865476s;
+      animation-iteration-count: infinite;
+      animation-delay: -0.4464285714285714s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row3-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.5773502691896257s;
+      animation-iteration-count: infinite;
+      animation-delay: -0.6306818181818182s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row4-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.5s;
+      animation-iteration-count: infinite;
+      animation-delay: -0.8166666666666667s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row5-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.4472135954999579s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.0032894736842106s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row6-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.408248290463863s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.1902173913043477s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row7-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.3779644730092272s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.3773148148148149s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row8-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.3535533905932738s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.564516129032258s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row9-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.3333333333333333s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.7517857142857145s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row10-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.31622776601683794s;
+      animation-iteration-count: infinite;
+      animation-delay: -1.9391025641025643s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row11-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.30151134457776363s;
+      animation-iteration-count: infinite;
+      animation-delay: -2.126453488372093s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row12-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.28867513459481287s;
+      animation-iteration-count: infinite;
+      animation-delay: -2.3138297872340425s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row13-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.2773500981126146s;
+      animation-iteration-count: infinite;
+      animation-delay: -2.5012254901960786s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row14-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.2672612419124244s;
+      animation-iteration-count: infinite;
+      animation-delay: -2.688636363636364s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row15-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.2581988897471611s;
+      animation-iteration-count: infinite;
+      animation-delay: -2.8760593220338984s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row16-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.25s;
+      animation-iteration-count: infinite;
+      animation-delay: -3.0634920634920633s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row17-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.24253562503633297s;
+      animation-iteration-count: infinite;
+      animation-delay: -3.250932835820895s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row18-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.23570226039551584s;
+      animation-iteration-count: infinite;
+      animation-delay: -3.438380281690141s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row19-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.22941573387056177s;
+      animation-iteration-count: infinite;
+      animation-delay: -3.6258333333333335s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row20-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.22360679774997896s;
+      animation-iteration-count: infinite;
+      animation-delay: -3.813291139240506s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row21-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.21821789023599236s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.000753012048192s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row22-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.21320071635561044s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.188218390804598s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row23-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.20851441405707477s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.375686813186814s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row24-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.2041241452319315s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.563157894736842s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row25-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.2s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.750631313131313s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row26-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.19611613513818404s;
+      animation-iteration-count: infinite;
+      animation-delay: -4.938106796116505s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row27-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.19245008972987526s;
+      animation-iteration-count: infinite;
+      animation-delay: -5.125584112149533s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row28-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.1889822365046136s;
+      animation-iteration-count: infinite;
+      animation-delay: -5.313063063063063s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row29-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.18569533817705186s;
+      animation-iteration-count: infinite;
+      animation-delay: -5.5005434782608695s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row30-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.18257418583505536s;
+      animation-iteration-count: infinite;
+      animation-delay: -5.688025210084033s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row31-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.1796053020267749s;
+      animation-iteration-count: infinite;
+      animation-delay: -5.8755081300813s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+    @mixin row32-1DelayV2 {
+      animation-name: rainbowV2Anim;
+      animation-duration: 0.1767766952966369s;
+      animation-iteration-count: infinite;
+      animation-delay: -6.062992125984252s;
+      animation-direction: reverse;
+      /* animation-direction: alternate; */
+      animation-timing-function: linear;
+      /* animation-timing-function: ease-in; */
+      /* animation-timing-function: ease-out; */
+      /* animation-timing-function: ease-in-out; */
+    }
+    
+      
+    .led1-1waves{
+      @include rainbowV2();
+      @include row1-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led2-1waves{
+      @include rainbowV2();
+      @include row2-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led3-1waves{
+      @include rainbowV2();
+      @include row3-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led4-1waves{
+      @include rainbowV2();
+      @include row4-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led5-1waves{
+      @include rainbowV2();
+      @include row5-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led6-1waves{
+      @include rainbowV2();
+      @include row6-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led7-1waves{
+      @include rainbowV2();
+      @include row7-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led8-1waves{
+      @include rainbowV2();
+      @include row8-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led9-1waves{
+      @include rainbowV2();
+      @include row9-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led10-1waves{
+      @include rainbowV2();
+      @include row10-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led11-1waves{
+      @include rainbowV2();
+      @include row11-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led12-1waves{
+      @include rainbowV2();
+      @include row12-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led13-1waves{
+      @include rainbowV2();
+      @include row13-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led14-1waves{
+      @include rainbowV2();
+      @include row14-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led15-1waves{
+      @include rainbowV2();
+      @include row15-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led16-1waves{
+      @include rainbowV2();
+      @include row16-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led17-1waves{
+      @include rainbowV2();
+      @include row17-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led18-1waves{
+      @include rainbowV2();
+      @include row18-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led19-1waves{
+      @include rainbowV2();
+      @include row19-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led20-1waves{
+      @include rainbowV2();
+      @include row20-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led21-1waves{
+      @include rainbowV2();
+      @include row21-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led22-1waves{
+      @include rainbowV2();
+      @include row22-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led23-1waves{
+      @include rainbowV2();
+      @include row23-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led24-1waves{
+      @include rainbowV2();
+      @include row24-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led25-1waves{
+      @include rainbowV2();
+      @include row25-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led26-1waves{
+      @include rainbowV2();
+      @include row26-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led27-1waves{
+      @include rainbowV2();
+      @include row27-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led28-1waves{
+      @include rainbowV2();
+      @include row28-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led29-1waves{
+      @include rainbowV2();
+      @include row29-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led30-1waves{
+      @include rainbowV2();
+      @include row30-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led31-1waves{
+      @include rainbowV2();
+      @include row31-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led32-1waves{
+      @include rainbowV2();
+      @include row32-1DelayV2();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
