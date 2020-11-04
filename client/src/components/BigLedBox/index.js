@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import './rainbowV2/styles/style.css';
 import './rainbowStart/styles/style.css';
 import './waves/styles/style.css';
+import './spiral/styles/style.css';
+import './fourSpirals/styles/style.css';
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
@@ -33,7 +35,6 @@ const BigLedBox = () => {
   //REDUX piece of global state
   const {
     alpha,
-    isAnimating,
     presetName,
     animationDurationState,
     animationDelay
@@ -164,6 +165,20 @@ const BigLedBox = () => {
         }}
       >
         waves
+      </button>
+      <button
+        onClick={() => {
+          dispatchREDUX(presetSwitch('spiral'))
+        }}
+      >
+        spiral
+      </button>
+      <button
+        onClick={() => {
+          dispatchREDUX(presetSwitch('fourSpirals'))
+        }}
+      >
+        fourSpirals
       </button>
       {
         rows.map((row, index) => (

@@ -1,0 +1,803 @@
+@mixin spiral {
+        @keyframes spiralAnim {
+          0% {
+            background-color: rgba(0, 0, 255, 1);
+            /* left: 0px; top: 0px; */
+            /* border-radius: 0 0 0 0; */
+          }
+          25% {
+            background-color: rgba(255, 0, 0, 1);
+            /* left: 30px;
+            top: 0px; */
+            /* border-radius: 50% 0 0 0 */
+          }
+          50% {
+            background-color: rgba(0, 255, 0, 1);
+            /* left: 30px;
+            top: 30px; */
+            /* border-radius: 50% 50% 0 0 */
+          }
+          75% {
+            background-color: rgba(0, 0, 255, 1);
+            /* left: 0px;
+            top: 30px; */
+            /* border-radius: 50% 0 50% 50% */
+          }
+          100% {
+            background-color: rgba(255, 255, 255, 1);
+            /* left: 0px;
+            top: 0px; */
+            /* border-radius: 50% 50% 50% 50% */
+          }
+        }
+      }
+      
+    @mixin row1-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.0625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row2-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row3-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.1875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row4-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.25s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row5-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.3125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row6-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row7-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.4375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row8-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.5s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row9-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.5625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row10-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row11-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.6875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row12-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.75s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row13-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.8125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row14-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row15-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 0.9375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row16-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row17-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.0625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row18-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row19-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.1875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row20-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.25s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row21-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.3125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row22-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row23-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.4375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row24-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.5s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row25-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.5625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row26-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row27-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.6875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row28-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.75s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row29-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.8125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row30-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row31-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 1.9375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row32-1Delayspiral {
+      animation-name: spiralAnim;
+      animation-duration: 2s;
+      animation-iteration-count: infinite;
+      animation-delay: 2s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+      
+    .led1-1spiral{
+      @include spiral();
+      @include row1-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led2-1spiral{
+      @include spiral();
+      @include row2-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led3-1spiral{
+      @include spiral();
+      @include row3-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led4-1spiral{
+      @include spiral();
+      @include row4-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led5-1spiral{
+      @include spiral();
+      @include row5-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led6-1spiral{
+      @include spiral();
+      @include row6-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led7-1spiral{
+      @include spiral();
+      @include row7-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led8-1spiral{
+      @include spiral();
+      @include row8-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led9-1spiral{
+      @include spiral();
+      @include row9-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led10-1spiral{
+      @include spiral();
+      @include row10-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led11-1spiral{
+      @include spiral();
+      @include row11-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led12-1spiral{
+      @include spiral();
+      @include row12-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led13-1spiral{
+      @include spiral();
+      @include row13-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led14-1spiral{
+      @include spiral();
+      @include row14-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led15-1spiral{
+      @include spiral();
+      @include row15-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led16-1spiral{
+      @include spiral();
+      @include row16-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led17-1spiral{
+      @include spiral();
+      @include row17-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led18-1spiral{
+      @include spiral();
+      @include row18-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led19-1spiral{
+      @include spiral();
+      @include row19-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led20-1spiral{
+      @include spiral();
+      @include row20-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led21-1spiral{
+      @include spiral();
+      @include row21-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led22-1spiral{
+      @include spiral();
+      @include row22-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led23-1spiral{
+      @include spiral();
+      @include row23-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led24-1spiral{
+      @include spiral();
+      @include row24-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led25-1spiral{
+      @include spiral();
+      @include row25-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led26-1spiral{
+      @include spiral();
+      @include row26-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led27-1spiral{
+      @include spiral();
+      @include row27-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led28-1spiral{
+      @include spiral();
+      @include row28-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led29-1spiral{
+      @include spiral();
+      @include row29-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led30-1spiral{
+      @include spiral();
+      @include row30-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led31-1spiral{
+      @include spiral();
+      @include row31-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led32-1spiral{
+      @include spiral();
+      @include row32-1Delayspiral();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }

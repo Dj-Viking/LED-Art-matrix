@@ -1,0 +1,803 @@
+@mixin rainbowFourSpirals {
+        @keyframes rainbowFourSpiralsAnim{
+          0% {
+            background-color: rgba(255, 0, 0, 1);
+            /* left: 0px; top: 0px; */
+            /* border-radius: 0 0 0 0; */
+          }
+          25% {
+            background-color: rgba(255, 100, 0, 1);
+            /* left: 30px;
+            top: 0px; */
+            /* border-radius: 50% 0 0 0 */
+          }
+          50% {
+            background-color: rgba(0, 255, 0, 1);
+            /* left: 30px;
+            top: 30px; */
+            /* border-radius: 50% 50% 0 0 */
+          }
+          75% {
+            background-color: rgba(0, 0, 255, 1);
+            /* left: 0px;
+            top: 30px; */
+            /* border-radius: 50% 0 50% 50% */
+          }
+          100% {
+            background-color: rgba(255, 0, 200, 1);
+            /* left: 0px;
+            top: 0px; */
+            /* border-radius: 50% 50% 50% 50% */
+          }
+        }
+      }
+      
+    @mixin row1-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 2.0625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row2-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 4.125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row3-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 6.1875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row4-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 8.25s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row5-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 10.3125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row6-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 12.375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row7-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 14.4375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row8-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 16.5s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row9-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 18.5625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row10-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 20.625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row11-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 22.6875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row12-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 24.75s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row13-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 26.8125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row14-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 28.875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row15-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 30.9375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row16-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 33s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row17-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 35.0625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row18-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 37.125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row19-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 39.1875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row20-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 41.25s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row21-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 43.3125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row22-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 45.375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row23-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 47.4375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row24-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 49.5s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row25-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 51.5625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row26-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 53.625s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row27-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 55.6875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row28-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 57.75s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row29-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 59.8125s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row30-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 61.875s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row31-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 63.9375s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+    @mixin row32-32DelayFourSpirals {
+      animation-name: rainbowFourSpiralsAnim;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+      animation-delay: 66s;
+      animation-direction: reverse;
+      /*animation-direction: alternate;*/
+      /*animation-timing-function: linear;*/
+      animation-timing-function: ease-in;
+      /* animation-timing-function: ease-out; */
+      /*animation-timing-function: ease-in-out;*/
+    }
+    
+      
+    .led1-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row1-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led2-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row2-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led3-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row3-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led4-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row4-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led5-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row5-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led6-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row6-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led7-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row7-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led8-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row8-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led9-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row9-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led10-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row10-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led11-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row11-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led12-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row12-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led13-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row13-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led14-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row14-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led15-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row15-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led16-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row16-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led17-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row17-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led18-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row18-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led19-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row19-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led20-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row20-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led21-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row21-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led22-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row22-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led23-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row23-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led24-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row24-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led25-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row25-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led26-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row26-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led27-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row27-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led28-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row28-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led29-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row29-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led30-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row30-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led31-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row31-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
+    .led32-32fourSpirals{
+      @include rainbowFourSpirals();
+      @include row32-32DelayFourSpirals();
+      display: flex;
+      flex-direction: row;
+      border-radius: 3px;
+      background: transparent;
+      width: 10vw;
+      height: 3vh;
+      position: relative;
+    }
