@@ -61,10 +61,18 @@ if (process.env.NODE_ENV === 'production') {
 db.once('open', () => {
   app.listen(PORT, () => {
     //SERVER LISTENING ON PORT
-    console.log(`now listening on port ${PORT}`);
+    setTimeout(() => {
+      console.log("\x1b[33m",`🔊 🎶 now listening on port ${PORT} 🔊 🎶`, "\x1b[00m");
+    }, 300);
+    setTimeout(() => {
+      console.log("\x1b[34m", `🌎 node environment install success listening on port ${PORT} 🌎`, "\x1b[00m");
+    }, 400);
     //GRAPHQL URL
-    console.log("\x1b[33m", `
-      if in dev phase use graphql at http://localhost:${PORT}${apolloServer.graphqlPath}
-    `, "\x1b[00m");
+    setTimeout(() => {
+      console.log("\x1b[35m", `🔮 if in dev phase use graphql at http://localhost:${PORT}${apolloServer.graphqlPath} 🔮`, "\x1b[00m");
+    }, 500);
+    setTimeout(() => {
+      console.log("\x1b[32m", `🌱 if in development: stand by for react server to begin...`, "\x1b[00m");
+    }, 600);
   })
 })

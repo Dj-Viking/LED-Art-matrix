@@ -8,7 +8,8 @@ module.exports = {
     // allows token to be sent via req.body, req.query, or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
 
-    // ["Bearer", "<tokenvalue>"]
+    // ["Bearer", "<tokenvalue>"] 
+    //received by apollo server and the login mutation
     if (req.headers.authorization) {
       token = token
         .split(' ')

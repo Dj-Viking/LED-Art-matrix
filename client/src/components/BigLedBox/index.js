@@ -29,6 +29,9 @@ const BigLedBox = () => {
   // this will trigger loadUserSplashConfig action on load 
   //(useEffect to wait until data arrives and execute dispatch action once data arrives
   // from graphql query
+
+  //FIRST
+  //WHEN USER SIGNS UP AND LOGS IN ENABLE BUTTONS
   
   //REDUX GLOBAL STATE
   const ledChangeState = useSelector(state => state.ledChange);
@@ -38,7 +41,8 @@ const BigLedBox = () => {
     alpha,
     presetName,
     animationDurationState,
-    animationDelay
+    _animationDelayState,
+
   } = ledChangeState;
   
   const dispatchREDUX = useDispatch();
@@ -56,9 +60,12 @@ const BigLedBox = () => {
     setAnimationSpeedState(event.target.value);
     dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
   }
-  useEffect(() => {
 
-  }, [animationDurationState])
+
+
+  // useEffect(() => {
+
+  // }, [animationDurationState])
 
   /**
    * array of led objects that only contain the information needed
@@ -66,6 +73,8 @@ const BigLedBox = () => {
    * react needs key properties on JSX in order to clean up during
    * mounting and unmounting elements
    */
+  //eslint-disable-next-line
+  let leds_info;
   const leds = [];
   function createLedObjectsArray() {
     for (let i = 1; i < 33; i++) {
@@ -111,6 +120,8 @@ const BigLedBox = () => {
    * 
    * 32x32 2D grid
    */
+  // eslint-disable-next-line
+  let rows_info;
   const rows = [];
   function createLedRowsArray(num) {
     for (let i = 1; i < num; i++) {
@@ -184,6 +195,7 @@ const BigLedBox = () => {
         waves
       </button>
       <button
+        disabled={true}
         onClick={() => {
           dispatchREDUX(presetSwitch('spiral'))
         }}
@@ -191,6 +203,7 @@ const BigLedBox = () => {
         spiral
       </button>
       <button
+        disabled={true}//enable if logged in
         onClick={() => {
           dispatchREDUX(presetSwitch('fourSpirals'))
         }}

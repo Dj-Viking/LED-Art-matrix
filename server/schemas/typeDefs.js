@@ -16,6 +16,11 @@ const typeDefs = gql`
     category: Category
   }
 
+  type Preset {
+    _id: ID
+    presetName: String
+  }
+
   type Order {
     _id: ID
     purchaseDate: String
@@ -27,6 +32,7 @@ const typeDefs = gql`
     username: String
     email: String
     orders: [Order]
+    presets: [Preset]
   }
 
   type Auth {
@@ -72,7 +78,8 @@ const typeDefs = gql`
     updateUser(
       username: String,
       email: String, 
-      password: String
+      password: String,
+      presetName: String
     ): User
 
     updateProduct(
@@ -84,10 +91,14 @@ const typeDefs = gql`
       email: String!, 
       password: String!
     ): Auth
+
+    addUserPreset(
+      presetName: String!
+    ): User
   }
 
   type Checkout {
-    session: ID
+    session: ID!
   }
 `;
 
