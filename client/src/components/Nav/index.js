@@ -45,10 +45,10 @@ const Nav = () => {
 
   return (
     <>
+      <div style={{color: 'white'}}>nav</div>
       <nav>
         {displayNav()}
       </nav>
-      <div style={{color: 'white'}}>nav</div>
     </>
   );
 };
