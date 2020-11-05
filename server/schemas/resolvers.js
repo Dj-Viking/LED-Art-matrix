@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Product, Category, Order, Preset } = require('../models');
+const { User, Product, Category, Order } = require('../models');
 const { signToken } = require('../utils/auth');
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
@@ -107,10 +107,10 @@ const resolvers = {
           payment_method_types: ['card'],
           line_items,
           mode: 'payment',
-          // success_url: `https://example.com/success?session_id={CHECKOUT_SESSION_ID}`,
-          // cancel_url: `https://example.com/cancel`
-          success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
-          cancel_url: `${url}/`
+          success_url: `https://example.com/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `https://example.com/cancel`
+          // success_url: `${url}/success?session_id={CHECKOUT_SESSION_ID}`,
+          // cancel_url: `${url}/`
         }
       );
 
@@ -122,30 +122,38 @@ const resolvers = {
   Mutation: {
     addUser: async (parent, args, context) => {
       console.log("checking context object when adding user");
-      console.log(context);
+      //console.log(context);
       const user = await User.create(args);
       const token = signToken(user);
 
       return { token, user };
     },
     addOrder: async (parent, { products }, context) => {
-      console.log(context.user);
+      //console.log(context.user);
       if (context.user) {
         const order = new Order({ products });
 
-        await User.findByIdAndUpdate(context.user._id, { $push: { orders: order } });
+        await User.findByIdAndUpdate
+        (
+          context.user._id, 
+          { 
+            $push: { 
+              orders: order 
+            } 
+          }
+        );
 
         return order;
+      } else {
+        throw new AuthenticationError('Not logged in');
       }
-
-      throw new AuthenticationError('Not logged in');
     },
     updateUser: async (parent, args, context) => {
       if (context.user) {
         return await User.findByIdAndUpdate(context.user._id, args, { new: true });
+      } else {
+        throw new AuthenticationError('Not logged in');
       }
-
-      throw new AuthenticationError('Not logged in');
     },
     /**
      * ADD PRESET STRING NAME MUTATION
@@ -158,21 +166,62 @@ const resolvers = {
       args, 
       context
     ) => {
+      // console.log('ARGS!');
+      // console.log(args);
       //find logged in user by context._id
       if (context.user) {
-        console.log(context.user);
-        return await User.findByIdAndUpdate
+        //console.log(context.user);
+
+        //check if the User has the preset already to not add duplicate objects to the presets array
+        const userInfo = await User.findById(context.user._id);
+        console.log(userInfo);
+        for (let i = 0; i < userInfo.presets.length; i++) 
+        {
+          if (userInfo.presets[i].presetName.includes(args.presetName))
+          {
+            // console.log('preset already added.');
+            throw new Error("That preset is already added.");
+          }
+        }
+
+        const updatedUser = await User.findByIdAndUpdate
         (
           context.user._id,
           {
             $push: {
-              presets: {
+              presets: {//input args from front end graphql query
                 presetName: args.presetName
               }
             }
           },
           {new: true}
         );
+        console.log(updatedUser);
+        return updatedUser;
+      } else {
+        throw new AuthenticationError("Must be logged in to do that.");
+      }
+    },
+    updateUserDefaultPreset: async (
+      parent,
+      args,
+      context
+    ) => {
+      //console.log(args);
+      if (context.user) {
+        const user = await User.findByIdAndUpdate
+        (
+          context.user._id,
+          {
+            $set: {
+              defaultPreset: args
+            }
+          },
+          {new: true}
+        );
+        return user;
+      } else {
+        throw new AuthenticationError("Must be logged in to do that.");
       }
     },
     updateProduct: async (
@@ -191,28 +240,23 @@ const resolvers = {
             quantity: decrement 
           } 
         }, 
-        { 
-            new: true 
-        }
+        { new: true }
       );
       console.log(user);
       return user;
     },
     login: async (parent, { email, password }) => {
       const user = await User.findOne({ email });
-
       if (!user) {
         throw new AuthenticationError('Incorrect credentials');
       }
 
       const correctPw = await user.isCorrectPassword(password);
-
       if (!correctPw) {
         throw new AuthenticationError('Incorrect credentials');
       }
 
       const token = signToken(user);
-
       return { token, user };
     }
   }

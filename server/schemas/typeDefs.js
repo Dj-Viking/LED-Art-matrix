@@ -31,6 +31,7 @@ const typeDefs = gql`
     _id: ID
     username: String
     email: String
+    defaultPreset: String
     orders: [Order]
     presets: [Preset]
   }
@@ -79,7 +80,8 @@ const typeDefs = gql`
       username: String,
       email: String, 
       password: String,
-      presetName: String
+      presetName: String,
+      defaultPreset: String
     ): User
 
     updateProduct(
@@ -94,6 +96,11 @@ const typeDefs = gql`
 
     addUserPreset(
       presetName: String!
+    ): User
+
+    updateUserDefaultPreset(
+      _id: ID!,
+      defaultPreset: String!
     ): User
   }
 

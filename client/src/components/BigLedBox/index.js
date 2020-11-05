@@ -195,7 +195,7 @@ const BigLedBox = () => {
         waves
       </button>
       <button
-        disabled={true}
+        disabled={true}//enable if logged in
         onClick={() => {
           dispatchREDUX(presetSwitch('spiral'))
         }}
@@ -209,6 +209,17 @@ const BigLedBox = () => {
         }}
       >
         fourSpirals
+      </button>
+      <button
+        disabled={true}//enable if logged in
+        style={{
+          float: 'right'
+        }}
+        onClick={() => {
+          console.log('saving preset to user start')
+        }}
+      >
+        Save to Default
       </button>
       {
         rows.map((row, index) => (
