@@ -5,9 +5,16 @@ export const signupUsernameChange = (data) => {
   }
 }
 export const signupUsernameCompleted = (data) => {
-  return {
-    type: 'SIGNUP_USERNAME_COMPLETED',
-    payload: data
+  if (data.length > 0) {
+    return {
+      type: 'SIGNUP_USERNAME_COMPLETED',
+      payload: true
+    }
+  } else {
+    return {
+      type: 'SIGNUP_USERNAME_COMPLETED',
+      payload: false
+    }
   }
 }
 export const signupEmailChange = (data) => {
@@ -17,9 +24,16 @@ export const signupEmailChange = (data) => {
   }
 }
 export const signupEmailCompleted = (data) => {
-  return {
-    type: 'SIGNUP_EMAIL_COMPLETED',
-    payload: data
+  if (data.length > 0) {
+    return {
+      type: 'SIGNUP_EMAIL_COMPLETED',
+      payload: true
+    }
+  } else {
+    return {
+      type: 'SIGNUP_EMAIL_COMPLETED',
+      payload: false
+    }
   }
 }
 export const signupPasswordChange = (data) => {
@@ -29,8 +43,15 @@ export const signupPasswordChange = (data) => {
   }
 }
 export const signupPasswordCompleted = (data) => {
-  return {
-    type: 'SIGNUP_PASSWORD_COMPLETED',
-    payload: data
+  if (data.length > 0) {
+    return {
+      type: 'SIGNUP_PASSWORD_COMPLETED',
+      payload: true
+    }
+  } else {
+    return {
+      type: 'SIGNUP_PASSWORD_COMPLETED',
+      payload: false
+    }
   }
 }
