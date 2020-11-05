@@ -1,5 +1,6 @@
 //IMPORT REACT
 import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 //ROUTER
 // import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 //APOLLO
@@ -11,8 +12,15 @@ import './index.css';
 
 
 //COMPONENTS
-import AudioPlayer from './components/AudioPlayer';
-import BigLedBox from './components/BigLedBox';
+// import AudioPlayer from './components/AudioPlayer';
+// import BigLedBox from './components/BigLedBox';
+import Header from './components/Header';
+
+
+//PAGES
+import Home from './pages/Home.js';
+import Login from './pages/Login.js';
+import Signup from './pages/Signup.js';
 
 //establish apollo client with apollo server
 const client = new ApolloClient({
@@ -31,8 +39,14 @@ const App = () => {
   return (
     <>
       <ApolloProvider client={client}>
-        <AudioPlayer/>
-        <BigLedBox />
+        <Router>
+          <Header />
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+          </Switch>
+        </Router>
       </ApolloProvider>
     </>
   );

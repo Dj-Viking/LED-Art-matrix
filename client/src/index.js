@@ -33,11 +33,7 @@ console.log(store);
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={App} />
-        </Switch>
-      </Router>
+      <App />
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
