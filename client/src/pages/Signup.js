@@ -25,7 +25,7 @@ import {
 const Signup = () => {
   //OBSERVE GLOBAL SIGNUP FORM STATE
   const signupFormState = useSelector(state => state.signupForm);
-  console.log(signupFormState);
+  //console.log(signupFormState);
   //GRAB PIECE OF STATE
   const {
     username,

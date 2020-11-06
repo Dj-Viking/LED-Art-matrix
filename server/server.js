@@ -1,6 +1,6 @@
 //NODE IMPORTS
 const path = require('path');
-require('dotenv').config();
+// require('dotenv').config();
 // console.log(process.env.NODE_ENV);
 //EXPRESS IMPORTS AND SERVER PORT ASSIGN
 const PORT = process.env.PORT || 3001;

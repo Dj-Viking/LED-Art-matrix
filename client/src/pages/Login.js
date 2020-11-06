@@ -22,7 +22,7 @@ import {
 const Login = () => {
   //OBSERVE GLOBAL LOGIN FORM STATE
   const loginFormState = useSelector(state => state.loginForm)
-  console.log(loginFormState);
+  //console.log(loginFormState);
   //GRAB PIECE OF STATE
   const {
     email,
