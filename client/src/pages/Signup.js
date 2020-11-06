@@ -1,6 +1,5 @@
 //REACT IMPORTS
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
@@ -60,7 +59,7 @@ const Signup = () => {
       // get the token back from the 
       // graphql returned object of the mutation
       const token = mutationResponse.data.addUser.token;
-      //authorize token
+      //authorize token and send user to home page
       Auth.login(token);
     } catch(err) {
       console.log(err);
