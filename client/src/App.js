@@ -3,18 +3,20 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 //ROUTER
 // import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+
 //APOLLO
 import { ApolloProvider } from '@apollo/react-hooks';
 import ApolloClient from 'apollo-boost';
+
+// //AUTH
+import Auth from './utils/auth.js';
 
 //CSS
 import './index.css';
 
 
-//COMPONENTS
-// import AudioPlayer from './components/AudioPlayer';
-// import BigLedBox from './components/BigLedBox';
-import Header from './components/Header';
+// //COMPONENTS
+import SplashHeader from './components/SplashHeader';
 
 
 //PAGES
@@ -25,10 +27,11 @@ import Signup from './pages/Signup.js';
 //establish apollo client with apollo server
 const client = new ApolloClient({
   request: (operation) => {
-    const token = localStorage.getItem('id_token');
+    const gotToken = Auth.getToken();
+    // const token = localStorage.getItem('id_token');
     operation.setContext({
       headers: {
-        authorization: token ? `Bearer ${token}` : ''
+        authorization: gotToken ? `Bearer ${gotToken}` : ''
       }
     });
   },
@@ -40,7 +43,7 @@ const App = () => {
     <>
       <ApolloProvider client={client}>
         <Router>
-          <Header />
+          <SplashHeader />
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />

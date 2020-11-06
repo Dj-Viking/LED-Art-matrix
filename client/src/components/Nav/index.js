@@ -45,7 +45,11 @@ const Nav = () => {
 
   return (
     <>
-      <div style={{color: 'white'}}>nav</div>
+      <div 
+        style={{color: 'white'}}
+      >
+      </div>
+
       <nav>
         {displayNav()}
       </nav>

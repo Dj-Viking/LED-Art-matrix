@@ -6,6 +6,16 @@ import './waves/styles/style.css';
 import './spiral/styles/style.css';
 import './fourSpirals/styles/style.css';
 
+
+//maybe disable some "paid presets?"
+
+//future thought to translate the presets into DMX controls.
+
+//or control the LEDs on the web app with MIDI or DMX
+
+//AUTH
+import Auth from '../../utils/auth.js';
+
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -38,29 +48,33 @@ const BigLedBox = () => {
   console.log(ledChangeState);
   //REDUX piece of global state
   const {
-    alpha,
+    // alpha,
     presetName,
-    animationDurationState,
-    _animationDelayState,
+    // animationDurationState,
+    // _animationDelayState,
 
   } = ledChangeState;
   
   const dispatchREDUX = useDispatch();
 
-  const [animationDelayState, setAnimationDelayState] = useState(0);
-  function animationDelaySliderChange(event) {
-    setAnimationDelayState(event.target.value);
-    // console.log(((event.target.value) / 100).toString());
-    dispatchREDUX(animationDelayChange((event.target.value / 100).toString()));
-  } 
+  // const [animationDelayState, setAnimationDelayState] = useState(0);
+  // function animationDelaySliderChange(event) {
+  //   setAnimationDelayState(event.target.value);
+  //   // console.log(((event.target.value) / 100).toString());
+  //   dispatchREDUX(animationDelayChange((event.target.value / 100).toString()));
+  // } 
 
-  const [animationSpeedState, setAnimationSpeedState] = useState(0);
+  // const [animationSpeedState, setAnimationSpeedState] = useState(0);
   
-  function animationSpeedSliderChange(event) {
-    setAnimationSpeedState(event.target.value);
-    dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
-  }
+  // function animationSpeedSliderChange(event) {
+  //   setAnimationSpeedState(event.target.value);
+  //   dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
+  // }
 
+  function handleSaveDefault(event) {
+    event.preventDefault();
+    event.persist();
+  }
 
 
   // useEffect(() => {
@@ -146,12 +160,12 @@ const BigLedBox = () => {
   //   return elementText;
   // };
 
-
   createLedObjectsArray(33);
   createLedRowsArray(33);
   return (
+    <>
     <main className="box-style">
-      <div className="slidecontainer">
+      {/* <div className="slidecontainer">
         <input 
           type="range" 
           min="0" 
@@ -161,8 +175,8 @@ const BigLedBox = () => {
           id="myRange"
           onChange={animationDelaySliderChange}
         />
-        <p style={{color: 'white'}}>animation delay: {animationDelayState}</p>
-        <input 
+        <p style={{color: 'white'}}>animation delay: {animationDelayState}</p> */}
+        {/* <input 
           type="range" 
           min="0" 
           max="100" 
@@ -172,7 +186,7 @@ const BigLedBox = () => {
           onChange={animationSpeedSliderChange}
         />
         <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
-      </div>
+      </div> */}
       <button
         onClick={() => {
           dispatchREDUX(presetSwitch(''))
@@ -195,31 +209,35 @@ const BigLedBox = () => {
         waves
       </button>
       <button
-        disabled={true}//enable if logged in
+        className="tooltip"
+        disabled={Auth.loggedIn() ? false : true }//enable if logged in
         onClick={() => {
           dispatchREDUX(presetSwitch('spiral'))
         }}
       >
-        spiral
+      spiral 
       </button>
       <button
-        disabled={true}//enable if logged in
+        disabled={Auth.loggedIn() ? false : true}//enable if logged in
         onClick={() => {
           dispatchREDUX(presetSwitch('fourSpirals'))
         }}
       >
         fourSpirals
       </button>
+
+      {/* save as new login preset */}
       <button
-        disabled={true}//enable if logged in
+        disabled={Auth.loggedIn() ? false : true}//enable if logged in
         style={{
           float: 'right'
         }}
         onClick={() => {
+          //function for launching the save as default graphql mutation function for the user
           console.log('saving preset to user start')
         }}
       >
-        Save to Default
+        Save as Default Preset
       </button>
       {
         rows.map((row, index) => (
@@ -240,6 +258,7 @@ const BigLedBox = () => {
         ))
       }
     </main>
+    </>
   );
 };
 

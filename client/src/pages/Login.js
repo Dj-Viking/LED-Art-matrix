@@ -1,6 +1,5 @@
 //REACT IMPORTS
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 
 //GRAPHQL IMPORTS
@@ -70,6 +69,7 @@ const Login = () => {
         }
       );
       const token = mutationResponse.data.login.token;
+      //authorize token and send user to home page
       Auth.login(token);
     } catch(err) {
       console.log(err);
