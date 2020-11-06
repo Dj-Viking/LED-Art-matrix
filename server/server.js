@@ -28,6 +28,7 @@ apolloServer.applyMiddleware({ app });
 
 //EXPRESS MIDDLEWARE FUNCTIONS
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 //STATIC PUBLIC FRONT END ASSETS WHILE IN DEVELOPMENT
 // app.use('/images', express.static(path.join(__dirname, '../client/images')));
 

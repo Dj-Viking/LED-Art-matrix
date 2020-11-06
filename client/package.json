@@ -3,6 +3,7 @@
   "name": "led-matrix",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@apollo/react-hooks": "^4.0.0",
     "@stripe/stripe-js": "^1.11.0",

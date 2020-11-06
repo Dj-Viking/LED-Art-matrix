@@ -49,8 +49,6 @@ const userSchema = new Schema({
 // eslint-disable-next-line
 let user_schema_presave_middleware_info;
 userSchema.pre('save', async function(next) {
-  console.log('instance of user schema');
-  console.log(userSchema instanceof User)
   //checking if isNew property is a truthy value, 
   if (this.isNew || this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, Number(process.env.SALT));

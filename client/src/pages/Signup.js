@@ -1,14 +1,18 @@
 //REACT IMPORTS
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LOGIN } from '../utils/mutations.js';
-import Auth from '../utils/auth.js';
 
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
 
+//GRAPHQL IMPORTS
+import { useMutation } from '@apollo/react-hooks';
+import { ADD_USER } from '../utils/mutations';
 
-//import actions for signup formstate reducer
+//AUTH
+import Auth from '../utils/auth.js';
+
+//ACTIONS IMPORT for signup formstate reducer
 import {
   signupUsernameChange,
   signupUsernameCompleted,
@@ -31,9 +35,37 @@ const Signup = () => {
     emailIsComplete,
     passwordIsComplete
   } = signupFormState;
-
+  
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
+
+  //ESTABLISH GRAPHQL SIGNUP MUTATION
+  const [addUser, { error }] = useMutation(ADD_USER);
+  
+  //FUNCTION TO HANDLE FORM SUBMIT TO GRAPHQL MUTATION
+  async function handleSubmit(event){
+    event.preventDefault();
+    try {
+      const mutationResponse = await addUser
+      (
+        {
+          variables: {
+            username: username,
+            email: email,
+            password: password
+          }
+        }
+      );
+      //generate a token for the user signing up
+      // get the token back from the 
+      // graphql returned object of the mutation
+      const token = mutationResponse.data.addUser.token;
+      //authorize token
+      Auth.login(token);
+    } catch(err) {
+      console.log(err);
+    }
+  } 
 
   function handleChange(event) {
     if (event.target.type === 'text') {
@@ -64,7 +96,7 @@ const Signup = () => {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input 
           type="text"
           name="username"
@@ -83,6 +115,20 @@ const Signup = () => {
           onChange={handleChange}
           placeholder="Password"
         />
+        {
+          error 
+          ?
+          (
+            <>
+              <div
+                style={{color: 'red'}}
+              >
+                An error happened during the signup process!
+              </div>
+            </>
+          )
+          : null
+        }
         <button
           type="submit"
           disabled={enableSignup()}

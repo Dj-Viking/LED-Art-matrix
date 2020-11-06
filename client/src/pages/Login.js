@@ -1,8 +1,11 @@
 //REACT IMPORTS
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LOGIN } from '../utils/mutations';
 import Auth from '../utils/auth';
+
+//GRAPHQL IMPORTS
+import { useMutation } from '@apollo/react-hooks';
+import { LOGIN } from '../utils/mutations';
 
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
@@ -31,6 +34,9 @@ const Login = () => {
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
 
+  //GRAPHQL LOGIN MUTATION
+  const [login, { error }] = useMutation(LOGIN);
+
   function handleChange(event) {
     if (event.target.type === 'email') {
       dispatchREDUX(loginEmailChange(event.target.value));
@@ -51,8 +57,27 @@ const Login = () => {
     }
   }
 
+  async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const mutationResponse = await login
+      (
+        {
+          variables: {
+            email: email,
+            password: password
+          }
+        }
+      );
+      const token = mutationResponse.data.login.token;
+      Auth.login(token);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input 
         type="email"
         name="email"
@@ -67,6 +92,18 @@ const Login = () => {
         onChange={handleChange}
         placeholder="Your Password"
       />
+      {//login error rendering
+        error
+        ?
+        (
+          <div
+            style={{color: 'red'}}
+          >
+            The provided credentials were incorrect
+          </div>
+        )
+        : null
+      }
       <button
         type="submit"
         disabled={enableLogin()}
