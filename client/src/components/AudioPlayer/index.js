@@ -1,55 +1,79 @@
 import React, {useState} from 'react';
+import AudioPlayer from 'react-h5-audio-player';
+import 'react-h5-audio-player/lib/styles.css';
+import Waterfalls from './music/128-Waterfalls.m4a';
+import ReverbStudy from './music/175-Reverb-study.m4a';
 
 
 
-function AudioPlayer() {
-  const [currentSong, setCurrentSong] = useState('./music/128-waterfall.m4a')
+function AudioPlayer_Component() {
+  const [currentSong, setCurrentSong] = useState(ReverbStudy)
+
+  //ARRAY OF LOCAL SONG FILE PATHS 
+  const songs = [
+    {
+      trackName: 'Waterfalls',
+      filePath: Waterfalls
+    },
+    {
+      trackName: 'ReverbStudy',
+      filePath: ReverbStudy
+    }
+  ];
 
   function songSelect(event) {
     event.preventDefault();
     event.persist();
     setCurrentSong(event.target.href);
-    console.log(event.target.parentElement.parentElement.parentElement.firstChild.play)
-    //event.target.parentElement.parentElement.parentElement.firstChild.play();
-    // console.log(event.target.parentElement.parentElement.parentElement.firstChild.play());
     console.log(event.target.href);
   }
-  let reactAudioPlayer;
+
+  const trackListStyle = {
+    textDecoration: 'none',
+    color: 'white',
+    cursor: 'pointer',
+    listStyle: 'none'
+  }
+
+  function handleTrackChange(event) {
+    if (event.target.id !== currentSong) {
+      setCurrentSong(event.target.id)
+    } else {
+      return;
+    }
+  }
+  
   return (
     <>
+      <AudioPlayer
+        autoPlay={true}
+        preload="auto"
+        src={currentSong}
+        onPlay={e => console.log("onPlay")}
+        volume={.04}
+      />
+      <ul>
+        {
+          songs.map((song, index) => (
+            <>
+              <li
+                style={trackListStyle}
+                id={Waterfalls}
+                key={index}
+                onClick={handleTrackChange}
+              >
+                {song.trackName}
+              </li>
+            </>
+          ))
+        }
+      </ul>
       <audio 
         src={currentSong}
-        controls
-        autoPlay={true}
-        ref={(element) => reactAudioPlayer = element}
-        onClick={
-          () => {
-            console.log(reactAudioPlayer)
-          }
-        }
-      >
-
-      </audio>
-      <ul id="playlist">
-        <li className="current-song">
-            <a
-              href="./music/128-waterfall.m4a"
-              onClick={songSelect}
-            >
-              1
-            </a>
-        </li>
-        <li className="">
-            <a
-              href="./music/Faxing-Zagreb.m4a" 
-              onClick={songSelect}
-            >
-              2
-            </a>
-        </li>
-      </ul>
+        
+      />
     </>
   );
 };
 
-export default AudioPlayer;
+export default AudioPlayer_Component;
