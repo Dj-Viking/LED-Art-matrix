@@ -1,7 +1,7 @@
 import React from 'react';
 
 //components
-import AudioPlayer from '../components/AudioPlayer';
+import AudioPlayer_Component from '../components/AudioPlayer';
 import BigLedBox from '../components/BigLedBox';
 import SplashHeader from '../components/SplashHeader';
 
@@ -9,7 +9,7 @@ import SplashHeader from '../components/SplashHeader';
 const Home = () => {
   return (
     <>
-      <AudioPlayer />
+      <AudioPlayer_Component />
       <BigLedBox />
     </>
   );
