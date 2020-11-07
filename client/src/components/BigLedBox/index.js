@@ -202,6 +202,7 @@ const BigLedBox = () => {
         rainbowV2
       </button>
       <button
+        disabled={Auth.loggedIn() ? false : true}//enable if logged in
         onClick={() => {
           dispatchREDUX(presetSwitch('waves'))
         }}
