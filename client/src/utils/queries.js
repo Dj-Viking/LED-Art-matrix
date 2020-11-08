@@ -17,6 +17,7 @@ export const USER_QUERY = gql`
       presetName
     }
     defaultPreset
+    userSearchTerm
   }
 }
 `;
@@ -36,6 +37,8 @@ export const GET_SEARCH_TERMS = gql`
     getSearchTerms{
       _id
       termText
+      termCategory
+      limit
     }
   }
 `;

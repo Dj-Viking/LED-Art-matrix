@@ -23,7 +23,7 @@ export const scrollGifInterval = (data) => {
   };
 };
 
-export const searchTermchange = (data) => {
+export const searchTermChange = (data) => {
   return {
     type: 'SEARCH_TERM_CHANGE',
     payload: data

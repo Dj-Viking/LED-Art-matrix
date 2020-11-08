@@ -93,11 +93,11 @@ export const UPDATE_USER_DEFAULT_PRESET = gql`
 export const UPDATE_USER_SEARCH_TERM = gql`
   mutation updateUserSearchTerm
   (
-    $_id: ID!
+    $userSearchTerm: ID!
   ){
     updateUserSearchTerm
     (
-      _id: $_id
+      userSearchTerm: $userSearchTerm
     ){
       username
       _id
