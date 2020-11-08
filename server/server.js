@@ -136,7 +136,9 @@ db.once('open', () => {
     //seed Presets and SearchTerms tables with new preset names so the user can add them to their account as a default starting values
     setTimeout( async () => {
       seedPresets();
-      seedSearchTerms();
     }, 700);
+    setTimeout( async () => {
+      seedSearchTerms();
+    }, 800);
   });
 });
