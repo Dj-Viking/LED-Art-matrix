@@ -4,6 +4,7 @@ import sketchOneReducer from './sketchOne.js';
 import sketchTwoReducer from './sketchTwo.js';
 import loginFormReducer from './loginFormReducer.js';
 import signupFormReducer from './signupFormReducer.js';
+import artScrollerReducer from './artScrollerReducer.js';
 import { combineReducers } from 'redux';
 
 const allReducers = combineReducers(
@@ -13,7 +14,8 @@ const allReducers = combineReducers(
     sketchOne: sketchOneReducer,
     sketchTwo: sketchTwoReducer,
     loginForm: loginFormReducer,
-    signupForm: signupFormReducer
+    signupForm: signupFormReducer,
+    artScroller: artScrollerReducer
   }
 )
 
