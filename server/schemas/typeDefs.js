@@ -54,6 +54,9 @@ const typeDefs = gql`
     ): Product
 
     user: User
+    getUserDefaultPreset: Preset
+
+    getPresets: [Preset]
 
     order(
       _id: 
@@ -63,6 +66,7 @@ const typeDefs = gql`
     checkout(
       products: [ID]!
     ): Checkout
+
   }
 
   type Mutation {
@@ -99,8 +103,7 @@ const typeDefs = gql`
     ): User
 
     updateUserDefaultPreset(
-      _id: ID!,
-      defaultPreset: String!
+      _id: ID!
     ): User
   }
 

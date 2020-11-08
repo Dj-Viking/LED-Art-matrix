@@ -71,13 +71,11 @@ export const UPDATE_USER_DEFAULT_PRESET = gql`
   mutation updateUserDefaultPreset
   (
     $_id: ID!,
-    $defaultPreset: String!
   )
   {
     updateUserDefaultPreset
     (
-      _id: $id,
-      defaultPreset: $defaultPreset
+      _id: $_id,
     )
     {
       _id

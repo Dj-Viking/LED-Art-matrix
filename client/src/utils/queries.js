@@ -2,9 +2,10 @@
 import gql from 'graphql-tag';
 
 //USER GRAPHQL QUERY TO GET USERINFO FROM DATABASE
-const USER_QUERY = gql`
+export const USER_QUERY = gql`
 {
-  user{
+  user
+  {
     _id
     username
     email
@@ -18,4 +19,14 @@ const USER_QUERY = gql`
     defaultPreset
   }
 }
+`;
+
+export const GET_PRESETS = gql`
+
+  {
+    getPresets{
+      _id
+      presetName
+    }
+  }
 `;

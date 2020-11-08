@@ -13,6 +13,7 @@ const { ApolloServer } = require('apollo-server-express');
 //GRAPHQL TYPEDEFS AND RESOLVES AND CONNECTION
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
+const {Preset} = require('./models');
 
 //AUTHORIZATION MIDDLEWARE
 const { authMiddleware } = require('./utils/auth.js');
@@ -23,6 +24,39 @@ const apolloServer = new ApolloServer({
   resolvers,
   context: authMiddleware
 });
+
+//USING ADD PRESET MUTATION TO SEED DATABASE WITH EXISTING PRESETS
+async function seedPresets() {
+  //check if presets exist already
+  const presetInfo = await Preset.find();
+  //console.log(presetInfo);
+  if (presetInfo[0] === undefined) {
+    await Preset.insertMany
+    (
+      [
+        {
+          presetName: ''
+        },
+        {
+          presetName: 'V2'
+        },
+        {
+          presetName: 'waves'
+        },
+        {
+          presetName: 'spiral'
+        },
+        {
+          presetName: 'fourSpirals'
+        }
+      ]
+    );
+    console.log("\x1b[37m", "presets seeded...", "\x1b[00m");
+  } else {
+    console.log("\x1b[37m", "starting presets already seeded...", "\x1b[00m")
+  }
+}
+
 //APPLY APOLLO MIDDLEWARE TO EXPRESS APP
 apolloServer.applyMiddleware({ app });
 
@@ -75,5 +109,10 @@ db.once('open', () => {
     setTimeout(() => {
       console.log("\x1b[32m", `🌱 if in development: stand by for react server to begin...`, "\x1b[00m");
     }, 600);
-  })
-})
+
+    //seed Presets table with new preset names so the user can add them to their account as a default starting preset
+    setTimeout( async () => {
+      seedPresets();
+    }, 700);
+  });
+});
