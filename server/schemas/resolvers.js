@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Product, Category, Order, Preset } = require('../models');
+const { User, Product, Category, Order, Preset, SearchTerm } = require('../models');
 const { signToken } = require('../utils/auth');
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
@@ -46,6 +46,14 @@ const resolvers = {
         return presets;
       } catch (error) {
         console.log(error);
+      }
+    },
+    getSearchTerms: async (parent, args, context) => {
+      try {
+        const searchTerms = await SearchTerm.find();
+        return searchTerms;
+      } catch (error) { 
+        console.error(error);
       }
     },
     getUserDefaultPreset: async (parent, args, context) => {
@@ -141,6 +149,11 @@ const resolvers = {
     }
   },
   Mutation: {
+    addSearchTerm: async (parent, args, context) => {
+      console.log('adding the search term test');
+      const newSearchTerm = await SearchTerm.create(args);
+      return newSearchTerm;
+    },
     addUser: async (parent, args, context) => {
       console.log("checking context object when adding user");
       //console.log(context);
@@ -243,6 +256,25 @@ const resolvers = {
         return user;
       } else {
         throw new AuthenticationError("Must be logged in to do that.");
+      }
+    },
+    updateUserSearchTerm: async (parent, args, context) => {
+      if (context.user) {
+        //get user searchTerm
+        const updatedUser = await User.findByIdAndUpdate
+        (
+          context.user._id,
+          {
+            //set user.searchTerm to the searchtime found by ID
+            $set: {
+              userSearchTerm: args.userSearchTerm
+            }
+          }, 
+          { new: true }
+        );
+        console.log(updatedUser);
+        return updatedUser;
+
       }
     },
     updateProduct: async (

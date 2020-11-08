@@ -30,3 +30,12 @@ export const GET_PRESETS = gql`
     }
   }
 `;
+
+export const GET_SEARCH_TERMS = gql`
+  {
+    getSearchTerms{
+      _id
+      termText
+    }
+  }
+`;
