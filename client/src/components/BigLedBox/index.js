@@ -48,12 +48,12 @@ const BigLedBox = () => {
   //execute function on first page load
   // get user default starting preset class name string
   const userQueryResponse = useQuery(USER_QUERY);
-  console.log('user query response');
-  console.log(userQueryResponse);
+  // console.log('user query response');
+  // console.log(userQueryResponse);
 
   const presetQueryResponse = useQuery(GET_PRESETS);
-  console.log('preset query response');
-  console.log(presetQueryResponse);
+  // console.log('preset query response');
+  // console.log(presetQueryResponse);
 
   //function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
@@ -61,7 +61,7 @@ const BigLedBox = () => {
   useEffect(() => {
     if (presetQueryResponse.data && userQueryResponse.data) 
     {
-      console.log('data arrived');
+      //console.log('data arrived');
       //extract the data to compare whether the 
       //user default preset matches one in the 
       // preset list queried
@@ -94,7 +94,7 @@ const BigLedBox = () => {
   
   //REDUX GLOBAL STATE
   const ledChangeState = useSelector(state => state.ledChange);
-  console.log(ledChangeState);
+  //console.log(ledChangeState);
   //REDUX piece of global state
   const {
     // alpha,
