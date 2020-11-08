@@ -3,7 +3,7 @@ const artScrollerReducer = (
     isOn: false,
     gifs: [],
     scrollInterval: 1000,
-    searchTerm: 'tech',
+    searchTerms: [],
     searchIsValid: false
   },
   action
@@ -27,7 +27,7 @@ const artScrollerReducer = (
     case 'SEARCH_TERM_CHANGE':
       return {
         ...state,
-        searchTerm: action.payload
+        searchTerms: action.payload
       }
     case 'SEARCH_VALIDATE': 
       return {

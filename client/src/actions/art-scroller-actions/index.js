@@ -1,4 +1,8 @@
 export const isOn = (data) => {
+  //some condition preventing to be on...
+  //false by default
+  //ACTIVATE ON THE RETURN OF API QUERY DATA
+  
   return {
     type: 'VERIFY_IS_ON',
     payload: data

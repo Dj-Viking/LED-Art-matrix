@@ -89,3 +89,23 @@ export const UPDATE_USER_DEFAULT_PRESET = gql`
     }
   }
 `;
+
+export const UPDATE_USER_SEARCH_TERM = gql`
+  mutation updateUserSearchTerm
+  (
+    $_id: ID!
+  ){
+    updateUserSearchTerm
+    (
+      _id: $_id
+    ){
+      username
+      _id
+      searchTerm{
+        termText
+        limit
+        termCategory
+      }
+    }
+  }
+`;

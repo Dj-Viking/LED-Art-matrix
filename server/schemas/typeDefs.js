@@ -27,6 +27,13 @@ const typeDefs = gql`
     products: [Product]
   }
 
+  type SearchTerm {
+    _id: ID
+    termText: String
+    termCategory: String
+    limit: String
+  }
+
   type User {
     _id: ID
     username: String
@@ -34,6 +41,7 @@ const typeDefs = gql`
     defaultPreset: String
     orders: [Order]
     presets: [Preset]
+    userSearchTerm: ID
   }
 
   type Auth {
@@ -54,9 +62,12 @@ const typeDefs = gql`
     ): Product
 
     user: User
+
     getUserDefaultPreset: Preset
 
     getPresets: [Preset]
+
+    getSearchTerms: [SearchTerm]
 
     order(
       _id: 
@@ -70,6 +81,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    addSearchTerm(
+      termText: String!,
+      termCategory: String!,
+      limit: String!
+    ): SearchTerm
+
     addUser(
       username: String!,
       email: String!, 
@@ -104,6 +121,10 @@ const typeDefs = gql`
 
     updateUserDefaultPreset(
       _id: ID!
+    ): User
+
+    updateUserSearchTerm(
+      userSearchTerm: ID!
     ): User
   }
 

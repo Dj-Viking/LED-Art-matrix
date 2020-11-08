@@ -2,6 +2,16 @@
 import React from 'react';
 
 //APOLLO GRAPHQL
+import {useQuery, useMutation} from '@apollo/react-hooks';
+//QUERIES
+import {
+  GET_SEARCH_TERMS
+} from '../../utils/queries.js';
+
+//MUTATIONS
+import {
+  UPDATE_USER_SEARCH_TERM
+} from '../../utils/mutations.js';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +26,10 @@ import {
 
 
 const ArtScroller = () => {
+  //GRAPHQL DATABASE QUERY FOR CATEGORY SELECTIONS
+
+
+
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
   console.log(dispatchREDUX);
@@ -26,7 +40,7 @@ const ArtScroller = () => {
     isOn,
     gifs,
     scrollInterval,
-    searchTerm,
+    searchTerms,
     searchIsValid
   } = artScrollerState;
   return (
@@ -38,10 +52,13 @@ const ArtScroller = () => {
       </div>
       <section>
         <form>
-          <input 
-            type="text"
-            value={searchTerm}
-          />
+          <select 
+            name="category"
+          >
+            {
+
+            }
+          </select>
           <button
             type="submit"
           >

@@ -30,6 +30,10 @@ const userSchema = new Schema({
   defaultPreset: {
     type: Schema.Types.ObjectId,
     ref: 'Preset'
+  },
+  userSearchTerm: {
+    type: Schema.Types.ObjectId,
+    ref: 'SearchTerm'
   }
 });
 
