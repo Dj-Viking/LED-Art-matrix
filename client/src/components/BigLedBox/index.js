@@ -13,6 +13,11 @@ import './fourSpirals/styles/style.css';
 
 //or control the LEDs on the web app with MIDI or DMX
 
+//APOLLO GRAPHQL QUERIES AND MUTATIONS
+import {useQuery, useMutation} from '@apollo/react-hooks';
+import {USER_QUERY, GET_PRESETS} from '../../utils/queries.js';
+import {UPDATE_USER_DEFAULT_PRESET} from '../../utils/mutations.js';
+
 //AUTH
 import Auth from '../../utils/auth.js';
 
@@ -26,22 +31,66 @@ import {
   animationDelayChange,
   animationDurationChange,
   alphaFaderChange,
-  invertSwitch//feature after signing up
+  // eslint-disable-next-line
+  invertSwitch,//feature after signing up
+  savePresetName
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
+  //REDUX DISPATCH
+  const dispatchREDUX = useDispatch();
   //functions to create the columns and rows to render
 
+  //query get all presets in the database
+  // const {presetData} = useQuery(GET_PRESETS);
 
-  //query first preset in the array of the user's
-  // list of preset names, this will have all the animation parameter styles for 
-  // each row of LEDs
-  // this will trigger loadUserSplashConfig action on load 
-  //(useEffect to wait until data arrives and execute dispatch action once data arrives
-  // from graphql query
+  
+  //execute function on first page load
+  // get user default starting preset class name string
+  const userQueryResponse = useQuery(USER_QUERY);
+  console.log('user query response');
+  console.log(userQueryResponse);
 
-  //FIRST
-  //WHEN USER SIGNS UP AND LOGS IN ENABLE BUTTONS
+  const presetQueryResponse = useQuery(GET_PRESETS);
+  console.log('preset query response');
+  console.log(presetQueryResponse);
+
+  //function that sets the starting preset name of the user logging on
+  // conditionally render whether they are logged on => load with that default preset
+  // : else load the blank preset name
+  useEffect(() => {
+    if (presetQueryResponse.data && userQueryResponse.data) 
+    {
+      console.log('data arrived');
+      //extract the data to compare whether the 
+      //user default preset matches one in the 
+      // preset list queried
+      for (
+        let i = 0; 
+        i < presetQueryResponse.data.getPresets.length; 
+        i++
+      ) 
+      {
+        if (
+          presetQueryResponse.data.getPresets[i]._id
+          === userQueryResponse.data.user.defaultPreset
+        ) 
+        {//id matches
+          // console.log("ID of the preset of the user");
+          // console.log(userQueryResponse.data.user.defaultPreset);
+          // console.log(presetQueryResponse.data.getPresets[i]);
+          
+          //dispatch action to switch to the default presetName
+          // that matches the id given 
+          dispatchREDUX(
+            presetSwitch(
+              presetQueryResponse.data.getPresets[i].presetName
+            )
+          );
+        }
+      }
+    }
+  }, [presetQueryResponse, userQueryResponse, dispatchREDUX]);
   
   //REDUX GLOBAL STATE
   const ledChangeState = useSelector(state => state.ledChange);
@@ -55,7 +104,7 @@ const BigLedBox = () => {
 
   } = ledChangeState;
   
-  const dispatchREDUX = useDispatch();
+
 
   // const [animationDelayState, setAnimationDelayState] = useState(0);
   // function animationDelaySliderChange(event) {
@@ -70,16 +119,6 @@ const BigLedBox = () => {
   //   setAnimationSpeedState(event.target.value);
   //   dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
   // }
-
-  function handleSaveDefault(event) {
-    event.preventDefault();
-    event.persist();
-  }
-
-
-  // useEffect(() => {
-
-  // }, [animationDurationState])
 
   /**
    * array of led objects that only contain the information needed
@@ -160,6 +199,42 @@ const BigLedBox = () => {
   //   return elementText;
   // };
 
+  const [updateUserDefaultPreset] = useMutation(UPDATE_USER_DEFAULT_PRESET);
+  async function handleSaveDefault(event) {
+    event.preventDefault();
+    event.persist();
+    // get the classname string split from the classname
+    //console.log(event.target.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
+    let presetString = event.target.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1];
+    //check the presetdata from the query to get the preset ID to save to the user
+    // that matches the preset name acquired from the event
+    for (
+      let i = 0; 
+      i < presetQueryResponse.data.getPresets.length; 
+      i++
+    ){
+      if (
+        presetString === 
+        presetQueryResponse.data.getPresets[i].presetName  
+      ) {
+        //console.log('found the preset');
+        console.log(presetQueryResponse.data.getPresets[i].presetName);
+        //use mutation
+        try {
+          await updateUserDefaultPreset({
+            variables: {
+              _id: presetQueryResponse.data.getPresets[i]._id
+            }
+          });
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        console.log('could not find that preset');
+      }
+    }
+  }
+
   createLedObjectsArray(33);
   createLedRowsArray(33);
   return (
@@ -187,59 +262,58 @@ const BigLedBox = () => {
         />
         <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
       </div> */}
-      <button
-        onClick={() => {
-          dispatchREDUX(presetSwitch(''))
-        }}
-      >
-        rainbowTest
-      </button>
-      <button
-        onClick={() => {
-          dispatchREDUX(presetSwitch('V2'))
-        }}
-      >
-        rainbowV2
-      </button>
-      <button
-        disabled={Auth.loggedIn() ? false : true}//enable if logged in
-        onClick={() => {
-          dispatchREDUX(presetSwitch('waves'))
-        }}
-      >
-        waves
-      </button>
-      <button
-        className="tooltip"
-        disabled={Auth.loggedIn() ? false : true }//enable if logged in
-        onClick={() => {
-          dispatchREDUX(presetSwitch('spiral'))
-        }}
-      >
-      spiral 
-      </button>
-      <button
-        disabled={Auth.loggedIn() ? false : true}//enable if logged in
-        onClick={() => {
-          dispatchREDUX(presetSwitch('fourSpirals'))
-        }}
-      >
-        fourSpirals
-      </button>
+      <section>
+        <button
+          onClick={() => {
+            dispatchREDUX(presetSwitch(''))
+          }}
+        >
+          rainbowTest
+        </button>
+        <button
+          onClick={() => {
+            dispatchREDUX(presetSwitch('V2'))
+          }}
+        >
+          V2
+        </button>
+        <button
+          disabled={Auth.loggedIn() ? false : true}//enable if logged in
+          onClick={() => {
+            dispatchREDUX(presetSwitch('waves'))
+          }}
+        >
+          waves
+        </button>
+        <button
+          disabled={Auth.loggedIn() ? false : true }//enable if logged in
+          onClick={() => {
+            dispatchREDUX(presetSwitch('spiral'))
+          }}
+        >
+        spiral 
+        </button>
+        <button
+          disabled={Auth.loggedIn() ? false : true}//enable if logged in
+          onClick={() => {
+            dispatchREDUX(presetSwitch('fourSpirals'))
+          }}
+        >
+          fourSpirals
+        </button>
 
-      {/* save as new login preset */}
-      <button
-        disabled={Auth.loggedIn() ? false : true}//enable if logged in
-        style={{
-          float: 'right'
-        }}
-        onClick={() => {
-          //function for launching the save as default graphql mutation function for the user
-          console.log('saving preset to user start')
-        }}
-      >
-        Save as Default Preset
-      </button>
+        {/* save as new login preset */}
+        <button
+          disabled={Auth.loggedIn() ? false : true}//enable if logged in
+          style={{
+            float: 'right'
+          }}
+          onClick={handleSaveDefault}
+        >
+          Save as Default Preset
+        </button>
+      </section>
+      <section>
       {
         rows.map((row, index) => (
           <div key={`row${index + 1}`} className={`row${index + 1}`}>
@@ -247,7 +321,7 @@ const BigLedBox = () => {
               leds.map((led, index) => (
                 <div 
                   key={`led${led.ledNumber}-${index + 1}`} 
-                  className={`led${index + 1}-${row.rowNumber}${presetName}`}
+                  className={`led${index + 1}-${row.rowNumber}${Auth.loggedIn() ? presetName : presetName}`}
                   style={{
                     // animationDuration: `${(index / 64) + ( index / row.rowNumber * (.05 * index))}`,
                     // animationDelay: `${(index / 16) + index / (row.rowNumber / index - (4 * row.rowNumber))}`
@@ -258,6 +332,7 @@ const BigLedBox = () => {
           </div>
         ))
       }
+      </section>
     </main>
     </>
   );

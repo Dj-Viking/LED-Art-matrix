@@ -6,7 +6,7 @@ import ReverbStudy from './music/175-Reverb-study.m4a';
 
 
 
-function AudioPlayer_Component() {
+function AudioPlayerComponent() {
   const [currentSong, setCurrentSong] = useState(ReverbStudy)
 
   //ARRAY OF LOCAL SONG FILE PATHS 
@@ -52,28 +52,24 @@ function AudioPlayer_Component() {
         onPlay={e => console.log("onPlay")}
         volume={.04}
       />
-      <ul>
-        {
-          songs.map((song, index) => (
-            <>
-              <li
-                style={trackListStyle}
-                id={Waterfalls}
-                key={index}
-                onClick={handleTrackChange}
-              >
-                {song.trackName}
-              </li>
-            </>
-          ))
-        }
-      </ul>
-      <audio 
+      {
+        songs.map((song) => (
+          <div
+            style={trackListStyle}
+            id={song.filePath}
+            key={song.trackName}
+            onClick={handleTrackChange}
+          >
+            {song.trackName}
+          </div>
+        ))
+      }
+      {/* <audio 
         src={currentSong}
         
-      />
+      /> */}
     </>
   );
 };
 
-export default AudioPlayer_Component;
+export default AudioPlayerComponent;

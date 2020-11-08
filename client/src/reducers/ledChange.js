@@ -1,7 +1,7 @@
 const ledChangeReducer = (
   state = {
     alpha: 1,
-    presetName: '',
+    presetName: undefined,
     animationDurationState: '4s',
     animationDelayState: '.5s',
     isInverted: false

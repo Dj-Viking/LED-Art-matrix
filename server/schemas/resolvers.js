@@ -1,5 +1,5 @@
 const { AuthenticationError } = require('apollo-server-express');
-const { User, Product, Category, Order } = require('../models');
+const { User, Product, Category, Order, Preset } = require('../models');
 const { signToken } = require('../utils/auth');
 require('dotenv').config();
 const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
@@ -29,10 +29,8 @@ const resolvers = {
     },
     user: async (parent, args, context) => {
       if (context.user) {
-        const user = await User.findById(context.user._id).populate({
-          path: 'orders.products',
-          populate: 'category'
-        });
+        const user = await User.findById(context.user._id);
+        //console.log(user);
 
         user.orders.sort((a, b) => b.purchaseDate - a.purchaseDate);
 
@@ -40,6 +38,29 @@ const resolvers = {
       }
 
       throw new AuthenticationError('Not logged in');
+    },
+    getPresets: async (parent, args, context) => {
+      try {
+        const presets = await Preset.find();
+        console.log(presets);
+        return presets;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    getUserDefaultPreset: async (parent, args, context) => {
+      if (context.user) {
+        //get preset id from user's defaultPreset property
+        const userInfo = await User.findById(context.user._id);
+        //console.log(userInfo);
+        //find the preset name thats in the user's defaultPreset property
+        const defaultPreset = await Preset.findById(userInfo.defaultPreset._id);
+        //console.log(defaultPreset);
+
+        return defaultPreset;
+      } else {
+        throw new AuthenticationError('Must be logged in to do that.');
+      }
     },
     order: async (parent, { _id }, context) => {
       if (context.user) {
