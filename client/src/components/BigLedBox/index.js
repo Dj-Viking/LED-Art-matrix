@@ -205,7 +205,16 @@ const BigLedBox = () => {
     event.persist();
     // get the classname string split from the classname
     //console.log(event.target.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
-    let presetString = event.target.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1];
+    let presetString = 
+      event
+      .target
+        .parentElement
+          .parentElement
+            .children[1]
+              .firstChild
+                .firstChild
+                .className
+                .split('led1-1')[1];
     //check the presetdata from the query to get the preset ID to save to the user
     // that matches the preset name acquired from the event
     for (

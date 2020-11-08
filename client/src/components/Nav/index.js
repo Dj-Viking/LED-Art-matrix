@@ -13,6 +13,11 @@ const Nav = () => {
     if (Auth.loggedIn()) {
       return (
         <ul className="flex-row">
+          <li style={{color: 'white'}}>
+            <Link to="/">
+              Home
+            </Link>
+          </li>
           <li>
             <a 
               href="/"
@@ -28,6 +33,11 @@ const Nav = () => {
     } else {
       return (
         <ul className="flex-row">
+          <li style={{color: 'white'}}>
+            <Link to="/">
+              Home
+            </Link>
+          </li>
           <li style={{color: 'white'}}>
             <Link to="/signup">
               Sign Up
