@@ -1,5 +1,8 @@
 //IMPORT REACT
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+
+//REACT SPRING
+import {useSpring, animated, config} from 'react-spring';
 
 //STYLES
 import './rainbowV2/styles/style.css';
@@ -7,6 +10,7 @@ import './rainbowStart/styles/style.css';
 import './waves/styles/style.css';
 import './spiral/styles/style.css';
 import './fourSpirals/styles/style.css';
+import './ledLayoutStyle.css'
 
 //COMPONENTS
 import ArtScroller from '../ArtScroller';
@@ -30,17 +34,79 @@ import {useSelector, useDispatch} from 'react-redux';
 
 //ACTIONS
 import { 
-  loadUserSplashConfig,
+  //loadUserSplashConfig,
   presetSwitch,
-  animationDelayChange,
-  animationDurationChange,
-  alphaFaderChange,
+  //animationDelayChange,
+  //animationDurationChange,
+  //alphaFaderChange,
   // eslint-disable-next-line
-  invertSwitch,//feature after signing up
-  savePresetName
+  //invertSwitch,//feature after signing up
+  //savePresetName
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
+  //springs
+  const rainbowButtonSpring = useSpring({
+    delay: 1000,
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    }
+  });
+
+  const V2ButtonSpring = useSpring({
+    delay: 1300,
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+
+  const wavesButtonSpring = useSpring({
+    delay: 1500,
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+
+  const spiralButtonSpring = useSpring({
+    delay: 1700,
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+
+  const fourSpiralsButtonSpring = useSpring({
+    delay: 2000,
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+
+  const saveButtonSpring = useSpring({
+    delay: 2300,
+    from: {
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
+
+
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
   //functions to create the columns and rows to render
@@ -208,17 +274,18 @@ const BigLedBox = () => {
     event.preventDefault();
     event.persist();
     // get the classname string split from the classname
-    //console.log(event.target.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
+    //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
     let presetString = 
       event
       .target
         .parentElement
           .parentElement
-            .children[1]
-              .firstChild
+            .parentElement
+              .children[1]
                 .firstChild
-                .className
-                .split('led1-1')[1];
+                  .firstChild
+                  .className
+                  .split('led1-1')[1];
     //check the presetdata from the query to get the preset ID to save to the user
     // that matches the preset name acquired from the event
     for (
@@ -229,16 +296,19 @@ const BigLedBox = () => {
       if (
         presetString === 
         presetQueryResponse.data.getPresets[i].presetName  
-      ) {
+      ){
         //console.log('found the preset');
         console.log(presetQueryResponse.data.getPresets[i].presetName);
         //use mutation
         try {
-          await updateUserDefaultPreset({
-            variables: {
-              _id: presetQueryResponse.data.getPresets[i]._id
+          await updateUserDefaultPreset
+          (
+            {
+              variables: {
+                _id: presetQueryResponse.data.getPresets[i]._id
+              }
             }
-          });
+          );
         } catch (error) {
           console.error(error);
         }
@@ -275,57 +345,118 @@ const BigLedBox = () => {
         />
         <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
       </div> */}
-      <section style={{position: 'relative'}}>
-      <ArtScroller />
-        <button
-          onClick={() => {
-            dispatchREDUX(presetSwitch(''))
-          }}
+      <section 
+        style={{
+          position: 'relative',
+          display: 'flex',
+          textAlign: 'center',
+          flexDirection: 'column'
+        }}
+      >
+        <ArtScroller />
+        <div
+          className="preset-button-container"
+          // style={{
+          //   display: 'flex',
+          // }}
         >
-          rainbowTest
-        </button>
-        <button
-          onClick={() => {
-            dispatchREDUX(presetSwitch('V2'))
-          }}
-        >
-          V2
-        </button>
-        <button
-          disabled={Auth.loggedIn() ? false : true}//enable if logged in
-          onClick={() => {
-            dispatchREDUX(presetSwitch('waves'))
-          }}
-        >
-          waves
-        </button>
-        <button
-          disabled={Auth.loggedIn() ? false : true }//enable if logged in
-          onClick={() => {
-            dispatchREDUX(presetSwitch('spiral'))
-          }}
-        >
-        spiral 
-        </button>
-        <button
-          disabled={Auth.loggedIn() ? false : true}//enable if logged in
-          onClick={() => {
-            dispatchREDUX(presetSwitch('fourSpirals'))
-          }}
-        >
-          fourSpirals
-        </button>
+          {
+            Auth.loggedIn()
+            ?
+            (
+              <>
 
-        {/* save as new login preset */}
-        <button
-          disabled={Auth.loggedIn() ? false : true}//enable if logged in
-          style={{
-            float: 'right'
-          }}
-          onClick={handleSaveDefault}
-        >
-          Save as Default Preset
-        </button>
+              </>
+            )
+            :
+            (
+              <>
+
+              </>
+            )
+          }
+          <animated.button
+            style={rainbowButtonSpring}
+            className="preset-button"
+            onClick={() => {
+              dispatchREDUX(presetSwitch(''))
+            }}
+          >
+            <span
+              className="preset-button-text"
+            >
+              rainbowTest
+            </span>
+          </animated.button>
+          <animated.button
+            style={V2ButtonSpring}
+            className="preset-button"
+            onClick={() => {
+              dispatchREDUX(presetSwitch('V2'))
+            }}
+          >
+            <span
+              className="preset-button-text"
+              style={{
+                width: '100%'
+              }}
+            >
+              V2
+            </span>
+          </animated.button>
+          <animated.button
+            style={wavesButtonSpring}
+            className="preset-button"
+            disabled={Auth.loggedIn() ? false : true}//enable if logged in
+            onClick={() => {
+              dispatchREDUX(presetSwitch('waves'))
+            }}
+          >
+            <span
+              className="preset-button-text"
+            >
+              waves
+            </span>
+          </animated.button>
+          <animated.button
+            style={spiralButtonSpring}
+            className="preset-button"
+            disabled={Auth.loggedIn() ? false : true }//enable if logged in
+            onClick={() => {
+              dispatchREDUX(presetSwitch('spiral'))
+            }}
+          >
+            <span
+              className="preset-button-text"
+            >
+              spiral
+            </span>
+          </animated.button>
+          <animated.button
+            style={fourSpiralsButtonSpring}
+            className="preset-button"
+            disabled={Auth.loggedIn() ? false : true}//enable if logged in
+            onClick={() => {
+              dispatchREDUX(presetSwitch('fourSpirals'))
+            }}
+          >
+            <span
+              className="preset-button-text"
+            >
+              fourSpirals
+            </span>
+          </animated.button>
+
+          {/* save as new login preset */}
+          <animated.button
+            className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button'}
+            disabled={Auth.loggedIn() ? false : true}//enable if logged in
+            style={saveButtonSpring}
+            onClick={handleSaveDefault}
+          >
+            Save as Default
+          </animated.button>
+        </div>
       </section>
       <section>
       {

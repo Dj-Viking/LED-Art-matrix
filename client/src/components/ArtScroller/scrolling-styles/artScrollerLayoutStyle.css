@@ -1,0 +1,55 @@
+@keyframes scrollAnim {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: .1;
+  }
+  50% {
+    opacity: .55;
+  }
+  75% {
+    opacity: .1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.preset-button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  height: 30px;
+}
+
+.preset-button {
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+}
+
+.slider-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slider-style {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.figure-transition-style {
+  transition-duration: 1s;
+}
+
+
+/* @keyframes scrollAnim {
+  from {
+    background-color: white;
+  }
+  to {
+    background-color: black;
+  }
+} */

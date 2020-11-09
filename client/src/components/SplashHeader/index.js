@@ -39,9 +39,12 @@ const SplashHeader = () => {
         (
           <>
             <div 
-              style={{color: 'white'}}
+              style={{
+                color: 'white',
+                textAlign: 'center'
+              }}
             >
-              Save your own default starting preset!
+              LED Art Matrix
             </div>
           </>
         )
@@ -49,9 +52,12 @@ const SplashHeader = () => {
         (
           <>
             <div 
-              style={{color: 'white'}}
+              style={{
+                color: 'white',
+                textAlign: 'center'
+              }}
             >
-              to see the disabled presets, signup or login!
+              LED Art Matrix
             </div>
           </>
         )
