@@ -198,7 +198,7 @@ const resolvers = {
 
         const gifInfo = await fetch(`${gifLink}`);
         const gifJson = await gifInfo.json();
-        console.log(gifLink);
+        //console.log(gifLink);
         //console.log(gifJson.data);
         // console.log(gifJson.data[0].images.original.url);
         //init some tools 
