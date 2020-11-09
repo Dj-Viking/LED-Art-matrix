@@ -194,7 +194,7 @@ const resolvers = {
         }
         let gifLink = '';
         gifLink = 
-        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${altTerm}&limit=${getRandomIntLimit(10, 15)}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=trippy&limit=${getRandomIntLimit(10, 15)}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
 
         const gifInfo = await fetch(`${gifLink}`);
         const gifJson = await gifInfo.json();
