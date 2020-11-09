@@ -1,6 +1,6 @@
 const artScrollerReducer = (
   state = {
-    isOn: false,
+    isOnState: false,
     gifs: [],
     scrollInterval: 1000,
     searchTerms: [],

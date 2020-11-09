@@ -6,6 +6,13 @@ const typeDefs = gql`
     name: String
   }
 
+  type Gif {
+    _id: ID
+    gifCategory: String
+    gifSrc: String
+    limit: String
+  }
+
   type Product {
     _id: ID
     name: String
@@ -50,6 +57,10 @@ const typeDefs = gql`
   }
 
   type Query {
+    getGifs: [Gif]
+
+    getGifsCreateAndOrUpdate: [Gif]
+
     categories: [Category]
 
     products(
