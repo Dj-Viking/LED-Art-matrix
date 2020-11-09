@@ -42,3 +42,15 @@ export const GET_SEARCH_TERMS = gql`
     }
   }
 `;
+
+//this will be modified by the server's resolver function to node fetch the giphy api
+export const GET_GIFS_CREATE_AND_OR_UPDATE = gql`
+  {
+    getGifsCreateAndOrUpdate{
+      _id
+      gifSrc
+      gifCategory
+      limit
+    }
+  }
+`;

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import Sketch from 'react-p5';
+import React from 'react';
+// import { useState } from 'react';
+// import Sketch from 'react-p5';
 
 const SketchMain = () => {
   return (

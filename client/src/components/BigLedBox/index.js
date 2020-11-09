@@ -1,11 +1,15 @@
 //IMPORT REACT
 import React, { useState, useEffect } from 'react';
+
+//STYLES
 import './rainbowV2/styles/style.css';
 import './rainbowStart/styles/style.css';
 import './waves/styles/style.css';
 import './spiral/styles/style.css';
 import './fourSpirals/styles/style.css';
 
+//COMPONENTS
+import ArtScroller from '../ArtScroller';
 
 //maybe disable some "paid presets?"
 
@@ -271,7 +275,8 @@ const BigLedBox = () => {
         />
         <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
       </div> */}
-      <section>
+      <section style={{position: 'relative'}}>
+      <ArtScroller />
         <button
           onClick={() => {
             dispatchREDUX(presetSwitch(''))

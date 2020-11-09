@@ -9,7 +9,6 @@ import ArtScroller from '../components/ArtScroller';
 const Home = () => {
   return (
     <>
-      <ArtScroller />
       <AudioPlayerComponent />
       <BigLedBox />
     </>

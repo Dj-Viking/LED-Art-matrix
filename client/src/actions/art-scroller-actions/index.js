@@ -1,4 +1,4 @@
-export const isOn = (data) => {
+export const verifyOn = (data) => {
   //some condition preventing to be on...
   //false by default
   //ACTIVATE ON THE RETURN OF API QUERY DATA

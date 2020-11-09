@@ -42,6 +42,12 @@ async function seedSearchTerms() {
         termText: "nature",
         termCategory: "nature",
         limit: "10"
+      },
+      {
+        termText: "trippy",
+        termCategory: "trippy",
+        limit: "10"
+
       }
     );
   } else {
