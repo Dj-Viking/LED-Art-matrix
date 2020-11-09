@@ -189,8 +189,8 @@ const resolvers = {
           }
           //LIMIT RANDOMIZE
           function getRandomIntLimit(_min, _max) {
-            min = Math.ceil(_min);
-            max = Math.floor(_max);
+            let min = Math.ceil(_min);
+            let max = Math.floor(_max);
             return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
           }
           let gifLink = '';
