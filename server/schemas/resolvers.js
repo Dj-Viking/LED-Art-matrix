@@ -158,137 +158,132 @@ const resolvers = {
     },
     //SERVER SIDE API FETCH
     getGifsCreateAndOrUpdate: async (parent, args, context) => {
-      if (context.user) {
         //get search terms updated into the user after hitting search
         // searching for a category updates the user's userSearchTerm ID string
         // some kind of listener on front end for change of search term state
         // and just dispatch and mutate user on the state change grab which ever 
         // one was first or whichever was chosen.
 
-        try {
-          console.log('getting gifs');
-          //find the logged in user's search terms 
-          // on their database account
-          const userInfo = await User.findById(context.user._id);
-          console.log('get gifs user info')
-          console.log(userInfo);
-          //find the name of the search term
-          const searchTermInfo = await SearchTerm.findById(userInfo.userSearchTerm);
-          console.log(searchTermInfo);
-          //set searchterm for URL
-          // const urlSearchTerm = searchTermInfo.termCategory;
-          const userUrlSearchTerm = undefined;
-          const altTerm = 'trippy';
+      try {
+        console.log('getting gifs');
+        //find the logged in user's search terms 
+        // on their database account
+        // const userInfo = await User.findById(context.user._id);
+        // console.log('get gifs user info')
+        // console.log(userInfo);
+        //find the name of the search term
+        // const searchTermInfo = await SearchTerm.findById(userInfo.userSearchTerm);
+        // console.log(searchTermInfo);
+        //set searchterm for URL
+        // const urlSearchTerm = searchTermInfo.termCategory;
+        const userUrlSearchTerm = undefined;
+        const altTerm = 'trippy';
 
-          const limitOne = undefined;
+        const limitOne = undefined;
 
-          //DYNAMICALLY CHANGE OFFSET?
-          // make random choice between numbers for the offset and limit
-          function getRandomIntOffset(max) {
-            return Math.floor(Math.random() * Math.floor(max));
+        //DYNAMICALLY CHANGE OFFSET?
+        // make random choice between numbers for the offset and limit
+        function getRandomIntOffset(max) {
+          return Math.floor(Math.random() * Math.floor(max));
+        }
+        //LIMIT RANDOMIZE
+        function getRandomIntLimit(_min, _max) {
+          let min = Math.ceil(_min);
+          let max = Math.floor(_max);
+          return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+        }
+        let gifLink = '';
+        gifLink = 
+        `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${userUrlSearchTerm ? userUrlSearchTerm : altTerm}&limit=${limitOne ? limitOne : getRandomIntLimit(10, 15)}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
+
+        const gifInfo = await fetch(`${gifLink}`);
+        const gifJson = await gifInfo.json();
+        console.log(gifJson);
+        // console.log(gifJson.data[0].images.original.url);
+        //init some tools 
+        let newApiGif = {}
+        const gifsApiArr = [];
+        //fill up the tools
+        for (
+          let i = 0;
+          i < gifJson.data.length;
+          i++
+        )
+        { 
+          newApiGif = {
+            gifSrc: gifJson.data[i].images.original.url,
+            gifCategory: userUrlSearchTerm || altTerm,
+            limit: '10' 
           }
-          //LIMIT RANDOMIZE
-          function getRandomIntLimit(_min, _max) {
-            let min = Math.ceil(_min);
-            let max = Math.floor(_max);
-            return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
-          }
-          let gifLink = '';
-          gifLink = 
-          `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=${userUrlSearchTerm ? userUrlSearchTerm : altTerm}&limit=${limitOne ? limitOne : getRandomIntLimit(10, 15)}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
+          gifsApiArr.push(newApiGif);
+        }
+        //console.log('BEFORE DATABASE CHECK IF STATEMENT FILL TOOL ARRAY')
+        //console.log(gifsApiArr);
 
-          const gifInfo = await fetch(`${gifLink}`);
-          const gifJson = await gifInfo.json();
-          console.log(gifJson);
-          // console.log(gifJson.data[0].images.original.url);
-          //init some tools 
-          let newApiGif = {}
-          const gifsApiArr = [];
-          //fill up the tools
+        //check if gifs exist already
+        const gifDB = await Gif.find();
+        //console.log("gifDB exists??? if not this will be empty");
+        //console.log(gifDB);
+        //console.log(gifDB[0]);
+
+        //init tools
+        let newGif = {};
+        const gifsArr = [];
+        if (gifDB[0] === undefined) 
+        {
+          console.log('in the if statement?');
+          //create gifs if not exist
+          //MAKE FOR LOOP TO LOOP THROUGH
+          // API SEARCH RESULTS
           for (
-            let i = 0;
+            let i = 0; 
             i < gifJson.data.length;
             i++
           )
-          { 
-            newApiGif = {
+          {
+            newGif = {
               gifSrc: gifJson.data[i].images.original.url,
               gifCategory: userUrlSearchTerm || altTerm,
               limit: '10' 
             }
-            gifsApiArr.push(newApiGif);
+            //push onto array to return
+            gifsArr.push(newGif);
           }
-          //console.log('BEFORE DATABASE CHECK IF STATEMENT FILL TOOL ARRAY')
-          //console.log(gifsApiArr);
-
-          //check if gifs exist already
-          const gifDB = await Gif.find();
-          //console.log("gifDB exists??? if not this will be empty");
-          //console.log(gifDB);
-          //console.log(gifDB[0]);
-
-          //init tools
-          let newGif = {};
-          const gifsArr = [];
-          if (gifDB[0] === undefined) 
+          const newGifs = await Gif.insertMany(gifsArr);
+          //console.log(newGifs);
+          return newGifs;
+        } 
+        //else if gifs exist in db update db with newest search results
+        else if (gifDB[0]._id) 
+        {
+          console.log("DB exists already");
+          // exists already, delete it and make a new one
+          // with the new search terms
+          console.log("deleting");
+          await Gif.deleteMany();
+          //creating new with given new api info
+          for(
+            let i = 0;
+            i < gifJson.data.length;
+            i++
+          )
           {
-            console.log('in the if statement?');
-            //create gifs if not exist
-            //MAKE FOR LOOP TO LOOP THROUGH
-            // API SEARCH RESULTS
-            for (
-              let i = 0; 
-              i < gifJson.data.length;
-              i++
-            )
-            {
-              newGif = {
-                gifSrc: gifJson.data[i].images.original.url,
-                gifCategory: userUrlSearchTerm || altTerm,
-                limit: '10' 
-              }
-              //push onto array to return
-              gifsArr.push(newGif);
+            newGif = {
+              gifSrc: gifJson.data[i].images.original.url,
+              gifCategory: userUrlSearchTerm || altTerm,
+              limit: '10' 
             }
-            const newGifs = await Gif.insertMany(gifsArr);
-            //console.log(newGifs);
-            return newGifs;
-          } 
-          //else if gifs exist in db update db with newest search results
-          else if (gifDB[0]._id) 
-          {
-            console.log("DB exists already");
-            // exists already, delete it and make a new one
-            // with the new search terms
-            console.log("deleting");
-            await Gif.deleteMany();
-            //creating new with given new api info
-            for(
-              let i = 0;
-              i < gifJson.data.length;
-              i++
-            )
-            {
-              newGif = {
-                gifSrc: gifJson.data[i].images.original.url,
-                gifCategory: userUrlSearchTerm || altTerm,
-                limit: '10' 
-              }
 
-              gifsArr.push(newGif);
-            }
-            const updatedGifs = await Gif.insertMany(gifsArr);
-            console.log("updatedgifs");
-            //console.log(updatedGifs);
-            console.log("updatedgifs");
-            return updatedGifs;
+            gifsArr.push(newGif);
           }
-        } catch (error) {
-          console.error(error);
+          const updatedGifs = await Gif.insertMany(gifsArr);
+          console.log("updatedgifs");
+          //console.log(updatedGifs);
+          console.log("updatedgifs");
+          return updatedGifs;
         }
-
-      } else {
-        throw new AuthenticationError('must be logged in to do that.');
+      } catch (error) {
+        console.error(error);
       }
     }
   },
