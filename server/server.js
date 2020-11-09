@@ -34,20 +34,9 @@ async function seedSearchTerms() {
     await SearchTerm.create
     (
       {
-        termText: "tech",
-        termCategory: "tech",
-        limit: "10"
-      },
-      {
-        termText: "nature",
-        termCategory: "nature",
-        limit: "10"
-      },
-      {
         termText: "trippy",
         termCategory: "trippy",
         limit: "10"
-
       }
     );
   } else {
