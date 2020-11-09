@@ -7,59 +7,118 @@ import Auth from '../../utils/auth.js';
 //LINK
 import { Link } from 'react-router-dom';
 
+//STYLES
+import './navStyles.css';
+
 const Nav = () => {
 
   function displayNav() {
-    if (Auth.loggedIn()) {
+    if (Auth.loggedIn()) 
+    {
       return (
-        <ul className="flex-row">
-          <li style={{color: 'white'}}>
-            <Link to="/">
-              Home
+        <section
+          style={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+          className="nav-container"
+        >
+          <div>
+            <Link 
+              to="/"
+              style={{
+                color: 'white',
+                textDecoration: 'none'
+              }}
+              className="nav-button"
+            >
+              <span
+                style={{
+                  textDecoration: 'none',
+                  color: 'white',
+                }}
+              >
+                Home
+              </span>
             </Link>
-          </li>
-          <li>
+          </div>
+          <div>
             <a 
               href="/"
+              style={{
+                textDecoration: 'none',
+                color: 'white',
+                marginLeft: '5px'
+              }}
+              className="nav-button"
               onClick={() => {
                 Auth.logout()
               }}
             >
               Logout
             </a>
-          </li>
-        </ul>
+          </div>
+        </section>
       );
-    } else {
+    } 
+    else
+    {
       return (
-        <ul className="flex-row">
-          <li style={{color: 'white'}}>
-            <Link to="/">
+        <section 
+          style={{
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+          className="nav-container"
+        >
+          <div>
+            <Link 
+              to="/"
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                marginRight: '5px',
+                marginLeft: '5px'
+              }}
+              className="nav-button"
+            >
               Home
             </Link>
-          </li>
-          <li style={{color: 'white'}}>
-            <Link to="/signup">
+          </div>
+          <div>
+            <Link 
+              to="/signup"
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                marginRight: '5px',
+                marginLeft: '5px'
+              }}
+              className="nav-button"
+            >
               Sign Up
             </Link>
-          </li>
-          <li style={{color: 'white'}}>
-            <Link to="/login">
+          </div>
+          <div>
+            <Link 
+              to="/login"
+              style={{
+                color: 'white',
+                textDecoration: 'none',
+                marginLeft: '5px',
+              }}
+              className="nav-button"
+            >
               Login
             </Link>
-          </li>
-        </ul> 
+          </div>
+        </section> 
       );
     }
   }
 
   return (
     <>
-      <div 
-        style={{color: 'white'}}
-      >
-      </div>
-
       <nav>
         {displayNav()}
       </nav>

@@ -21,13 +21,6 @@ function AudioPlayerComponent() {
     }
   ];
 
-  function songSelect(event) {
-    event.preventDefault();
-    event.persist();
-    setCurrentSong(event.target.href);
-    console.log(event.target.href);
-  }
-
   const trackListStyle = {
     textDecoration: 'none',
     color: 'white',
@@ -52,6 +45,14 @@ function AudioPlayerComponent() {
         onPlay={e => console.log("onPlay")}
         volume={.04}
       />
+      <section
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          textAlign: 'center',
+          marginTop: '30px'
+        }}
+      >
       {
         songs.map((song) => (
           <div
@@ -64,10 +65,7 @@ function AudioPlayerComponent() {
           </div>
         ))
       }
-      {/* <audio 
-        src={currentSong}
-        
-      /> */}
+      </section>
     </>
   );
 };

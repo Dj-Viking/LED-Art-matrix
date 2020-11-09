@@ -1,8 +1,11 @@
 //REACT IMPORTS
 import React, {useEffect, useState} from 'react';
 
+//REACT SPRING
+import {useSpring, animated, config} from 'react-spring';
+
 //STYLES
-import './scrolling-styles/style.css';
+import './scrolling-styles/artScrollerLayoutStyle.css';
 
 //HELPERS
 import {
@@ -10,47 +13,73 @@ import {
 } from '../../utils/helpers.js';
 
 //APOLLO GRAPHQL
-import {useQuery, useMutation, useLazyQuery} from '@apollo/react-hooks';
+import {useQuery} from '@apollo/react-hooks';
 //QUERIES
 import {
-  GET_SEARCH_TERMS,
-  USER_QUERY,
+  //GET_SEARCH_TERMS,
+  //USER_QUERY,
   GET_GIFS_CREATE_AND_OR_UPDATE
 } from '../../utils/queries.js';
 
 //MUTATIONS
 import {
-  UPDATE_USER_SEARCH_TERM
+  //UPDATE_USER_SEARCH_TERM
 } from '../../utils/mutations.js';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
 //ACTIONS
 import {
-  verifyOn,
+  //verifyOn,
   getGifs,
-  scrollGifInterval,
-  searchTermChange,
-  searchValidate
+  //scrollGifInterval,
+  //searchTermChange,
+  //searchValidate
 } from '../../actions/art-scroller-actions';
 
 
 const ArtScroller = () => {
+
+  //init button spring
+  const leftInitButtonStyle = useSpring({
+    config: config.wobbly,
+    delay: 100,
+    from: {
+      opacity: 0,
+      marginRight: '1000px' 
+    },
+    to: {
+      opacity: 1,
+      marginRight: '5px'
+    }
+  });
+
+  //scroller on/off button spring
+  const scrollerOnOffButtonStyle = useSpring({
+    config: config.wobbly,
+    delay: 100,
+    from :{
+      opacity: 0
+    },
+    to: {
+      opacity: 1
+    }
+  });
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
   //console.log(dispatchREDUX);
   //GRAPHQL DATABASE QUERY FOR CATEGORY SELECTIONS
   //GET USER INFO
-  const userQueryResponse = useQuery(USER_QUERY);
+  //const userQueryResponse = useQuery(USER_QUERY);
   //GET SEARCH TERM INFO
-  const searchTermQueryResponse = useQuery(GET_SEARCH_TERMS);
+  //const searchTermQueryResponse = useQuery(GET_SEARCH_TERMS);
   //GET GIFS 
   const getGifsQueryResponse = useQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
   // console.log(getGifsQueryResponse.data);
 
   //lazy event triggered server get gifs query
-  const [lazyGetGifs, {loading, data}] = useLazyQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
+  //const [lazyGetGifs, {loading, data}] = useLazyQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
   
   //update the state of the searchTerms out of artScrollerState
   useEffect(() => {
@@ -58,7 +87,7 @@ const ArtScroller = () => {
       getGifsQueryResponse.data
     )
     {
-      console.log(getGifsQueryResponse);
+      //console.log(getGifsQueryResponse);
       dispatchREDUX(
         getGifs(
           getGifsQueryResponse.data.getGifsCreateAndOrUpdate
@@ -70,17 +99,17 @@ const ArtScroller = () => {
 
   //OBSERVE GLOBAL STATE
   const artScrollerState = useSelector(state => state.artScroller);
-  console.log(artScrollerState);
+  //console.log(artScrollerState);
 
   //GLOBAL PIECE OF STATE
   const {
-    isOnState,
+    //isOnState,
     gifs,
-    scrollInterval,
-    searchTerms,
-    searchIsValid
+    //scrollInterval,
+    //searchTerms,
+    //searchIsValid
   } = artScrollerState;
-  console.log("search terms state");
+  //console.log("search terms state");
   //console.log(searchTerms);
 
   async function handleRefetch(event) {
@@ -107,14 +136,9 @@ const ArtScroller = () => {
   //animation delays
 
   //handle all gifs opacity local state
-  const [opacityState, setOpacityState] = useState(0);
+  //const [opacityState, setOpacityState] = useState(0);
   // function handleOpacityChange(event) {
   //   setOpacityState(event.target.value)
-  // }
-
-  const [borderRadiusState, setBorderRadiusState] = useState('50');
-  // function handleBorderRadiuschange(event) {
-  //   setBorderRadiusState(`${event.target.value}`);
   // }
 
   const [invertState, setInvertState] = useState(0);
@@ -138,138 +162,149 @@ const ArtScroller = () => {
 
   return (
     <>
-      <div
+      <main
         style={{
-          color: 'white',
-          marginTop: '10px'
+          display: 'flex',
+          flexDirection: 'column'
         }}
       >
-        Art Scroller
-      </div>
-      <section>
-        <form>
-          {/* <select
-            name="category"
-          >
-            {
-              searchTerms.map(searchTerm => (
-              <option 
-                name="category"
-                key={searchTerm._id}
-              > 
-                {searchTerm.termText}
-              </option>
-              ))
-            }
-          </select> */}
-        </form>
-          <button
-            onClick={handleRefetch}
-            onKeyPress={handleRefetch}
-          >
-            Init Art Scroller!
-          </button>
-          {/* <label 
-            htmlFor="opacity"
-            style={{color: 'white'}}
-          >
-            opacity: {opacityState/100}
-          </label>
-          <input 
-            name="opacity"
-            type="range"
-            min="0"
-            max="30"
-            value={opacityState}
-            onChange={handleOpacityChange}
-          /> */}
-          {/* <label
-            for="border-radius"
-            style={{color: 'white'}}
-          >
-            border-radius: {borderRadiusState}
-          </label>
-          <input
-            name="border-radius"
-            type="range"
-            min="0"
-            max="50"
-            value={borderRadiusState}
-            onChange={handleBorderRadiuschange}
-          /> */}
-          <label
-            htmlFor="invert"
-            style={{color: 'white'}}
-          >
-            invert: {invertState/100}
-          </label>
-          <input
-            name="invert"
-            type="range"
-            min="0"
-            max="100"
-            value={invertState}
-            onChange={handleInvertChange}
-          />
-          <label
-            htmlFor="animation-duration"
-            style={{color: 'white'}}
-          >
-            gif scroll speed: {animationDurationState/100}
-          </label>
-          <input
-            name="animation-duration"
-            type="range"
-            min="1"
-            max="100"
-            value={animationDurationState}
-            onChange={handleAnimationDurationChange}
-          />
-          <button
-            onClick={handleFigureChange}
-          >
-            {
-              figureIsOnState
-              ?
-              <span>Turn Off Scroller</span>
-              :
-              <span>Turn On Scroller</span>
-            }
-          </button>
-        <figure
+        {/* <div
           style={{
-            display: `${figureIsOnState ? 'block' : 'none'}`
+            color: 'white',
+            marginTop: '10px'
           }}
         >
-          {
-            gifs 
-            &&
-            gifs.map((gif, index) => (
-              <img 
-                key={gif._id}
-                src={gif.gifSrc}
-                style={{
-                  position: 'absolute',
-                  zIndex: '1',
-                  top: '28.6vh',
-                  left: '33.4vw',
-                  opacity: `${opacityState/100}`,
-                  filter: `invert(${invertState/100})`,
-                  height: '50vh',
-                  width: '30vw',
-                  borderRadius: `${borderRadiusState}%`,
-                  animationName: 'scrollAnim',
-                  animationDuration: `${animationDurationState/100 * (index + getRandomIntLimit(index, 20))}s`,
-                  animationDelay: `0.${index + 1}`,
-                  animationTimingFunction: 'ease-in',
-                  animationDirection: 'reverse',
-                  animationIterationCount: 'infinite'
-                }}
+          Art Scroller
+        </div> */}
+        <section>
+          {/* <form>
+            <select
+              name="category"
+            >
+              {
+                searchTerms.map(searchTerm => (
+                <option 
+                  name="category"
+                  key={searchTerm._id}
+                > 
+                  {searchTerm.termText}
+                </option>
+                ))
+              }
+            </select>
+          </form> */}
+          <div
+            className="preset-button-container"
+          >
+
+            <animated.button
+              style={leftInitButtonStyle}
+              className="preset-button"
+              onClick={handleRefetch}
+              onKeyPress={handleRefetch}
+            >
+              Init Art Scroller!
+            </animated.button>
+            <animated.button
+              style={scrollerOnOffButtonStyle}
+              className="preset-button"
+              onClick={handleFigureChange}
+            >
+              {
+                figureIsOnState
+                ?
+                <span>Turn Off Scroller</span>
+                :
+                <span>Turn On Scroller</span>
+              }
+            </animated.button>
+          </div>
+            {/* <label 
+              htmlFor="opacity"
+              style={{color: 'white'}}
+            >
+              opacity: {opacityState/100}
+            </label>
+            <input 
+              name="opacity"
+              type="range"
+              min="0"
+              max="30"
+              value={opacityState}
+              onChange={handleOpacityChange}
+            /> */}
+            <div
+              className="slider-container"
+            >
+              <label
+                htmlFor="invert"
+                style={{color: 'white'}}
+              >
+                invert: {invertState/100}
+              </label>
+              <input
+                className="slider-style"
+                name="invert"
+                type="range"
+                min="0"
+                max="100"
+                value={invertState}
+                onChange={handleInvertChange}
               />
-            ))
-          }
-        </figure>
-      </section>
+              <label
+                htmlFor="animation-duration"
+                style={{color: 'white'}}
+              >
+                gif scroll speed: {animationDurationState/100}
+              </label>
+              <input
+                className="slider-style"
+                name="animation-duration"
+                type="range"
+                min="1"
+                max="100"
+                value={animationDurationState}
+                onChange={handleAnimationDurationChange}
+              />
+            </div>
+          <figure
+            style={{
+              display: `${figureIsOnState ? 'block' : 'none'}`,
+              margin: '0'
+            }}
+            className="figure-transition-style"
+          >
+            {
+              gifs 
+              &&
+              gifs.map((gif, index) => (
+                <img 
+                  key={gif._id}
+                  alt={`gif-${index}`}
+                  src={gif.gifSrc}
+                  style={{
+                    position: 'absolute',
+                    zIndex: '1',
+                    top: '39.7vh',
+                    left: '33.4vw',
+                    //opacity: `${opacityState/100}`,
+                    filter: `invert(${invertState/100})`,
+                    height: '50vh',
+                    width: '30vw',
+                    borderRadius: `50%`,
+                    animationName: 'scrollAnim',
+                    animationDuration: `${animationDurationState/100 * (index + getRandomIntLimit(index, 20))}s`,
+                    animationDelay: `0.${index + 1}`,
+                    animationTimingFunction: 'ease-in',
+                    animationDirection: 'reverse',
+                    animationIterationCount: 'infinite'
+                  }}
+                />
+              ))
+            }
+          </figure>
+        </section>
+      </main>
     </>
   );
 };

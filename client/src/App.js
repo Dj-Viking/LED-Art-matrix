@@ -14,10 +14,8 @@ import Auth from './utils/auth.js';
 //CSS
 import './index.css';
 
-
 // //COMPONENTS
 import SplashHeader from './components/SplashHeader';
-
 
 //PAGES
 import Home from './pages/Home.js';
