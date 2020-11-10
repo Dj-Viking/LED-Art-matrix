@@ -44,7 +44,7 @@ import {
 const ArtScroller = () => {
 
   //init button spring
-  const leftInitButtonStyle = useSpring({
+  const leftInitButtonSpring = useSpring({
     config: config.wobbly,
     delay: 100,
     from: {
@@ -58,7 +58,7 @@ const ArtScroller = () => {
   });
 
   //scroller on/off button spring
-  const scrollerOnOffButtonStyle = useSpring({
+  const scrollerOnOffButtonSpring = useSpring({
     config: config.wobbly,
     delay: 100,
     from :{
@@ -201,7 +201,7 @@ const ArtScroller = () => {
           >
 
             <animated.button
-              style={leftInitButtonStyle}
+              style={leftInitButtonSpring}
               className="preset-button"
               onClick={handleRefetch}
               onKeyPress={handleRefetch}
@@ -209,16 +209,16 @@ const ArtScroller = () => {
               Init Art Scroller!
             </animated.button>
             <animated.button
-              style={scrollerOnOffButtonStyle}
+              style={scrollerOnOffButtonSpring}
               className="preset-button"
               onClick={handleFigureChange}
             >
               {
                 figureIsOnState
                 ?
-                <span>Turn Off Scroller</span>
+                <span style={{color: 'white'}}>Turn Off Scroller</span>
                 :
-                <span>Turn On Scroller</span>
+                <span style={{color: 'white'}}>Turn On Scroller</span>
               }
             </animated.button>
           </div>
@@ -304,7 +304,7 @@ const ArtScroller = () => {
                     position: 'absolute',
                     zIndex: '1',
                     top: '39.7vh',
-                    left: '33.4vw',
+                    left: '33vw',
                     //opacity: `${opacityState/100}`,
                     filter: `invert(${invertState/100})`,
                     height: '50vh',

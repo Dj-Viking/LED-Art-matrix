@@ -165,6 +165,7 @@ const BigLedBox = () => {
   //REDUX GLOBAL STATE
   const ledChangeState = useSelector(state => state.ledChange);
   //console.log(ledChangeState);
+
   //REDUX piece of global state
   const {
     // alpha,
@@ -382,16 +383,14 @@ const BigLedBox = () => {
           >
             <span
               className="preset-button-text"
-              style={{
-                width: '100%'
-              }}
+              style={{width: '100%'}}
             >
               V2
             </span>
           </animated.button>
           <animated.button
             style={wavesButtonSpring}
-            className="preset-button"
+            className={Auth.loggedIn() ? `preset-button` : 'preset-button-disabled'}
             disabled={Auth.loggedIn() ? false : true}//enable if logged in
             onClick={() => {
               dispatchREDUX(presetSwitch('waves'))
@@ -405,7 +404,7 @@ const BigLedBox = () => {
           </animated.button>
           <animated.button
             style={spiralButtonSpring}
-            className="preset-button"
+            className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
             disabled={Auth.loggedIn() ? false : true }//enable if logged in
             onClick={() => {
               dispatchREDUX(presetSwitch('spiral'))
@@ -419,7 +418,7 @@ const BigLedBox = () => {
           </animated.button>
           <animated.button
             style={fourSpiralsButtonSpring}
-            className="preset-button"
+            className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
             disabled={Auth.loggedIn() ? false : true}//enable if logged in
             onClick={() => {
               dispatchREDUX(presetSwitch('fourSpirals'))
@@ -434,7 +433,7 @@ const BigLedBox = () => {
 
           {/* save as new login preset */}
           <animated.button
-            className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button'}
+            className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button-disabled'}
             disabled={Auth.loggedIn() ? false : true}//enable if logged in
             style={saveButtonSpring}
             onClick={handleSaveDefault}

@@ -12,6 +12,14 @@
   border-radius: 10px;
   text-align: center;
 }
+.preset-button-disabled {
+  margin-left: 5px;
+  margin-right: 5px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: default;
+}
+
 .save-button {
   background-color: blue;
   color: white;
