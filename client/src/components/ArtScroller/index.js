@@ -7,6 +7,9 @@ import {useSpring, animated, config} from 'react-spring';
 //STYLES
 import './scrolling-styles/artScrollerLayoutStyle.css';
 
+//AUTH
+import Auth from '../../utils/auth.js';
+
 //HELPERS
 import {
   getRandomIntLimit
@@ -267,6 +270,21 @@ const ArtScroller = () => {
                 onChange={handleAnimationDurationChange}
               />
             </div>
+            {
+              !Auth.loggedIn()
+              &&
+              (
+                <>
+                  <span
+                    style={{
+                      color: 'white'
+                    }}
+                  >
+                    Log in to see the Disabled Presets, and Save your own Default Preset!
+                  </span>
+                </>
+              )
+            }
           <figure
             style={{
               display: `${figureIsOnState ? 'block' : 'none'}`,

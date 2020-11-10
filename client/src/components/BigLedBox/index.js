@@ -360,21 +360,6 @@ const BigLedBox = () => {
           //   display: 'flex',
           // }}
         >
-          {
-            Auth.loggedIn()
-            ?
-            (
-              <>
-
-              </>
-            )
-            :
-            (
-              <>
-
-              </>
-            )
-          }
           <animated.button
             style={rainbowButtonSpring}
             className="preset-button"
