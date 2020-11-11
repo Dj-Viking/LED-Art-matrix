@@ -97,14 +97,13 @@ const ArtScroller = () => {
           getGifsQueryResponse.data.getGifsCreateAndOrUpdate
         )
       );
+
       // //also update idb with returned data that will eventually exist after query is done
       //loop the promise?? in a Promise.resolve loop? hmm
       //console.log(getGifsQueryResponse.data.getGifsCreateAndOrUpdate[0]);
       getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
         idbPromise('gifs', 'put', gif);
-      })
-
-      
+      });
     }
   }, [getGifsQueryResponse, dispatchREDUX, getGifsQueryResponse.data]);
 
@@ -140,7 +139,7 @@ const ArtScroller = () => {
 
   //create animation that scrolls opacity at different animation durations
   // for opacity only
-  const [animationDurationState, setAnimationDurationState] = useState(30);
+  const [animationDurationState, setAnimationDurationState] = useState('30');
   function handleAnimationDurationChange(event) {
     setAnimationDurationState(event.target.value);
   }
@@ -148,9 +147,15 @@ const ArtScroller = () => {
   //position style state
   //input sliders for positioning the circle
   //maybe later can click and drag. and throw around
-  const [verticalPositionState, setVerticalPositionState] = useState('50')
+  const [verticalPositionState, setVerticalPositionState] = useState('50');
   function handleVerticalPositionStateChange(event) {
     setVerticalPositionState(event.target.value);
+  }
+
+  //horizontal position style state
+  const [horizontalPositionState, setHorizontalPositionState] = useState('33.4');
+  function handleHorizontalPositionStateChange(event) {
+    setHorizontalPositionState(event.target.value);
   }
 
     // @media screen and (max-width: 1024px) {
@@ -314,6 +319,22 @@ const ArtScroller = () => {
               onChange={handleVerticalPositionStateChange}
             />
             <label
+              htmlFor="horizontal-positioning"
+              style={{color: 'white'}}
+            >
+
+              Scroller Horizontal Positioning: {horizontalPositionState / 1000}
+            </label>
+            <input 
+              name="horizontal-positioning"
+              className="slider-style"
+              type="range"
+              min="0"
+              max="100"
+              value={horizontalPositionState}
+              onChange={handleHorizontalPositionStateChange}
+            />
+            <label
               htmlFor="invert"
               style={{color: 'white'}}
             >
@@ -372,7 +393,8 @@ const ArtScroller = () => {
                     animationDirection: 'reverse',
                     animationIterationCount: 'infinite',
                     top: `${verticalPositionState}vh`,
-                    width: `${scrollerCircleWidth}vw`
+                    width: `${scrollerCircleWidth}vw`,
+                    left: `${horizontalPositionState}vw`
                   }}
                   className="scroller-media"
                 />
