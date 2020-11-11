@@ -12,7 +12,8 @@ import './scrolling-styles/artScrollerLayoutStyle.css';
 
 //HELPERS
 import {
-  getRandomIntLimit
+  getRandomIntLimit,
+  idbPromise
 } from '../../utils/helpers.js';
 
 //APOLLO GRAPHQL
@@ -96,8 +97,16 @@ const ArtScroller = () => {
           getGifsQueryResponse.data.getGifsCreateAndOrUpdate
         )
       );
+      // //also update idb with returned data that will eventually exist after query is done
+      //loop the promise?? in a Promise.resolve loop? hmm
+      //console.log(getGifsQueryResponse.data.getGifsCreateAndOrUpdate[0]);
+      getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
+        idbPromise('gifs', 'put', gif);
+      })
+
+      
     }
-  }, [getGifsQueryResponse, dispatchREDUX]);
+  }, [getGifsQueryResponse, dispatchREDUX, getGifsQueryResponse.data]);
 
 
   //OBSERVE GLOBAL STATE
@@ -136,6 +145,29 @@ const ArtScroller = () => {
     setAnimationDurationState(event.target.value);
   }
 
+  //position style state
+  //input sliders for positioning the circle
+  //maybe later can click and drag. and throw around
+  const [verticalPositionState, setVerticalPositionState] = useState('50')
+  function handleVerticalPositionStateChange(event) {
+    setVerticalPositionState(event.target.value);
+  }
+
+    // @media screen and (max-width: 1024px) {
+  //   .scroller-media {
+  //     top: 37vh;
+  //     left: 33.4vw;
+  //     height: 50vh;
+  //     width: 30vw;
+  //   }
+  // }
+
+  //width of circle state maybe
+  // input slider for widening the scroller
+  const [scrollerCircleWidth, setScrollerCircleWidth] = useState('30')
+  function handleScrollerCircleWidthChange(event) {
+    setScrollerCircleWidth(event.target.value)
+  }
   //animation delays
 
   //handle all gifs opacity local state
@@ -162,6 +194,7 @@ const ArtScroller = () => {
   //   animation-direction: alternate;
   //   animation-iteration-count: infinite;
   // }
+
 
   return (
     <>
@@ -249,6 +282,38 @@ const ArtScroller = () => {
             className="slider-container"
           >
             <label
+              htmlFor="scroller-circle-width"
+              style={{color: 'white'}}
+            >
+
+              Scroller Circle Width: {scrollerCircleWidth}
+            </label>
+            <input 
+              name="scroller-circle-width"
+              className="slider-style"
+              type="range"
+              min="0"
+              max="100"
+              value={scrollerCircleWidth}
+              onChange={handleScrollerCircleWidthChange}
+            />
+            <label
+              htmlFor="vertical-positioning"
+              style={{color: 'white'}}
+            >
+
+              Scroller Vert Positioning: {verticalPositionState}
+            </label>
+            <input 
+              name="vertical-positioning"
+              className="slider-style"
+              type="range"
+              min="0"
+              max="100"
+              value={verticalPositionState}
+              onChange={handleVerticalPositionStateChange}
+            />
+            <label
               htmlFor="invert"
               style={{color: 'white'}}
             >
@@ -305,7 +370,9 @@ const ArtScroller = () => {
                     animationDelay: `0.${index + 1}`,
                     animationTimingFunction: 'ease-in',
                     animationDirection: 'reverse',
-                    animationIterationCount: 'infinite'
+                    animationIterationCount: 'infinite',
+                    top: `${verticalPositionState}vh`,
+                    width: `${scrollerCircleWidth}vw`
                   }}
                   className="scroller-media"
                 />

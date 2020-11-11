@@ -65,6 +65,36 @@ function AudioPlayerComponent() {
       return;
     }
   }
+
+  //volume slider state
+  const [volumeState, setVolumeState] = useState(0.005);
+  function handleVolumeChange(event, data) {
+    setVolumeState(event.target.value || data)
+  }
+
+  // .slider-style {
+  //   width: 70%;
+  //   margin: 0 auto;
+  // }
+  // const sliderStyle = {
+  //   width: '70%',
+  //   margin: '0 auto'
+  // };
+
+  // .slider-container {
+  //   display: flex;
+  //   flex-direction: column;
+  //   justify-content: center;
+  // }
+  const sliderContainerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center'
+  };
+
+  const labelStyle = {
+    color: 'white'
+  }
   
   return (
     <>
@@ -73,8 +103,29 @@ function AudioPlayerComponent() {
         preload="auto"
         src={currentSong}
         onPlay={e => console.log("onPlay")}
-        volume={.005}
+        volume={volumeState}
+        onVolumeChange={(event) => {
+          handleVolumeChange(event, event.target.volume);
+          setVolumeState(event.target.volume);
+        }}
       />
+      <div style={sliderContainerStyle}>
+        <label
+          htmlFor="player-volume"
+          style={labelStyle}
+        >
+          Music Player Volume: {volumeState}
+        </label>
+        {/* <input
+          name="player-volume"
+          type="range"
+          min="0"
+          max="1000"
+          value={volumeState}
+          onChange={handleVolumeChange}
+          style={sliderStyle}
+        ></input> */}
+      </div>
       <section
         style={{
           display: 'flex',

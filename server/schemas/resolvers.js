@@ -257,10 +257,10 @@ const resolvers = {
         //else if gifs exist in db update db with newest search results
         else if (gifDB[0]._id) 
         {
-          console.log("DB exists already");
+          console.log("collection exists already");
           // exists already, delete it and make a new one
           // with the new search terms
-          console.log("deleting");
+          console.log("deleting...");
           await Gif.deleteMany();
           //creating new with given new api info
           for(
@@ -278,9 +278,9 @@ const resolvers = {
             gifsArr.push(newGif);
           }
           const updatedGifs = await Gif.insertMany(gifsArr);
-          console.log("updatedgifs");
+          console.log("updatedgifs...");
           //console.log(updatedGifs);
-          console.log("updatedgifs");
+          console.log("updatedgifs...");
           return updatedGifs;
         }
       } catch (error) {
