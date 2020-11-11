@@ -8,7 +8,7 @@ import {useSpring, animated, config} from 'react-spring';
 import './scrolling-styles/artScrollerLayoutStyle.css';
 
 //AUTH
-import Auth from '../../utils/auth.js';
+// import Auth from '../../utils/auth.js';
 
 //HELPERS
 import {
