@@ -16,6 +16,17 @@
   }
 }
 
+.border-top-artScroller {
+  border-top: ridge 5px rgb(67, 26, 163);
+  border-radius: 50%;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .preset-button-container {
   display: flex;
   justify-content: center;
@@ -23,11 +34,30 @@
   height: 30px;
 }
 
-.preset-button {
+.scroller-toggle-button-on {
   margin-left: 5px;
   margin-right: 5px;
   text-align: center;
-  background-color: black;
+  background-color: red;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+.scroller-toggle-button-off {
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+  background-color: green;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+}
+.scroller-fetch-button {
+  margin-left: 5px;
+  margin-right: 5px;
+  text-align: center;
+  background-color: blue;
+  border-radius: 10px;
   color: white;
   cursor: pointer;
 }
@@ -56,3 +86,85 @@
     background-color: black;
   }
 } */
+
+.scroller-media {
+  top: 60vh;
+  left: 34vw;
+  height: 50vh;
+  width: 30vw;
+}
+
+/* media queries */
+@media screen and (max-width: 1024px) {
+  .scroller-media {
+    top: 37vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .scroller-media {
+    top: 43.3vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 540px) {
+  .scroller-media {
+    top: 53.9vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 411px) {
+  .scroller-media {
+    top: 54vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 414px) {
+  .scroller-media {
+    top: 55.7vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 375px) {
+  .scroller-media {
+    top: 52.2vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 360px) {
+  .scroller-media {
+    top: 60vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 320px) {
+  .scroller-media {
+    top: 66.6vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}
+@media screen and (max-width: 280px) {
+  .scroller-media {
+    top: 65vh;
+    left: 33.4vw;
+    height: 50vh;
+    width: 30vw;
+  }
+}

@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 
 //REACT SPRING
-import {useSpring, animated, config} from 'react-spring';
+import {useSpring, animated} from 'react-spring';
 
 //STYLES
 import './rainbowV2/styles/style.css';
@@ -313,8 +313,9 @@ const BigLedBox = () => {
         } catch (error) {
           console.error(error);
         }
+        console.log('preset saved');
       } else {
-        console.log('could not find that preset');
+        console.log('updating...');
       }
     }
   }
@@ -323,146 +324,161 @@ const BigLedBox = () => {
   createLedRowsArray(33);
   return (
     <>
-    <main className="box-style">
-      {/* <div className="slidecontainer">
-        <input 
-          type="range" 
-          min="0" 
-          max="100" 
-          value={animationDelayState} 
-          className="slider" 
-          id="myRange"
-          onChange={animationDelaySliderChange}
-        />
-        <p style={{color: 'white'}}>animation delay: {animationDelayState}</p> */}
-        {/* <input 
-          type="range" 
-          min="0" 
-          max="100" 
-          value={animationSpeedState} 
-          className="slider" 
-          id="myRange"
-          onChange={animationSpeedSliderChange}
-        />
-        <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
-      </div> */}
-      <section 
-        style={{
-          position: 'relative',
-          display: 'flex',
-          textAlign: 'center',
-          flexDirection: 'column'
-        }}
-      >
-        <ArtScroller />
-        <div
-          className="preset-button-container"
-          // style={{
-          //   display: 'flex',
-          // }}
+      <main className="box-style">
+        {/* <div className="slidecontainer">
+          <input 
+            type="range" 
+            min="0" 
+            max="100" 
+            value={animationDelayState} 
+            className="slider" 
+            id="myRange"
+            onChange={animationDelaySliderChange}
+          />
+          <p style={{color: 'white'}}>animation delay: {animationDelayState}</p> */}
+          {/* <input 
+            type="range" 
+            min="0" 
+            max="100" 
+            value={animationSpeedState} 
+            className="slider" 
+            id="myRange"
+            onChange={animationSpeedSliderChange}
+          />
+          <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
+        </div> */}
+        <section 
+          style={{
+            position: 'relative',
+            display: 'flex',
+            textAlign: 'center',
+            flexDirection: 'column'
+          }}
         >
-          <animated.button
-            style={rainbowButtonSpring}
-            className="preset-button"
-            onClick={() => {
-              dispatchREDUX(presetSwitch(''))
+          <ArtScroller />
+          <div className="border-top-led"></div>
+          <span 
+            style={{
+              color: 'white',
+              textAlign: 'center'
             }}
           >
-            <span
-              className="preset-button-text"
-            >
-              rainbowTest
-            </span>
-          </animated.button>
-          <animated.button
-            style={V2ButtonSpring}
-            className="preset-button"
-            onClick={() => {
-              dispatchREDUX(presetSwitch('V2'))
-            }}
+            LED Matrix Presets
+          </span>
+          <div
+            className="preset-button-container"
+            // style={{
+            //   display: 'flex',
+            // }}
           >
-            <span
-              className="preset-button-text"
-              style={{width: '100%'}}
+            <animated.button
+              style={rainbowButtonSpring}
+              className="preset-button"
+              onClick={() => {
+                dispatchREDUX(presetSwitch(''))
+              }}
             >
-              V2
-            </span>
-          </animated.button>
-          <animated.button
-            style={wavesButtonSpring}
-            className={Auth.loggedIn() ? `preset-button` : 'preset-button-disabled'}
-            disabled={Auth.loggedIn() ? false : true}//enable if logged in
-            onClick={() => {
-              dispatchREDUX(presetSwitch('waves'))
-            }}
-          >
-            <span
-              className="preset-button-text"
+              <span
+                className="preset-button-text"
+              >
+                rainbowTest
+              </span>
+            </animated.button>
+            <animated.button
+              style={V2ButtonSpring}
+              className="preset-button"
+              onClick={() => {
+                dispatchREDUX(presetSwitch('V2'))
+              }}
             >
-              waves
-            </span>
-          </animated.button>
-          <animated.button
-            style={spiralButtonSpring}
-            className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
-            disabled={Auth.loggedIn() ? false : true }//enable if logged in
-            onClick={() => {
-              dispatchREDUX(presetSwitch('spiral'))
-            }}
-          >
-            <span
-              className="preset-button-text"
+              <span
+                className="preset-button-text"
+                style={{width: '100%'}}
+              >
+                V2
+              </span>
+            </animated.button>
+            <animated.button
+              style={wavesButtonSpring}
+              className={Auth.loggedIn() ? `preset-button` : 'preset-button-disabled'}
+              disabled={Auth.loggedIn() ? false : true}//enable if logged in
+              onClick={() => {
+                dispatchREDUX(presetSwitch('waves'))
+              }}
             >
-              spiral
-            </span>
-          </animated.button>
-          <animated.button
-            style={fourSpiralsButtonSpring}
-            className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
-            disabled={Auth.loggedIn() ? false : true}//enable if logged in
-            onClick={() => {
-              dispatchREDUX(presetSwitch('fourSpirals'))
-            }}
-          >
-            <span
-              className="preset-button-text"
+              <span
+                className="preset-button-text"
+              >
+                waves
+              </span>
+            </animated.button>
+            <animated.button
+              style={spiralButtonSpring}
+              className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
+              disabled={Auth.loggedIn() ? false : true }//enable if logged in
+              onClick={() => {
+                dispatchREDUX(presetSwitch('spiral'))
+              }}
             >
-              fourSpirals
-            </span>
-          </animated.button>
+              <span
+                className="preset-button-text"
+              >
+                spiral
+              </span>
+            </animated.button>
+            <animated.button
+              style={fourSpiralsButtonSpring}
+              className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
+              disabled={Auth.loggedIn() ? false : true}//enable if logged in
+              onClick={() => {
+                dispatchREDUX(presetSwitch('fourSpirals'))
+              }}
+            >
+              <span
+                className="preset-button-text"
+              >
+                fourSpirals
+              </span>
+            </animated.button>
 
-          {/* save as new login preset */}
-          <animated.button
-            className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button-disabled'}
-            disabled={Auth.loggedIn() ? false : true}//enable if logged in
-            style={saveButtonSpring}
-            onClick={handleSaveDefault}
-          >
-            Save as Default
-          </animated.button>
-        </div>
-      </section>
-      <section>
-      {
-        rows.map((row, index) => (
-          <div key={`row${index + 1}`} className={`row${index + 1}`}>
-            {
-              leds.map((led, index) => (
-                <div 
-                  key={`led${led.ledNumber}-${index + 1}`} 
-                  className={`led${index + 1}-${row.rowNumber}${Auth.loggedIn() ? presetName : presetName}`}
-                  style={{
-                    // animationDuration: `${(index / 64) + ( index / row.rowNumber * (.05 * index))}`,
-                    // animationDelay: `${(index / 16) + index / (row.rowNumber / index - (4 * row.rowNumber))}`
-                  }}
-                ></div>
-              ))
-            }
+            {/* save as new login preset */}
+            <animated.button
+              style={saveButtonSpring}
+              className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button-disabled'}
+              disabled={Auth.loggedIn() ? false : true}//enable if logged in
+              onClick={handleSaveDefault}
+            >
+              Save as Default
+            </animated.button>
           </div>
-        ))
-      }
-      </section>
-    </main>
+        </section>
+        <section
+          className="led-matrix-container"
+        >
+          {
+            rows.map((row, index) => (
+              <div 
+                key={`row${index + 1}`} 
+                className={`row${index + 1}`}
+              >
+                {
+                  leds.map((led, index) => (
+                    <div 
+                      key={`led${led.ledNumber}-${index + 1}`} 
+                      className={`led${index + 1}-${row.rowNumber}${Auth.loggedIn() ? presetName : presetName}`}
+                      style={{
+                        // animationDuration: `${(index / 64) + ( index / row.rowNumber * (.05 * index))}`,
+                        // animationDelay: `${(index / 16) + index / (row.rowNumber / index - (4 * row.rowNumber))}`
+                      }}
+                    >
+                    </div>
+                  ))
+                }
+              </div>
+            ))
+          }
+        </section>
+      </main>
     </>
   );
 };

@@ -2,8 +2,16 @@
   background-color: blue;
   border-radius: 10px;
   padding: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  text-shadow: 3px 3px 3px black;
+  border: 3px ridge blue;
 }
 .nav-container{
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.test {
+  text-shadow: 3px 3px 3px rgb(229, 255, 0);
 }

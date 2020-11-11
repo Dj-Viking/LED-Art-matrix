@@ -1,0 +1,25 @@
+@keyframes playingTrackTextAnim {
+  0%{
+    color: white;
+  }
+  25%{
+    color: red;
+  }
+  50%{
+    color: green;
+  }
+  75%{
+    color: yellow;
+  }
+  100%{
+    color: white;
+  }
+}
+
+.anim-playing-text {
+  animation-name: playingTrackTextAnim;
+  animation-duration: 5s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+}

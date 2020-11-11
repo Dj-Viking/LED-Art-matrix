@@ -196,21 +196,30 @@ const ArtScroller = () => {
               }
             </select>
           </form> */}
+          <div className="border-top-artScroller"></div>
+          <span
+            style={{
+              color: 'white',
+              textAlign: 'center'
+            }}
+          >
+            Art Scroller Controls
+          </span>
           <div
             className="preset-button-container"
           >
 
             <animated.button
               style={leftInitButtonSpring}
-              className="preset-button"
+              className="scroller-fetch-button"
               onClick={handleRefetch}
               onKeyPress={handleRefetch}
             >
-              Init Art Scroller!
+              Start Art Scroller!
             </animated.button>
             <animated.button
               style={scrollerOnOffButtonSpring}
-              className="preset-button"
+              className={figureIsOnState ? 'scroller-toggle-button-on' : 'scroller-toggle-button-off'}
               onClick={handleFigureChange}
             >
               {
@@ -243,7 +252,7 @@ const ArtScroller = () => {
                 htmlFor="invert"
                 style={{color: 'white'}}
               >
-                invert: {invertState/100}
+                Invert Colors: {invertState/100}
               </label>
               <input
                 className="slider-style"
@@ -258,7 +267,7 @@ const ArtScroller = () => {
                 htmlFor="animation-duration"
                 style={{color: 'white'}}
               >
-                gif scroll speed: {animationDurationState/100}
+                Scroll Speed: {animationDurationState/100}
               </label>
               <input
                 className="slider-style"
@@ -303,12 +312,8 @@ const ArtScroller = () => {
                   style={{
                     position: 'absolute',
                     zIndex: '1',
-                    top: '39.7vh',
-                    left: '33vw',
                     //opacity: `${opacityState/100}`,
                     filter: `invert(${invertState/100})`,
-                    height: '50vh',
-                    width: '30vw',
                     borderRadius: `50%`,
                     animationName: 'scrollAnim',
                     animationDuration: `${animationDurationState/100 * (index + getRandomIntLimit(index, 20))}s`,
@@ -317,6 +322,7 @@ const ArtScroller = () => {
                     animationDirection: 'reverse',
                     animationIterationCount: 'infinite'
                   }}
+                  className="scroller-media"
                 />
               ))
             }

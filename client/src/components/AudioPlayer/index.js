@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
+
+//AUDIO PLAYER
 import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
+
+//SONGS
 import Waterfalls from './music/128-Waterfalls.m4a';
 import ReverbStudy from './music/175-Reverb-study.m4a';
 
+//TEXT ANIMATIONS
+import './trackAnimStyles.css';
 
 
 function AudioPlayerComponent() {
@@ -12,20 +18,44 @@ function AudioPlayerComponent() {
   //ARRAY OF LOCAL SONG FILE PATHS 
   const songs = [
     {
+      trackName: 'ReverbStudy',
+      filePath: ReverbStudy
+    },
+    {
       trackName: 'Waterfalls',
       filePath: Waterfalls
     },
-    {
-      trackName: 'ReverbStudy',
-      filePath: ReverbStudy
-    }
   ];
 
   const trackListStyle = {
     textDecoration: 'none',
     color: 'white',
     cursor: 'pointer',
-    listStyle: 'none'
+    listStyle: 'none',
+    display: 'inline',
+    marginBottom: '10px',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '10px 20px',
+    justifyContent: 'center',
+    transition: '1s',
+    borderRadius: '10px',
+  }
+
+  const trackListStylePlaying = {
+    textShadow: '3px 3px 3px black',
+    borderRadius: '10px',
+    backgroundColor: 'blue',
+    cursor: 'pointer',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    padding: '10px 20px',
+    listStyle: 'none',
+    display: 'inline',
+    marginBottom: '10px',
+    justifyContent: 'center',
+    transition: '1s',
+    border: '3px ridge blue'
   }
 
   function handleTrackChange(event) {
@@ -43,28 +73,60 @@ function AudioPlayerComponent() {
         preload="auto"
         src={currentSong}
         onPlay={e => console.log("onPlay")}
-        volume={.04}
+        volume={.005}
       />
       <section
         style={{
           display: 'flex',
           flexDirection: 'column',
           textAlign: 'center',
-          marginTop: '30px'
+          marginTop: '10px'
         }}
       >
-      {
-        songs.map((song) => (
-          <div
-            style={trackListStyle}
-            id={song.filePath}
-            key={song.trackName}
-            onClick={handleTrackChange}
-          >
-            {song.trackName}
-          </div>
-        ))
-      }
+        <div
+          style={{
+            borderTop: 'ridge 5px rgb(67, 26, 163)',
+            width: '80%',
+            borderRadius: '50%',
+            display: 'flex',
+            margin: '0 auto',
+          }}
+        ></div>
+        <span
+          style={{
+            borderRadius: '50%',
+            width: '80%',
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '0 auto',
+            marginTop: '5px',
+            marginBottom: '5px',
+            color: 'white'
+          }}
+        >
+          Track List
+        </span>
+        {
+          songs.map((song) => (
+            <div
+              style={
+                currentSong === song.filePath 
+                ? trackListStylePlaying 
+                : trackListStyle
+              }
+              className={
+                currentSong === song.filePath
+                ? 'anim-playing-text'
+                : ''
+              }
+              id={song.filePath}
+              key={song.trackName}
+              onClick={handleTrackChange}
+            >
+              {song.trackName}
+            </div>
+          ))
+        }
       </section>
     </>
   );
