@@ -365,6 +365,21 @@ const BigLedBox = () => {
           >
             LED Matrix Presets
           </span>
+          {
+            !Auth.loggedIn()
+            &&
+            (
+              <>
+                <span
+                  style={{
+                    color: 'white'
+                  }}
+                >
+                  To see the Disabled Presets, Log in or Sign up! Also save your own Default Preset!
+                </span>
+              </>
+            )
+          }
           <div
             className="preset-button-container"
             // style={{

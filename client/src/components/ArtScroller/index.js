@@ -231,69 +231,54 @@ const ArtScroller = () => {
               }
             </animated.button>
           </div>
-            {/* <label 
-              htmlFor="opacity"
+          {/* <label 
+            htmlFor="opacity"
+            style={{color: 'white'}}
+          >
+            opacity: {opacityState/100}
+          </label>
+          <input 
+            name="opacity"
+            type="range"
+            min="0"
+            max="30"
+            value={opacityState}
+            onChange={handleOpacityChange}
+          /> */}
+          <div
+            className="slider-container"
+          >
+            <label
+              htmlFor="invert"
               style={{color: 'white'}}
             >
-              opacity: {opacityState/100}
+              Invert Colors: {invertState/100}
             </label>
-            <input 
-              name="opacity"
+            <input
+              className="slider-style"
+              name="invert"
               type="range"
               min="0"
-              max="30"
-              value={opacityState}
-              onChange={handleOpacityChange}
-            /> */}
-            <div
-              className="slider-container"
+              max="100"
+              value={invertState}
+              onChange={handleInvertChange}
+            />
+            <label
+              htmlFor="animation-duration"
+              style={{color: 'white'}}
             >
-              <label
-                htmlFor="invert"
-                style={{color: 'white'}}
-              >
-                Invert Colors: {invertState/100}
-              </label>
-              <input
-                className="slider-style"
-                name="invert"
-                type="range"
-                min="0"
-                max="100"
-                value={invertState}
-                onChange={handleInvertChange}
-              />
-              <label
-                htmlFor="animation-duration"
-                style={{color: 'white'}}
-              >
-                Scroll Speed: {animationDurationState/100}
-              </label>
-              <input
-                className="slider-style"
-                name="animation-duration"
-                type="range"
-                min="1"
-                max="100"
-                value={animationDurationState}
-                onChange={handleAnimationDurationChange}
-              />
-            </div>
-            {
-              !Auth.loggedIn()
-              &&
-              (
-                <>
-                  <span
-                    style={{
-                      color: 'white'
-                    }}
-                  >
-                    Log in to see the Disabled Presets, and Save your own Default Preset!
-                  </span>
-                </>
-              )
-            }
+              Scroll Speed: {animationDurationState/100}
+            </label>
+            <input
+              className="slider-style"
+              name="animation-duration"
+              type="range"
+              min="1"
+              max="100"
+              value={animationDurationState}
+              onChange={handleAnimationDurationChange}
+            />
+          </div>
           <figure
             style={{
               display: `${figureIsOnState ? 'block' : 'none'}`,

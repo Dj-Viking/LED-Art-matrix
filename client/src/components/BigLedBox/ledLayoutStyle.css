@@ -15,6 +15,7 @@
   text-align: center;
   color: white;
   background-color: black;
+  cursor: pointer;
 }
 .preset-button-disabled {
   margin-left: 5px;
@@ -33,7 +34,6 @@
 }
 
 .preset-button-text {
-  color: white;
   padding-left: 5px;
   padding-right: 5px;
   text-align: center;
