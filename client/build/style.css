@@ -1,0 +1,138 @@
+html {
+  height: -webkit-fill-available
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.form-card {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin: 0 20%;
+  color: white;
+}
+
+.form-username {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;  
+}
+
+.form-username input {
+  border-radius: 10px;
+  border: none 3px var(--secondary-color);
+  height: 50px;
+  box-shadow: 5px 5px 5px #000000;
+  margin-bottom: 10px;
+}
+
+.form-email {
+  display: flex;
+  flex-direction: column;
+  color: white;
+}
+
+.form-email-input {
+  border-radius: 10px;
+  border: none 3px var(--secondary-color);
+  height: 50px;
+  font-size: 2vw;
+  box-shadow: 5px 5px 5px #000000;
+  margin-bottom: 10px;
+}
+
+.form-password {
+  display: flex;
+  flex-direction: column;
+  color: white;  
+}
+
+.form-password-input {
+  border-radius: 10px;
+  border: none 3px var(--secondary-color);
+  height: 50px;
+  font-size: 2vw;
+  box-shadow: 5px 5px 5px #505050;
+  margin-bottom: 10px;
+}
+
+.form-container {
+  margin-bottom: 5%;
+  margin-top: 30px;
+}
+
+.form-button-container {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.form-btn {
+  cursor: pointer;
+  color: var(--primary-color);
+  background-color: rgb(94, 0, 245);
+  padding: 10px;
+  width: 100%;
+  font-size: 2vw;
+  border-radius: 10px;
+  transition: 1s;
+  margin-top: 10px;
+  box-shadow: 5px 5px 10px #000000;
+}
+
+.form-btn:hover {
+  animation-name: buttonHoverAnim;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-duration: 5s;
+}
+
+@keyframes buttonHoverAnim {
+  0%{
+    background-color: rgb(94, 0, 245);
+  }
+  25%{
+    background: red;
+  }
+  50%{
+    background: green;
+  }
+  75%{
+    background-color: blue;
+  }
+  100%{
+    background-color: rgb(94, 0, 245);
+  }
+}
+
+@media screen and (max-width: 1024) {
+  
+}
+
+@media screen and (max-width: 768) {
+
+}
+
+@media screen and (max-width: 540) {
+
+}
+
+@media screen and (max-width: 540) {
+
+}

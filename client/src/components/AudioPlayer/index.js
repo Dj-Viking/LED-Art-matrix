@@ -5,25 +5,30 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 //SONGS
-import Waterfalls from './music/128-Waterfalls.m4a';
-import ReverbStudy from './music/175-Reverb-study.m4a';
+import WATERFALLS from './music/128-Waterfalls.m4a';
+import REVERBSTUDY from './music/175-Reverb-study.m4a';
+import G6 from './music/G6_-24_db_for_web_test.m4a'
 
 //TEXT ANIMATIONS
 import './trackAnimStyles.css';
 
 
 function AudioPlayerComponent() {
-  const [currentSong, setCurrentSong] = useState(ReverbStudy)
+  const [currentSong, setCurrentSong] = useState(G6)
 
   //ARRAY OF LOCAL SONG FILE PATHS 
   const songs = [
     {
+      trackName: 'g6',
+      filePath: G6
+    },
+    {
       trackName: 'ReverbStudy',
-      filePath: ReverbStudy
+      filePath: REVERBSTUDY
     },
     {
       trackName: 'Waterfalls',
-      filePath: Waterfalls
+      filePath: WATERFALLS
     },
   ];
 
