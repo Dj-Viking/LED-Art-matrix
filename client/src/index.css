@@ -115,7 +115,7 @@ code {
     background: red;
   }
   50%{
-    background: green;
+    background: rgb(0, 255, 0);
   }
   75%{
     background-color: blue;
