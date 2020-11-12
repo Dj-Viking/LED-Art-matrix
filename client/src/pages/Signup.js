@@ -1,5 +1,8 @@
 //REACT IMPORTS
-import React from 'react';
+import React, {useEffect} from 'react';
+
+//AUTH
+import Auth from '../utils/auth.js';
 
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,8 +11,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/react-hooks';
 import { ADD_USER } from '../utils/mutations';
 
-//AUTH
-import Auth from '../utils/auth.js';
 
 //ACTIONS IMPORT for signup formstate reducer
 import {
@@ -81,38 +82,56 @@ const Signup = () => {
     }
   }
 
-  function enableSignup() {
-    if (
-      usernameIsComplete && 
-      emailIsComplete && 
-      passwordIsComplete
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   return (
     <>
-      <form onSubmit={handleSubmit}>
+    <div
+      className="form-container"
+    >
+      <form 
+        className="form-card"
+        onSubmit={handleSubmit}
+      >
+        <label
+          htmlFor="username"
+          className="form-username-label"
+        >
+          Username:
+        </label>
         <input 
           type="text"
           name="username"
           onChange={handleChange}
           placeholder="Username"
+          className="form-username-input"
+          autoComplete="off"
         />
+        <label
+          htmlFor="email"
+          className="form-email-label"
+        >
+          Email:
+        </label>
         <input 
           type="email"
           name="email"
           onChange={handleChange}
           placeholder="Email"
+          className="form-email-input"
+          autoComplete="off"
         />
+        <label
+          htmlFor="password"
+          className="form-password-label"
+        >
+          Password:
+        </label>
         <input 
+          className="form-password-input"
           type="password"
           name="password"
           onChange={handleChange}
           placeholder="Password"
+          autoComplete="off"
         />
         {
           error 
@@ -128,13 +147,33 @@ const Signup = () => {
           )
           : null
         }
-        <button
-          type="submit"
-          disabled={enableSignup()}
+        <div
+          className="form-button-container"
         >
-          Sign Up!
-        </button>
+          <button
+            type="submit"
+            disabled={
+              usernameIsComplete
+              &&
+              emailIsComplete
+              &&
+              passwordIsComplete
+              ? false : true
+            }
+            className ={
+              usernameIsComplete
+              &&
+              emailIsComplete
+              &&
+              passwordIsComplete
+              ? 'form-btn' : ''
+            }
+          >
+            Sign Up
+          </button>
+        </div> 
       </form>
+    </div>
     </>
   );
 };

@@ -96,7 +96,7 @@ const Nav = () => {
               }}
               className="nav-button"
             >
-              Sign In
+              Sign Up
             </Link>
           </div>
           <div>

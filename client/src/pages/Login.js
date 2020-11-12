@@ -1,8 +1,11 @@
 //REACT IMPORTS
-import React, {useEffect} from 'react';
+import React from 'react';
 
 //AUTH
 import Auth from '../utils/auth';
+
+//STYLES
+import './login.css'
 
 //GRAPHQL IMPORTS
 import { useMutation } from '@apollo/react-hooks';
@@ -48,59 +51,6 @@ const Login = () => {
       dispatchREDUX(loginPasswordCompleted(event.target.value));
     }
   }
-  function enableLogin() {
-    let object = {}
-
-    if (emailIsComplete && passwordIsComplete) {
-      object = {
-        disable: false,
-        formComplete: true
-      }
-      console.log(object);
-      return object;
-    } else {
-      return true;
-    }
-  }
-  function enableLoginEffect1() {
-    let object = {}
-
-    if (emailIsComplete && passwordIsComplete) {
-      object = {
-        disable: false,
-        formComplete: true
-      }
-      return object;
-    } else {
-        object = {
-          disable: false,
-          formComplete: false
-        }
-        return object;
-    }
-  }
-
-  useEffect(() => {
-    function enableLoginEffect1() {
-      let object = {}
-  
-      if (emailIsComplete && passwordIsComplete) {
-        object = {
-          disable: false,
-          formComplete: true
-        }
-        return object;
-      } else {
-        object = {
-          disable: false,
-          formComplete: false
-        }
-        return object;
-      }
-    }
-    enableLoginEffect1();
-  }, [emailIsComplete, passwordIsComplete])
-
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -133,7 +83,7 @@ const Login = () => {
         >
           <label
             htmlFor="email"
-            className="form-email"
+            className="form-email-label"
           >
             Email: 
           </label>
@@ -144,10 +94,11 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Your Email"
             className="form-email-input"
+            autoComplete="off"
           />
           <label
             htmlFor="password"
-            className="form-password"
+            className="form-password-label"
           >
             Password:
           </label>
@@ -158,6 +109,7 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Your Password"
             className="form-password-input"
+            autoComplete="off"
           />
           {//login error rendering
             error
@@ -176,8 +128,18 @@ const Login = () => {
           >
             <button
               type="submit"
-              disabled={emailIsComplete && passwordIsComplete ? false : true}
-              className={emailIsComplete && passwordIsComplete ? 'form-btn' : ''}
+              disabled={
+                emailIsComplete 
+                && 
+                passwordIsComplete 
+                ? false : true
+              }
+              className={
+                emailIsComplete 
+                && 
+                passwordIsComplete 
+                ? 'form-btn' : ''
+              }
             >
               Login
             </button>

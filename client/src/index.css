@@ -25,24 +25,27 @@ code {
   color: white;
 }
 
-.form-username {
+.form-username-label {
   display: flex;
   flex-direction: column;
+  font-size: 2vw;
   justify-content: center;
   color: white;  
 }
 
-.form-username input {
+.form-username-input {
   border-radius: 10px;
   border: none 3px var(--secondary-color);
   height: 50px;
+  font-size: 2vw;
   box-shadow: 5px 5px 5px #000000;
   margin-bottom: 10px;
 }
 
-.form-email {
+.form-email-label {
   display: flex;
   flex-direction: column;
+  font-size: 2vw;
   color: white;
 }
 
@@ -55,8 +58,9 @@ code {
   margin-bottom: 10px;
 }
 
-.form-password {
+.form-password-label {
   display: flex;
+  font-size: 2vw;
   flex-direction: column;
   color: white;  
 }
@@ -122,49 +126,31 @@ code {
 }
 
 @media screen and (max-width: 1024) {
-  
+  .form-btn {
+    font-size: 2vw;
+  }
 }
 
 @media screen and (max-width: 768) {
   .form-btn {
+    font-size: 2vw;
+  }
+}
+
+@media screen and (max-width: 540) {
+  .form-btn {
+    font-size: 2vw;
+  }
+}
+
+@media screen and (max-width: 375) {
+  .form-btn {
     font-size: 5vw;
   }
-}
-
-@media screen and (max-width: 540) {
-  .form-btn {
+  .form-email-label {
     font-size: 2vw;
   }
-}
-
-@media screen and (max-width: 540) {
-  .form-btn {
-    font-size: 2vw;
-  }
-}
-
-@media screen and (max-width: 540) {
-  .form-btn {
-    font-size: 2vw;
-  }
-}
-@media screen and (max-width: 540) {
-  .form-btn {
-    font-size: 2vw;
-  }
-}
-@media screen and (max-width: 540) {
-  .form-btn {
-    font-size: 2vw;
-  }
-}
-@media screen and (max-width: 540) {
-  .form-btn {
-    font-size: 2vw;
-  }
-}
-@media screen and (max-width: 540) {
-  .form-btn {
+  .form-password-label {
     font-size: 2vw;
   }
 }
