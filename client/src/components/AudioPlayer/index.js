@@ -22,14 +22,14 @@ function AudioPlayerComponent() {
       trackName: 'g6',
       filePath: G6
     },
-    {
-      trackName: 'ReverbStudy',
-      filePath: REVERBSTUDY
-    },
-    {
-      trackName: 'Waterfalls',
-      filePath: WATERFALLS
-    },
+    // {
+    //   trackName: 'ReverbStudy',
+    //   filePath: REVERBSTUDY
+    // },
+    // {
+    //   trackName: 'Waterfalls',
+    //   filePath: WATERFALLS
+    // },
   ];
 
   const trackListStyle = {

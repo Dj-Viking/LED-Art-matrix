@@ -1,5 +1,7 @@
 //REACT IMPORTS
-import React from 'react';
+import React, {useEffect} from 'react';
+
+//AUTH
 import Auth from '../utils/auth';
 
 //GRAPHQL IMPORTS
@@ -46,15 +48,59 @@ const Login = () => {
       dispatchREDUX(loginPasswordCompleted(event.target.value));
     }
   }
-
   function enableLogin() {
+    let object = {}
 
     if (emailIsComplete && passwordIsComplete) {
-      return false;
+      object = {
+        disable: false,
+        formComplete: true
+      }
+      console.log(object);
+      return object;
     } else {
       return true;
     }
   }
+  function enableLoginEffect1() {
+    let object = {}
+
+    if (emailIsComplete && passwordIsComplete) {
+      object = {
+        disable: false,
+        formComplete: true
+      }
+      return object;
+    } else {
+        object = {
+          disable: false,
+          formComplete: false
+        }
+        return object;
+    }
+  }
+
+  useEffect(() => {
+    function enableLoginEffect1() {
+      let object = {}
+  
+      if (emailIsComplete && passwordIsComplete) {
+        object = {
+          disable: false,
+          formComplete: true
+        }
+        return object;
+      } else {
+        object = {
+          disable: false,
+          formComplete: false
+        }
+        return object;
+      }
+    }
+    enableLoginEffect1();
+  }, [emailIsComplete, passwordIsComplete])
+
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -130,8 +176,8 @@ const Login = () => {
           >
             <button
               type="submit"
-              disabled={enableLogin()}
-              className="form-btn"
+              disabled={emailIsComplete && passwordIsComplete ? false : true}
+              className={emailIsComplete && passwordIsComplete ? 'form-btn' : ''}
             >
               Login
             </button>
