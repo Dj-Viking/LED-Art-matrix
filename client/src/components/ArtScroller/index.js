@@ -111,7 +111,7 @@ const ArtScroller = () => {
                 return idbPromise('gifs', 'put', gif);
               });
             } else {
-              console.log('exists already deleting current store and making now one');
+              console.log('exists already deleting current store and making new one');
               //find current store and delete based on the object._id's 
               // that were passed into the delete function for each gif of the idb array
               Promise.resolve(idbPromise('gifs', 'get'))
@@ -193,20 +193,24 @@ const ArtScroller = () => {
       }
     } catch (error) {
       console.log(error);
-      console.log('refetch failed pulling from idb');
-      Promise.resolve(idbPromise('gifs', 'get'))
-      .then(
-        async (res) => {
-          console.log('trying to get from idb since refetch failed');
-
-          dispatchREDUX(
-            getGifs(
-              [...res]
-            )
-          );
-        }
-      )
-      .catch(err => console.log(err));
+    } finally {
+      if (navigator in window && window.navigator.onLine === false) {
+        console.log('navigator');
+        console.log('refetch failed pulling from idb');
+        Promise.resolve(idbPromise('gifs', 'get'))
+        .then(
+          async (res) => {
+            console.log('trying to get from idb since refetch failed');
+    
+            dispatchREDUX(
+              getGifs(
+                [...res]
+              )
+            );
+          }
+        )
+        .catch(err => console.log(err));
+      }
     }
   }
 
