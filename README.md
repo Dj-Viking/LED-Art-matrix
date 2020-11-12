@@ -10,7 +10,7 @@
 
 ## Description 
 
-An LED Art Matrix with user interactability to maximize the audio visual experience of controlling an LED matrix and Art Scroller
+An LED Art Matrix with user interactability to maximize the audio visual experience of controlling an LED matrix and Art Scroller.
 
 ## Table of Contents
 * [Installation](#Installation)
@@ -26,7 +26,7 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 
 ## Usage
 
-gif soon
+![screenshot](./led-matrix-gif.gif)
 
 ## Credits
 
