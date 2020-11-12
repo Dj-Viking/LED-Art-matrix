@@ -199,7 +199,7 @@ const ArtScroller = () => {
         console.log('refetch failed pulling from idb');
         Promise.resolve(idbPromise('gifs', 'get'))
         .then(
-          async (res) => {
+          (res) => {
             console.log('trying to get from idb since refetch failed');
     
             dispatchREDUX(

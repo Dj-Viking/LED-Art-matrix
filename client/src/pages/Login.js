@@ -77,40 +77,68 @@ const Login = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="email"
-        name="email"
-        id="email-login"
-        onChange={handleChange}
-        placeholder="Your Email"
-      />
-      <input 
-        type="password"
-        name="password"
-        id="password-login"
-        onChange={handleChange}
-        placeholder="Your Password"
-      />
-      {//login error rendering
-        error
-        ?
-        (
-          <div
-            style={{color: 'red'}}
-          >
-            The provided credentials were incorrect
-          </div>
-        )
-        : null
-      }
-      <button
-        type="submit"
-        disabled={enableLogin()}
+    <>
+      <div
+        className="form-container"
       >
-        Login
-      </button>
-    </form>
+        <form 
+          onSubmit={handleSubmit}
+          className="form-card"
+        >
+          <label
+            htmlFor="email"
+            className="form-email"
+          >
+            Email: 
+          </label>
+          <input
+            type="email"
+            name="email"
+            id="email-login"
+            onChange={handleChange}
+            placeholder="Your Email"
+            className="form-email-input"
+          />
+          <label
+            htmlFor="password"
+            className="form-password"
+          >
+            Password:
+          </label>
+          <input 
+            type="password"
+            name="password"
+            id="password-login"
+            onChange={handleChange}
+            placeholder="Your Password"
+            className="form-password-input"
+          />
+          {//login error rendering
+            error
+            ?
+            (
+              <div
+                style={{color: 'red'}}
+              >
+                The provided credentials were incorrect
+              </div>
+            )
+            : null
+          }
+          <div
+            className="form-button-container"
+          >
+            <button
+              type="submit"
+              disabled={enableLogin()}
+              className="form-btn"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+     </div>
+  </>
   );
 };
 
