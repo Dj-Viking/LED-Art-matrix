@@ -13,7 +13,7 @@ import './scrolling-styles/artScrollerLayoutStyle.css';
 //HELPERS
 import {
   getRandomIntLimit,
-  idbPromise
+  //idbPromise
 } from '../../utils/helpers.js';
 
 //APOLLO GRAPHQL
@@ -101,9 +101,7 @@ const ArtScroller = () => {
       // //also update idb with returned data that will eventually exist after query is done
       //loop the promise?? in a Promise.resolve loop? hmm
       //console.log(getGifsQueryResponse.data.getGifsCreateAndOrUpdate[0]);
-      getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
-        idbPromise('gifs', 'put', gif);
-      });
+      //delete current IDB for gifs
     }
   }, [getGifsQueryResponse, dispatchREDUX, getGifsQueryResponse.data]);
 
