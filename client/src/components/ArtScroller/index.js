@@ -391,7 +391,7 @@ const ArtScroller = () => {
               className="slider-style"
               type="range"
               min="0"
-              max="100"
+              max="200"
               value={verticalPositionState}
               onChange={handleVerticalPositionStateChange}
             />
