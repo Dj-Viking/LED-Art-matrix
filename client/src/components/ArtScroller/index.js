@@ -119,7 +119,7 @@ const ArtScroller = () => {
                 async (res) => {
                   console.log('deleting current idb gifs...');
                   console.log(res);
-                  res.forEach(gif => {
+                  res.forEach(gif => { 
                     return idbPromise('gifs', 'delete', gif)
                   })
                 }
@@ -130,7 +130,7 @@ const ArtScroller = () => {
               getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
                 console.log('updating current gifs...');
                 return idbPromise('gifs', 'put', gif);
-              })
+              });
             }
           }
         )
@@ -152,7 +152,7 @@ const ArtScroller = () => {
               getGifs(
                 [...res]
               )
-            )
+            );
           } catch (error) {
             console.log(error);
           }
@@ -193,7 +193,7 @@ const ArtScroller = () => {
       }
     } catch (error) {
       console.log(error);
-    } finally {
+    } finally {//this wont execute for some reason...
       if (navigator in window && window.navigator.onLine === false) {
         console.log('navigator');
         console.log('refetch failed pulling from idb');
