@@ -17,6 +17,32 @@
   background-color: black;
   cursor: pointer;
 }
+.rainbow-anim {
+  animation-name: rainbowButtonAnim;
+  animation-duration: 4s;
+  animation-delay: 0s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+@keyframes rainbowButtonAnim {
+  0% {
+    background-color: black;
+  }
+  25% {
+    background-color: red;
+  }
+  50% {
+    background-color: green;
+  }
+  75% {
+    background-color: blue;
+  }
+  100% {
+    background-color: purple;
+  }
+}
+
 .preset-button-disabled {
   margin-left: 5px;
   margin-right: 5px;

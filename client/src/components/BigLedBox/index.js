@@ -388,7 +388,7 @@ const BigLedBox = () => {
           >
             <animated.button
               style={rainbowButtonSpring}
-              className="preset-button"
+              className="preset-button rainbow-anim"
               onClick={() => {
                 dispatchREDUX(presetSwitch(''))
               }}
