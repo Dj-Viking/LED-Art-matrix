@@ -4,9 +4,6 @@ import React from 'react';
 //AUTH
 import Auth from '../utils/auth';
 
-//STYLES
-import './login.css'
-
 //GRAPHQL IMPORTS
 import { useMutation } from '@apollo/react-hooks';
 import { LOGIN } from '../utils/mutations';
@@ -128,18 +125,8 @@ const Login = () => {
           >
             <button
               type="submit"
-              disabled={
-                emailIsComplete 
-                && 
-                passwordIsComplete 
-                ? false : true
-              }
-              className={
-                emailIsComplete 
-                && 
-                passwordIsComplete 
-                ? 'form-btn' : ''
-              }
+              disabled={false}
+              className='form-btn'
             >
               Login
             </button>
