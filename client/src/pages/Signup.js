@@ -152,22 +152,8 @@ const Signup = () => {
         >
           <button
             type="submit"
-            disabled={
-              usernameIsComplete
-              &&
-              emailIsComplete
-              &&
-              passwordIsComplete
-              ? false : true
-            }
-            className ={
-              usernameIsComplete
-              &&
-              emailIsComplete
-              &&
-              passwordIsComplete
-              ? 'form-btn' : ''
-            }
+            disabled={false}
+            className ='form-btn'
           >
             Sign Up
           </button>

@@ -322,6 +322,11 @@ const BigLedBox = () => {
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
+
+
+  //preset style variables here
+
+  
   return (
     <>
       <main className="box-style">
