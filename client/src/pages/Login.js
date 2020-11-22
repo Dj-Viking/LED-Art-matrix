@@ -27,9 +27,9 @@ const Login = () => {
   //GRAB PIECE OF STATE
   const {
     email,
-    emailIsComplete,
+    //emailIsComplete,
     password,
-    passwordIsComplete
+    //passwordIsComplete
   } = loginFormState;
 
   //REDUX DISPATCH

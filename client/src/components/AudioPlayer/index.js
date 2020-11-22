@@ -5,8 +5,8 @@ import AudioPlayer from 'react-h5-audio-player';
 import 'react-h5-audio-player/lib/styles.css';
 
 //SONGS
-import WATERFALLS from './music/128-Waterfalls.m4a';
-import REVERBSTUDY from './music/175-Reverb-study.m4a';
+//import WATERFALLS from './music/128-Waterfalls.m4a';
+//import REVERBSTUDY from './music/175-Reverb-study.m4a';
 import G6 from './music/G6_-24_db_for_web_test.m4a'
 
 //TEXT ANIMATIONS
