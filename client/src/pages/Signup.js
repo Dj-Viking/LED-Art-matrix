@@ -1,5 +1,5 @@
 //REACT IMPORTS
-import React, {useEffect} from 'react';
+import React from 'react';
 
 //AUTH
 import Auth from '../utils/auth.js';
@@ -31,9 +31,9 @@ const Signup = () => {
     username,
     email,
     password,
-    usernameIsComplete,
-    emailIsComplete,
-    passwordIsComplete
+    //usernameIsComplete,
+    //emailIsComplete,
+    //passwordIsComplete
   } = signupFormState;
   
   //REDUX DISPATCH
