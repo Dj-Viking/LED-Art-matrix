@@ -5,11 +5,11 @@ import React, { useEffect } from 'react';
 import {useSpring, animated} from 'react-spring';
 
 //STYLES
-import './rainbowV2/styles/style.css';
-import './rainbowStart/styles/style.css';
-import './waves/styles/style.css';
-import './spiral/styles/style.css';
-import './fourSpirals/styles/style.css';
+import './rainbowV2/styles/style.scss';
+import './rainbowStart/styles/style.scss';
+import './waves/styles/style.scss';
+import './spiral/styles/style.scss';
+import './fourSpirals/styles/style.scss';
 import './ledLayoutStyle.css'
 
 //COMPONENTS
