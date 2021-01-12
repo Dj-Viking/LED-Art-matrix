@@ -37,8 +37,9 @@ export function idbPromise(storeName, method, object) {
       const db = request.result;
       //create the object store for each type of data and set 
       //"primary" key index to be the `_id` of the data
-      db.createObjectStore('defaultPreset', { keyPath: '_id'});
+      db.createObjectStore('presets', { keyPath: '_id' });
       db.createObjectStore('gifs', { keyPath: '_id' });
+      db.createObjectStore('defaultPreset', { keyPath: '_id' })
     };
     //if any errors happened while connecting to idb
     request.onerror = (event) => {
