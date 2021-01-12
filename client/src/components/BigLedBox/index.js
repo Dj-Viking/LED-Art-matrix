@@ -29,6 +29,11 @@ import {UPDATE_USER_DEFAULT_PRESET} from '../../utils/mutations.js';
 //AUTH
 import Auth from '../../utils/auth.js';
 
+//HELPERS
+// import {
+//   idbPromise
+// } from '../../utils/helpers.js';
+
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
 
