@@ -136,7 +136,7 @@ const ArtScroller = () => {
         )
         .catch(error => console.error(error));
       }
-      console.log(Promise.resolve(updateIDBGifs()).then(res => console.log(res)));
+      Promise.resolve(updateIDBGifs()).then(res => console.log(res));
     } 
     else if (!getGifsQueryResponse.data) 
     {
@@ -193,24 +193,6 @@ const ArtScroller = () => {
       }
     } catch (error) {
       console.log(error);
-    } finally {//this wont execute for some reason...
-      if (navigator in window && window.navigator.onLine === false) {
-        console.log('navigator');
-        console.log('refetch failed pulling from idb');
-        Promise.resolve(idbPromise('gifs', 'get'))
-        .then(
-          (res) => {
-            console.log('trying to get from idb since refetch failed');
-    
-            dispatchREDUX(
-              getGifs(
-                [...res]
-              )
-            );
-          }
-        )
-        .catch(err => console.log(err));
-      }
     }
   }
 
