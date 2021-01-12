@@ -29,6 +29,11 @@ import {UPDATE_USER_DEFAULT_PRESET} from '../../utils/mutations.js';
 //AUTH
 import Auth from '../../utils/auth.js';
 
+//HELPERS
+import {
+  idbPromise
+} from '../../utils/helpers.js';
+
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
 
@@ -159,6 +164,48 @@ const BigLedBox = () => {
           );
         }
       }
+      async function updateIDBdefaultPreset() 
+      {
+        Promise.resolve(idbPromise('defaultPreset', 'get'))
+        .then(
+          //check if a preset is there in IDB
+          async (res) => {
+            console.log('checking if preset is in IDB');
+            console.log(res);
+
+            if (res[0] === undefined)
+            {
+              presetQueryResponse.data.getPresets.forEach(preset => {
+                console.log('updating idb default preset');
+                return idbPromise('defaultPreset', 'put', preset);
+              });
+            } else {
+              console.log('already exists in the current idb store so deleting and making a new one');
+              //find current store and delete based on the objects._id's
+              // that were passed into the delete function for each preset of the idb array
+              Promise.resolve(idbPromise('defaultPreset', 'get'))
+              .then(
+                async (res) => {
+                  console.log('deleting current default preset...');
+                  console.log(res);
+                  res.forEach(preset => {
+                    return idbPromise('defaultPreset', 'delete', preset);
+                  })
+                }
+              )
+              .catch(err => console.log(err));
+
+              //update current default preset
+              presetQueryResponse.data.getPresets.forEach(preset => {
+                console.log('updating after deleting');
+                return idbPromise('defaultPreset', 'put', preset);
+              });
+            }
+          }
+        )
+        .catch(error => console.log(error));
+      }
+      Promise.resolve(updateIDBdefaultPreset()).then(res => console.log(res));
     }
   }, [presetQueryResponse, userQueryResponse, dispatchREDUX]);
   
