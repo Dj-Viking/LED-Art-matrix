@@ -232,7 +232,7 @@ const resolvers = {
         const gifsArr = [];
         if (gifDB[0] === undefined) 
         {
-          console.log('in the if statement?');
+          console.log('no gifs in the DB creating entries for the gifs in the DB');
           //create gifs if not exist
           //MAKE FOR LOOP TO LOOP THROUGH
           // API SEARCH RESULTS
