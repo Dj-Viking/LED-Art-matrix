@@ -1,5 +1,5 @@
 //REACT IMPORTS
-import React from 'react';
+import React, { useState } from 'react';
 
 //AUTH
 import Auth from '../utils/auth.js';
@@ -23,6 +23,7 @@ import {
 } from '../actions/signup-form-actions';
 
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   //OBSERVE GLOBAL SIGNUP FORM STATE
   const signupFormState = useSelector(state => state.signupForm);
   //console.log(signupFormState);
@@ -45,6 +46,7 @@ const Signup = () => {
   //FUNCTION TO HANDLE FORM SUBMIT TO GRAPHQL MUTATION
   async function handleSubmit(event){
     event.preventDefault();
+    setLoading(true);
     try {
       const mutationResponse = await addUser
       (
@@ -62,7 +64,9 @@ const Signup = () => {
       const token = mutationResponse.data.addUser.token;
       //authorize token and send user to home page
       Auth.login(token);
+      setLoading(false);
     } catch(err) {
+      setLoading(false);
       console.log(err);
     }
   } 
@@ -157,6 +161,12 @@ const Signup = () => {
           >
             Sign Up
           </button>
+        {
+          loading 
+          ?
+          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          : null
+        }
         </div> 
       </form>
     </div>

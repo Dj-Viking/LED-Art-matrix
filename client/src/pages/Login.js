@@ -1,5 +1,5 @@
 //REACT IMPORTS
-import React from 'react';
+import React, { useState } from 'react';
 
 //AUTH
 import Auth from '../utils/auth';
@@ -21,6 +21,7 @@ import {
 
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
   //OBSERVE GLOBAL LOGIN FORM STATE
   const loginFormState = useSelector(state => state.loginForm)
   //console.log(loginFormState);
@@ -51,6 +52,7 @@ const Login = () => {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    setLoading(true);
     try {
       const mutationResponse = await login
       (
@@ -64,7 +66,9 @@ const Login = () => {
       const token = mutationResponse.data.login.token;
       //authorize token and send user to home page
       Auth.login(token);
+      setLoading(false);
     } catch(err) {
+      setLoading(false);
       console.log(err);
     }
   }
@@ -130,6 +134,12 @@ const Login = () => {
             >
               Login
             </button>
+            {
+              loading 
+              ?
+              <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+              : null
+            }
           </div>
         </form>
      </div>

@@ -173,29 +173,9 @@ const BigLedBox = () => {
 
   //REDUX piece of global state
   const {
-    // alpha,
     presetName,
-    // animationDurationState,
-    // _animationDelayState,
-
   } = ledChangeState;
   
-
-
-  // const [animationDelayState, setAnimationDelayState] = useState(0);
-  // function animationDelaySliderChange(event) {
-  //   setAnimationDelayState(event.target.value);
-  //   // console.log(((event.target.value) / 100).toString());
-  //   dispatchREDUX(animationDelayChange((event.target.value / 100).toString()));
-  // } 
-
-  // const [animationSpeedState, setAnimationSpeedState] = useState(0);
-  
-  // function animationSpeedSliderChange(event) {
-  //   setAnimationSpeedState(event.target.value);
-  //   dispatchREDUX(animationDurationChange((event.target.value / 100).toString()));
-  // }
-
   /**
    * array of led objects that only contain the information needed
    * use .map() in react to create elements with unique keys
@@ -208,12 +188,6 @@ const BigLedBox = () => {
   function createLedObjectsArray() {
     for (let i = 1; i < 33; i++) {
       leds.push(
-        // <>
-        //   <div
-        //    className={`led${i}-${num}`}
-        //    key={`led${i}-${num}`}
-        //   ></div>
-        // </>
         {
           ledNumber: i,
         }
@@ -327,36 +301,10 @@ const BigLedBox = () => {
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
-
-
-  //preset style variables here
-
   
   return (
     <>
       <main className="box-style">
-        {/* <div className="slidecontainer">
-          <input 
-            type="range" 
-            min="0" 
-            max="100" 
-            value={animationDelayState} 
-            className="slider" 
-            id="myRange"
-            onChange={animationDelaySliderChange}
-          />
-          <p style={{color: 'white'}}>animation delay: {animationDelayState}</p> */}
-          {/* <input 
-            type="range" 
-            min="0" 
-            max="100" 
-            value={animationSpeedState} 
-            className="slider" 
-            id="myRange"
-            onChange={animationSpeedSliderChange}
-          />
-          <p style={{color: 'white'}}>animation speed: {animationSpeedState}</p>
-        </div> */}
         <section 
           style={{
             position: 'relative',
@@ -385,7 +333,7 @@ const BigLedBox = () => {
                     color: 'white'
                   }}
                 >
-                  To see the Disabled Presets, Log in or Sign up! Also save your own Default Preset!
+                  To see the Disabled Presets, Log in or Sign up to use those and also save your own Default login Preset!
                 </span>
               </>
             )

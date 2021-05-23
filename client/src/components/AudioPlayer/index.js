@@ -72,7 +72,7 @@ function AudioPlayerComponent() {
   }
 
   //volume slider state
-  const [volumeState, setVolumeState] = useState(0.005);
+  const [volumeState, setVolumeState] = useState(0);
   function handleVolumeChange(event, data) {
     setVolumeState(event.target.value || data)
   }
