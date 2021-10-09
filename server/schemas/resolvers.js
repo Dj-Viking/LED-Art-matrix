@@ -4,6 +4,9 @@ const { signToken } = require('../utils/auth');
 require('dotenv').config();
 const fetch = require('node-fetch');
 const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
+const uuid = require("uuid");
+const { APP_DOMAIN_PREFIX } = require('../constants');
+const { sendEmail } = require('../utils/sendEmail');
 
 const resolvers = {
   Query: {
@@ -451,6 +454,45 @@ const resolvers = {
 
       const token = signToken(user);
       return { token, user };
+    },
+    /**
+     * 
+     * @param {unknown} parent dont remember what this is
+     * @param {{email: string}} args args sent by the client mutation hook
+     * @param {unknown} context dont remember what this is either
+     */
+    forgotPassword: async (parent, { email }, context) => {
+      
+      const resetToken = uuid.v4();
+      
+      //sign a new token with some uuid and a new expiration
+      const token = signToken({
+        uuid: resetToken,
+        resetEmail: email,
+        exp: "5m"
+      });
+      //send to the email sent in the args include a link in the email with the token in the URL params
+      // for both dev and prod domains
+
+      const sendEmailArgs = {
+        fromHeader: "something",
+        mailTo: email,
+        subject: "reset password",
+        mailHtml: `
+        <h1>This is a reset password test</h1>
+        <a href="${APP_DOMAIN_PREFIX}/changepass/${token}">Reset Your Password</a>
+        `
+      }
+
+      console.log("sending this as args", sendEmailArgs);
+
+      await sendEmail(sendEmailArgs);
+      
+      
+      return {
+        done: true,
+        token
+      };
     }
   }
 };

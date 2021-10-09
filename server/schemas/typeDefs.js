@@ -56,6 +56,11 @@ const typeDefs = gql`
     user: User
   }
 
+  type ForgotResponse {
+    token: String
+    done: Boolean
+  }
+
   type Query {
     getGifs: [Gif]
 
@@ -97,6 +102,10 @@ const typeDefs = gql`
       termCategory: String!,
       limit: String!
     ): SearchTerm
+
+    forgotPassword(
+      email: String!
+    ): ForgotResponse
 
     addUser(
       username: String!,
