@@ -56,6 +56,22 @@ const typeDefs = gql`
     user: User
   }
 
+  type ForgotResponse {
+    done: Boolean
+    error: MyCustomError
+  }
+  
+  type ChangePasswordResponse {
+    done: Boolean
+    token: String
+    error: MyCustomError
+  }
+
+  type MyCustomError {
+    field: String
+    message: String
+  }
+
   type Query {
     getGifs: [Gif]
 
@@ -97,6 +113,15 @@ const typeDefs = gql`
       termCategory: String!,
       limit: String!
     ): SearchTerm
+
+    forgotPassword(
+      email: String!
+    ): ForgotResponse
+
+    changePassword(
+      token: String!
+      password: String!
+    ): ChangePasswordResponse
 
     addUser(
       username: String!,

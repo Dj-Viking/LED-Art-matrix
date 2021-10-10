@@ -105,7 +105,7 @@ const Signup = () => {
           type="text"
           name="username"
           onChange={handleChange}
-          placeholder="Username"
+          placeholder="my_username"
           className="form-username-input"
           autoComplete="off"
         />
@@ -119,7 +119,7 @@ const Signup = () => {
           type="email"
           name="email"
           onChange={handleChange}
-          placeholder="Email"
+          placeholder="example@email.com"
           className="form-email-input"
           autoComplete="off"
         />
@@ -134,7 +134,7 @@ const Signup = () => {
           type="password"
           name="password"
           onChange={handleChange}
-          placeholder="Password"
+          placeholder="***************"
           autoComplete="off"
         />
         {

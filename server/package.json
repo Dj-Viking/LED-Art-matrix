@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "watch": "nodemon",
+    "dev": "nodemon server.js",
     "seed": "node config/seeds.js"
   },
   "author": "Anders Ackerman",
@@ -19,9 +19,11 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.10",
     "node-fetch": "^2.6.1",
+    "nodemailer": "^6.6.5",
     "stripe": "^8.137.0"
   },
   "devDependencies": {
+    "@types/nodemailer": "^6.4.4",
     "nodemon": "^2.0.7"
   }
 }

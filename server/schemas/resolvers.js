@@ -4,6 +4,12 @@ const { signToken } = require('../utils/auth');
 require('dotenv').config();
 const fetch = require('node-fetch');
 const stripe = require('stripe')(process.env.STRIPE_TEST_KEY);
+const uuid = require("uuid");
+const { APP_DOMAIN_PREFIX } = require('../constants');
+const { sendEmail } = require('../utils/sendEmail');
+// const { decodeToken } = require("../utils/decodeToken");
+const bcrypt = require("bcrypt");
+const { verifyAsync } = require("../utils/verifyAsync");
 
 const resolvers = {
   Query: {
@@ -295,10 +301,12 @@ const resolvers = {
       return newSearchTerm;
     },
     addUser: async (parent, args, context) => {
-      console.log("checking context object when adding user");
-      //console.log(context);
       const user = await User.create(args);
-      const token = signToken(user);
+      const token = signToken({
+        username: user.username,
+        email: user.email,
+        _id: user._id
+      });
 
       return { token, user };
     },
@@ -451,6 +459,130 @@ const resolvers = {
 
       const token = signToken(user);
       return { token, user };
+    },
+    /**
+     * 
+     * @param {unknown} parent dont remember what this is
+     * @param {{email: string}} args args sent by the client mutation hook
+     * @param {unknown} context dont remember what this is either
+     * @returns {{done: boolean} | { error: { field: string, message: string } }} 
+     */
+    forgotPassword: async (parent, { email }, context) => {
+      try {
+        
+        //find the user first in the db, if can't be found just dont do anything and return done
+        const users = await User.find({ email });
+        // console.log("found users with email arg", users);
+        //return if theres no user to not send an email to a user int he database that dones't have that email
+        if (!users.length) return {
+          done: true,
+          error: null
+        }
+      
+        // console.log("what is context", context);
+        const resetToken = uuid.v4();
+        
+        //sign a new token with some uuid and a new expiration
+        const token = signToken({
+          uuid: resetToken,
+          resetEmail: email,
+          exp: "5m"
+        });
+        //send to the email sent in the args include a link in the email with the token in the URL params
+        // for both dev and prod domains
+  
+        const sendEmailArgs = {
+          fromHeader: "Password Reset",
+          subject: "Password Reset Request",
+          mailTo: email,
+          mailHtml:  `
+            <span>We were made aware that you request your password to be reset</span>
+            <p>If this wasn't you. Then please disregard this email. Thank you!</p>
+            <h2>This Request will expire after 5 minutes.</h2>
+            <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
+          `
+        }
+  
+        // console.log("sending this as args", sendEmailArgs);
+  
+        await sendEmail(sendEmailArgs);
+        
+        
+        return {
+          done: true,
+          error: null
+        };
+      } catch (error) {
+        return {
+          error: {
+            field: "error with forgot pass request",
+            message: error.message
+          }
+        }
+      }
+
+    },
+    /**
+     * 
+     * @param {unknown} parent dunno yet
+     * @param {{token: string, password: string}} args args passed for a change password request
+     * @param {unknown} context no idea what this is
+     * @returns {{done: boolean} | { error: { field: string, message: string } }} ChangePasswordResponse
+     */
+    changePassword: async (parent, args, context) => {
+      try {
+
+        const {
+          token,
+          password
+        } = args;
+
+        //verify the token first for expiration
+        const decoded = await verifyAsync(token);
+        if (/invalid/g.test(decoded)) {
+          throw new AuthenticationError("invalid token");
+        }
+        if (/expired/g.test(decoded)) {
+          throw new AuthenticationError("expired token");
+        }
+
+        //decode the token to get the user from the email signed into the token
+        // const decoded = decodeToken(token);
+        if (!decoded) throw new AuthenticationError("invalid token");
+
+        // console.log("what is decoded token", decoded);
+        // get the user based on the email from the decoded token
+  
+        //update the user table with the new hashed password
+        // const user = await User.findOne({ email: new RegExp(`${decoded.resetEmail}`, "g") });
+        // console.log("did we find a user from the email passwed in the token", user);
+
+        const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+
+        const filter = { email: decoded.resetEmail };
+        const update = { password: hashedPassword };
+        const updatedUser = await User.findOneAndUpdate(filter, update, {
+          new: true
+        });
+
+        const newToken = signToken({
+          username: updatedUser.username,
+          email: updatedUser.email,
+          _id: updatedUser._id
+        });
+
+        return {
+          done: true,
+          token: newToken
+        }
+      } catch (error) {
+        return {
+          error: {
+            field: "change pass error",
+            message: error.message
+          }
+        };
+      }
     }
   }
 };
