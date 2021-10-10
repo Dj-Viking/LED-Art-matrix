@@ -14,7 +14,7 @@ export function getRandomIntLimit(_min, _max) {
  * 
  * @param {String} storeName a string to match against to choose which object store to select you want to place an action on
  * @param {String} method a string to match against to determine which action to perform on the selected storeName
- * @param {{properties?: *}} object for put and delete static actions: Some object we pass in to manipulate in or out of the object store
+ * @param {{[key: string]: any}} object for put and delete static actions: Some object we pass in to manipulate in or out of the object store
  */
 export function idbPromise(storeName, method, object) {
   return new Promise ((resolve, reject) => {
