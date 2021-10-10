@@ -57,8 +57,18 @@ const typeDefs = gql`
   }
 
   type ForgotResponse {
-    token: String
     done: Boolean
+  }
+  
+  type ChangePasswordResponse {
+    done: Boolean
+    token: String
+    error: MyCustomError
+  }
+
+  type MyCustomError {
+    field: String
+    message: String
   }
 
   type Query {
@@ -106,6 +116,11 @@ const typeDefs = gql`
     forgotPassword(
       email: String!
     ): ForgotResponse
+
+    changePassword(
+      token: String!
+      password: String!
+    ): ChangePasswordResponse
 
     addUser(
       username: String!,

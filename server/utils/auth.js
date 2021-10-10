@@ -17,16 +17,15 @@ module.exports = {
         .trim();
     }
 
-    //console.log("token", token)
-
-
     if (!token) {
       return req;
     }
 
     try {
-      const { data } = jwt.verify(token, secret, { maxAge: expiration });
-      req.user = data;
+      const decoded = jwt.verify(token, secret, { maxAge: expiration });
+      console.log("did we get data from verify", decoded);
+      req.user = decoded;
+      console.log("what is the context user now", req.user);
     }
     catch {
       console.log('Invalid token');
@@ -34,13 +33,32 @@ module.exports = {
 
     return req;
   },
-  signToken: function ({ firstName, email, _id }) {
-    const payload = { firstName, email, _id };
-
-    return jwt.sign(
-      { data: payload },
-      secret,
-      { expiresIn: expiration }
-    );
-  }
+  /**
+   * 
+   * @param {{username: string, email: string, _id: string, resetEmail: string, uuid: string, exp: string}} args 
+   * @returns 
+   */
+  signToken: function (args) {
+    const { username, email, _id, resetEmail, uuid, exp } = args
+    switch(true) {
+      case Boolean(username && email && _id): {
+        return jwt.sign({
+          username,
+          email,
+          _id
+        },
+        secret,
+        { expiresIn: expiration });
+      }
+      case Boolean(resetEmail && uuid && exp): {
+        return jwt.sign({
+          uuid,
+          resetEmail
+        },
+        secret,
+        { expiresIn: exp });
+      }
+      default: return null;
+    }
+  },
 };

@@ -21,6 +21,8 @@ import SplashHeader from './components/SplashHeader';
 import Home from './pages/Home.js';
 import Login from './pages/Login.js';
 import Signup from './pages/Signup.js';
+import ForgotPassword from './pages/ForgotPassword.js';
+import ChangePassword from './pages/ChangePassword.js';
 
 //establish apollo client with apollo server
 const client = new ApolloClient({
@@ -46,6 +48,8 @@ const App = () => {
             <Route exact path="/" component={Home} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/signup" component={Signup} />
+            <Route exact path="/forgotPassword" component={ForgotPassword} />
+            <Route exact path="/changePassword/:token?" component={ChangePassword} />
           </Switch>
         </Router>
       </ApolloProvider>

@@ -1,5 +1,6 @@
 //REACT IMPORTS
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 //AUTH
 import Auth from '../utils/auth';
@@ -93,7 +94,7 @@ const Login = () => {
             name="email"
             id="email-login"
             onChange={handleChange}
-            placeholder="Your Email"
+            placeholder="example@email.com"
             className="form-email-input"
             autoComplete="off"
           />
@@ -108,7 +109,7 @@ const Login = () => {
             name="password"
             id="password-login"
             onChange={handleChange}
-            placeholder="Your Password"
+            placeholder="***************"
             className="form-password-input"
             autoComplete="off"
           />
@@ -127,6 +128,15 @@ const Login = () => {
           <div
             className="form-button-container"
           >
+            <div style={{display: "flex", justifyContent: "flex-end"}}>
+              <Link 
+                to="/forgotPassword"
+                style={{
+                  color: 'white',
+                  textDecoration: 'none'
+                }}
+              >Forgot Password?</Link>
+            </div>
             <button
               type="submit"
               disabled={false}
@@ -137,7 +147,23 @@ const Login = () => {
             {
               loading 
               ?
-              <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+              <>
+              <div style={{ display: "flex", justifyContent: "center"}}>
+                <span>Loading...</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "center"}}>
+                <div className="lds-roller">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </div>
+              </div>
+            </>
               : null
             }
           </div>
