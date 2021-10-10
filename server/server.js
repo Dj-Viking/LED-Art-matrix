@@ -112,6 +112,7 @@ if (process.env.NODE_ENV === 'production') {
 
 //OPEN DATABASE AND THEN START SERVER
 db.once('open', () => {
+  console.log("do opened");
   app.listen(PORT, () => {
     //SERVER LISTENING ON PORT
     setTimeout(() => {
