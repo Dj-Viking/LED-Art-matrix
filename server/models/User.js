@@ -37,13 +37,6 @@ const userSchema = new Schema({
     ref: 'SearchTerm'
   }
 });
-
-userSchema.virtual('pass')
-    // set methods
-    .set(function (password) {
-        this._password = password;
-    });
-
 /**
  * set up pre-save middleware to create password
  * 

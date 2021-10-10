@@ -1,5 +1,8 @@
 const jwt = require("jsonwebtoken");
-const SECRET = process.env.SECRET;
+const {
+  SECRET,
+  EXPIRATION
+} = process.env;
 /**
    * 
    * @param {string} token input token to verify
@@ -8,7 +11,7 @@ const SECRET = process.env.SECRET;
  async function verifyAsync(token) {
   let returnMe;
   return new Promise((resolve) => {
-    jwt.verify(token, SECRET, { maxAge: process.env.EXPIRATION }, (err, decoded) => {
+    jwt.verify(token, SECRET, { maxAge: EXPIRATION }, (err, decoded) => {
       if (err && err.message.includes("invalid")) returnMe = "invalid token";
       if (err && err.message.includes("expired")) returnMe = "expired token";
       if (err && err.message.includes("malformed")) returnMe = "invalid token";

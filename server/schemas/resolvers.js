@@ -491,12 +491,14 @@ const resolvers = {
       // for both dev and prod domains
 
       const sendEmailArgs = {
-        fromHeader: "something",
+        fromHeader: "Password Reset",
+        subject: "Password Reset Request",
         mailTo: email,
-        subject: "reset password",
-        mailHtml: `
-        <h1>This is a reset password test</h1>
-        <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset Your Password</a>
+        mailHtml:  `
+          <span>We were made aware that you request your password to be reset</span>
+          <p>If this wasn't you. Then please disregard this email. Thank you!</p>
+          <h2>This Request will expire after 5 minutes.</h2>
+          <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
         `
       }
 

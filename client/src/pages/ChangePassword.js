@@ -47,7 +47,7 @@ const ChangePassword = () => {
         {
           variables: {
             password: password,
-            token: urlParam
+            token: urlParam || ""
           }
         }
       );
