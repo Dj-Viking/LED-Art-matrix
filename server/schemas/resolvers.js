@@ -465,7 +465,7 @@ const resolvers = {
      * @param {unknown} parent dont remember what this is
      * @param {{email: string}} args args sent by the client mutation hook
      * @param {unknown} context dont remember what this is either
-     * @returns {boolean} 
+     * @returns {{done: boolean} | { error: { field: string, message: string } }} 
      */
     forgotPassword: async (parent, { email }, context) => {
 
@@ -517,7 +517,7 @@ const resolvers = {
      * @param {unknown} parent dunno yet
      * @param {{token: string, password: string}} args args passed for a change password request
      * @param {unknown} context no idea what this is
-     * @returns {{done: boolean}} ChangePasswordResponse
+     * @returns {{done: boolean} | { error: { field: string, message: string } }} ChangePasswordResponse
      */
     changePassword: async (parent, args, context) => {
       try {
