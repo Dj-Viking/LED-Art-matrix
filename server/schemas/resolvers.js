@@ -571,7 +571,7 @@ const resolvers = {
             field: "change pass error",
             message: error.message
           }
-        }
+        };
       }
     }
   }
