@@ -34,7 +34,7 @@ module.exports = {
   /**
    * 
    * @param {{username?: string, email?: string, _id?: string, resetEmail?: string, uuid?: string, exp?: string}} args 
-   * @returns 
+   * @returns {string} jwt token as as string can be decoded into an object
    */
   signToken: function (args) {
     const { username, email, _id, resetEmail, uuid, exp } = args
