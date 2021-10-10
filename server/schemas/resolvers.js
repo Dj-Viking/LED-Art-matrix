@@ -468,49 +468,59 @@ const resolvers = {
      * @returns {{done: boolean} | { error: { field: string, message: string } }} 
      */
     forgotPassword: async (parent, { email }, context) => {
-
-      //find the user first in the db, if can't be found just dont do anything and return done
-      const users = await User.find({ email });
-      // console.log("found users with email arg", users);
-      //return if theres no user to not send an email to a user int he database that dones't have that email
-      if (!users.length) return {
-        done: true,
-        // token: "" 
+      try {
+        
+        //find the user first in the db, if can't be found just dont do anything and return done
+        const users = await User.find({ email });
+        // console.log("found users with email arg", users);
+        //return if theres no user to not send an email to a user int he database that dones't have that email
+        if (!users.length) return {
+          done: true,
+          error: null
+        }
+      
+        // console.log("what is context", context);
+        const resetToken = uuid.v4();
+        
+        //sign a new token with some uuid and a new expiration
+        const token = signToken({
+          uuid: resetToken,
+          resetEmail: email,
+          exp: "5m"
+        });
+        //send to the email sent in the args include a link in the email with the token in the URL params
+        // for both dev and prod domains
+  
+        const sendEmailArgs = {
+          fromHeader: "Password Reset",
+          subject: "Password Reset Request",
+          mailTo: email,
+          mailHtml:  `
+            <span>We were made aware that you request your password to be reset</span>
+            <p>If this wasn't you. Then please disregard this email. Thank you!</p>
+            <h2>This Request will expire after 5 minutes.</h2>
+            <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
+          `
+        }
+  
+        // console.log("sending this as args", sendEmailArgs);
+  
+        await sendEmail(sendEmailArgs);
+        
+        
+        return {
+          done: true,
+          error: null
+        };
+      } catch (error) {
+        return {
+          error: {
+            field: "error with forgot pass request",
+            message: error.message
+          }
+        }
       }
-    
-      // console.log("what is context", context);
-      const resetToken = uuid.v4();
-      
-      //sign a new token with some uuid and a new expiration
-      const token = signToken({
-        uuid: resetToken,
-        resetEmail: email,
-        exp: "5m"
-      });
-      //send to the email sent in the args include a link in the email with the token in the URL params
-      // for both dev and prod domains
 
-      const sendEmailArgs = {
-        fromHeader: "Password Reset",
-        subject: "Password Reset Request",
-        mailTo: email,
-        mailHtml:  `
-          <span>We were made aware that you request your password to be reset</span>
-          <p>If this wasn't you. Then please disregard this email. Thank you!</p>
-          <h2>This Request will expire after 5 minutes.</h2>
-          <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
-        `
-      }
-
-      // console.log("sending this as args", sendEmailArgs);
-
-      await sendEmail(sendEmailArgs);
-      
-      
-      return {
-        done: true,
-        // token
-      };
     },
     /**
      * 

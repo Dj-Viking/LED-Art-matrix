@@ -58,6 +58,7 @@ const typeDefs = gql`
 
   type ForgotResponse {
     done: Boolean
+    error: MyCustomError
   }
   
   type ChangePasswordResponse {
