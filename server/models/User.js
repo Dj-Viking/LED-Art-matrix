@@ -9,7 +9,8 @@ const userSchema = new Schema({
   username: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    unique: true
   },
   email: {
     type: String,
@@ -36,7 +37,6 @@ const userSchema = new Schema({
     ref: 'SearchTerm'
   }
 });
-
 /**
  * set up pre-save middleware to create password
  * 
@@ -60,6 +60,13 @@ userSchema.pre('save', async function(next) {
 
   next();
 });
+
+// userSchema.methods.updatePassword = async function(password) {
+//   const hashedPassword = await bcrypt.hash(password, Number(process.env.SALT));
+//   console.log("what is this", this);
+//   this.password = hashedPassword;
+//   console.log("new this", Date.now(), this);
+// }
 
 // compare the incoming password with the hashed password
 userSchema.methods.isCorrectPassword = async function(password) {

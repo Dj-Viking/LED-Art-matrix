@@ -1,5 +1,30 @@
 import gql from 'graphql-tag';
 
+
+export const FORGOT_PASSWORD = gql`
+  mutation forgotPassword($email: String!) {
+    forgotPassword(email: $email){
+      done
+      error {
+        field
+        message
+      }
+    }
+  }
+`;
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword($token: String!, $password: String!) {
+    changePassword(token: $token, password: $password){
+      done
+      token
+      error {
+        field
+        message
+      }
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation login
   (
