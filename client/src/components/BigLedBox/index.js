@@ -2,7 +2,15 @@
 import React, { useEffect } from 'react';
 
 //REACT SPRING
-import {useSpring, animated} from 'react-spring';
+import { useSpring, animated } from 'react-spring';
+import { 
+  _V2ButtonSpring, 
+  _rainbowButtonSpring, 
+  _wavesButtonSpring, 
+  _spiralButtonSpring, 
+  _fourSpiralsButtonSpring, 
+  _saveButtonSpring 
+} from "../SpringButtons";
 
 //STYLES
 import './rainbowV2/styles/style.scss';
@@ -50,66 +58,12 @@ import {
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
-  //springs
-  const rainbowButtonSpring = useSpring({
-    delay: 1000,
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1,
-    }
-  });
-
-  const V2ButtonSpring = useSpring({
-    delay: 1300,
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
-
-  const wavesButtonSpring = useSpring({
-    delay: 1500,
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
-
-  const spiralButtonSpring = useSpring({
-    delay: 1700,
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
-
-  const fourSpiralsButtonSpring = useSpring({
-    delay: 2000,
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
-
-  const saveButtonSpring = useSpring({
-    delay: 2300,
-    from: {
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
+  const V2ButtonSpring          = useSpring(_V2ButtonSpring);
+  const rainbowButtonSpring     = useSpring(_rainbowButtonSpring);
+  const wavesButtonSpring       = useSpring(_wavesButtonSpring);
+  const spiralButtonSpring      = useSpring(_spiralButtonSpring);
+  const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
+  const saveButtonSpring        = useSpring(_saveButtonSpring); 
 
 
   //REDUX DISPATCH
