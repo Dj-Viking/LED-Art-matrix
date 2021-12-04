@@ -1,28 +1,24 @@
 //NODE IMPORTS
 const path = require('path');
 require('dotenv').config();
-const { IS_PROD } = require("./constants");
+const { API_DOMAIN_PREFIX } = require("./constants");
 const express = require('express');
 const cors = require("cors");
 const app = express();
 const router = require("./router");
-const { CORS_PROD, CORS_DEV } = process.env;
 const PORT = process.env.PORT || 3001;
-console.log(CORS_PROD, CORS_DEV)
-const corsRegexp = (() => {
-  IS_PROD ? new RegExp(`${CORS_PROD}`, "g") : new RegExp(`http://localhost:3000`, "g")
-})();
+const corsRegexp = (() =>  new RegExp(API_DOMAIN_PREFIX, "g"))();
 //EXPRESS MIDDLEWARE FUNCTIONS
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+// this cors package is handling setting the correct headers for 
+// cross origin resource sharing between client and server
+app.use(cors({ origin: corsRegexp, credentials: true }));
 app.use(router);
 
 const db = require('./config/connection');
 const { Preset, SearchTerm } = require('./models');
 
-//USING ADD PRESET MUTATION TO SEED DATABASE WITH AVAILABLE CATEGORIES TO SEARCH
-// IN A DROPDOWN MENU
 async function seedSearchTerms() {
   //check if search terms exist
   const getSearchTerm = await SearchTerm.find();
@@ -39,7 +35,7 @@ async function seedSearchTerms() {
     console.log("\x1b[37m", "starting categories already seeded...", "\x1b[00m")
   }
 }
-//USING ADD PRESET MUTATION TO SEED DATABASE WITH EXISTING PRESETS
+
 async function seedPresets() {
   //check if presets exist already
   const presetInfo = await Preset.find();

@@ -31,7 +31,11 @@ class AuthService {
       return false;
     }
   }
-
+  /**
+   * 
+   * @param {string} token
+   * @returns {void} sets local storage token and redirects to home page
+   */
   login(token) {
     // Saves user token to localStorage
     localStorage.setItem('id_token', token);

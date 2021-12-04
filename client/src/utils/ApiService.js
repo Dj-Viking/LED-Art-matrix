@@ -14,16 +14,19 @@ class ApiService {
     headers = setInitialHeaders(headers);
     const { username, password, email } = args;
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URL + "/user", {
         method: 'POST',
-        body: JSON.stringify(
+        body: JSON.stringify({
           username,
           email,
-          password
-        ),
+          password,
+        }),
         headers,
       });
       const data = await res.json();
+      if (!data.token) {
+        throw new Error("can't login without a token");
+      }
       auth.login(data.token);
       return true;
     } catch (error) {
@@ -39,9 +42,6 @@ class ApiService {
   async login(args) {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
-    for (const [key, value] of Object.entries(headers)) {
-      console.log("key", key, "\nvalue", value);
-    }
     const { email, password } = args;
     try {
       const res = await fetch(API_URL + "/user/login", {
@@ -53,6 +53,9 @@ class ApiService {
         headers,
       });
       const data = await res.json();
+      if (!data.user.token) {
+        throw new Error("can't login without a token");
+      }
       auth.login(data.user.token);
       return true;
     } catch (error) {
@@ -70,7 +73,6 @@ class ApiService {
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
     try {
-      headers.append("authorization", `Bearer ${token}`);
       const res = await fetch(API_URL, {
         method: 'GET',
         headers,
@@ -92,11 +94,12 @@ class ApiService {
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
       headers = setAuthHeader(headers, token);
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URL + "/update-preset", {
         method: 'POST',
         body: JSON.stringify({ defaultPreset: name }),
         headers,
       });
+      auth.login(token)
       if (res.ok) return true;
     } catch (error) {
       console.error("error when updating default preset", error);

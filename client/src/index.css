@@ -28,7 +28,7 @@ code {
 .form-username-label {
   display: flex;
   flex-direction: column;
-  font-size: 2vw;
+  font-size: 30px;
   justify-content: center;
   color: white;  
 }
@@ -37,7 +37,7 @@ code {
   border-radius: 10px;
   border: none 3px var(--secondary-color);
   height: 50px;
-  font-size: 2vw;
+  font-size: 30px;
   box-shadow: 5px 5px 5px #505050;
   margin-bottom: 10px;
 }
@@ -45,7 +45,7 @@ code {
 .form-email-label {
   display: flex;
   flex-direction: column;
-  font-size: 2vw;
+  font-size: 30px;
   color: white;
 }
 
@@ -53,14 +53,14 @@ code {
   border-radius: 10px;
   border: none 3px var(--secondary-color);
   height: 50px;
-  font-size: 2vw;
+  font-size: 30px;
   box-shadow: 5px 5px 5px #505050;
   margin-bottom: 10px;
 }
 
 .form-password-label {
   display: flex;
-  font-size: 2vw;
+  font-size: 30px;
   flex-direction: column;
   color: white;  
 }
@@ -69,7 +69,7 @@ code {
   border-radius: 10px;
   border: none 3px var(--secondary-color);
   height: 50px;
-  font-size: 2vw;
+  font-size: 30px;
   box-shadow: 5px 5px 5px #505050;
   margin-bottom: 10px;
 }
@@ -91,7 +91,7 @@ code {
   background-color: rgb(94, 0, 245);
   padding: 10px;
   width: 100%;
-  font-size: 2vw;
+  font-size: 30px;
   border-radius: 10px;
   transition: 1s;
   margin-top: 10px;

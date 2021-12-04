@@ -163,54 +163,26 @@ const BigLedBox = () => {
   //   return elementText;
   // };
 
-  // async function handleSaveDefault(event) {
-  //   event.preventDefault();
-  //   event.persist();
-  //   // get the classname string split from the classname
-  //   //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
-  //   let presetString = 
-  //     event
-  //     .target
-  //       .parentElement
-  //         .parentElement
-  //           .parentElement
-  //             .children[1]
-  //               .firstChild
-  //                 .firstChild
-  //                 .className
-  //                 .split('led1-1')[1];
-  //   //check the presetdata from the query to get the preset ID to save to the user
-  //   // that matches the preset name acquired from the event
-  //   for (
-  //     let i = 0; 
-  //     i < presetQueryResponse.data.getPresets.length; 
-  //     i++
-  //   ){
-  //     if (
-  //       presetString === 
-  //       presetQueryResponse.data.getPresets[i].presetName  
-  //     ){
-  //       //console.log('found the preset');
-  //       console.log(presetQueryResponse.data.getPresets[i].presetName);
-  //       //use mutation
-  //       try {
-  //         await updateUserDefaultPreset
-  //         (
-  //           {
-  //             variables: {
-  //               _id: presetQueryResponse.data.getPresets[i]._id
-  //             }
-  //           }
-  //         );
-  //       } catch (error) {
-  //         console.error(error);
-  //       }
-  //       console.log('preset saved');
-  //     } else {
-  //       console.log('updating...');
-  //     }
-  //   }
-  // }
+  async function handleSaveDefault(event) {
+    event.preventDefault();
+    event.persist();
+    // get the classname string split from the classname
+    //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
+    let presetString = 
+      event
+      .target
+        .parentElement
+          .parentElement
+            .parentElement
+              .children[1]
+                .firstChild
+                  .firstChild
+                  .className
+                  .split('led1-1')[1];
+    //check the presetdata from the query to get the preset ID to save to the user
+    // that matches the preset name acquired from the event
+    
+  }
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
@@ -328,14 +300,14 @@ const BigLedBox = () => {
             </animated.button>
 
             {/* save as new login preset */}
-            {/* <animated.button
+            <animated.button
               style={saveButtonSpring}
               className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button-disabled'}
               disabled={Auth.loggedIn() ? false : true}//enable if logged in
               onClick={handleSaveDefault}
             >
               Save as Default
-            </animated.button> */}
+            </animated.button>
           </div>
         </section>
         <section
