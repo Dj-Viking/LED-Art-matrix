@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Preset } = require("../models");
 const { signToken } = require("../utils/signToken");
 const uuid = require("uuid");
 const UserController = {
@@ -13,6 +13,7 @@ const UserController = {
       const { username, email, password } = req.body;
       if (!Boolean(username && email && password)) return res.status(400).json({error: "missing username, email, or password in the signup request."});
       const newUser = await User.create({...req.body});
+      
       const token = signToken({
         username: newUser.username,
         email: newUser.email,
@@ -39,7 +40,8 @@ const UserController = {
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
-      return res.status(200).json({ preset: foundUser.defaultPreset });
+      const preset = await Preset.findOne({ _id: foundUser.defaultPreset._id });
+      return res.status(200).json({ preset });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error });
@@ -98,12 +100,10 @@ const UserController = {
         token
       }, { new: true });
 
-      //TODO maybe have to do separate query for default preset name
-      // depending if i get and ID string as the user's stored preset id
-      // or if it is the actual model that has the name as a string
+      const preset = await Preset.findOne({_id: updatedUser.defaultPreset});
 
       const returnUser = {
-        defaultPreset: updatedUser.defaultPreset,
+        defaultPreset: preset.presetName,
         token: updatedUser.token,
       }
       return res.status(200).json({ user: returnUser });

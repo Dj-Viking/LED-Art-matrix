@@ -1,16 +1,21 @@
 //NODE IMPORTS
 const path = require('path');
-// require('dotenv').config();
-// console.log(process.env.NODE_ENV);
-//EXPRESS IMPORTS AND SERVER PORT ASSIGN
-const PORT = process.env.PORT || 3001;
+require('dotenv').config();
+const { IS_PROD } = require("./constants");
 const express = require('express');
+const cors = require("cors");
 const app = express();
 const router = require("./router");
-
+const { CORS_PROD, CORS_DEV } = process.env;
+const PORT = process.env.PORT || 3001;
+console.log(CORS_PROD, CORS_DEV)
+const corsRegexp = (() => {
+  IS_PROD ? new RegExp(`${CORS_PROD}`, "g") : new RegExp(`http://localhost:3000`, "g")
+})();
 //EXPRESS MIDDLEWARE FUNCTIONS
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(router);
 
 const db = require('./config/connection');

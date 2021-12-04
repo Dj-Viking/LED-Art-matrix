@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const verifyAsync = require("./verifyAsync");
+const verifyAsync = require("../utils/verifyAsync");
 require('dotenv').config();
 const { EXPIRATION, SECRET } = process.env;
 
