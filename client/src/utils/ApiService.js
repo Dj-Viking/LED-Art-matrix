@@ -43,7 +43,8 @@ class ApiService {
     headers = setInitialHeaders(headers);
     const { email, password } = args;
     try {
-      const res = await fetch(API_URL + "/user/login", {
+      let res;
+      res = await fetch(API_URL + "/user/login", {
         method: 'POST',
         body: JSON.stringify({
           email,
@@ -51,6 +52,9 @@ class ApiService {
         }),
         headers,
       });
+      if (res.status === 400) {
+        return new Error("Invalid credentials");
+      }
       const data = await res.json();
       if (!data.user.token) {
         throw new Error("can't login without a token");
@@ -113,12 +117,16 @@ class ApiService {
   async getGifs() {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
-    const res = await fetch(API_URL + "/gifs/get", {
-      method: "GET",
-      headers,
-    });
-    const data = await res.json();
-    return data.gifs;
+    try {
+      const res = await fetch(API_URL + "/gifs/get", {
+        method: "GET",
+        headers,
+      });
+      const data = await res.json();
+      return data.gifs;
+    } catch (error) {
+      console.error("error when trying to get gifs", error);
+    }
   }
 }
 

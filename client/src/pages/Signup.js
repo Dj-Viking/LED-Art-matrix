@@ -44,11 +44,16 @@ const Signup = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      await API.signup({ username, email, password });
-      setLoading(false);
+      if (window.navigator.onLine) {
+        await API.signup({ username, email, password });
+        setLoading(false);
+      } else {
+        setError("\nInternet is disconnected, please try again later");
+      }
     } catch(err) {
       setLoading(false);
-      console.log(err);
+      setError(err.message);
+      console.log("error when signing up", err);
     }
   } 
 
@@ -82,7 +87,8 @@ const Signup = () => {
         >
           Username:
         </label>
-        <input 
+        <input
+          required 
           type="text"
           name="username"
           onChange={handleChange}
@@ -97,6 +103,7 @@ const Signup = () => {
           Email:
         </label>
         <input 
+          required
           type="email"
           name="email"
           onChange={handleChange}
@@ -111,6 +118,7 @@ const Signup = () => {
           Password:
         </label>
         <input 
+          required
           className="form-password-input"
           type="password"
           name="password"
@@ -127,6 +135,7 @@ const Signup = () => {
                 style={{color: 'red'}}
               >
                 An error happened during the signup process!
+                {error}
               </div>
             </>
           )

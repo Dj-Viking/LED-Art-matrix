@@ -49,12 +49,30 @@ const Login = () => {
   async function handleSubmit(event) {
     event.preventDefault();
     setLoading(true);
+    setError("");
     try {
-      await API.login({ email, password });
-      setLoading(false);
+      let booleanOrError;
+      if (window.navigator.onLine) {
+        booleanOrError = await API.login({ email, password });
+        console.log("what is boolean or error on login", booleanOrError);
+        switch(true) {
+          case !booleanOrError || (booleanOrError instanceof Error): {
+            setError(`${booleanOrError}`);
+          }
+          break;
+          case booleanOrError === true: {
+            setLoading(false);
+            setError("");
+          }
+        }
+        setLoading(false);
+      } else {
+        setError("\nInternet is disconnected, please try again later");
+      }
     } catch(err) {
       setLoading(false);
-      console.log(err);
+      setError(err.message);
+      console.log("error when logging in", err);
     }
   }
 
@@ -74,6 +92,7 @@ const Login = () => {
             Email: 
           </label>
           <input
+            required
             type="email"
             name="email"
             id="email-login"
@@ -88,7 +107,8 @@ const Login = () => {
           >
             Password:
           </label>
-          <input 
+          <input
+            required 
             type="password"
             name="password"
             id="password-login"
@@ -104,7 +124,7 @@ const Login = () => {
               <div
                 style={{color: 'red'}}
               >
-                The provided credentials were incorrect
+                {error}
               </div>
             )
             : null
