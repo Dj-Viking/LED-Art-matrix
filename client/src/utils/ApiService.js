@@ -107,6 +107,19 @@ class ApiService {
     }
     
   }
+  /**
+   * @returns {Promise<Array<string>>}
+   */
+  async getGifs() {
+    headers = clearHeaders(headers);
+    headers = setInitialHeaders(headers);
+    const res = await fetch(API_URL + "/gifs/get", {
+      method: "GET",
+      headers,
+    });
+    const data = await res.json();
+    return data.gifs;
+  }
 }
 
 export default new ApiService();

@@ -235,7 +235,7 @@ const resolvers = {
 
         //init tools
         let newGif = {};
-        const gifsArr = [];
+        let gifsArr = [];
         if (gifDB[0] === undefined) 
         {
           console.log('no gifs in the DB creating entries for the gifs in the DB');

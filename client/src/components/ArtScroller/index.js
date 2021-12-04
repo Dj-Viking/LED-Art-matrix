@@ -1,14 +1,16 @@
 //REACT IMPORTS
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 //REACT SPRING
-import {useSpring, animated, config} from 'react-spring';
+import { useSpring, animated } from 'react-spring';
+import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "../SpringButtons";
 
 //STYLES
 import './scrolling-styles/artScrollerLayoutStyle.css';
 
 //AUTH
-// import Auth from '../../utils/auth.js';
+import Auth from '../../utils/auth.js';
+import API from "../../utils/ApiService";
 
 //HELPERS
 import {
@@ -29,37 +31,15 @@ import {
 const ArtScroller = () => {
 
   //init button spring
-  const leftInitButtonSpring = useSpring({
-    config: config.wobbly,
-    delay: 100,
-    from: {
-      opacity: 0,
-      marginRight: '1000px' 
-    },
-    to: {
-      opacity: 1,
-      marginRight: '5px'
-    }
-  });
+  const leftInitButtonSpring      = useSpring(_leftInitButtonSpring);
 
-  //scroller on/off button spring
-  const scrollerOnOffButtonSpring = useSpring({
-    config: config.wobbly,
-    delay: 100,
-    from :{
-      opacity: 0
-    },
-    to: {
-      opacity: 1
-    }
-  });
+  const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
   
 
   useEffect(() => {
-
     return () => void 0;
   }, []);
 
@@ -78,7 +58,12 @@ const ArtScroller = () => {
     event.persist();
     if (figureIsOnState === false) setFigureIsOnState(true);
     try {
-      
+      const gifs = await API.getGifs();
+      if (Array.isArray(gifs)) {
+        if (!!gifs.length) {
+          dispatchREDUX(getGifs(gifs));
+        }
+      }
     } catch (error) {
       console.log("error when trying to get gifs", error);
     }

@@ -1,3 +1,4 @@
+import { config } from "react-spring";
 export const _rainbowButtonSpring = {
   delay: 1000,
   from: {
@@ -51,6 +52,32 @@ export const _fourSpiralsButtonSpring = {
 export const _saveButtonSpring = {
   delay: 2300,
   from: {
+    opacity: 0
+  },
+  to: {
+    opacity: 1
+  }
+};
+
+//init button spring
+export const _leftInitButtonSpring = {
+  config: config.wobbly,
+  delay: 100,
+  from: {
+    opacity: 0,
+    marginRight: '1000px' 
+  },
+  to: {
+    opacity: 1,
+    marginRight: '5px'
+  }
+};
+
+//scroller on/off button spring
+export const _scrollerOnOffButtonSpring = {
+  config: config.wobbly,
+  delay: 100,
+  from :{
     opacity: 0
   },
   to: {
