@@ -1,5 +1,5 @@
 //IMPORT REACT
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 
 //REACT SPRING
 import { useSpring, animated } from 'react-spring';
@@ -50,6 +50,8 @@ const BigLedBox = () => {
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
   const saveButtonSpring        = useSpring(_saveButtonSpring); 
 
+  //page loaded state
+  const [didRequestPreset, setDidRequestPreset] = useState(false);
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
@@ -65,10 +67,13 @@ const BigLedBox = () => {
   /**
    * @returns {string}
    */
-  const getPreset = useCallback(async () => {
+  const getDefaultPreset = useCallback(async () => {
+    setDidRequestPreset(true);
     try {
       const preset = await API.getDefaultPreset(Auth.getToken());
-      if (typeof preset === "string") return preset;
+      if (typeof preset === "string") {
+        return preset;
+      }
       else throw new TypeError(`preset returned was not a string! it's value was ${preset}`);
     } catch (error) {
       console.error("error when getting default preset in use callback", error);
@@ -80,14 +85,16 @@ const BigLedBox = () => {
   // : else load the blank preset name
   useEffect(() => {
     async function awaitThePresetCallback() {
-      const preset = await getPreset();
-      if (preset) {
-        dispatchREDUX(presetSwitch(preset))
+      if (Auth.loggedIn()) {
+        const preset = await getDefaultPreset();
+        if (preset) {
+          dispatchREDUX(presetSwitch(preset))
+        }
       }
     }
     awaitThePresetCallback();
     return void 0;
-  }, [getPreset, presetName, dispatchREDUX]);
+  }, [getDefaultPreset, didRequestPreset, dispatchREDUX]);
   
  
   
@@ -234,7 +241,10 @@ const BigLedBox = () => {
               style={rainbowButtonSpring}
               className="preset-button rainbow-anim"
               onClick={() => {
-                dispatchREDUX(presetSwitch(''))
+                dispatchREDUX(presetSwitch(''));
+                setTimeout(() => {
+                  document.querySelector("#led-box").scrollIntoView({ behavior: "smooth" });
+                }, 300);
               }}
             >
               <span
@@ -312,6 +322,7 @@ const BigLedBox = () => {
           </div>
         </section>
         <section
+          id="led-box"
           className="led-matrix-container"
         >
           {
