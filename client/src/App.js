@@ -1,12 +1,12 @@
 //IMPORT REACT
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 //ROUTER
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 // import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 //APOLLO
 import { ApolloProvider } from '@apollo/react-hooks';
-import ApolloClient from 'apollo-boost';
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
 
 // //AUTH
 import Auth from './utils/auth.js';
@@ -24,6 +24,8 @@ import Signup from './pages/Signup.js';
 import ForgotPassword from './pages/ForgotPassword.js';
 import ChangePassword from './pages/ChangePassword.js';
 
+const cache = new InMemoryCache();
+
 //establish apollo client with apollo server
 const client = new ApolloClient({
   request: (operation) => {
@@ -35,7 +37,8 @@ const client = new ApolloClient({
       }
     });
   },
-  uri: '/graphql'
+  cache,
+  uri: process.env.NODE_ENV === "production" ? "/graphql" : "http://localhost:3001/graphql"
 });
 
 const App = () => {
