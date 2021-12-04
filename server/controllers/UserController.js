@@ -40,7 +40,7 @@ const UserController = {
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
-      const preset = await Preset.findOne({ _id: foundUser.defaultPreset._id });
+      const preset = await Preset.findOne({ _id: foundUser.defaultPreset });
       return res.status(200).json({ preset });
     } catch (error) {
       console.error(error);

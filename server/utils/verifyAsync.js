@@ -12,7 +12,7 @@ const {
   let returnMe;
   return new Promise((resolve) => {
     jwt.verify(token, SECRET, { maxAge: EXPIRATION }, (err, decoded) => {
-      if (!!err.message) returnMe = err;
+      if (err !== null) returnMe = err;
       if (decoded) returnMe = decoded;
     });
     resolve(returnMe);

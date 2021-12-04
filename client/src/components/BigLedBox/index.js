@@ -1,5 +1,5 @@
 //IMPORT REACT
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 
 //REACT SPRING
 import { useSpring, animated } from 'react-spring';
@@ -23,6 +23,7 @@ import './ledLayoutStyle.css'
 //COMPONENTS
 import ArtScroller from '../ArtScroller';
 
+
 //maybe disable some "paid presets?"
 
 //future thought to translate the presets into DMX controls.
@@ -31,20 +32,14 @@ import ArtScroller from '../ArtScroller';
 
 //AUTH
 import Auth from '../../utils/auth.js';
+import API from "../../utils/ApiService";
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
 
 //ACTIONS
 import { 
-  //loadUserSplashConfig,
   presetSwitch,
-  //animationDelayChange,
-  //animationDurationChange,
-  //alphaFaderChange,
-  // eslint-disable-next-line
-  //invertSwitch,//feature after signing up
-  //savePresetName
 } from '../../actions/led-actions';
 
 const BigLedBox = () => {
@@ -58,37 +53,43 @@ const BigLedBox = () => {
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
-  //functions to create the columns and rows to render
+   //REDUX GLOBAL STATE
+   const ledChangeState = useSelector(state => state.ledChange);
+   //console.log(ledChangeState);
+ 
+   //REDUX piece of global state
+   const {
+     presetName,
+   } = ledChangeState;
 
-  //query get all presets in the database
-  // const {presetData} = useQuery(GET_PRESETS);
-
-  
-  //execute function on first page load
-  // get user default starting preset class name string
-  // const userQueryResponse = useQuery(USER_QUERY);
-  // // console.log('user query response');
-  // // console.log(userQueryResponse);
-
-  // const presetQueryResponse = useQuery(GET_PRESETS);
-  // console.log('preset query response');
-  // console.log(presetQueryResponse);
+  /**
+   * @returns {string}
+   */
+  const getPreset = useCallback(async () => {
+    try {
+      const preset = await API.getDefaultPreset(Auth.getToken());
+      if (typeof preset === "string") return preset;
+      else throw new TypeError(`preset returned was not a string! it's value was ${preset}`);
+    } catch (error) {
+      console.error("error when getting default preset in use callback", error);
+    }
+  }, [])
 
   //function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
   // : else load the blank preset name
   useEffect(() => {
-    return () => void 0;
-  }, []);
+    async function awaitThePresetCallback() {
+      const preset = await getPreset();
+      if (preset) {
+        dispatchREDUX(presetSwitch(preset))
+      }
+    }
+    awaitThePresetCallback();
+    return void 0;
+  }, [getPreset, presetName, dispatchREDUX]);
   
-  //REDUX GLOBAL STATE
-  const ledChangeState = useSelector(state => state.ledChange);
-  //console.log(ledChangeState);
-
-  //REDUX piece of global state
-  const {
-    presetName,
-  } = ledChangeState;
+ 
   
   /**
    * array of led objects that only contain the information needed

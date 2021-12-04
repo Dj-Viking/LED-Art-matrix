@@ -3,7 +3,6 @@ import { setInitialHeaders, clearHeaders, setAuthHeader } from "../utils/headers
 import { API_URL } from "../constants";
 let headers = {}
 class ApiService {
-  constructor() {}
   /**
    * 
    * @param {{username: string, email: string, password: string}} args 
@@ -66,21 +65,23 @@ class ApiService {
   /**
    * 
    * @param {string} token token from local storage
-   * @returns {string} preset name to set on the led box
+   * @returns {Promise<string | boolean} preset name to set on the led box
    */
   async getDefaultPreset(token){
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
     try {
-      const res = await fetch(API_URL, {
+      const res = await fetch(API_URL + "/user", {
         method: 'GET',
         headers,
       });
-      return await res.json().data.preset;
+      const data = await res.json();
+      if (!!data.error) throw new Error(`${data.error}`);
+      return data.preset.presetName;
     } catch (error) {
       console.error("error when getting default preset", error);
-      return error;
+      return false;
     }
   }
   /**
@@ -99,7 +100,6 @@ class ApiService {
         body: JSON.stringify({ defaultPreset: name }),
         headers,
       });
-      auth.login(token)
       if (res.ok) return true;
     } catch (error) {
       console.error("error when updating default preset", error);

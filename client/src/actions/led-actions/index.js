@@ -15,10 +15,15 @@ export const invertSwitch = (data) => {
     payload: data
   }
 }
-export const presetSwitch = (data) => {
+/**
+ * 
+ * @param {string} preset
+ * @returns 
+ */
+export const presetSwitch = (preset) => {
   return {
     type: 'PRESET_SWITCH',
-    payload: data
+    payload: preset
   };
 };
 export const animationDurationChange = (data) => {

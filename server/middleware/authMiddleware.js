@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const verifyAsync = require("../utils/verifyAsync");
+const { verifyAsync } = require("../utils/verifyAsync");
 require('dotenv').config();
 const { EXPIRATION, SECRET } = process.env;
 
@@ -14,14 +14,11 @@ module.exports = {
    */
   authMiddleware: function (req, res, next) {
     let token = null;
-
-    // ["Bearer", "<tokenvalue>"] 
-    //received by apollo server and the login mutation
+    
     if (req.headers && req.headers.authorization) {
-      token = token
-        .split(' ')
-        .pop()
-        .trim();
+      if (typeof req.headers.authorization === "string") {
+        token = req.headers.authorization.split(" ")[1].trim()
+      }
     }
 
     if (!token) {
@@ -37,7 +34,7 @@ module.exports = {
     })
     .catch((error) => {
       console.error(error);
-      return res.status(500).json({ error: error.message });
+      return res.status(500).json({ error: error.message || error });
     });
     
   },
