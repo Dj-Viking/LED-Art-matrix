@@ -16,7 +16,7 @@ import {
 } from '../../utils/helpers.js';
 
 //APOLLO GRAPHQL
-import {useLazyQuery} from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/client';
 //QUERIES
 import {
   GET_GIFS_CREATE_AND_OR_UPDATE
