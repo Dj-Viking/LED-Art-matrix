@@ -1,5 +1,7 @@
 const { User, Preset } = require("../models");
 const { signToken } = require("../utils/signToken");
+const { sendEmail } = require("../utils/sendEmail");
+const { APP_DOMAIN_PREFIX } = require("../constants");
 const uuid = require("uuid");
 const UserController = {
   /**
@@ -30,7 +32,7 @@ const UserController = {
   },
   /**
    * 
-   * @param {import("express").Request} req 
+   * @param {import("express").Request & { user: {_id: string, username: string, uuid: string, email: string, exp: number, iat: number}}} req 
    * @param {import("express").Response} res 
    * @returns {Promise<import("express").Response | void>}
    */
@@ -49,7 +51,7 @@ const UserController = {
   },
   /**
    * 
-   * @param {import("express").Request} req 
+   * @param {import("express").Request & { user: {_id: string, username: string, uuid: string, email: string, exp: number, iat: number}}} req 
    * @param {import("express").Response} res 
    * @returns {Promise<import("express").Response | void>}
    */
@@ -118,6 +120,56 @@ const UserController = {
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error});
+    }
+  },
+  /**
+   * 
+   * @param {import("express").Request} req 
+   * @param {import("express").Response} res 
+   * @returns {Promise<import("express").Response | void>}
+   */
+  forgotPassword: async function (req, res) {
+    try {
+      const { email } = req.body;
+      const user = await User.findOne({ email });
+      //dont return anything else just a 204 status code which will not carry a response body
+      if (user === null) return res.status(200).json({message: "success"})
+
+      const resetUuid = uuid.v4();
+      const token = signToken({
+        uuid: resetUuid,
+        resetEmail: email,
+        exp: "5m"
+      });
+      
+      const sendEmailArgs = {
+        fromHeader: "Password Reset",
+        subject: "Password Reset Request",
+        mailTo: email,
+        mailHtml:  `
+          <span>We were made aware that you request your password to be reset</span>
+          <p>If this wasn't you. Then please disregard this email. Thank you!</p>
+          <h2>This Request will expire after 5 minutes.</h2>
+          <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
+        `,
+      }
+      
+      await sendEmail(sendEmailArgs);
+
+      return res.status(200).json({message: "success"});
+
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: error.message || error });
+    }
+  },
+  getAllUsers: async function(req, res) {
+    try {
+      const all = await User.find();
+      return res.status(200).json({ all });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: error.message || error });
     }
   }
 };

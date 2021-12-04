@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import API from "../utils/ApiService";
 
 //audio player and big led box
 const ForgotPassword = () => {
@@ -13,37 +14,20 @@ const ForgotPassword = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      // const forgotResponse = await forgotPassword
-      // (
-      //   {
-      //     variables: {
-      //       email: email,
-      //     }
-      //   }
-      // );
-      // console.log("check forgot response", forgotResponse);
-      // if (
-      //   forgotResponse.data && 
-      //   forgotResponse.data.forgotPassword && 
-      //   !forgotResponse.data.forgotPassword.hasOwnProperty("errors")
-      // ) {
-      //   console.log("no errors!!");
-      //   setTimeout(() => {
-      //     window.location.replace("/");
-      //   }, 4000);
-      //   setTimeout(() => {
-      //     setLoading(false);
-      //   }, 5000);
-      // }
-      throw new Error("forgot password not done yet");
+      if (!window.navigator.onLine) throw new Error("Internet is disconnected, please try again later.");
+      await API.forgotPassword(email);
+      setTimeout(() => {
+        setLoading(false);
+      }, 5000);
     } catch(err) {
       setLoading(false);
+      setError(err.message);
       console.error(err);
     }
   }
 
   const handleChange = (event) => {
-    if (event.target.type === "text") {
+    if (event.target.type === "email") {
       setEmail(event.target.value);
     }
   }
@@ -58,7 +42,8 @@ const ForgotPassword = () => {
             Email to send the reset request: 
           </label>
           <input
-            type="text"
+            required
+            type="email"
             name="email"
             id="email-login"
             value={email}
@@ -71,13 +56,13 @@ const ForgotPassword = () => {
           Submit
         </button>
         {//login error rendering
-          error && error.message
+          error 
           ?
           (
             <div
               style={{color: 'red'}}
             >
-              {` ${error && error.message ? `${error.message}` : ""}`}
+              {error}
             </div>
           )
           : null

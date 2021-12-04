@@ -128,6 +128,26 @@ class ApiService {
       console.error("error when trying to get gifs", error);
     }
   }
+  /**
+   * 
+   * @param {string} email 
+   * @returns {Promise<void | boolean>}
+   */
+  async forgotPassword(email) {
+    try {
+      headers = clearHeaders(headers);
+      headers = setInitialHeaders(headers);
+      let res;
+      res = await fetch(API_URL + "/user/forgot", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+        headers
+      });
+
+    } catch (error) {
+      console.error("error when submitting forgot password request", error);
+    }
+  }
 }
 
 export default new ApiService();

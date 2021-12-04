@@ -1,7 +1,7 @@
 require('dotenv').config();
 const nodemailer = require("nodemailer");
 
-
+const { NODEMAILER_AUTH_EMAIL, NODEMAILER_AUTH_PASS } = process.env;
 
 /**
  * 
@@ -29,15 +29,15 @@ async function sendEmail(args/*: MySendEmailOptions*/) /*: Promise<void>*/ {
     secure: false, // true for 465, false for other ports
     //If port 587 is blocked, port 2525 makes a good alternative.
     auth: {
-      user: process.env.NODEMAILER_AUTH_EMAIL, // ethereal doesn't work anymore
-      pass: process.env.NODEMAILER_AUTH_PASS, // ethereal doesn't work anymore
+      user: NODEMAILER_AUTH_EMAIL, // ethereal doesn't work anymore
+      pass: NODEMAILER_AUTH_PASS, // ethereal doesn't work anymore
     },
   });
   // console.log("creating transporter", transporter);
 
   // send mail with defined transport object
   let info = await transporter.sendMail({
-    from: `${fromHeader} <${process.env.NODEMAILER_AUTH_EMAIL}>`, // sender address
+    from: `${fromHeader} <${NODEMAILER_AUTH_EMAIL}>`, // sender address
     to: mailTo, // list of receivers
     subject: subject, // Subject line
     html: mailHtml
