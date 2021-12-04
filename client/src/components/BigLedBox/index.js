@@ -50,7 +50,7 @@ const BigLedBox = () => {
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
   const saveButtonSpring        = useSpring(_saveButtonSpring); 
 
-  //page loaded state
+  //did request preset state
   const [didRequestPreset, setDidRequestPreset] = useState(false);
 
   //REDUX DISPATCH
@@ -65,7 +65,7 @@ const BigLedBox = () => {
    } = ledChangeState;
 
   /**
-   * @returns {string}
+   * @returns {Promise<string>}
    */
   const getDefaultPreset = useCallback(async () => {
     setDidRequestPreset(true);
@@ -87,8 +87,8 @@ const BigLedBox = () => {
     async function awaitThePresetCallback() {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
-        if (preset) {
-          dispatchREDUX(presetSwitch(preset))
+        if (typeof preset === "string") {
+          dispatchREDUX(presetSwitch(preset));
         }
       }
     }
@@ -174,8 +174,7 @@ const BigLedBox = () => {
   async function handleSaveDefault(event) {
     event.preventDefault();
     event.persist();
-    // get the classname string split from the classname
-    //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
+    // get the classname string split from the classname of one of the led's being displayed
     let presetString = 
       event
       .target
@@ -187,9 +186,9 @@ const BigLedBox = () => {
                   .firstChild
                   .className
                   .split('led1-1')[1];
-    //check the presetdata from the query to get the preset ID to save to the user
-    // that matches the preset name acquired from the event
-    
+
+    console.log("preset string", presetString);
+    await API.updateDefaultPreset({ name: presetString, token: Auth.getToken() });
   }
 
   createLedObjectsArray(33);

@@ -65,7 +65,7 @@ class ApiService {
   /**
    * 
    * @param {string} token token from local storage
-   * @returns {Promise<string | boolean} preset name to set on the led box
+   * @returns {Promise<string | boolean>} preset name to set on the led box
    */
   async getDefaultPreset(token){
     headers = clearHeaders(headers);
@@ -87,7 +87,7 @@ class ApiService {
   /**
    * 
    * @param {{name: string, token: string}} args 
-   * @returns {Promise<boolean | Error>} 
+   * @returns {Promise<void | Error>} 
    */
   async updateDefaultPreset(args) {
     try {
@@ -95,12 +95,12 @@ class ApiService {
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
       headers = setAuthHeader(headers, token);
-      const res = await fetch(API_URL + "/update-preset", {
-        method: 'POST',
+      const res = await fetch(API_URL + "/user/update-preset", {
+        method: 'PUT',
         body: JSON.stringify({ defaultPreset: name }),
         headers,
       });
-      if (res.ok) return true;
+      if (res.ok) return void 0;
     } catch (error) {
       console.error("error when updating default preset", error);
       return error;

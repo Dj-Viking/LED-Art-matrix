@@ -45,7 +45,7 @@ async function seedPresets() {
     (
       [
         {
-          presetName: ''
+          presetName: 'rainbowTest'
         },
         {
           presetName: 'V2'
