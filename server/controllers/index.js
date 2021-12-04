@@ -1,5 +1,6 @@
 const { UserController } = require("./UserController");
-
+const { GifsController } = require("./GifsController");
 module.exports = {
-  UserController
+  UserController,
+  GifsController
 };
