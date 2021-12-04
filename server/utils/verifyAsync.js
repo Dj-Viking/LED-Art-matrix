@@ -6,7 +6,7 @@ const {
 /**
    * 
    * @param {string} token input token to verify
-   * @returns {Promise<{username?: string, email?: string, _id?: string, resetEmail?: string, uuid?: string, exp?: string}>} a decoded profile token
+   * @returns {Promise<{username?: string, email?: string, _id?: string, resetEmail?: string, uuid?: string, exp?: string} | Error | void>} a decoded profile token
    */
  async function verifyAsync(token) {
   let returnMe;

@@ -57,7 +57,7 @@ const userSchema = new Schema({
 let user_schema_presave_middleware_info;
 userSchema.pre('save', async function(next) {
   //checking if isNew property is a truthy value, 
-  if (this.isNew || this.isModified('password')) {
+  if (this.isNew) {
     this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
   }
 

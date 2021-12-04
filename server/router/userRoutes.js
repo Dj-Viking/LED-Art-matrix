@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { UserController } = require("../controllers");
 const { authMiddleware, accessControl } = require("../middleware");
-const { getUserDefaultPreset, getAllUsers, login, updateDefaultPreset, signup, forgotPassword } = UserController;
+const { getUserDefaultPreset, getAllUsers, login, updateDefaultPreset, signup, forgotPassword, changePassword } = UserController;
 
 router.route("/")
   .get(accessControl, authMiddleware, getUserDefaultPreset)
@@ -18,5 +18,7 @@ router.route("/login")
 
 router.route("/forgot")
   .post(accessControl, forgotPassword);
+
+router.route("/change-pass").put(changePassword)
 
 module.exports = router;

@@ -1,6 +1,8 @@
 const { User, Preset } = require("../models");
 const { signToken } = require("../utils/signToken");
 const { sendEmail } = require("../utils/sendEmail");
+const { verifyAsync } = require("../utils/verifyAsync");
+const bcrypt = require("bcrypt");
 const { APP_DOMAIN_PREFIX } = require("../constants");
 const uuid = require("uuid");
 const UserController = {
@@ -163,7 +165,42 @@ const UserController = {
       return res.status(500).json({ error: error.message || error });
     }
   },
-  getAllUsers: async function(req, res) {
+  /**
+   * 
+   * @param {import("express").Request} req 
+   * @param {import("express").Response} res 
+   * @returns {Promise<import("express").Response | void>}
+   */
+  changePassword: async function(req, res) {
+    try {
+      const { password, token } = req.body;
+      const decoded = await verifyAsync(token);
+      if ((decoded instanceof Error)) 
+        return res.status(403).json({ error: decoded });
+      
+      
+      const hashed = await bcrypt.hash(password, Number(process.env.SALT));
+      const user = await User.findOneAndUpdate({ email:  decoded.resetEmail }, {
+        password: hashed
+      }, { new: true });
+      if (user === null) 
+        return res.status(400).json({ error: "unable to complete this request" });
+
+      const newToken = signToken({
+        username: user.username,
+        email: user.email,
+        _id: user._id,
+        uuid: uuid.v4()
+      });
+
+      return res.status(200).json({ done: true, token: newToken });
+
+    } catch (error) {
+      console.error("error when changing password", error);
+      return res.status(500).json({ error: error.message || error });
+    }
+  },
+  getAllUsers: async function(_, res) {
     try {
       const all = await User.find();
       return res.status(200).json({ all });

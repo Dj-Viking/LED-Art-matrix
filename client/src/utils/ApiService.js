@@ -148,6 +148,31 @@ class ApiService {
       console.error("error when submitting forgot password request", error);
     }
   }
+
+  /**
+   * 
+   * @param {{password: string, token: string}} args 
+   * @returns {Promise<{done: true, token: string}>}
+   */
+  async changePassword(args) {
+    try {
+      headers = clearHeaders(headers);
+      headers = setInitialHeaders(headers);
+      const { password, token } = args;
+      let res;
+      res = await fetch(API_URL + `/user/change-pass`, {
+        method: "PUT",
+        body: JSON.stringify({ password, token }),
+        headers,
+      });
+      if (res.status !== 200) 
+        throw new Error("Couldn't change password at this time");
+      const data = await res.json();
+      return data;
+    } catch (error) {
+      console.error("error when changing password", error);
+    }
+  }
 }
 
 export default new ApiService();

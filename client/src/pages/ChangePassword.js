@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 //AUTH
 import Auth from '../utils/auth';
+import API from "../utils/ApiService";
 
 //audio player and big led box
 const ChangePassword = () => {
@@ -13,19 +14,19 @@ const ChangePassword = () => {
   //if i dont explicitly use the name i defined in my schema the mutation result shape will only contain
   // the shape of the defined schema
 
-  const [ urlParam, setUrlParam ] = useState("");
+  const [ urlToken, setUrlParam ] = useState("");
 
   useEffect(() => {
     //get the token inside the URL
-    // console.log("url params initially", urlParam);
-    // if (window && window.location && window.location.pathname) {
-    //   console.log("we have a window and a pathname", window.location.pathname);
-    //   const token = window.location.pathname.split("/")[2];
-    //   setUrlParam(token);
-    //   console.log("what is params state now should be a token", urlParam);
-    // }
-    return () => void 0;
-  }, [urlParam, setUrlParam]);
+    console.log("url params initially", urlToken);
+    if (window && window.location && window.location.pathname) {
+      console.log("we have a window and a pathname", window.location.pathname);
+      const token = window.location.pathname.split("/")[2];
+      setUrlParam(token);
+      console.log("what is params state now should be a token", urlToken);
+    }
+    return void 0;
+  }, [urlToken, setUrlParam]);
       
   function comparePassword(newPass, confirmPass) {
     if (newPass !== confirmPass) return false;
@@ -40,13 +41,14 @@ const ChangePassword = () => {
     const isMatched = comparePassword(password, confirmPass);
     if (!isMatched) {
       setLoading(false);
-      return setErrMsg("Passwords do not match.");
+      return setError("Passwords do not match.");
     } else {
-      setErrMsg("");
+      setError("");
     }
     
     try {
-      throw new Error("change password page not done yet");
+      const res = await API.changePassword({ password, token: urlToken });
+      if (res.done) Auth.login(res.token);
     } catch(err) {
       setLoading(false);
       console.log(err);
@@ -105,13 +107,13 @@ const ChangePassword = () => {
           Submit
         </button>
         {//login error rendering
-          error || errMsg
+          error
           ?
           (
             <div
               style={{color: 'red'}}
             >
-              {` ${error && error.message ? `${error.message || errMsg}` : `${errMsg}`}`}
+              {error}
             </div>
           )
           : null
