@@ -15,17 +15,8 @@ import {
   getRandomIntLimit,
 } from '../../utils/helpers.js';
 
-//APOLLO GRAPHQL
-import { useLazyQuery } from '@apollo/client';
-//QUERIES
-import {
-  GET_GIFS_CREATE_AND_OR_UPDATE
-} from '../../utils/queries.js';
 
 //MUTATIONS
-import {
-  //UPDATE_USER_SEARCH_TERM
-} from '../../utils/mutations.js';
 
 //REDUX
 import { useSelector, useDispatch } from 'react-redux';
@@ -65,19 +56,12 @@ const ArtScroller = () => {
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
-
-  const [getGifsQuery, { loading, data }] = useLazyQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
   
 
   useEffect(() => {
-    if (!loading) {
-      if (!!data) {
-        console.log("got gif data after done loading", data);
-        dispatchREDUX(getGifs(data.getGifsCreateAndOrUpdate))
-      }
-    }
+
     return () => void 0;
-  }, [loading, data, dispatchREDUX]);
+  }, []);
 
 
   //OBSERVE GLOBAL STATE
@@ -94,7 +78,7 @@ const ArtScroller = () => {
     event.persist();
     if (figureIsOnState === false) setFigureIsOnState(true);
     try {
-      getGifsQuery();
+      
     } catch (error) {
       console.log("error when trying to get gifs", error);
     }

@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 
 //AUTH
 import Auth from '../utils/auth';
-
-//GRAPHQL IMPORTS
-import { useMutation } from '@apollo/react-hooks';
-import { LOGIN } from '../utils/mutations';
+import API from "../utils/ApiService";
 
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
@@ -23,6 +20,7 @@ import {
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   //OBSERVE GLOBAL LOGIN FORM STATE
   const loginFormState = useSelector(state => state.loginForm)
   //console.log(loginFormState);
@@ -36,9 +34,6 @@ const Login = () => {
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
-
-  //GRAPHQL LOGIN MUTATION
-  const [login, { error }] = useMutation(LOGIN);
 
   function handleChange(event) {
     if (event.target.type === 'email') {
@@ -55,18 +50,7 @@ const Login = () => {
     event.preventDefault();
     setLoading(true);
     try {
-      const mutationResponse = await login
-      (
-        {
-          variables: {
-            email: email,
-            password: password
-          }
-        }
-      );
-      const token = mutationResponse.data.login.token;
-      //authorize token and send user to home page
-      Auth.login(token);
+      await API.login({ email, password });
       setLoading(false);
     } catch(err) {
       setLoading(false);

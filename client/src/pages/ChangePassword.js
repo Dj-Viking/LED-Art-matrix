@@ -1,37 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import {useMutation} from '@apollo/react-hooks';
-
-import { CHANGE_PASSWORD } from '../utils/mutations';
 //AUTH
 import Auth from '../utils/auth';
 
 //audio player and big led box
 const ChangePassword = () => {
 
+  const [ error, setError ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const [ errMsg, setErrMsg ] = useState("");
   const [ password, setPassword ] = useState(""); 
   const [ confirmPass, setConfirmPass ] = useState("");
   //if i dont explicitly use the name i defined in my schema the mutation result shape will only contain
   // the shape of the defined schema
-  const [changePassword, { error }] = useMutation(CHANGE_PASSWORD);
 
   const [ urlParam, setUrlParam ] = useState("");
 
   useEffect(() => {
     //get the token inside the URL
-    console.log("url params initially", urlParam);
-    if (window && window.location && window.location.pathname) {
-      console.log("we have a window and a pathname", window.location.pathname);
-      const token = window.location.pathname.split("/")[2];
-      setUrlParam(token);
-      console.log("what is params state now should be a token", urlParam);
-    }
+    // console.log("url params initially", urlParam);
+    // if (window && window.location && window.location.pathname) {
+    //   console.log("we have a window and a pathname", window.location.pathname);
+    //   const token = window.location.pathname.split("/")[2];
+    //   setUrlParam(token);
+    //   console.log("what is params state now should be a token", urlParam);
+    // }
+    return () => void 0;
   }, [urlParam, setUrlParam]);
+      
+  function comparePassword(newPass, confirmPass) {
+    if (newPass !== confirmPass) return false;
+    else return true;
+  }
 
   async function submitChangePassword(event) {
     event.preventDefault();
     setLoading(true);
+
 
     const isMatched = comparePassword(password, confirmPass);
     if (!isMatched) {
@@ -42,38 +46,7 @@ const ChangePassword = () => {
     }
     
     try {
-      const changeResponse = await changePassword
-      (
-        {
-          variables: {
-            password: password,
-            token: urlParam || ""
-          }
-        }
-      );
-      console.log("check change response", changeResponse);
-      if (
-        changeResponse.data && 
-        changeResponse.data.changePassword && 
-        changeResponse.data.changePassword.error
-      ){
-        setLoading(false);
-        setErrMsg(changeResponse.data.changePassword.error.message);
-      }
-      if (
-        changeResponse.data && 
-        changeResponse.data.changePassword && 
-        !changeResponse.data.changePassword.error
-      ) {
-        console.log("no errors!!");
-        Auth.login(changeResponse.data.changePassword.token);
-        setTimeout(() => {
-          window.location = "/";
-        }, 3000);
-        setTimeout(() => {
-          setLoading(false);
-        }, 4000);
-      }
+      throw new Error("change password page not done yet");
     } catch(err) {
       setLoading(false);
       console.log(err);
@@ -89,11 +62,6 @@ const ChangePassword = () => {
     if (event.target.id === "confirm-password") {
       setConfirmPass(event.target.value);
     }
-  }
-
-  function comparePassword(newPass, confirmPass) {
-    if (newPass !== confirmPass) return false;
-    else return true;
   }
 
   return (

@@ -22,6 +22,9 @@ const userSchema = new Schema({
     required: true,
     minlength: 1
   },
+  token: {
+    type: String
+  },
   orders: [
     Order.schema
   ],
@@ -69,6 +72,11 @@ userSchema.pre('save', async function(next) {
 // }
 
 // compare the incoming password with the hashed password
+/**
+ * 
+ * @param {string} password 
+ * @returns {Promise<boolean>}
+ */
 userSchema.methods.isCorrectPassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };

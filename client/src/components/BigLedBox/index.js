@@ -29,18 +29,8 @@ import ArtScroller from '../ArtScroller';
 
 //or control the LEDs on the web app with MIDI or DMX
 
-//APOLLO GRAPHQL QUERIES AND MUTATIONS
-import {useQuery, useMutation} from '@apollo/react-hooks';
-import {USER_QUERY, GET_PRESETS} from '../../utils/queries.js';
-import {UPDATE_USER_DEFAULT_PRESET} from '../../utils/mutations.js';
-
 //AUTH
 import Auth from '../../utils/auth.js';
-
-//HELPERS
-// import {
-//   idbPromise
-// } from '../../utils/helpers.js';
 
 //REDUX
 import {useSelector, useDispatch} from 'react-redux';
@@ -76,11 +66,11 @@ const BigLedBox = () => {
   
   //execute function on first page load
   // get user default starting preset class name string
-  const userQueryResponse = useQuery(USER_QUERY);
-  // console.log('user query response');
-  // console.log(userQueryResponse);
+  // const userQueryResponse = useQuery(USER_QUERY);
+  // // console.log('user query response');
+  // // console.log(userQueryResponse);
 
-  const presetQueryResponse = useQuery(GET_PRESETS);
+  // const presetQueryResponse = useQuery(GET_PRESETS);
   // console.log('preset query response');
   // console.log(presetQueryResponse);
 
@@ -88,38 +78,8 @@ const BigLedBox = () => {
   // conditionally render whether they are logged on => load with that default preset
   // : else load the blank preset name
   useEffect(() => {
-    if (presetQueryResponse.data && userQueryResponse.data) 
-    {
-      //console.log('data arrived');
-      //extract the data to compare whether the 
-      //user default preset matches one in the 
-      // preset list queried
-      for (
-        let i = 0; 
-        i < presetQueryResponse.data.getPresets.length; 
-        i++
-      ) 
-      {
-        if (
-          presetQueryResponse.data.getPresets[i]._id
-          === userQueryResponse.data.user.defaultPreset
-        ) 
-        {//id matches
-          // console.log("ID of the preset of the user");
-          // console.log(userQueryResponse.data.user.defaultPreset);
-          // console.log(presetQueryResponse.data.getPresets[i]);
-          
-          //dispatch action to switch to the default presetName
-          // that matches the id given 
-          dispatchREDUX(
-            presetSwitch(
-              presetQueryResponse.data.getPresets[i].presetName
-            )
-          );
-        }
-      }
-    }
-  }, [presetQueryResponse, userQueryResponse, dispatchREDUX]);
+    return () => void 0;
+  }, []);
   
   //REDUX GLOBAL STATE
   const ledChangeState = useSelector(state => state.ledChange);
@@ -203,55 +163,54 @@ const BigLedBox = () => {
   //   return elementText;
   // };
 
-  const [updateUserDefaultPreset] = useMutation(UPDATE_USER_DEFAULT_PRESET);
-  async function handleSaveDefault(event) {
-    event.preventDefault();
-    event.persist();
-    // get the classname string split from the classname
-    //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
-    let presetString = 
-      event
-      .target
-        .parentElement
-          .parentElement
-            .parentElement
-              .children[1]
-                .firstChild
-                  .firstChild
-                  .className
-                  .split('led1-1')[1];
-    //check the presetdata from the query to get the preset ID to save to the user
-    // that matches the preset name acquired from the event
-    for (
-      let i = 0; 
-      i < presetQueryResponse.data.getPresets.length; 
-      i++
-    ){
-      if (
-        presetString === 
-        presetQueryResponse.data.getPresets[i].presetName  
-      ){
-        //console.log('found the preset');
-        console.log(presetQueryResponse.data.getPresets[i].presetName);
-        //use mutation
-        try {
-          await updateUserDefaultPreset
-          (
-            {
-              variables: {
-                _id: presetQueryResponse.data.getPresets[i]._id
-              }
-            }
-          );
-        } catch (error) {
-          console.error(error);
-        }
-        console.log('preset saved');
-      } else {
-        console.log('updating...');
-      }
-    }
-  }
+  // async function handleSaveDefault(event) {
+  //   event.preventDefault();
+  //   event.persist();
+  //   // get the classname string split from the classname
+  //   //console.log(event.target.parentElement.parentElement.parentElement.children[1].firstChild.firstChild.className.split('led1-1')[1]);
+  //   let presetString = 
+  //     event
+  //     .target
+  //       .parentElement
+  //         .parentElement
+  //           .parentElement
+  //             .children[1]
+  //               .firstChild
+  //                 .firstChild
+  //                 .className
+  //                 .split('led1-1')[1];
+  //   //check the presetdata from the query to get the preset ID to save to the user
+  //   // that matches the preset name acquired from the event
+  //   for (
+  //     let i = 0; 
+  //     i < presetQueryResponse.data.getPresets.length; 
+  //     i++
+  //   ){
+  //     if (
+  //       presetString === 
+  //       presetQueryResponse.data.getPresets[i].presetName  
+  //     ){
+  //       //console.log('found the preset');
+  //       console.log(presetQueryResponse.data.getPresets[i].presetName);
+  //       //use mutation
+  //       try {
+  //         await updateUserDefaultPreset
+  //         (
+  //           {
+  //             variables: {
+  //               _id: presetQueryResponse.data.getPresets[i]._id
+  //             }
+  //           }
+  //         );
+  //       } catch (error) {
+  //         console.error(error);
+  //       }
+  //       console.log('preset saved');
+  //     } else {
+  //       console.log('updating...');
+  //     }
+  //   }
+  // }
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
@@ -369,14 +328,14 @@ const BigLedBox = () => {
             </animated.button>
 
             {/* save as new login preset */}
-            <animated.button
+            {/* <animated.button
               style={saveButtonSpring}
               className={Auth.loggedIn() ? 'preset-button save-button' : 'preset-button-disabled'}
               disabled={Auth.loggedIn() ? false : true}//enable if logged in
               onClick={handleSaveDefault}
             >
               Save as Default
-            </animated.button>
+            </animated.button> */}
           </div>
         </section>
         <section

@@ -1,46 +1,44 @@
 import React, { useState } from 'react';
-import {useMutation} from '@apollo/react-hooks';
-
-import { FORGOT_PASSWORD } from '../utils/mutations';
 
 //audio player and big led box
 const ForgotPassword = () => {
 
+  const [ error, setError ] = useState("");
   const [ loading, setLoading ] = useState(false);
   const [ email, setEmail ] = useState(""); 
   //if i dont explicitly use the name i defined in my schema the mutation result shape will only contain
   // the shape of the defined schema
-  const [ forgotPassword, { error } ] = useMutation(FORGOT_PASSWORD);
 
   async function submitForgotPassword(event) {
     event.preventDefault();
     setLoading(true);
     try {
-      const forgotResponse = await forgotPassword
-      (
-        {
-          variables: {
-            email: email,
-          }
-        }
-      );
+      // const forgotResponse = await forgotPassword
+      // (
+      //   {
+      //     variables: {
+      //       email: email,
+      //     }
+      //   }
+      // );
       // console.log("check forgot response", forgotResponse);
-      if (
-        forgotResponse.data && 
-        forgotResponse.data.forgotPassword && 
-        !forgotResponse.data.forgotPassword.hasOwnProperty("errors")
-      ) {
-        console.log("no errors!!");
-        setTimeout(() => {
-          window.location.replace("/");
-        }, 4000);
-        setTimeout(() => {
-          setLoading(false);
-        }, 5000);
-      }
+      // if (
+      //   forgotResponse.data && 
+      //   forgotResponse.data.forgotPassword && 
+      //   !forgotResponse.data.forgotPassword.hasOwnProperty("errors")
+      // ) {
+      //   console.log("no errors!!");
+      //   setTimeout(() => {
+      //     window.location.replace("/");
+      //   }, 4000);
+      //   setTimeout(() => {
+      //     setLoading(false);
+      //   }, 5000);
+      // }
+      throw new Error("forgot password not done yet");
     } catch(err) {
       setLoading(false);
-      console.log(err);
+      console.error(err);
     }
   }
 

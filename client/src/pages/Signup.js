@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 
 //AUTH
 import Auth from '../utils/auth.js';
-
+import API from "../utils/ApiService";
 //REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
 
 //GRAPHQL IMPORTS
-import { useMutation } from '@apollo/react-hooks';
-import { ADD_USER } from '../utils/mutations';
 
 
 //ACTIONS IMPORT for signup formstate reducer
@@ -23,6 +21,7 @@ import {
 } from '../actions/signup-form-actions';
 
 const Signup = () => {
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   //OBSERVE GLOBAL SIGNUP FORM STATE
   const signupFormState = useSelector(state => state.signupForm);
@@ -39,31 +38,13 @@ const Signup = () => {
   
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
-
-  //ESTABLISH GRAPHQL SIGNUP MUTATION
-  const [addUser, { error }] = useMutation(ADD_USER);
   
   //FUNCTION TO HANDLE FORM SUBMIT TO GRAPHQL MUTATION
   async function handleSubmit(event){
     event.preventDefault();
     setLoading(true);
     try {
-      const mutationResponse = await addUser
-      (
-        {
-          variables: {
-            username: username,
-            email: email,
-            password: password
-          }
-        }
-      );
-      //generate a token for the user signing up
-      // get the token back from the 
-      // graphql returned object of the mutation
-      const token = mutationResponse.data.addUser.token;
-      //authorize token and send user to home page
-      Auth.login(token);
+      await API.signup({ username, email, password });
       setLoading(false);
     } catch(err) {
       setLoading(false);

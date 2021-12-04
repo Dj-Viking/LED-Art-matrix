@@ -6,11 +6,15 @@ const path = require('path');
 const PORT = process.env.PORT || 3001;
 const express = require('express');
 const app = express();
+const router = require("./router");
 
-//GRAPHQL TYPEDEFS AND RESOLVES AND CONNECTION
-const { typeDefs, resolvers } = require('./schemas');
+//EXPRESS MIDDLEWARE FUNCTIONS
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(router);
+
 const db = require('./config/connection');
-const {Preset, SearchTerm} = require('./models');
+const { Preset, SearchTerm } = require('./models');
 
 //USING ADD PRESET MUTATION TO SEED DATABASE WITH AVAILABLE CATEGORIES TO SEARCH
 // IN A DROPDOWN MENU
@@ -61,10 +65,6 @@ async function seedPresets() {
     console.log("\x1b[37m", "starting presets already seeded...", "\x1b[00m")
   }
 }
-
-//EXPRESS MIDDLEWARE FUNCTIONS
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 //STATIC PUBLIC FRONT END ASSETS WHILE IN DEVELOPMENT
 // app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
@@ -105,10 +105,6 @@ db.once('open', () => {
     setTimeout(() => {
       console.log("\x1b[34m", `🌎 node environment install success listening on port ${PORT} 🌎`, "\x1b[00m");
     }, 400);
-    //GRAPHQL URL
-    setTimeout(() => {
-      console.log("\x1b[35m", `🔮 if in dev phase use graphql at http://localhost:${PORT}${apolloServer.graphqlPath} 🔮`, "\x1b[00m");
-    }, 500);
     setTimeout(() => {
       console.log("\x1b[32m", `🌱 if in development: stand by for react server to begin...`, "\x1b[00m");
     }, 600);
