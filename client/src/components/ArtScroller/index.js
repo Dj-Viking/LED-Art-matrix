@@ -13,15 +13,12 @@ import './scrolling-styles/artScrollerLayoutStyle.css';
 //HELPERS
 import {
   getRandomIntLimit,
-  idbPromise
 } from '../../utils/helpers.js';
 
 //APOLLO GRAPHQL
-import {useQuery} from '@apollo/react-hooks';
+import {useLazyQuery} from '@apollo/react-hooks';
 //QUERIES
 import {
-  //GET_SEARCH_TERMS,
-  //USER_QUERY,
   GET_GIFS_CREATE_AND_OR_UPDATE
 } from '../../utils/queries.js';
 
@@ -34,11 +31,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 //ACTIONS
 import {
-  //verifyOn,
   getGifs,
-  //scrollGifInterval,
-  //searchTermChange,
-  //searchValidate
 } from '../../actions/art-scroller-actions';
 
 
@@ -72,127 +65,38 @@ const ArtScroller = () => {
 
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
-  //console.log(dispatchREDUX);
-  //GRAPHQL DATABASE QUERY FOR CATEGORY SELECTIONS
-  //GET USER INFO
-  //const userQueryResponse = useQuery(USER_QUERY);
-  //GET SEARCH TERM INFO
-  //const searchTermQueryResponse = useQuery(GET_SEARCH_TERMS);
-  //GET GIFS 
-  const getGifsQueryResponse = useQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
-  // console.log(getGifsQueryResponse.data);
 
-  //lazy event triggered server get gifs query
-  //const [lazyGetGifs, {loading, data}] = useLazyQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
+  const [getGifsQuery, { loading, data }] = useLazyQuery(GET_GIFS_CREATE_AND_OR_UPDATE);
   
-  //update the state of the searchTerms out of artScrollerState
+
   useEffect(() => {
-    if (getGifsQueryResponse.data)
-    {
-      console.log(getGifsQueryResponse);
-      dispatchREDUX(
-        getGifs(
-          getGifsQueryResponse.data.getGifsCreateAndOrUpdate
-        )
-      );
-
-      //check the idb store for gifs if exists and delete it and put the new one in
-      async function updateIDBGifs() {
-        Promise.resolve(idbPromise('gifs', 'get'))
-        .then(
-          async (res) => {
-            console.log('got the idb gifs');
-            console.log(res);
-
-            console.log('updating if only it does not exist yet on the browser idb store...');
-            if (res[0] === undefined) {
-              getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
-                console.log('updating idb gifs...');
-                return idbPromise('gifs', 'put', gif);
-              });
-            } else {
-              console.log('exists already deleting current store and making new one');
-              //find current store and delete based on the object._id's 
-              // that were passed into the delete function for each gif of the idb array
-              Promise.resolve(idbPromise('gifs', 'get'))
-              .then(
-                async (res) => {
-                  console.log('deleting current idb gifs...');
-                  console.log(res);
-                  res.forEach(gif => { 
-                    return idbPromise('gifs', 'delete', gif)
-                  })
-                }
-              )
-              .catch(err => console.log(err));
-              
-              //update current gifs
-              getGifsQueryResponse.data.getGifsCreateAndOrUpdate.forEach(gif => {
-                console.log('updating current gifs...');
-                return idbPromise('gifs', 'put', gif);
-              });
-            }
-          }
-        )
-        .catch(error => console.error(error));
+    if (!loading) {
+      if (!!data) {
+        console.log("got gif data after done loading", data);
+        dispatchREDUX(getGifs(data.getGifsCreateAndOrUpdate))
       }
-      Promise.resolve(updateIDBGifs()).then(res => console.log(res));
-    } 
-    else if (!getGifsQueryResponse.data) 
-    {
-      //fetch to database failed for api call fetch from idb
-      //and dispatch the gifs to the action to change the gifs array state
-      Promise.resolve(idbPromise('gifs', 'get'))
-      .then(
-        async (res) => {
-          //got gifs from idb that should exist if already were online to fetch some gifs.
-          console.log(res);
-          try {
-            dispatchREDUX(
-              getGifs(
-                [...res]
-              )
-            );
-          } catch (error) {
-            console.log(error);
-          }
-        }
-      )
-      .catch(err => console.log(err));
     }
-  }, [getGifsQueryResponse, dispatchREDUX, getGifsQueryResponse.data]);
+    return () => void 0;
+  }, [loading, data, dispatchREDUX]);
 
 
   //OBSERVE GLOBAL STATE
   const artScrollerState = useSelector(state => state.artScroller);
-  //console.log(artScrollerState);
 
   //GLOBAL PIECE OF STATE
   const {
-    //isOnState,
     gifs,
-    //scrollInterval,
-    //searchTerms,
-    //searchIsValid
   } = artScrollerState;
-  //console.log("search terms state");
-  //console.log(searchTerms);
 
-  async function handleRefetch(event) {
+
+
+  async function handleGetGifs(event) {
     event.persist();
-    console.log(event.key);
-    if (figureIsOnState === false) {
-      setFigureIsOnState(true);
-    }
+    if (figureIsOnState === false) setFigureIsOnState(true);
     try {
-      if (event.key === 'w') {
-        getGifsQueryResponse.refetch();
-      } else {
-        console.log(event.target.parentElement);
-        getGifsQueryResponse.refetch();
-      }
+      getGifsQuery();
     } catch (error) {
-      console.log(error);
+      console.log("error when trying to get gifs", error);
     }
   }
 
@@ -217,28 +121,12 @@ const ArtScroller = () => {
     setHorizontalPositionState(event.target.value);
   }
 
-    // @media screen and (max-width: 1024px) {
-  //   .scroller-media {
-  //     top: 37vh;
-  //     left: 33.4vw;
-  //     height: 50vh;
-  //     width: 30vw;
-  //   }
-  // }
-
   //width of circle state maybe
   // input slider for widening the scroller
   const [scrollerCircleWidth, setScrollerCircleWidth] = useState('30')
   function handleScrollerCircleWidthChange(event) {
     setScrollerCircleWidth(event.target.value)
   }
-  //animation delays
-
-  //handle all gifs opacity local state
-  //const [opacityState, setOpacityState] = useState(0);
-  // function handleOpacityChange(event) {
-  //   setOpacityState(event.target.value)
-  // }
 
   const [invertState, setInvertState] = useState(0);
   function handleInvertChange(event) {
@@ -247,17 +135,8 @@ const ArtScroller = () => {
 
   const [figureIsOnState, setFigureIsOnState] = useState(false);
   function handleFigureChange(event) {
-    setFigureIsOnState(!figureIsOnState);
+    figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
   }
-
-  // .img-scroll {
-  //   animation-name: scrollAnim;
-  //   animation-duration: .5s;
-  //   animation-delay: .1s; //lowest to highest duration for each gif
-  //   animation-timing-function: ease-in;
-  //   animation-direction: alternate;
-  //   animation-iteration-count: infinite;
-  // }
 
 
   return (
@@ -268,31 +147,7 @@ const ArtScroller = () => {
           flexDirection: 'column'
         }}
       >
-        {/* <div
-          style={{
-            color: 'white',
-            marginTop: '10px'
-          }}
-        >
-          Art Scroller
-        </div> */}
         <section>
-          {/* <form>
-            <select
-              name="category"
-            >
-              {
-                searchTerms.map(searchTerm => (
-                <option 
-                  name="category"
-                  key={searchTerm._id}
-                > 
-                  {searchTerm.termText}
-                </option>
-                ))
-              }
-            </select>
-          </form> */}
           <div className="border-top-artScroller"></div>
           <span
             style={{
@@ -309,8 +164,7 @@ const ArtScroller = () => {
             <animated.button
               style={leftInitButtonSpring}
               className="scroller-fetch-button"
-              onClick={handleRefetch}
-              onKeyPress={handleRefetch}
+              onClick={handleGetGifs}
             >
               Start Art Scroller!
             </animated.button>
@@ -328,20 +182,6 @@ const ArtScroller = () => {
               }
             </animated.button>
           </div>
-          {/* <label 
-            htmlFor="opacity"
-            style={{color: 'white'}}
-          >
-            opacity: {opacityState/100}
-          </label>
-          <input 
-            name="opacity"
-            type="range"
-            min="0"
-            max="30"
-            value={opacityState}
-            onChange={handleOpacityChange}
-          /> */}
           <div
             className="slider-container"
           >
@@ -432,7 +272,7 @@ const ArtScroller = () => {
             className="figure-transition-style"
           >
             {
-              gifs 
+              Array.isArray(gifs)
               &&
               gifs.map((gif, index) => (
                 <img 
