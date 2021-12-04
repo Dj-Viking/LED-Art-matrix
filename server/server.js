@@ -7,23 +7,10 @@ const PORT = process.env.PORT || 3001;
 const express = require('express');
 const app = express();
 
-//APOLLO IMPORTS
-const { ApolloServer } = require('apollo-server-express');
-
 //GRAPHQL TYPEDEFS AND RESOLVES AND CONNECTION
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const {Preset, SearchTerm} = require('./models');
-
-//AUTHORIZATION MIDDLEWARE
-const { authMiddleware } = require('./utils/auth.js');
-
-//APOLLO SERVER INITIALIZE
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: authMiddleware
-});
 
 //USING ADD PRESET MUTATION TO SEED DATABASE WITH AVAILABLE CATEGORIES TO SEARCH
 // IN A DROPDOWN MENU
@@ -75,9 +62,6 @@ async function seedPresets() {
   }
 }
 
-//APPLY APOLLO MIDDLEWARE TO EXPRESS APP
-apolloServer.applyMiddleware({ app });
-
 //EXPRESS MIDDLEWARE FUNCTIONS
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -112,7 +96,7 @@ if (process.env.NODE_ENV === 'production') {
 
 //OPEN DATABASE AND THEN START SERVER
 db.once('open', () => {
-  console.log("do opened");
+  console.log("db opened");
   app.listen(PORT, () => {
     //SERVER LISTENING ON PORT
     setTimeout(() => {
