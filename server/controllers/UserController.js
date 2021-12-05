@@ -25,7 +25,10 @@ const UserController = {
         _id: newUser._id,
       });
 
-      await User.findOneAndUpdate({ _id: newUser._id }, { token }, { new: true });
+      //set the default preset as the empty string one
+      const preset = await Preset.findOne({presetName: ""});
+
+      await User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: preset }, { new: true });
       return res.status(201).json({ token });
     } catch (error) {
       console.error(error);
