@@ -8,7 +8,6 @@ import BigLedBox from '../components/BigLedBox';
 const Home = () => {
   return (
     <> 
-      <h1 style={{color: "red"}}>This site is under intense maintenance, we should be up and running in a day or so</h1>
       <AudioPlayerComponent />
       <BigLedBox />
     </>
