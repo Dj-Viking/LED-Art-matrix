@@ -1,3 +1,5 @@
+require("dotenv").config()
+const { RESET_EXPIRATION } = process.env;
 const { User, Preset } = require("../models");
 const { signToken } = require("../utils/signToken");
 const { sendEmail } = require("../utils/sendEmail");
@@ -144,7 +146,7 @@ const UserController = {
       const token = signToken({
         uuid: resetUuid,
         resetEmail: email,
-        exp: "5m"
+        exp: RESET_EXPIRATION
       });
       
       const sendEmailArgs = {
