@@ -14,11 +14,12 @@ import {
 
 //STYLES
 import './rainbowV2/styles/style.scss';
-import './rainbowStart/styles/style.scss';
 import './waves/styles/style.scss';
 import './spiral/styles/style.scss';
 import './fourSpirals/styles/style.scss';
 import './ledLayoutStyle.css'
+
+import { ledRowStyle, rainbowTest, appendStyle, removeStyle } from './createStyles';
 
 //COMPONENTS
 import ArtScroller from '../ArtScroller';
@@ -53,6 +54,10 @@ const BigLedBox = () => {
   //did request preset state
   const [didRequestPreset, setDidRequestPreset] = useState(false);
 
+  let styleTag = document.createElement("style");
+  styleTag.setAttribute("id", "led-style");
+
+
   //REDUX DISPATCH
   const dispatchREDUX = useDispatch();
    //REDUX GLOBAL STATE
@@ -78,7 +83,7 @@ const BigLedBox = () => {
     } catch (error) {
       console.error("error when getting default preset in use callback", error);
     }
-  }, [])
+  }, []);
 
   //function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
@@ -106,33 +111,19 @@ const BigLedBox = () => {
    */
   //eslint-disable-next-line
   let leds_info;
+  /**
+   * @type {Array<{ledNumber: number}>}
+   */
   const leds = [];
-  function createLedObjectsArray() {
-    for (let i = 1; i < 33; i++) {
-      leds.push(
-        {
-          ledNumber: i,
-        }
-      );
-    }
-    // console.log(leds);
-    return leds;
+  /**
+   * 
+   * @param {number} num 
+   * @returns {void}
+   */
+  function createLedObjectsArray(num) {
+    for (let i = 1; i < num; i++) 
+      leds.push({ ledNumber: i, });
   }
-  // const createLeds = (num) => {
-  //   elementText = '';
-  //   for (let i = 1; i < 33; i++) {
-  //     elementText += `
-  //       <div class="led${i}-${num}"></div>
-  //     `;
-  //   };
-  //   return elementText;
-  // }
-
-  // {
-  //   leds.map((led, index) => (
-  //     <div className={`led${i}-${index + 1}`} key={`led${i}-${index + num}`}></div>
-  //   ))
-  // }
 
   /**
    * array of row objects only containing information for
@@ -140,36 +131,22 @@ const BigLedBox = () => {
    * JSX elements and contain a horizontal rows of leds
    * in each row the nested .map() is inserting all 32 leds
    * into a single rows.map() iteration.
-   * 
-   * 32 rows, 32 leds per row
-   * 
-   * 32x32 2D grid
    */
   // eslint-disable-next-line
   let rows_info;
+  /**
+   * @type {Array<{rowNumber: number}>}
+   */
   const rows = [];
+  /**
+   * 
+   * @param {number} num 
+   * @returns {void}
+   */
   function createLedRowsArray(num) {
-    for (let i = 1; i < num; i++) {
-      rows.push(
-        {
-          rowNumber: i
-        }
-      );
-    }
-    // console.log(rows);
-    return rows;
+    for (let i = 1; i < num; i++) 
+      rows.push({ rowNumber: i });
   }
-  // const createRows = (num) => {
-  //   let elementText = '';
-  //   for ( let i = 1; i < num; i++ ){
-  //     elementText += `
-  //     <div class="row${i}">
-  //       ${createLeds(i)}
-  //     </div>
-  //     `
-  //   }
-  //   return elementText;
-  // };
 
   async function handleSaveDefault(event) {
     event.preventDefault();
@@ -193,6 +170,14 @@ const BigLedBox = () => {
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
+
+  function setRainbowStyle() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = rainbowTest(styleTag);
+    appendStyle(styleTag);
+  }
   
   return (
     <>
@@ -242,6 +227,7 @@ const BigLedBox = () => {
               onClick={() => {
                 dispatchREDUX(presetSwitch(''));
                 setTimeout(() => {
+                  setRainbowStyle();
                   document.querySelector("#led-box").scrollIntoView({ behavior: "smooth" });
                 }, 300);
               }}
@@ -328,17 +314,13 @@ const BigLedBox = () => {
             rows.map((row, index) => (
               <div 
                 key={`row${index + 1}`} 
-                className={`row${index + 1}`}
+                style={ledRowStyle()}
               >
                 {
                   leds.map((led, index) => (
                     <div 
                       key={`led${led.ledNumber}-${index + 1}`} 
                       className={`led${index + 1}-${row.rowNumber}${Auth.loggedIn() ? presetName : presetName}`}
-                      style={{
-                        // animationDuration: `${(index / 64) + ( index / row.rowNumber * (.05 * index))}`,
-                        // animationDelay: `${(index / 16) + index / (row.rowNumber / index - (4 * row.rowNumber))}`
-                      }}
                     >
                     </div>
                   ))
