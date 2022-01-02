@@ -37,6 +37,7 @@ async function seedSearchTerms() {
 }
 
 async function seedPresets() {
+  await Preset.deleteMany();
   //check if presets exist already
   const presetInfo = await Preset.find();
   //console.log(presetInfo);
@@ -58,6 +59,9 @@ async function seedPresets() {
         },
         {
           presetName: 'fourSpirals'
+        },
+        {
+          presetName: 'dm5'
         }
       ]
     );

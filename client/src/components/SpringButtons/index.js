@@ -48,9 +48,18 @@ export const _fourSpiralsButtonSpring = {
     opacity: 1
   }
 };
+export const _dm5ButtonSpring = {
+  delay: 2300,
+  from: {
+    opacity: 0
+  },
+  to: {
+    opacity: 1
+  }
+};
 
 export const _saveButtonSpring = {
-  delay: 2300,
+  delay: 2600,
   from: {
     opacity: 0
   },

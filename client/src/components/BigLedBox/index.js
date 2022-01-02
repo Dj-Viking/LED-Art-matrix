@@ -9,17 +9,24 @@ import {
   _wavesButtonSpring, 
   _spiralButtonSpring, 
   _fourSpiralsButtonSpring, 
-  _saveButtonSpring 
+  _saveButtonSpring,
+  _dm5ButtonSpring
 } from "../SpringButtons";
 
 //STYLES
-import './rainbowV2/styles/style.scss';
-import './waves/styles/style.scss';
-import './spiral/styles/style.scss';
-import './fourSpirals/styles/style.scss';
 import './ledLayoutStyle.css'
 
-import { ledRowStyle, rainbowTest, appendStyle, removeStyle } from './createStyles';
+import { 
+  appendStyle, 
+  removeStyle,
+  ledRowStyle,
+  rainbowTest,
+  rainbowV2,
+  waves,
+  spiral,
+  fourSpirals,
+  dm5
+} from './ledStyles';
 
 //COMPONENTS
 import ArtScroller from '../ArtScroller';
@@ -49,6 +56,7 @@ const BigLedBox = () => {
   const wavesButtonSpring       = useSpring(_wavesButtonSpring);
   const spiralButtonSpring      = useSpring(_spiralButtonSpring);
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
+  const dm5ButtonSpring         = useSpring(_dm5ButtonSpring);
   const saveButtonSpring        = useSpring(_saveButtonSpring); 
 
   //did request preset state
@@ -93,12 +101,31 @@ const BigLedBox = () => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
         if (typeof preset === "string") {
+          if (preset === "") {
+            setRainbowStyle();
+          }
+          if (preset === "V2") {
+            setRainbowV2Style();
+          }
+          if (preset === "waves") {
+            setWavesStyle();
+          }
+          if (preset === "spiral") {
+            setSpiralStyle();
+          }
+          if (preset === "fourSpirals") {
+            setFourSpiralsStyle();
+          }
+          if (preset === "dm5") {
+            setdm5Style();
+          }
           dispatchREDUX(presetSwitch(preset));
         }
       }
     }
     awaitThePresetCallback();
     return void 0;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getDefaultPreset, didRequestPreset, dispatchREDUX]);
   
  
@@ -178,6 +205,41 @@ const BigLedBox = () => {
     styleTag = rainbowTest(styleTag);
     appendStyle(styleTag);
   }
+  function setRainbowV2Style() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = rainbowV2(styleTag);
+    appendStyle(styleTag);
+  }
+  function setWavesStyle() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = waves(styleTag);
+    appendStyle(styleTag);
+  }
+  function setSpiralStyle() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = spiral(styleTag);
+    appendStyle(styleTag);
+  }
+  function setFourSpiralsStyle() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = fourSpirals(styleTag);
+    appendStyle(styleTag);
+  }
+  function setdm5Style() {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style"));
+    }
+    styleTag = dm5(styleTag);
+    appendStyle(styleTag);
+  }
   
   return (
     <>
@@ -243,6 +305,7 @@ const BigLedBox = () => {
               className="preset-button"
               onClick={() => {
                 dispatchREDUX(presetSwitch('V2'))
+                setRainbowV2Style();
               }}
             >
               <span
@@ -258,6 +321,7 @@ const BigLedBox = () => {
               disabled={Auth.loggedIn() ? false : true}//enable if logged in
               onClick={() => {
                 dispatchREDUX(presetSwitch('waves'))
+                setWavesStyle();
               }}
             >
               <span
@@ -271,7 +335,8 @@ const BigLedBox = () => {
               className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
               disabled={Auth.loggedIn() ? false : true }//enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch('spiral'))
+                dispatchREDUX(presetSwitch('spiral'));
+                setSpiralStyle();
               }}
             >
               <span
@@ -285,13 +350,29 @@ const BigLedBox = () => {
               className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
               disabled={Auth.loggedIn() ? false : true}//enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch('fourSpirals'))
+                dispatchREDUX(presetSwitch('fourSpirals'));
+                setFourSpiralsStyle();
               }}
             >
               <span
                 className="preset-button-text"
               >
                 fourSpirals
+              </span>
+            </animated.button>
+            <animated.button
+              style={dm5ButtonSpring}
+              className={Auth.loggedIn() ? 'preset-button' : 'preset-button-disabled'}
+              disabled={Auth.loggedIn() ? false : true}//enable if logged in
+              onClick={() => {
+                dispatchREDUX(presetSwitch('dm5'));
+                setdm5Style();
+              }}
+            >
+              <span
+                className="preset-button-text"
+              >
+                DM5
               </span>
             </animated.button>
 
