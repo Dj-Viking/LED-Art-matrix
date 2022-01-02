@@ -89,9 +89,17 @@ const UserController = {
    */
   login: async function(req, res) {
     try {
-      const { password, email } = req.body;
-      
-      const foundUser = await User.findOne({ email });
+      const { usernameOrEmail: { username, email }, password } = req.body;
+      console.log("req body", req.body);
+
+      let foundUser;
+      if (username) {
+        foundUser = await User.findOne({ username });
+      }
+      if (email) {
+        foundUser = await User.findOne({ email });
+      }
+
       if (foundUser === null) {
         return res.status(400).json({ error: "incorrect credentials" });
       }
@@ -108,13 +116,20 @@ const UserController = {
         _id: foundUser._id
       });
 
-      const updatedUser = await User.findOneAndUpdate({ email }, {
-        token
-      }, { new: true });
+      if (username) {
+        foundUser = await User.findOneAndUpdate({ username }, {
+          token
+        }, { new: true });
+      }
+      if (email) {
+        foundUser = await User.findOneAndUpdate({ email }, {
+          token
+        }, { new: true });
+      }
 
       const returnUser = {
-        defaultPreset: updatedUser.defaultPreset.presetName,
-        token: updatedUser.token,
+        defaultPreset: foundUser.defaultPreset.presetName,
+        token: foundUser.token,
       }
       return res.status(200).json({ user: returnUser });
     } catch (error) {

@@ -1,48 +1,30 @@
-//REACT IMPORTS
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-//AUTH
-import Auth from '../utils/auth';
 import API from "../utils/ApiService";
-
-//REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
-
-//import actions for login formstate reducer
 import {
   loginEmailChange,
   loginEmailCompleted,
   loginPasswordChange,
   loginPasswordCompleted
 } from '../actions/login-form-actions';
+import { Spinner } from "../components/Spinner";
 
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  //OBSERVE GLOBAL LOGIN FORM STATE
-  const loginFormState = useSelector(state => state.loginForm)
-  //console.log(loginFormState);
-  //GRAB PIECE OF STATE
-  const {
-    email,
-    //emailIsComplete,
-    password,
-    //passwordIsComplete
-  } = loginFormState;
-
-  //REDUX DISPATCH
-  const dispatchREDUX = useDispatch();
+  const { usernameOrEmail, password } = useSelector(state => state.loginForm)
+  const dispatch = useDispatch();
 
   function handleChange(event) {
-    if (event.target.type === 'email') {
-      dispatchREDUX(loginEmailChange(event.target.value));
-      dispatchREDUX(loginEmailCompleted(event.target.value));
+    if (event.target.type === 'text') {
+      dispatch(loginEmailChange(event.target.value));
+      dispatch(loginEmailCompleted(event.target.value));
     }
     if (event.target.type === 'password') {
-      dispatchREDUX(loginPasswordChange(event.target.value));
-      dispatchREDUX(loginPasswordCompleted(event.target.value));
+      dispatch(loginPasswordChange(event.target.value));
+      dispatch(loginPasswordCompleted(event.target.value));
     }
   }
 
@@ -53,17 +35,17 @@ const Login = () => {
     try {
       let booleanOrError;
       if (window.navigator.onLine) {
-        booleanOrError = await API.login({ email, password });
+        booleanOrError = await API.login({ usernameOrEmail, password });
         console.log("what is boolean or error on login", booleanOrError);
         switch(true) {
-          case !booleanOrError || (booleanOrError instanceof Error): {
+          case !booleanOrError || (booleanOrError instanceof Error): 
             setError(`${booleanOrError}`);
-          }
           break;
-          case booleanOrError === true: {
+          case booleanOrError === true: 
             setLoading(false);
             setError("");
-          }
+          break;
+          default: break;
         }
         setLoading(false);
       } else {
@@ -89,15 +71,15 @@ const Login = () => {
             htmlFor="email"
             className="form-email-label"
           >
-            Email: 
+            Email or Username: 
           </label>
           <input
             required
-            type="email"
+            type="text"
             name="email"
             id="email-login"
             onChange={handleChange}
-            placeholder="example@email.com"
+            placeholder="example@email.com | my_username"
             className="form-email-input"
             autoComplete="off"
           />
@@ -155,18 +137,7 @@ const Login = () => {
               <div style={{ display: "flex", justifyContent: "center"}}>
                 <span>Loading...</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "center"}}>
-                <div className="lds-roller">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                </div>
-              </div>
+              <Spinner />
             </>
               : null
             }

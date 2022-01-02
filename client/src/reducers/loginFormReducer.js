@@ -1,16 +1,16 @@
 const loginFormReducer = (
   state = {
-    email: '',
+    usernameOrEmail: '',
     emailIsComplete: false,
     password: '',
     passwordIsComplete: false
 }, action) => 
 {
   switch(action.type) {
-    case 'LOGIN_EMAIL_CHANGE':
+    case 'LOGIN_EMAIL_OR_USERNAME_CHANGE':
       return {
         ...state,
-        email: action.payload
+        usernameOrEmail: action.payload
       }
     case 'LOGIN_EMAIL_COMPLETED':
       return {
