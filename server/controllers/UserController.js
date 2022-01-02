@@ -65,7 +65,7 @@ const UserController = {
   updateDefaultPreset: async function(req, res) {
     try {
       const { defaultPreset } = req.body;
-      console.log("type of sent preset name", typeof defaultPreset);
+      console.log("type of sent preset name", typeof defaultPreset, defaultPreset);
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if(typeof defaultPreset !== "string") return res.status(400).json({error: "missing preset name in request"});
@@ -73,7 +73,7 @@ const UserController = {
       console.log("found preset", foundPreset);
       const foundUser = await User.findOneAndUpdate({ _id: req.user._id }, {
         $set: {
-          defaultPreset: foundPreset
+          defaultPreset: foundPreset._id
         }
       }, { new: true });
       if (foundUser === null) {
@@ -205,15 +205,15 @@ const UserController = {
       return res.status(500).json({ error: error.message || error });
     }
   },
-  getAllUsers: async function(_, res) {
-    try {
-      const all = await User.find();
-      return res.status(200).json({ all });
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: error.message || error });
-    }
-  }
+  // getAllUsers: async function(_, res) {
+  //   try {
+  //     const all = await User.find().select("-password");
+  //     return res.status(200).json({ all });
+  //   } catch (error) {
+  //     console.error(error);
+  //     return res.status(500).json({ error: error.message || error });
+  //   }
+  // }
 };
 
 

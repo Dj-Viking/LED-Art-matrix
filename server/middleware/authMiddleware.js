@@ -1,7 +1,5 @@
-const jwt = require('jsonwebtoken');
 const { verifyAsync } = require("../utils/verifyAsync");
 require('dotenv').config();
-const { EXPIRATION, SECRET } = process.env;
 
 
 module.exports = {
