@@ -90,7 +90,6 @@ const UserController = {
   login: async function(req, res) {
     try {
       const { usernameOrEmail: { username, email }, password } = req.body;
-      console.log("req body", req.body);
 
       let foundUser;
       if (username) {
