@@ -8,6 +8,4 @@ const presetSchema = new Schema({
   }
 });
 
-const Preset = mongoose.model('Preset', presetSchema);
-
-module.exports = Preset;
+module.exports = { presetSchema };

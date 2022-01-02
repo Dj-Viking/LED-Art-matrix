@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 const bcrypt = require('bcrypt');
 const Order = require('./Order');
-const Preset = require('./Preset'); 
+const { presetSchema } = require('./PresetSchema'); 
 
 const userSchema = new Schema({
   username: {
@@ -29,12 +29,9 @@ const userSchema = new Schema({
     Order.schema
   ],
   presets: [
-    Preset.schema
+    presetSchema
   ],
-  defaultPreset: {
-    type: Schema.Types.ObjectId,
-    ref: 'Preset'
-  },
+  defaultPreset: presetSchema,
   userSearchTerm: {
     type: Schema.Types.ObjectId,
     ref: 'SearchTerm'

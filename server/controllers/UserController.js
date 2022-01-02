@@ -1,6 +1,7 @@
 require("dotenv").config()
 const { RESET_EXPIRATION } = process.env;
-const { User, Preset } = require("../models");
+const mongoose = require("mongoose");
+const { User } = require("../models");
 const { signToken } = require("../utils/signToken");
 const { sendEmail } = require("../utils/sendEmail");
 const { verifyAsync } = require("../utils/verifyAsync");
@@ -28,9 +29,8 @@ const UserController = {
       });
 
       //set the default preset as the empty string one
-      const preset = await Preset.findOne({presetName: ""});
 
-      await User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: preset }, { new: true });
+      await User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: "" }, { new: true });
       return res.status(201).json({ token });
     } catch (error) {
       console.error(error);
@@ -46,11 +46,12 @@ const UserController = {
   getUserDefaultPreset: async function(req, res) {
     try {
       const foundUser = await User.findOne({ _id: req.user._id });
+      console.log("found user", foundUser);
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
-      const preset = await Preset.findOne({ _id: foundUser.defaultPreset });
-      return res.status(200).json({ preset });
+      console.log("preset", foundUser);
+      return res.status(200).json({ preset: foundUser.defaultPreset });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error });
@@ -69,18 +70,16 @@ const UserController = {
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if(typeof defaultPreset !== "string") return res.status(400).json({error: "missing preset name in request"});
-      const foundPreset = await Preset.findOne({presetName: defaultPreset});
-      console.log("found preset", foundPreset);
       const foundUser = await User.findOneAndUpdate({ _id: req.user._id }, {
-        $set: {
-          defaultPreset: foundPreset._id
+        defaultPreset: {
+          presetName: defaultPreset
         }
       }, { new: true });
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
       console.log("found user hopefully with same preset name", foundUser);
-      return res.status(200).json({ updated: foundPreset.presetName });
+      return res.status(200).json({ updated: foundUser.defaultPreset.presetName });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error });
@@ -117,10 +116,8 @@ const UserController = {
         token
       }, { new: true });
 
-      const preset = await Preset.findOne({_id: updatedUser.defaultPreset});
-
       const returnUser = {
-        defaultPreset: preset.presetName,
+        defaultPreset: updatedUser.defaultPreset.presetName,
         token: updatedUser.token,
       }
       return res.status(200).json({ user: returnUser });

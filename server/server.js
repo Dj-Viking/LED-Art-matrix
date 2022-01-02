@@ -35,41 +35,6 @@ async function seedSearchTerms() {
     console.log("\x1b[37m", "starting categories already seeded...", "\x1b[00m")
   }
 }
-
-async function seedPresets() {
-  await Preset.deleteMany();
-  //check if presets exist already
-  const presetInfo = await Preset.find();
-  //console.log(presetInfo);
-  if (presetInfo[0] === undefined) {
-    await Preset.insertMany
-    (
-      [
-        {
-          presetName: ''
-        },
-        {
-          presetName: 'V2'
-        },
-        {
-          presetName: 'waves'
-        },
-        {
-          presetName: 'spiral'
-        },
-        {
-          presetName: 'fourSpirals'
-        },
-        {
-          presetName: 'dm5'
-        }
-      ]
-    );
-    console.log("\x1b[37m", "presets seeded...", "\x1b[00m");
-  } else {
-    console.log("\x1b[37m", "starting presets already seeded...", "\x1b[00m")
-  }
-}
 //STATIC PUBLIC FRONT END ASSETS WHILE IN DEVELOPMENT
 // app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
@@ -115,9 +80,6 @@ db.once('open', () => {
     }, 600);
 
     //seed Presets and SearchTerms tables with new preset names so the user can add them to their account as a default starting values
-    setTimeout( async () => {
-      seedPresets();
-    }, 700);
     setTimeout( async () => {
       seedSearchTerms();
     }, 800);
