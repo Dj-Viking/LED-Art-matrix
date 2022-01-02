@@ -1,9 +1,19 @@
-export const loginEmailChange = (data) => {
+/**
+ * 
+ * @param {string} usernameOrEmail 
+ * @returns 
+ */
+export const loginEmailChange = (usernameOrEmail) => {
   return {
-    type: 'LOGIN_EMAIL_CHANGE',
-    payload: data
+    type: 'LOGIN_EMAIL_OR_USERNAME_CHANGE',
+    payload: usernameOrEmail
   }
 }
+/**
+ * 
+ * @param {boolean} data 
+ * @returns 
+ */
 export const loginEmailCompleted = (data) => {
   if (data.length > 0) {
     return {
@@ -17,12 +27,22 @@ export const loginEmailCompleted = (data) => {
     }
   }
 }
+/**
+ * 
+ * @param {string} data 
+ * @returns 
+ */
 export const loginPasswordChange = (data) => {
   return {
     type: 'LOGIN_PASSWORD_CHANGE',
     payload: data
   }
 }
+/**
+ * 
+ * @param {boolean} data 
+ * @returns 
+ */
 export const loginPasswordCompleted = (data) => {
   if (data.length > 0){
     return {

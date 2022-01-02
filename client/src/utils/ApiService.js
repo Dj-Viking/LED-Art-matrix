@@ -41,13 +41,16 @@ class ApiService {
   async login(args) {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
-    const { email, password } = args;
+    const { usernameOrEmail, password } = args;
     try {
       let res;
       res = await fetch(API_URL + "/user/login", {
         method: 'POST',
         body: JSON.stringify({
-          email,
+          usernameOrEmail: {
+            email: /@/g.test(usernameOrEmail) ? usernameOrEmail : void 0,
+            username: !/@/g.test(usernameOrEmail) ? usernameOrEmail : void 0,
+          },
           password
         }),
         headers,
@@ -137,8 +140,7 @@ class ApiService {
     try {
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
-      let res;
-      res = await fetch(API_URL + "/user/forgot", {
+      await fetch(API_URL + "/user/forgot", {
         method: "POST",
         body: JSON.stringify({ email }),
         headers

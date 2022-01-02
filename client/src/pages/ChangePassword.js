@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
-//AUTH
 import Auth from '../utils/auth';
 import API from "../utils/ApiService";
-
-//audio player and big led box
+import { Spinner } from "../components/Spinner";
 const ChangePassword = () => {
 
   const [ error, setError ] = useState("");
   const [ loading, setLoading ] = useState(false);
-  const [ errMsg, setErrMsg ] = useState("");
   const [ password, setPassword ] = useState(""); 
   const [ confirmPass, setConfirmPass ] = useState("");
   //if i dont explicitly use the name i defined in my schema the mutation result shape will only contain
@@ -124,19 +121,9 @@ const ChangePassword = () => {
         {
           loading 
           ?
-            <div style={{ display: "flex", justifyContent: "center"}}>
-              <div className="lds-roller">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              </div>
-            </div>
-          : null
+            <Spinner />
+          : 
+            null
         }
       </form>
     </>

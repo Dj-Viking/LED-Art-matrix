@@ -1,16 +1,6 @@
-//REACT IMPORTS
 import React, { useState } from 'react';
-
-//AUTH
-import Auth from '../utils/auth.js';
 import API from "../utils/ApiService";
-//REDUX IMPORTS
 import { useSelector, useDispatch } from 'react-redux';
-
-//GRAPHQL IMPORTS
-
-
-//ACTIONS IMPORT for signup formstate reducer
 import {
   signupUsernameChange,
   signupUsernameCompleted,
@@ -19,27 +9,14 @@ import {
   signupPasswordChange,
   signupPasswordCompleted
 } from '../actions/signup-form-actions';
-
+import { Spinner } from "../components/Spinner";
+ 
 const Signup = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  //OBSERVE GLOBAL SIGNUP FORM STATE
-  const signupFormState = useSelector(state => state.signupForm);
-  //console.log(signupFormState);
-  //GRAB PIECE OF STATE
-  const {
-    username,
-    email,
-    password,
-    //usernameIsComplete,
-    //emailIsComplete,
-    //passwordIsComplete
-  } = signupFormState;
+  const { username, email, password } = useSelector(state => state.signupForm);
+  const dispatch = useDispatch();
   
-  //REDUX DISPATCH
-  const dispatchREDUX = useDispatch();
-  
-  //FUNCTION TO HANDLE FORM SUBMIT TO GRAPHQL MUTATION
   async function handleSubmit(event){
     event.preventDefault();
     setLoading(true);
@@ -59,16 +36,16 @@ const Signup = () => {
 
   function handleChange(event) {
     if (event.target.type === 'text') {
-      dispatchREDUX(signupUsernameChange(event.target.value));
-      dispatchREDUX(signupUsernameCompleted(event.target.value));
+      dispatch(signupUsernameChange(event.target.value));
+      dispatch(signupUsernameCompleted(event.target.value));
     }
     if (event.target.type === 'email') {
-      dispatchREDUX(signupEmailChange(event.target.value));
-      dispatchREDUX(signupEmailCompleted(event.target.value));
+      dispatch(signupEmailChange(event.target.value));
+      dispatch(signupEmailCompleted(event.target.value));
     }
     if (event.target.type === 'password') {
-      dispatchREDUX(signupPasswordChange(event.target.value));
-      dispatchREDUX(signupPasswordCompleted(event.target.value));
+      dispatch(signupPasswordChange(event.target.value));
+      dispatch(signupPasswordCompleted(event.target.value));
     }
   }
 
@@ -154,7 +131,7 @@ const Signup = () => {
         {
           loading 
           ?
-          <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          <Spinner />
           : null
         }
         </div> 
