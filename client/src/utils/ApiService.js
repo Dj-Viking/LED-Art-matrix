@@ -85,7 +85,7 @@ class ApiService {
       });
       const data = await res.json();
       if (!!data.error) throw new Error(`${data.error}`);
-      return data.preset.presetName;
+      return data.preset;
     } catch (error) {
       console.error("error when getting default preset", error);
       return false;
