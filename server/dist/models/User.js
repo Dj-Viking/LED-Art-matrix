@@ -27,6 +27,7 @@ const typegoose_1 = require("@typegoose/typegoose");
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const Order_1 = require("./Order");
+const PresetClass_1 = require("./PresetClass");
 const SearchTerm_1 = require("./SearchTerm");
 let UserClass = class UserClass {
     isCorrectPassword(plainPass) {
@@ -56,8 +57,12 @@ __decorate([
     __metadata("design:type", Array)
 ], UserClass.prototype, "orders", void 0);
 __decorate([
+    (0, typegoose_1.prop)({ type: () => PresetClass_1.PresetClass }),
+    __metadata("design:type", Array)
+], UserClass.prototype, "presets", void 0);
+__decorate([
     (0, typegoose_1.prop)(),
-    __metadata("design:type", String)
+    __metadata("design:type", PresetClass_1.PresetClass)
 ], UserClass.prototype, "defaultPreset", void 0);
 __decorate([
     (0, typegoose_1.prop)({ ref: () => SearchTerm_1.SearchTermClass }),

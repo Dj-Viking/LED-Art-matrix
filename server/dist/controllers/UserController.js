@@ -34,7 +34,7 @@ exports.UserController = {
                     uuid: uuid.v4(),
                     _id: newUser._id,
                 });
-                yield models_1.User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: "" }, { new: true }).select("-password");
+                yield models_1.User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: { presetName: "" } }, { new: true }).select("-password");
                 return res.status(201).json({ token });
             }
             catch (error) {
@@ -44,14 +44,14 @@ exports.UserController = {
         });
     },
     getUserDefaultPreset: function (req, res) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const foundUser = yield models_1.User.findOne({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }).select("-password");
                 if (foundUser === null) {
                     return res.status(404).json({ error: "user not found" });
                 }
-                return res.status(200).json({ preset: foundUser.defaultPreset });
+                return res.status(200).json({ preset: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
                 console.error(error);
@@ -60,19 +60,22 @@ exports.UserController = {
         });
     },
     updateDefaultPreset: function (req, res) {
-        var _a;
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { defaultPreset } = req.body;
+                console.log("default preset", defaultPreset);
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
                 const foundUser = yield models_1.User.findOneAndUpdate({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }, {
-                    defaultPreset
+                    defaultPreset: {
+                        presetName: defaultPreset
+                    }
                 }, { new: true }).select("-password");
                 if (foundUser === null) {
                     return res.status(404).json({ error: "user not found" });
                 }
-                return res.status(200).json({ updated: foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset });
+                return res.status(200).json({ updated: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
                 console.error(error);
@@ -81,6 +84,7 @@ exports.UserController = {
         });
     },
     login: function (req, res) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { usernameOrEmail: { username, email }, password } = req.body;
@@ -116,7 +120,7 @@ exports.UserController = {
                     }, { new: true }).select("-password");
                 }
                 const returnUser = {
-                    defaultPreset: foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset,
+                    defaultPreset: (_a = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _a === void 0 ? void 0 : _a.presetName,
                     token: foundUser === null || foundUser === void 0 ? void 0 : foundUser.token,
                 };
                 return res.status(200).json({ user: returnUser });

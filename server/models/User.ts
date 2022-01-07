@@ -5,7 +5,7 @@ import mongooseUniqueValidator from "mongoose-unique-validator";
 
 import bcrypt from "bcrypt";
 import { OrderClass } from "./Order";
-// import { PresetClass } from "./PresetClass";
+import { PresetClass } from "./PresetClass";
 import { SearchTermClass } from "./SearchTerm";
 
 export interface IDefaultPreset {
@@ -34,11 +34,11 @@ export class UserClass {
   @prop({ ref: () => OrderClass })
   public orders?: Ref<OrderClass>[];
 
-  // @prop()
-  // public presets?: IDefaultPreset[];
+  @prop({ type: () => PresetClass })
+  public presets?: PresetClass[];
 
   @prop()
-  public defaultPreset?: string;
+  public defaultPreset?: PresetClass;
 
   @prop({ ref: () => SearchTermClass })
   public userSearchTerm?: Ref<SearchTermClass>;

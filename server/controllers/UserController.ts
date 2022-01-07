@@ -23,7 +23,7 @@ export const UserController = {
 
       //set the default preset as the empty string one
 
-      await User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: "" }, { new: true }).select("-password");
+      await User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: { presetName: "" } }, { new: true }).select("-password");
       return res.status(201).json({ token });
     } catch (error) {
       console.error(error);
@@ -36,7 +36,7 @@ export const UserController = {
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
-      return res.status(200).json({ preset: foundUser.defaultPreset });
+      return res.status(200).json({ preset: foundUser?.defaultPreset?.presetName });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error });
@@ -45,16 +45,19 @@ export const UserController = {
   updateDefaultPreset: async function(req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
       const { defaultPreset } = req.body;
+      console.log("default preset", defaultPreset);
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if(typeof defaultPreset !== "string") return res.status(400).json({error: "missing preset name in request"});
       const foundUser = await User.findOneAndUpdate({ _id: req.user?._id }, {
-        defaultPreset
+        defaultPreset: {
+          presetName: defaultPreset
+        }
       }, { new: true }).select("-password");
       if (foundUser === null) {
         return res.status(404).json({ error: "user not found" });
       }
-      return res.status(200).json({ updated: foundUser?.defaultPreset });
+      return res.status(200).json({ updated: foundUser?.defaultPreset?.presetName });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ error: error.message || error });
@@ -102,7 +105,7 @@ export const UserController = {
       }
 
       const returnUser = {
-        defaultPreset: foundUser?.defaultPreset as string,
+        defaultPreset: foundUser?.defaultPreset?.presetName as string,
         token: foundUser?.token as string,
       }
       return res.status(200).json({ user: returnUser });
