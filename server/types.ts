@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
 import { Request } from "express";
+import jwt from "jsonwebtoken";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {

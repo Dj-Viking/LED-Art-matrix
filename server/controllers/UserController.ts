@@ -1,11 +1,11 @@
-require("dotenv").config()
 import { User } from "../models";
-import { signToken, sendEmail, verifyTokenAsync } from "../utils";
+import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
 import bcrypt from "bcrypt"; 
 import { APP_DOMAIN_PREFIX } from "../constants";
 import { Express } from "../types";
 import { Response } from "express";
 const uuid = require("uuid");
+readEnv();
 const { RESET_EXPIRATION } = process.env;
 export const UserController = {
   signup: async function(req: Express.MyRequest, res: Response): Promise<Response | void> {
@@ -69,12 +69,12 @@ export const UserController = {
 
       let foundUser;
       if (username) {
-        foundUser = await User.findOne({ username: username as string }).select("-password");
+        foundUser = await User.findOne({ username: username as string });
         console.log("found user", foundUser);
         
       }
       if (email) {
-        foundUser = await User.findOne({ email }).select("-password");
+        foundUser = await User.findOne({ email });
       }
 
       if (foundUser === null) {

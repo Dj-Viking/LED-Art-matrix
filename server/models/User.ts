@@ -8,9 +8,6 @@ import { OrderClass } from "./Order";
 import { PresetClass } from "./PresetClass";
 import { SearchTermClass } from "./SearchTerm";
 
-export interface IDefaultPreset {
-  presetName: string | "";
-}
 // const PresetSchema = buildSchema(PresetClass);
 
 @pre<UserClass>("save", async function (next) {

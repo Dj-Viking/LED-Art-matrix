@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "tsc": "tsc",
+    "dev": "cd dist; nodemon -L index.js",
     "tsw": "tsc -w",
     "seed": "node config/seeds.js"
   },

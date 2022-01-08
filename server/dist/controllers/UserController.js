@@ -13,12 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
-require("dotenv").config();
 const models_1 = require("../models");
 const utils_1 = require("../utils");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const constants_1 = require("../constants");
 const uuid = require("uuid");
+(0, utils_1.readEnv)();
 const { RESET_EXPIRATION } = process.env;
 exports.UserController = {
     signup: function (req, res) {
@@ -90,11 +90,11 @@ exports.UserController = {
                 const { usernameOrEmail: { username, email }, password } = req.body;
                 let foundUser;
                 if (username) {
-                    foundUser = yield models_1.User.findOne({ username: username }).select("-password");
+                    foundUser = yield models_1.User.findOne({ username: username });
                     console.log("found user", foundUser);
                 }
                 if (email) {
-                    foundUser = yield models_1.User.findOne({ email }).select("-password");
+                    foundUser = yield models_1.User.findOne({ email });
                 }
                 if (foundUser === null) {
                     return res.status(400).json({ error: "incorrect credentials" });

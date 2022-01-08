@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { MyJwtData } from "../types";
-
+import { readEnv } from "../utils/readEnv";
+readEnv();
 const { EXPIRATION, SECRET } = process.env;
 
 export async function verifyTokenAsync(
