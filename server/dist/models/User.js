@@ -69,6 +69,9 @@ __decorate([
     __metadata("design:type", Object)
 ], UserClass.prototype, "userSearchTerm", void 0);
 UserClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "users" }
+    }),
     (0, typegoose_1.pre)("save", function (next) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.isNew)

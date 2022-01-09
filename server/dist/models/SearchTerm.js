@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SearchTermClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
-class SearchTermClass {
-}
+let SearchTermClass = class SearchTermClass {
+};
 __decorate([
     (0, typegoose_1.prop)({ trim: true }),
     __metadata("design:type", String)
@@ -25,5 +25,10 @@ __decorate([
     (0, typegoose_1.prop)({ default: "15" }),
     __metadata("design:type", String)
 ], SearchTermClass.prototype, "limit", void 0);
+SearchTermClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "searchTerms" }
+    })
+], SearchTermClass);
 exports.SearchTermClass = SearchTermClass;
 //# sourceMappingURL=SearchTerm.js.map

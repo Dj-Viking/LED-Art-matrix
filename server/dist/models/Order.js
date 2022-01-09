@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.OrderClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const Product_1 = require("./Product");
-class OrderClass {
-}
+let OrderClass = class OrderClass {
+};
 __decorate([
     (0, typegoose_1.prop)({ default: Date.now() }),
     __metadata("design:type", Date)
@@ -22,5 +22,10 @@ __decorate([
     (0, typegoose_1.prop)({ ref: () => Product_1.ProductClass }),
     __metadata("design:type", Array)
 ], OrderClass.prototype, "products", void 0);
+OrderClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "orders" }
+    })
+], OrderClass);
 exports.OrderClass = OrderClass;
 //# sourceMappingURL=Order.js.map

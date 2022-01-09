@@ -11,11 +11,16 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CategoryClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
-class CategoryClass {
-}
+let CategoryClass = class CategoryClass {
+};
 __decorate([
     (0, typegoose_1.prop)({ required: true, trim: true }),
     __metadata("design:type", String)
 ], CategoryClass.prototype, "name", void 0);
+CategoryClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "categories" }
+    })
+], CategoryClass);
 exports.CategoryClass = CategoryClass;
 //# sourceMappingURL=Category.js.map

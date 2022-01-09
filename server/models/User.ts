@@ -1,5 +1,5 @@
 require('dotenv').config();
-import { pre, prop, plugin, Ref, DocumentType, /*buildSchema*/ } from "@typegoose/typegoose";
+import { pre, prop, plugin, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
 
@@ -10,6 +10,9 @@ import { SearchTermClass } from "./SearchTerm";
 
 // const PresetSchema = buildSchema(PresetClass);
 
+@modelOptions({
+  schemaOptions: { collection: "users" }
+})
 @pre<UserClass>("save", async function (next) {
   if (this.isNew) this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
   next();

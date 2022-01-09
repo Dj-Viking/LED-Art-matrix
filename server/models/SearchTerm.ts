@@ -1,5 +1,8 @@
-import { prop } from "@typegoose/typegoose";
+import { prop, modelOptions } from "@typegoose/typegoose";
 
+@modelOptions({
+  schemaOptions: { collection: "searchTerms" }
+})
 export class SearchTermClass {
   @prop({ trim: true })
   public termText?: string;

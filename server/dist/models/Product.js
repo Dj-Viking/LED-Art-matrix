@@ -12,8 +12,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const Category_1 = require("./Category");
-class ProductClass {
-}
+let ProductClass = class ProductClass {
+};
 __decorate([
     (0, typegoose_1.prop)({ required: true, trim: true }),
     __metadata("design:type", String)
@@ -38,5 +38,10 @@ __decorate([
     (0, typegoose_1.prop)({ ref: () => Category_1.CategoryClass, required: true }),
     __metadata("design:type", Object)
 ], ProductClass.prototype, "category", void 0);
+ProductClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "products" }
+    })
+], ProductClass);
 exports.ProductClass = ProductClass;
 //# sourceMappingURL=Product.js.map

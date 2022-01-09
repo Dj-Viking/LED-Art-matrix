@@ -1,6 +1,9 @@
-import { prop, Ref } from "@typegoose/typegoose";
+import { prop, Ref, modelOptions } from "@typegoose/typegoose";
 import { ProductClass } from "./Product";
 
+@modelOptions({
+  schemaOptions: { collection: "orders" }
+})
 export class OrderClass {
   @prop({ default: Date.now() })
   public purchaseDate?: Date;

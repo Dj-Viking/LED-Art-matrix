@@ -1,5 +1,8 @@
-import { prop } from "@typegoose/typegoose";
+import { prop, modelOptions } from "@typegoose/typegoose";
 
+@modelOptions({
+  schemaOptions: { collection: "gifs" }
+})
 export class GifClass {
   @prop({ trim: true })
   public gifCategory?: string;

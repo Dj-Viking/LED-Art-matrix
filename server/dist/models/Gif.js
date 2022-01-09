@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GifClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
-class GifClass {
-}
+let GifClass = class GifClass {
+};
 __decorate([
     (0, typegoose_1.prop)({ trim: true }),
     __metadata("design:type", String)
@@ -25,5 +25,10 @@ __decorate([
     (0, typegoose_1.prop)({ trim: true, default: "15" }),
     __metadata("design:type", String)
 ], GifClass.prototype, "limit", void 0);
+GifClass = __decorate([
+    (0, typegoose_1.modelOptions)({
+        schemaOptions: { collection: "gifs" }
+    })
+], GifClass);
 exports.GifClass = GifClass;
 //# sourceMappingURL=Gif.js.map
