@@ -1,7 +1,8 @@
-// @ts-expect-error need react in scope for JSX
+// eslint-disable-next-line
+// @ts-ignore
 import React, { useEffect, useCallback, useState } from "react";
 import { useSpring, animated } from "react-spring";
-import { useSelector, useDispatch } from "react-redux";
+// import { useSelector, useDispatch } from "react-redux";
 import { 
   _V2ButtonSpring, 
   _rainbowButtonSpring, 
@@ -13,9 +14,12 @@ import {
 } from "./SpringButtons";
 import "./aux-styles/ledLayoutStyle.css";
 import { 
+  appendStyle,
+  dm5,
+  fourSpirals,
   // appendStyle, 
   // removeStyle,
-  ledRowStyle,
+  ledRowStyle, rainbowTest, rainbowV2, removeStyle, spiral, waves,
   // rainbowTest,
   // rainbowV2,
   // waves,
@@ -24,15 +28,14 @@ import {
   // dm5
 } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
-import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import Auth from "../utils/auth";
 import API from "../utils/ApiService";
 
 // ACTIONS
-import { 
-  presetSwitch,
-} from "../actions/led-actions";
-import { MyRootState } from "../types";
+// import { 
+//   presetSwitch,
+// } from "../actions/led-actions";
+// import { MyRootState } from "../types";
 
 const BigLedBox = (): JSX.Element => {
   const V2ButtonSpring = useSpring(_V2ButtonSpring);
@@ -45,12 +48,10 @@ const BigLedBox = (): JSX.Element => {
 
   // did request preset state
   const [didRequestPreset, setDidRequestPreset] = useState<boolean>(false);
-  const [ledFunc, setLedFunc] = useState<LedStyleEngine>(new LedStyleEngine(""));
 
   let styleTag = document.createElement("style");
   styleTag.setAttribute("id", "led-style");
-  const dispatchREDUX = useDispatch();
-  const { presetName } = useSelector((state: MyRootState) => state.ledState);
+  const [presetName, setPresetName] = useState<string>("");
 
   const getDefaultPreset = useCallback(async () => {
     setDidRequestPreset(true);
@@ -74,15 +75,13 @@ const BigLedBox = (): JSX.Element => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
         if (typeof preset === "string") {
-          setLedFunc(new LedStyleEngine(preset.trim()));
-          console.log("led func", ledFunc);
-          dispatchREDUX(presetSwitch(preset));
+          setPresetName(preset);
         }
       }
     }
     awaitThePresetCallback();
     return void 0;
-  }, [getDefaultPreset, didRequestPreset, ledFunc, dispatchREDUX]);
+  }, [getDefaultPreset, didRequestPreset]);
   
   /**
    * array of led objects that only contain the information needed
@@ -129,58 +128,57 @@ const BigLedBox = (): JSX.Element => {
   createLedObjectsArray(33);
   createLedRowsArray(33);
 
-  function setStyle(preset: string): void {
-    if (document.querySelector("#led-style")) {
-      ledFunc.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    setLedFunc(new LedStyleEngine(preset));
-    const func = ledFunc.createStyleFunction();
-    styleTag = func(styleTag);
-    ledFunc.appendStyle(styleTag);
-  }
+  // function setStyle(preset: string): void {
+  //   if (document.querySelector("#led-style")) {
+  //     ledEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+  //   }
+  //   ledEngine = new LedStyleEngine(preset);
+  //   styleTag = ledEngine.createStyleFunction()(styleTag);
+  //   ledEngine.appendStyle(styleTag);
+  // }
 
-  // function setRainbowStyle() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = rainbowTest(styleTag);
-  //   appendStyle(styleTag);
-  // }
-  // function setRainbowV2Style() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = rainbowV2(styleTag);
-  //   appendStyle(styleTag);
-  // }
-  // function setWavesStyle() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = waves(styleTag);
-  //   appendStyle(styleTag);
-  // }
-  // function setSpiralStyle() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = spiral(styleTag);
-  //   appendStyle(styleTag);
-  // }
-  // function setFourSpiralsStyle() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = fourSpirals(styleTag);
-  //   appendStyle(styleTag);
-  // }
-  // function setdm5Style() {
-  //   if (document.querySelector("#led-style")) {
-  //     removeStyle(document.querySelector("#led-style"));
-  //   }
-  //   styleTag = dm5(styleTag);
-  //   appendStyle(styleTag);
-  // }
+  function setRainbowStyle(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = rainbowTest(styleTag);
+    appendStyle(styleTag);
+  }
+  function setRainbowV2Style(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = rainbowV2(styleTag);
+    appendStyle(styleTag);
+  }
+  function setWavesStyle(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = waves(styleTag);
+    appendStyle(styleTag);
+  }
+  function setSpiralStyle(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = spiral(styleTag);
+    appendStyle(styleTag);
+  }
+  function setFourSpiralsStyle(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = fourSpirals(styleTag);
+    appendStyle(styleTag);
+  }
+  function setdm5Style(): void {
+    if (document.querySelector("#led-style")) {
+      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+    }
+    styleTag = dm5(styleTag);
+    appendStyle(styleTag);
+  }
   
   return (
     <>
@@ -227,11 +225,11 @@ const BigLedBox = (): JSX.Element => {
               style={rainbowButtonSpring}
               className="preset-button rainbow-anim"
               onClick={() => {
-                dispatchREDUX(presetSwitch(""));
+                setPresetName("");
                 setTimeout(() => {
-                  setStyle("");
                   document.querySelector("#led-box")?.scrollIntoView({ behavior: "smooth" });
                 }, 300);
+                setRainbowStyle();
               }}
             >
               <span
@@ -244,8 +242,8 @@ const BigLedBox = (): JSX.Element => {
               style={V2ButtonSpring}
               className="preset-button"
               onClick={() => {
-                dispatchREDUX(presetSwitch("V2"));
-                setStyle("V2");
+                setPresetName("V2");
+                setRainbowV2Style();
               }}
             >
               <span
@@ -260,8 +258,8 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch("waves"));
-                setStyle("waves");
+                setPresetName("waves");
+                setWavesStyle();
               }}
             >
               <span
@@ -275,8 +273,8 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch("spiral"));
-                setStyle("spiral");
+                setPresetName("spiral");
+                setSpiralStyle();
               }}
             >
               <span
@@ -290,8 +288,8 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch("fourSpirals"));
-                setStyle("fourSpirals");
+                setPresetName("fourSpirals");
+                setFourSpiralsStyle();
               }}
             >
               <span
@@ -305,8 +303,8 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                dispatchREDUX(presetSwitch("dm5"));
-                setStyle("dm5");
+                setPresetName("dm5");
+                setdm5Style();
               }}
             >
               <span

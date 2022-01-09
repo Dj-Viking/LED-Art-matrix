@@ -1,4 +1,5 @@
-// @ts-expect-error need react in scope for JSX
+// eslint-disable-next-line
+// @ts-ignore
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";

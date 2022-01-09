@@ -3,7 +3,7 @@
  * @returns {HTMLElement} adds text to a style element and 
  * appends it to the body
  */
-export function fourSpirals(tag: HTMLElement): HTMLElement {
+export function fourSpirals(tag: HTMLStyleElement): HTMLStyleElement {
   const _tag = tag;
   _tag.textContent = `
   @keyframes fourSpirals {

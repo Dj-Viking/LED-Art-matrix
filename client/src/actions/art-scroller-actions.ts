@@ -5,6 +5,6 @@ import { IGetGifsAction, IGif } from "../types";
 
 // ACTIVATE ON THE RETURN OF API QUERY DATA
 export const getGifs = (data: Array<IGif>): IGetGifsAction => ({
-  type: 'GET_GIFS',
+  type: "GET_GIFS",
   payload: data
 });

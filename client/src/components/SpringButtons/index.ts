@@ -75,11 +75,11 @@ export const _leftInitButtonSpring = {
   delay: 100,
   from: {
     opacity: 0,
-    marginRight: '1000px' 
+    marginRight: "1000px" 
   },
   to: {
     opacity: 1,
-    marginRight: '5px'
+    marginRight: "5px"
   }
 };
 

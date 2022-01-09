@@ -20,7 +20,7 @@ class ApiService {
     const { username, password, email } = args;
     try {
       const res = await fetch(`${API_URL}/user`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           username,
           email,
@@ -46,7 +46,7 @@ class ApiService {
     const { usernameOrEmail, password } = args;
     try {
       const res = await fetch(`${API_URL}/user/login`, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           usernameOrEmail: {
             email: /@/g.test(usernameOrEmail) ? usernameOrEmail : void 0,
@@ -77,7 +77,7 @@ class ApiService {
     headers = setAuthHeader(headers, token);
     try {
       const res = await fetch(`${API_URL}/user`, {
-        method: 'GET',
+        method: "GET",
         headers,
       });
       const data = await res.json();
@@ -98,7 +98,7 @@ class ApiService {
       headers = setInitialHeaders(headers);
       headers = setAuthHeader(headers, token);
       const res = await fetch(`${API_URL}/user/update-preset`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify({ defaultPreset: name }),
         headers,
       });

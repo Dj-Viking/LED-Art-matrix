@@ -76,25 +76,13 @@ animation-duration: ${(led / 32) + (row / led)}s;
 //anim duration: 4s
 //anim delay: (index / 16) + (index / (2 * row.rowNumber))
  */
-/**
- * 
- * @param {HTMLElement} tag style tag to append to head
- */
 
-export function appendStyle(tag: HTMLElement): void {
+export function appendStyle(tag: HTMLStyleElement): void {
   document.head.appendChild(tag);
 }
-/**
- * 
- * @param {HTMLElement} tag style tag to remove from head
- */
-export function removeStyle(tag: HTMLElement): void {
+export function removeStyle(tag: HTMLStyleElement): void {
   document.head.removeChild(tag);
 }
-/**
- * 
- * @returns {import("react").StyleHTMLAttributes}
- */
 export function ledRowStyle(): { display: string, flexDirection: string } {
   return {
     display: "flex",

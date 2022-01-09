@@ -3,7 +3,7 @@
  * @returns {HTMLElement} adds text to a style element and 
  * appends it to the body
  */
- export function waves(tag: HTMLElement): HTMLElement {
+ export function waves(tag: HTMLStyleElement): HTMLStyleElement {
   const _tag = tag;
   _tag.textContent = `
   @keyframes waves {

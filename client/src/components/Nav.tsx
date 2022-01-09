@@ -1,4 +1,5 @@
-// @ts-expect-error need react in scope for JSX
+// eslint-disable-next-line
+// @ts-ignore
 import React from "react";
 
 // AUTH
