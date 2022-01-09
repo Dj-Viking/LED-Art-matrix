@@ -4,11 +4,10 @@
   "description": "server to the led-matrix application",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "ENV_TXT=$(cat env.txt) cd dist; node index.js",
     "tsc": "tsc",
     "dev": "cd dist; nodemon -L index.js",
-    "tsw": "tsc -w",
-    "seed": "node config/seeds.js"
+    "tsw": "tsc -w"
   },
   "author": "Anders Ackerman",
   "license": "MIT",
