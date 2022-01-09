@@ -1,0 +1,23 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Gif = exports.Order = exports.Category = exports.Product = exports.SearchTerm = exports.User = void 0;
+const typegoose_1 = require("@typegoose/typegoose");
+const User_1 = require("./User");
+const Product_1 = require("./Product");
+const Category_1 = require("./Category");
+const Order_1 = require("./Order");
+const SearchTerm_1 = require("./SearchTerm");
+const Gif_1 = require("./Gif");
+const Product = (0, typegoose_1.getModelForClass)(Product_1.ProductClass);
+exports.Product = Product;
+const User = (0, typegoose_1.getModelForClass)(User_1.UserClass);
+exports.User = User;
+const Order = (0, typegoose_1.getModelForClass)(Order_1.OrderClass);
+exports.Order = Order;
+const SearchTerm = (0, typegoose_1.getModelForClass)(SearchTerm_1.SearchTermClass);
+exports.SearchTerm = SearchTerm;
+const Category = (0, typegoose_1.getModelForClass)(Category_1.CategoryClass);
+exports.Category = Category;
+const Gif = (0, typegoose_1.getModelForClass)(Gif_1.GifClass);
+exports.Gif = Gif;
+//# sourceMappingURL=index.js.map
