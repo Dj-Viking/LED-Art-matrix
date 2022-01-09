@@ -1,3 +1,4 @@
+#! bin/bash
 cd server;
 if [ -d "dist" ]; then
   echo "found dist directory, starting server..."

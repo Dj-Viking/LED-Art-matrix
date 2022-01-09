@@ -1,3 +1,4 @@
+#! bin/bash
 PROD="production"
 echo "node env is _$NODE_ENV _ "
 
