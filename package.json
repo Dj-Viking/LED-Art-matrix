@@ -23,7 +23,6 @@
   },
   "homepage": "https://github.com/Dj-Viking/03-project#readme",
   "dependencies": {
-    "concurrently": "^5.3.0",
-    "if-env": "^1.0.4"
+    "concurrently": "^5.3.0"
   }
 }
