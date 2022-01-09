@@ -36,7 +36,7 @@ const BigLedBox = (): JSX.Element => {
   const styleTagRef = useRef<HTMLStyleElement>(createMyStyleTag());
 
   let ledEngine = new LedStyleEngine("");
-  let styleTag = createMyStyleTag();
+    let styleTag = createMyStyleTag();
 
   const getDefaultPreset = useCallback(async () => {
     try {
