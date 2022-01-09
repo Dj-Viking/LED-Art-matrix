@@ -1,6 +1,7 @@
-require('dotenv').config();
 import nodemailer from "nodemailer";
 import { MySendEmailOptions } from "../types";
+import { readEnv } from "./readEnv";
+readEnv();
 
 const { NODEMAILER_AUTH_EMAIL, OTHER_NODEMAILER_AUTH_PASS } = process.env;
 

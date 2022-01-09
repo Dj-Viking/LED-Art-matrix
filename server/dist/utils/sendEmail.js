@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = void 0;
-require('dotenv').config();
 const nodemailer_1 = __importDefault(require("nodemailer"));
+const readEnv_1 = require("./readEnv");
+(0, readEnv_1.readEnv)();
 const { NODEMAILER_AUTH_EMAIL, OTHER_NODEMAILER_AUTH_PASS } = process.env;
 function sendEmail(args) {
     return __awaiter(this, void 0, void 0, function* () {
