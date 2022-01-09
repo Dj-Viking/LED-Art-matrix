@@ -7,7 +7,7 @@ export function spiral(tag: HTMLStyleElement): HTMLStyleElement {
   const _tag = tag;
   _tag.textContent = `
   @keyframes spiral {
-    0% {
+    1% {
       background-color: blue;
       /* left: 0px; top: 0px; */
       /* border-radius: 0 0 0 0; */

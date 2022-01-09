@@ -7,7 +7,7 @@
   const _tag = tag;
   _tag.textContent = `
   @keyframes dm5 {
-    0% {
+    0.001% {
       background-color: lime;
       /* left: 0px; top: 0px; */
       /* border-radius: 0 0 0 0; */

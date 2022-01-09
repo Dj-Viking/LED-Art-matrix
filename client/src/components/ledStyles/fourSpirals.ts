@@ -7,7 +7,7 @@ export function fourSpirals(tag: HTMLStyleElement): HTMLStyleElement {
   const _tag = tag;
   _tag.textContent = `
   @keyframes fourSpirals {
-    0% {
+    0.001% {
       background-color: red;
       /* left: 0px; top: 0px; */
       /* border-radius: 0 0 0 0; */

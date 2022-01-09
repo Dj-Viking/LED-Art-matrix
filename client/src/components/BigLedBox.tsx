@@ -13,23 +13,11 @@ import {
   _dm5ButtonSpring
 } from "./SpringButtons";
 import "./aux-styles/ledLayoutStyle.css";
-import { 
-  appendStyle,
-  dm5,
-  fourSpirals,
-  // appendStyle, 
-  // removeStyle,
-  ledRowStyle, rainbowTest, rainbowV2, removeStyle, spiral, waves,
-  // rainbowTest,
-  // rainbowV2,
-  // waves,
-  // spiral,
-  // fourSpirals,
-  // dm5
-} from "./ledStyles";
+import { ledRowStyle } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
 import Auth from "../utils/auth";
 import API from "../utils/ApiService";
+import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 
 // ACTIONS
 // import { 
@@ -49,9 +37,10 @@ const BigLedBox = (): JSX.Element => {
   // did request preset state
   const [didRequestPreset, setDidRequestPreset] = useState<boolean>(false);
 
+  let ledEngine = new LedStyleEngine("");
   let styleTag = document.createElement("style");
   styleTag.setAttribute("id", "led-style");
-  const [presetName, setPresetName] = useState<string>("");
+  const [presetName, setPresetName] = useState<string | void>(void 0);
 
   const getDefaultPreset = useCallback(async () => {
     setDidRequestPreset(true);
@@ -128,56 +117,13 @@ const BigLedBox = (): JSX.Element => {
   createLedObjectsArray(33);
   createLedRowsArray(33);
 
-  // function setStyle(preset: string): void {
-  //   if (document.querySelector("#led-style")) {
-  //     ledEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-  //   }
-  //   ledEngine = new LedStyleEngine(preset);
-  //   styleTag = ledEngine.createStyleFunction()(styleTag);
-  //   ledEngine.appendStyle(styleTag);
-  // }
-
-  function setRainbowStyle(): void {
+  function setStyle(preset: string): void {
     if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+      ledEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
     }
-    styleTag = rainbowTest(styleTag);
-    appendStyle(styleTag);
-  }
-  function setRainbowV2Style(): void {
-    if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    styleTag = rainbowV2(styleTag);
-    appendStyle(styleTag);
-  }
-  function setWavesStyle(): void {
-    if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    styleTag = waves(styleTag);
-    appendStyle(styleTag);
-  }
-  function setSpiralStyle(): void {
-    if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    styleTag = spiral(styleTag);
-    appendStyle(styleTag);
-  }
-  function setFourSpiralsStyle(): void {
-    if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    styleTag = fourSpirals(styleTag);
-    appendStyle(styleTag);
-  }
-  function setdm5Style(): void {
-    if (document.querySelector("#led-style")) {
-      removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-    styleTag = dm5(styleTag);
-    appendStyle(styleTag);
+    ledEngine = new LedStyleEngine(preset);
+    styleTag = ledEngine.createStyleFunction()(styleTag);
+    ledEngine.appendStyle(styleTag);
   }
   
   return (
@@ -229,7 +175,8 @@ const BigLedBox = (): JSX.Element => {
                 setTimeout(() => {
                   document.querySelector("#led-box")?.scrollIntoView({ behavior: "smooth" });
                 }, 300);
-                setRainbowStyle();
+                setStyle("");
+                // setRainbowStyle();
               }}
             >
               <span
@@ -243,7 +190,8 @@ const BigLedBox = (): JSX.Element => {
               className="preset-button"
               onClick={() => {
                 setPresetName("V2");
-                setRainbowV2Style();
+                // setRainbowV2Style();
+                setStyle("V2");
               }}
             >
               <span
@@ -259,7 +207,7 @@ const BigLedBox = (): JSX.Element => {
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
                 setPresetName("waves");
-                setWavesStyle();
+                setStyle("waves");
               }}
             >
               <span
@@ -274,7 +222,7 @@ const BigLedBox = (): JSX.Element => {
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
                 setPresetName("spiral");
-                setSpiralStyle();
+                setStyle("spiral");
               }}
             >
               <span
@@ -289,7 +237,7 @@ const BigLedBox = (): JSX.Element => {
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
                 setPresetName("fourSpirals");
-                setFourSpiralsStyle();
+                setStyle("fourSpirals");
               }}
             >
               <span
@@ -304,7 +252,7 @@ const BigLedBox = (): JSX.Element => {
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
                 setPresetName("dm5");
-                setdm5Style();
+                setStyle("dm5");
               }}
             >
               <span

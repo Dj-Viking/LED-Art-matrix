@@ -7,11 +7,6 @@ export function rainbowTest(tag: HTMLStyleElement): HTMLStyleElement {
   const _tag = tag;
   _tag.textContent = `
   @keyframes rainbowTestAllAnim {
-    0% {
-      background-color: red;
-      /* left: 0px; top: 0px; */
-      /* border-radius: 0 0 0 0; */
-    }
     25% {
       background-color: #ff6400;
       /* left: 30px;

@@ -7,10 +7,8 @@
   const _tag = tag;
   _tag.textContent = `
   @keyframes waves {
-    0% {
+    0.001% {
       background-color: red;
-      /* left: 0px; top: 0px; */
-      /* border-radius: 0 0 0 0; */
     }
     25% {
       background-color: #ff6400;

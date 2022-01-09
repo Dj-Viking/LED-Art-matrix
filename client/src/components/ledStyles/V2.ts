@@ -7,7 +7,7 @@
    const _tag = tag;
   _tag.textContent = `
   @keyframes rainbowV2Anim {
-    0% {
+    1% {
       background-color: red;
       /* left: 0px; top: 0px; */
       /* border-radius: 0 0 0 0; */
