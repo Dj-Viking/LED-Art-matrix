@@ -43,10 +43,10 @@ function seedSearchTerms() {
     });
 }
 if (process.env.NODE_ENV === 'production') {
-    app.use(express_1.default.static(path_1.default.join(__dirname, '../client/build')));
+    app.use(express_1.default.static(path_1.default.resolve('../client/build')));
     app.get('*', (_, res) => {
         console.log("IN THE GET STAR");
-        res.sendFile(path_1.default.join(__dirname, '../client/build/index.html'));
+        res.sendFile(path_1.default.resolve('../client/build/index.html'));
     });
     app.use((req, res, next) => {
         if (req.header('x-forwarded-proto') !== 'https') {

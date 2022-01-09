@@ -41,17 +41,13 @@ async function seedSearchTerms(): Promise<void> {
 if (process.env.NODE_ENV === 'production') {
   //STATIC ASSETS FROM REACT BUILD FOLDER
   app.use(
-    express.static(
-      path.join(__dirname, '../client/build')
-    )
+    express.static(path.resolve('../client/build'))
   );
   // IF TRAVELS ANY ROUTE OUTSIDE REACT'S CURRENT PAGE REDIRECT TO ROOT
   app.get('*', (_, res) => {
     console.log("IN THE GET STAR");
     res.sendFile(
-      path.join(
-        __dirname, '../client/build/index.html'
-      )
+      path.resolve('../client/build/index.html')
     )
   });
   //REDIRECT HTTP TRAFFIC TO HTTPS
