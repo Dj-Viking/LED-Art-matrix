@@ -1,9 +1,14 @@
-cd server;
-if [ -d "dist" ]; then
-  echo "found dist directory, starting server..."
-  node dist/index.js
-elif ! [ -d "dist" ]; then
-  echo "no dist folder detected, compiling typescript, and then starting server"
-  npm run tsc;
-  node dist/index.js
+PROD="production"
+echo "node env is _$NODE_ENV _ "
+
+if [ "$NODE_ENV" == "$PROD" ]; then
+  echo "==============================="
+  echo "🔮✨ starting app in production mode 🚀"
+  echo "==============================="
+  npm run start:prod
+elif ! [ "$NODE_ENV" == "$PROD" ]; then
+  echo "==============================="
+  echo "🔮✨ starting app in dev mode 🛠"
+  echo "==============================="
+  npm run start:dev
 fi

@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "if-env NODE_ENV=production && npm run start:prod",
-    "start:prod": "ENV_TXT=$(cat env.txt) sh start.sh",
+    "start": "sh start.sh",
+    "start:prod": "ENV_TXT=$(cat env.txt) sh server.sh",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev\" \"cd client && npm start\"",
     "server:dev": "cd server; ENV_TXT=$(cat env.txt) concurrently \"npm run tsw\" \"cd dist; nodemon -L index.js\"",
     "install": "cd server && npm i && cd ../client && npm i",
