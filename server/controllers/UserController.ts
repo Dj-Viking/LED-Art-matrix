@@ -70,8 +70,6 @@ export const UserController = {
       let foundUser;
       if (username) {
         foundUser = await User.findOne({ username: username as string });
-        console.log("found user", foundUser);
-        
       }
       if (email) {
         foundUser = await User.findOne({ email });

@@ -1,4 +1,11 @@
-import { DM5_ANIMATION, FOUR_SPIRALS_ANIMATION, RAINBOW_TEST_ANIMATION, RAINBOW_V2_ANIMATION, SPIRAL_ANIMATION, WAVES_ANIMATION } from "../constants";
+import { 
+  DM5_ANIMATION, 
+  FOUR_SPIRALS_ANIMATION, 
+  RAINBOW_TEST_ANIMATION, 
+  RAINBOW_V2_ANIMATION, 
+  SPIRAL_ANIMATION, 
+  WAVES_ANIMATION 
+} from "../constants";
 
 type MyCreateStyleFunction = (tag: HTMLStyleElement) => HTMLStyleElement
 export class LedStyleEngine {
@@ -16,7 +23,7 @@ export class LedStyleEngine {
     };
   }
 
-  public createLedClass(): string {
+  private createLedClass(): string {
     let ledClass = "";
     for (let row = 0; row < 33; row++) {
       for (let led = 0; led < 33; led++) {
@@ -118,7 +125,7 @@ export class LedStyleEngine {
     return ledClass;
   }
 
-  public createDelays(led: number, row: number): string {
+  private createDelays(led: number, row: number): string {
     let columnDelays = "";
     switch (this.preset) {
       case "": 
@@ -158,7 +165,7 @@ export class LedStyleEngine {
         `;
       break;
       case "fourSpirals":
-        columnDelays += `
+        columnDelays = `
           animation-duration: 2s;
           animation-iteration-count: infinite;
           animation-delay: ${(led / 32) + (led * (row / 8))}s;
@@ -167,7 +174,7 @@ export class LedStyleEngine {
         `;
       break;
       case "dm5": 
-        columnDelays += `
+        columnDelays = `
           animation-duration: ${led <= 3 ? 1 : (led / 3.14159) / 2}s;
           animation-iteration-count: infinite;
           animation-delay: ${(row % 5 === 0 ? (led / 3.14159) : led / 20)}s;
@@ -180,7 +187,7 @@ export class LedStyleEngine {
     return columnDelays;
   }
 
-  public createStyleSheet(): string {
+  private createStyleSheet(): string {
     let str = "";
     switch (this.preset) {
       case "":

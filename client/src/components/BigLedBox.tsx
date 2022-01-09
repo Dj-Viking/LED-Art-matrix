@@ -1,8 +1,8 @@
 // eslint-disable-next-line
 // @ts-ignore
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { useSpring, animated } from "react-spring";
-// import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { 
   _V2ButtonSpring, 
   _rainbowButtonSpring, 
@@ -18,12 +18,9 @@ import ArtScroller from "./ArtScroller";
 import Auth from "../utils/auth";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
-
-// ACTIONS
-// import { 
-//   presetSwitch,
-// } from "../actions/led-actions";
-// import { MyRootState } from "../types";
+import { createMyStyleTag } from "../utils/createMyStyleTag";
+import { presetSwitch } from "../actions/led-actions";
+import { MyRootState } from "../types";
 
 const BigLedBox = (): JSX.Element => {
   const V2ButtonSpring = useSpring(_V2ButtonSpring);
@@ -32,18 +29,16 @@ const BigLedBox = (): JSX.Element => {
   const spiralButtonSpring = useSpring(_spiralButtonSpring);
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
   const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
-  const saveButtonSpring = useSpring(_saveButtonSpring); 
-
-  // did request preset state
-  const [didRequestPreset, setDidRequestPreset] = useState<boolean>(false);
+  const saveButtonSpring = useSpring(_saveButtonSpring);
+  const { presetName } = useSelector((state: MyRootState) => state.ledState);
+  const dispatch = useDispatch();
+  const ledEngineRef = useRef<LedStyleEngine>(new LedStyleEngine(""));
+  const styleTagRef = useRef<HTMLStyleElement>(createMyStyleTag());
 
   let ledEngine = new LedStyleEngine("");
-  let styleTag = document.createElement("style");
-  styleTag.setAttribute("id", "led-style");
-  const [presetName, setPresetName] = useState<string | void>(void 0);
+  let styleTag = createMyStyleTag();
 
   const getDefaultPreset = useCallback(async () => {
-    setDidRequestPreset(true);
     try {
       const preset = await API.getDefaultPreset(Auth.getToken() as string);
       if (typeof preset === "string") {
@@ -64,13 +59,27 @@ const BigLedBox = (): JSX.Element => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
         if (typeof preset === "string") {
-          setPresetName(preset);
+          // set the presetname state for the react element
+          dispatch(presetSwitch(preset));
+          
+          // recreate the styletag with the corresponding animation for the given preset
+          // have to use useRef because "React" I guess..I don't get why, it works without useRef but whatever
+          ledEngineRef.current = new LedStyleEngine(preset);
+          styleTagRef.current = ledEngineRef.current.createStyleFunction()(styleTagRef.current);
+          ledEngineRef.current.appendStyle(styleTagRef.current);
+
+          // clean up so we dont append more than one style tag
+          // remove the last child 
+          const styleTagColl = document.querySelectorAll<HTMLStyleElement>("#led-style");
+          if (styleTagColl.length > 1) {
+            ledEngineRef.current.removeStyle(styleTagColl[styleTagColl.length - 1]);
+          }
         }
       }
     }
     awaitThePresetCallback();
     return void 0;
-  }, [getDefaultPreset, didRequestPreset]);
+  }, [getDefaultPreset, dispatch]);
   
   /**
    * array of led objects that only contain the information needed
@@ -171,7 +180,7 @@ const BigLedBox = (): JSX.Element => {
               style={rainbowButtonSpring}
               className="preset-button rainbow-anim"
               onClick={() => {
-                setPresetName("");
+                dispatch(presetSwitch(""));
                 setTimeout(() => {
                   document.querySelector("#led-box")?.scrollIntoView({ behavior: "smooth" });
                 }, 300);
@@ -189,8 +198,7 @@ const BigLedBox = (): JSX.Element => {
               style={V2ButtonSpring}
               className="preset-button"
               onClick={() => {
-                setPresetName("V2");
-                // setRainbowV2Style();
+                dispatch(presetSwitch("V2"));
                 setStyle("V2");
               }}
             >
@@ -206,7 +214,7 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                setPresetName("waves");
+                dispatch(presetSwitch("waves"));
                 setStyle("waves");
               }}
             >
@@ -221,7 +229,7 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                setPresetName("spiral");
+                dispatch(presetSwitch("spiral"));
                 setStyle("spiral");
               }}
             >
@@ -236,7 +244,7 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                setPresetName("fourSpirals");
+                dispatch(presetSwitch("fourSpirals"));
                 setStyle("fourSpirals");
               }}
             >
@@ -251,7 +259,7 @@ const BigLedBox = (): JSX.Element => {
               className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
               disabled={!Auth.loggedIn()}// enable if logged in
               onClick={() => {
-                setPresetName("dm5");
+                dispatch(presetSwitch("dm5"));
                 setStyle("dm5");
               }}
             >
