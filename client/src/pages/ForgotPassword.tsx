@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
 
 // audio player and big led box
 const ForgotPassword: React.FC = (): JSX.Element => {
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState(""); 
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>(""); 
+  const [disabled, setDisabled] = useState<boolean>(true);
+  const [submitted, setSubmitted] = useState<boolean>(false);
   // if i dont explicitly use the name i defined in my schema the mutation result shape will only contain
   // the shape of the defined schema
 
@@ -15,12 +17,14 @@ const ForgotPassword: React.FC = (): JSX.Element => {
     setLoading(true);
     try {
       if (!window.navigator.onLine) throw new Error("Internet is disconnected, please try again later.");
+      setSubmitted(true);
       await API.forgotPassword(email);
       setTimeout(() => {
         setLoading(false);
         window.location.replace("/");
       }, 5000);
     } catch (err) {
+      setSubmitted(false);
       setLoading(false);
       const error = err as Error;
       setError(error.message);
@@ -28,7 +32,13 @@ const ForgotPassword: React.FC = (): JSX.Element => {
     }
   }
 
-  // eslint-disable-next-line
+  useEffect(() => {
+    //re-render when text changes
+    email.length > 0 ? setDisabled(false) : setDisabled(true);
+    // re-render when submitted
+    submitted && setDisabled(true);
+  }, [email, disabled, setDisabled, submitted]);
+
   const handleChange = (event: any): void => {
     if (event.target.type === "email") {
       setEmail(event.target.value);
@@ -55,7 +65,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
           className="form-email-input"
           autoComplete="off"
         />
-        <button className="form-btn" type="submit">
+        <button className={disabled ? "form-btn-disabled" : "form-btn"} type="submit">
           Submit
         </button>
         {// login error rendering

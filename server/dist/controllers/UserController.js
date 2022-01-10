@@ -134,6 +134,9 @@ exports.UserController = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { email } = req.body;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email))
+                    return res.status(200).json({ message: "success" });
                 const user = yield models_1.User.findOne({ email }).select("-password");
                 if (user === null)
                     return res.status(200).json({ message: "success" });

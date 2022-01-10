@@ -115,9 +115,12 @@ export const UserController = {
   forgotPassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
       const { email } = req.body;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      //silently dont send the email if the email wasn't the right format
+      if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
       const user = await User.findOne({ email }).select("-password");
       //dont return anything else just a 204 status code which will not carry a response body
-      if (user === null) return res.status(200).json({message: "success"})
+      if (user === null) return res.status(200).json({ message: "success" });
 
       const resetUuid = uuid.v4();
       const token = signToken({
@@ -140,7 +143,7 @@ export const UserController = {
       
       await sendEmail(sendEmailArgs);
 
-      return res.status(200).json({message: "success"});
+      return res.status(200).json({ message: "success" });
 
     } catch (error) {
       console.error(error);

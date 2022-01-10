@@ -85,6 +85,20 @@ code {
   text-align: center;
 }
 
+.form-btn-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  color: var(--primary-color);
+  background-color: rgb(156, 156, 156);
+  padding: 10px;
+  width: 100%;
+  font-size: 30px;
+  border-radius: 10px;
+  transition: 1s;
+  margin-top: 10px;
+  box-shadow: 5px 5px 10px #000000;
+}
+
 .form-btn {
   cursor: pointer;
   color: var(--primary-color);
