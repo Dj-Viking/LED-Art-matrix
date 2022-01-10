@@ -125,7 +125,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
                   leds.map((led, index) => (
                     <div 
                       key={`led${led.ledNumber}-${index + 1}`} 
-                      className={`led${index + 1}-${row.rowNumber}${Auth.loggedIn() ? presetName : presetName}`}
+                      className={`led${index + 1}-${row.rowNumber}${presetName}`}
                     />
                   ))
                 }
