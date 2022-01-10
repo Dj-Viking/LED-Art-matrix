@@ -21,6 +21,7 @@ import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { createMyStyleTag } from "../utils/createMyStyleTag";
 import { presetSwitch } from "../actions/led-actions";
 import { MyRootState } from "../types";
+import { getPresetFromDom } from "../utils/getPresetFromDom";
 
 const BigLedBox = (): JSX.Element => {
   const V2ButtonSpring = useSpring(_V2ButtonSpring);
@@ -32,11 +33,11 @@ const BigLedBox = (): JSX.Element => {
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const { presetName } = useSelector((state: MyRootState) => state.ledState);
   const dispatch = useDispatch();
-  const ledEngineRef = useRef<LedStyleEngine>(new LedStyleEngine(""));
+  const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
   const styleTagRef = useRef<HTMLStyleElement>(createMyStyleTag());
 
-  let ledEngine = new LedStyleEngine("");
-    let styleTag = createMyStyleTag();
+  let LedEngine = new LedStyleEngine("rainbowTestAllAnim");
+  let styleTag = createMyStyleTag();
 
   const getDefaultPreset = useCallback(async () => {
     try {
@@ -64,15 +65,15 @@ const BigLedBox = (): JSX.Element => {
           
           // recreate the styletag with the corresponding animation for the given preset
           // have to use useRef because "React" I guess..I don't get why, it works without useRef but whatever
-          ledEngineRef.current = new LedStyleEngine(preset);
-          styleTagRef.current = ledEngineRef.current.createStyleFunction()(styleTagRef.current);
-          ledEngineRef.current.appendStyle(styleTagRef.current);
+          LedEngineRef.current = new LedStyleEngine(preset);
+          styleTagRef.current = LedEngineRef.current.generateStyle(styleTagRef.current);
+          LedEngineRef.current.appendStyle(styleTagRef.current);
 
           // clean up so we dont append more than one style tag
           // remove the last child 
           const styleTagColl = document.querySelectorAll<HTMLStyleElement>("#led-style");
           if (styleTagColl.length > 1) {
-            ledEngineRef.current.removeStyle(styleTagColl[styleTagColl.length - 1]);
+            LedEngineRef.current.removeStyle(styleTagColl[styleTagColl.length - 1]);
           }
         }
       }
@@ -108,16 +109,7 @@ const BigLedBox = (): JSX.Element => {
     event.preventDefault();
     event.persist();
     // get the classname string split from the classname of one of the led's being displayed
-    const presetString = event
-      .target
-        .parentElement
-          .parentElement
-            .parentElement
-              .children[1]
-                .firstChild
-                  .firstChild
-                  .className
-                  .split("led1-1")[1];
+    const presetString = getPresetFromDom(event.target);
 
     console.log("preset string", presetString);
     await API.updateDefaultPreset({ name: presetString, token: Auth.getToken() as string });
@@ -128,11 +120,11 @@ const BigLedBox = (): JSX.Element => {
 
   function setStyle(preset: string): void {
     if (document.querySelector("#led-style")) {
-      ledEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
+      LedEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
     }
-    ledEngine = new LedStyleEngine(preset);
-    styleTag = ledEngine.createStyleFunction()(styleTag);
-    ledEngine.appendStyle(styleTag);
+    LedEngine = new LedStyleEngine(preset);
+    styleTag = LedEngine.generateStyle(styleTag);
+    LedEngine.appendStyle(styleTag);
   }
   
   return (
@@ -180,11 +172,11 @@ const BigLedBox = (): JSX.Element => {
               style={rainbowButtonSpring}
               className="preset-button rainbow-anim"
               onClick={() => {
-                dispatch(presetSwitch(""));
+                dispatch(presetSwitch("rainbowTestAllAnim"));
                 setTimeout(() => {
                   document.querySelector("#led-box")?.scrollIntoView({ behavior: "smooth" });
                 }, 300);
-                setStyle("");
+                setStyle("rainbowTestAllAnim");
                 // setRainbowStyle();
               }}
             >
