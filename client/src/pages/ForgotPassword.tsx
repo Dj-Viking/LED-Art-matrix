@@ -18,6 +18,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
       await API.forgotPassword(email);
       setTimeout(() => {
         setLoading(false);
+        window.location.replace("/");
       }, 5000);
     } catch (err) {
       setLoading(false);
