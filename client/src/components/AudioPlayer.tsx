@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React, { useState } from "react";
 
 // AUDIO PLAYER
@@ -12,7 +10,7 @@ import G6 from "./music/G6_-24_db_for_web_test.m4a";
 // TEXT ANIMATIONS
 import "./aux-styles/trackAnimStyles.css";
 
-function AudioPlayerComponent(): JSX.Element {
+const AudioPlayerComponent: React.FC = (): JSX.Element => {
   const [currentSong, setCurrentSong] = useState(G6);
 
   // ARRAY OF LOCAL SONG FILE PATHS 
@@ -188,6 +186,6 @@ function AudioPlayerComponent(): JSX.Element {
       </section>
     </>
   );
-}
+};
 
 export default AudioPlayerComponent;

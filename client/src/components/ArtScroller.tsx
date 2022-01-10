@@ -1,5 +1,4 @@
-// eslint-disable-next-line
-// @ts-ignore
+
 import React, { useEffect, useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +12,7 @@ import {
 } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
-const ArtScroller = (): JSX.Element => {
+const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
   const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
   const dispatchREDUX = useDispatch();

@@ -3,7 +3,7 @@ import Auth from "../utils/auth";
 import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
 
-const ChangePassword = (): JSX.Element => {
+const ChangePassword: React.FC = (): JSX.Element => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(""); 
