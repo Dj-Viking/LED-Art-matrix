@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React from "react";
 
 // REDUX
@@ -26,7 +24,7 @@ import Nav from "./Nav";
 // splash header will have p5 sketch of something cool not sure yet.
 // 
 
-const SplashHeader = (): JSX.Element => (
+const SplashHeader: React.FC = (): JSX.Element => (
   <>
     {/* // for these conditional elements could use some kind of style animation that fades in and out some RGB shadow behind the button and around the button itself or the text highlighted after the previous animation the greyed out button presets */}
     {

@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +11,7 @@ import {
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
 
-const Login = (): JSX.Element => {
+const Login: React.FC = (): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { usernameOrEmail, password } = useSelector((state: MyRootState) => state.loginFormState);

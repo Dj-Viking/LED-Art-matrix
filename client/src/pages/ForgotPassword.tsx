@@ -3,7 +3,7 @@ import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
 
 // audio player and big led box
-const ForgotPassword = (): JSX.Element => {
+const ForgotPassword: React.FC = (): JSX.Element => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState(""); 

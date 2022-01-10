@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React from "react";
 
 // AUTH
@@ -11,7 +9,7 @@ import Auth from "../utils/auth";
 // STYLES
 import "./aux-styles/navStyles.css";
 
-const Nav = (): JSX.Element => {
+const Nav: React.FC = (): JSX.Element => {
   function displayNav(): JSX.Element {
     if (Auth.loggedIn()) {
       return (

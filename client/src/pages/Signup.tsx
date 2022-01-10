@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
@@ -14,7 +12,7 @@ import {
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
  
-const Signup = (): JSX.Element => {
+const Signup: React.FC = (): JSX.Element => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { username, email, password } = useSelector((state: MyRootState) => state.signupFormState);

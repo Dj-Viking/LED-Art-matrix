@@ -1,8 +1,6 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React from "react";
 
-export const Spinner = (): JSX.Element => (
+export const Spinner: React.FC = (): JSX.Element => (
   <div style={{ display: "flex", justifyContent: "center" }}>
     <div className="lds-roller">
       <div />
