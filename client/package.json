@@ -3,6 +3,14 @@
   "name": "led-matrix",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js --updateSnapshot --verbose --watchAll",
+    "clear:jest": "jest --clearCache",
+    "eject": "react-scripts eject",
+    "deploy-gh": "gh-pages -d build"
+  },
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -10,7 +18,8 @@
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
-    "@testing-library/user-event": "^12.7.1",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^27.4.0",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
@@ -70,6 +79,7 @@
     "react-router-dom": "^5.2.0",
     "react-spring": "^8.0.27",
     "react-svg": "^11.2.4",
+    "react-test-renderer": "^17.0.2",
     "redux": "^4.0.5",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
@@ -97,12 +107,6 @@
     "workbox-strategies": "^5.1.4",
     "workbox-streams": "^5.1.4",
     "workbox-webpack-plugin": "^6.4.1"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
-    "deploy-gh": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -134,7 +138,7 @@
       "react-app-polyfill/jsdom"
     ],
     "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
+      "<rootDir>/src/jest.config.ts"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -150,14 +154,22 @@
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
       "^.+\\.module\\.(css|sass|scss)$"
     ],
-    "modulePaths": [],
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "@types/(.*)": "<rootDir>/node_modules/$1"
     },
     "moduleFileExtensions": [
       "web.js",
       "js",
+      "css",
       "web.ts",
       "ts",
       "web.tsx",
