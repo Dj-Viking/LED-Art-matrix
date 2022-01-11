@@ -3,6 +3,7 @@ import { defaults } from "jest-config";
 export async function MyConfig(): Promise<Config.InitialOptions> {
   return {
     verbose: true,
+    watchAll: true,
     modulePaths: ["<rootDir>"],
     transformIgnorePatterns: ["<rootDir>/node_modules/"],
     testMatch: ["**/?(*.)+(spec|test).tsx"],

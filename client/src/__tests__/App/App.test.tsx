@@ -41,7 +41,6 @@ describe("test rendering the app and snapshot", () => {
         <App />
       </Provider>
     );
-
     expect(asFragment()).toMatchSnapshot();
   });
 });
