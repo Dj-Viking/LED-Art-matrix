@@ -1,14 +1,19 @@
-// eslint-disable-next-line
 module.exports = function (api) {
-  api.cache(true,);
-  return {
-    presets: [
-      "@babel/react", 
-      "@babel/typescript", 
-      [
-        "@babel/env",
-        { modules: false, },
-      ],
+  const presets = [
+    [
+      "@babel/preset-env",
+      { targets: { node: "current" } },
     ],
+    ["@babel/preset-react"],
+    ["@babel/preset-typescript"],
+  ];
+  const plugins = [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties"
+  ]
+  api.cache(false);
+  return {
+    presets,
+    plugins
   };
 };
