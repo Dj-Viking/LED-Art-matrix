@@ -28,6 +28,9 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "baseUrl": "src",
+    "paths": {
+      "@types/*": [ "node_modules/*" ]
+    },
     "allowJs": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
@@ -41,6 +44,8 @@
   ],
   "include": [
     "./**/*.tsx",
-    "./**/*.ts"
+    "./**/*.ts",
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
   ]
 }

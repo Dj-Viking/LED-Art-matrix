@@ -43,7 +43,7 @@ export class LedStyleEngine {
   public generateStyle(tag: HTMLStyleElement): HTMLStyleElement {
     const _tag = tag;
     _tag.textContent = this.createStyleSheet();
-    return tag;
+    return _tag;
   }
   private createStyleSheet(): string {
     let str = "";
