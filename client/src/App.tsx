@@ -1,5 +1,3 @@
-// eslint-disable-next-line
-// @ts-ignore
 import React from "react";
 // ROUTER
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -17,7 +15,7 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ChangePassword from "./pages/ChangePassword";
 
-const App = (): JSX.Element => (
+const App: React.FC = (): JSX.Element => (
   <>
     <Router>
       <SplashHeader />
