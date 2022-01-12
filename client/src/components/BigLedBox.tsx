@@ -85,28 +85,6 @@ const BigLedBox: React.FC = (): JSX.Element => {
         >
           <ArtScroller />
           <div className="border-top-led" />
-          <span 
-            style={{
-              color: "white",
-              textAlign: "center"
-            }}
-          >
-            LED Matrix Presets
-          </span>
-          {
-            !Auth.loggedIn()
-            && (
-              <>
-                <span
-                  style={{
-                    color: "white"
-                  }}
-                >
-                  To see the Disabled Presets, Log in or Sign up to use those and also save your own Default login Preset!
-                </span>
-              </>
-            )
-          }
           <PresetButtons />
         </section>
         <section
