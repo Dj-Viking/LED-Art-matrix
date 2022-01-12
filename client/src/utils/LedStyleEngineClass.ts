@@ -34,7 +34,7 @@ export class LedStyleEngine {
    * styleTag.setAttribute("id", "led-style");
    * 
    * const LedEngine = new LedStyleEngine("V2");
-   * styleTag = LedEngine.generateStyle()(styleTag);
+   * styleTag = LedEngine.generateStyle(styleTag);
    * 
    * // append the style tag to the <head>
    * LedEngine.appendStyle(styleTag);
