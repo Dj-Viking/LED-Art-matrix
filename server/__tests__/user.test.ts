@@ -86,4 +86,4 @@ describe("test this runs through CRUD of a user entity", () => {
   });
 });
 
-afterAll(() => setTimeout(() => process.exit(), 1000));
+// afterAll(() => setTimeout(() => process.exit(), 1000));
