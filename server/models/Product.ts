@@ -1,10 +1,8 @@
-
-
 import { prop, Ref, modelOptions } from "@typegoose/typegoose";
 import { CategoryClass } from "./Category";
 
 @modelOptions({
-  schemaOptions: { collection: "products" }
+  schemaOptions: { collection: "products" },
 })
 export class ProductClass {
   @prop({ required: true, trim: true })

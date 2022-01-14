@@ -1,12 +1,12 @@
 import { prop, modelOptions } from "@typegoose/typegoose";
 
 @modelOptions({
-  schemaOptions: { collection: "searchTerms" }
+  schemaOptions: { collection: "searchTerms" },
 })
 export class SearchTermClass {
   @prop({ trim: true })
   public termText?: string;
-  
+
   @prop({ trim: true })
   termCategory?: string;
 
@@ -23,8 +23,8 @@ export class SearchTermClass {
 //     type: String,
 //     trim: true
 //   },
-//   limit: { 
-//     type: String 
+//   limit: {
+//     type: String
 //   }
 // });
 

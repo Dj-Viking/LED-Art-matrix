@@ -1,7 +1,13 @@
-require('dotenv').config();
-import { pre, prop, plugin, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
+require("dotenv").config();
+import {
+  pre,
+  prop,
+  plugin,
+  Ref,
+  DocumentType,
+  modelOptions,
+} from "@typegoose/typegoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
-
 
 import bcrypt from "bcrypt";
 import { OrderClass } from "./Order";
@@ -11,25 +17,26 @@ import { SearchTermClass } from "./SearchTerm";
 // const PresetSchema = buildSchema(PresetClass);
 
 @modelOptions({
-  schemaOptions: { collection: "users" }
+  schemaOptions: { collection: "users" },
 })
 @pre<UserClass>("save", async function (next) {
-  if (this.isNew) this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
+  if (this.isNew)
+    this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
   next();
 })
 @plugin(mongooseUniqueValidator)
 export class UserClass {
   @prop({ required: true, unique: true, trim: true })
-  public username!: string
+  public username!: string;
 
   @prop({ required: true, unique: true })
-  public email!: string
-  
+  public email!: string;
+
   @prop({ required: true })
-  password!: string
+  password!: string;
 
   @prop()
-  public token?: string
+  public token?: string;
 
   @prop({ ref: () => OrderClass })
   public orders?: Ref<OrderClass>[];
