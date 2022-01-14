@@ -30,21 +30,20 @@ jobs:
           node-version: 14.17.0
 
       # speed up subsequent runs with caching
-      - name: Cache node_modules
-        uses: actions/cache@v2
-        env:
-          cache-name: cache-node-modules
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            $${{ runner.os }}-
+      # - name: Cache node_modules
+      #   uses: actions/cache@v2
+      #   env:
+      #     cache-name: cache-node-modules
+      #   with:
+      #     path: ~/.npm
+      #     key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-${{ env.cache-name }}-
+      #       ${{ runner.os }}-build-
+      #       $${{ runner.os }}-
       # Install dependencies of project
       - name: install all packages with version from project's own package-lock.json
-          run: 
-            npm ci
+          run: npm ci
       # Install mongoDB
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
