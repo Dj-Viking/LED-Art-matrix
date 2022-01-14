@@ -27,7 +27,7 @@ __decorate([
 ], GifClass.prototype, "limit", void 0);
 GifClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "gifs" }
+        schemaOptions: { collection: "gifs" },
     })
 ], GifClass);
 exports.GifClass = GifClass;

@@ -24,7 +24,7 @@ __decorate([
 ], OrderClass.prototype, "products", void 0);
 OrderClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "orders" }
+        schemaOptions: { collection: "orders" },
     })
 ], OrderClass);
 exports.OrderClass = OrderClass;

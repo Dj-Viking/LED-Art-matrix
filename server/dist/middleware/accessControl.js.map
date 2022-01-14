@@ -1,1 +1,1 @@
-{"version":3,"file":"accessControl.js","sourceRoot":"","sources":["../../middleware/accessControl.ts"],"names":[],"mappings":";;;AAKA,SAAgB,aAAa,CAAE,IAAuB,EAAE,IAAc,EAAE,IAAkB;IAMxF,OAAO,IAAI,EAAE,CAAC;AAChB,CAAC;AAPD,sCAOC"}
+{"version":3,"file":"accessControl.js","sourceRoot":"","sources":["../../middleware/accessControl.ts"],"names":[],"mappings":";;;AAKA,SAAgB,aAAa,CAC3B,IAAuB,EACvB,IAAc,EACd,IAAkB;IAOlB,OAAO,IAAI,EAAE,CAAC;AAChB,CAAC;AAXD,sCAWC"}

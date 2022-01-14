@@ -33,11 +33,7 @@ async function seedSearchTerms(): Promise<void> {
       limit: "10",
     });
   } else {
-    console.log(
-      "\x1b[37m",
-      "starting categories already seeded...",
-      "\x1b[00m"
-    );
+    console.log("\x1b[37m", "starting categories already seeded...", "\x1b[00m");
   }
 }
 //STATIC PUBLIC FRONT END ASSETS WHILE IN DEVELOPMENT
@@ -67,11 +63,7 @@ connection.once("open", () => {
   app.listen(PORT, () => {
     //SERVER LISTENING ON PORT
     setTimeout(() => {
-      console.log(
-        "\x1b[33m",
-        `🔊 🎶 now listening on port ${PORT} 🔊 🎶`,
-        "\x1b[00m"
-      );
+      console.log("\x1b[33m", `🔊 🎶 now listening on port ${PORT} 🔊 🎶`, "\x1b[00m");
     }, 300);
     setTimeout(() => {
       console.log(

@@ -27,7 +27,7 @@ __decorate([
 ], SearchTermClass.prototype, "limit", void 0);
 SearchTermClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "searchTerms" }
+        schemaOptions: { collection: "searchTerms" },
     })
 ], SearchTermClass);
 exports.SearchTermClass = SearchTermClass;

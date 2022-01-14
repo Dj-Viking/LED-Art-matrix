@@ -31,7 +31,7 @@ exports.GifsController = {
                         newGif = {
                             gifSrc: gifJson.data[i].images.original.url,
                             gifCategory: "trippy",
-                            limit: "10"
+                            limit: "10",
                         };
                         gifsArr.push(newGif);
                     }
@@ -46,7 +46,7 @@ exports.GifsController = {
                             newGif = {
                                 gifSrc: gifJson.data[i].images.original.url,
                                 gifCategory: "trippy",
-                                limit: "10"
+                                limit: "10",
                             };
                             gifsArr.push(newGif);
                         }
@@ -61,6 +61,6 @@ exports.GifsController = {
                 return res.status(500).json({ error: error.message || error });
             }
         });
-    }
+    },
 };
 //# sourceMappingURL=GifsController.js.map

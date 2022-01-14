@@ -38,11 +38,11 @@ export async function sendEmail(args: MySendEmailOptions): Promise<void> {
   // console.log("creating transporter", transporter);
 
   // send mail with defined transport object
-  /*let info = */await transporter.sendMail({
+  /*let info = */ await transporter.sendMail({
     from: `${fromHeader} <${NODEMAILER_AUTH_EMAIL}>`, // sender address
     to: mailTo, // list of receivers
     subject: subject, // Subject line
-    html: mailHtml
+    html: mailHtml,
   });
 
   // console.log("Message sent: %s", info.messageId);

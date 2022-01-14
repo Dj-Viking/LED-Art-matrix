@@ -22,7 +22,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserClass = void 0;
-require('dotenv').config();
+require("dotenv").config();
 const typegoose_1 = require("@typegoose/typegoose");
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
@@ -70,7 +70,7 @@ __decorate([
 ], UserClass.prototype, "userSearchTerm", void 0);
 UserClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "users" }
+        schemaOptions: { collection: "users" },
     }),
     (0, typegoose_1.pre)("save", function (next) {
         return __awaiter(this, void 0, void 0, function* () {

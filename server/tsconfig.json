@@ -8,7 +8,7 @@
       "es2017",
       "esnext.asynciterable"
     ],
-    "types": ["node"],
+    "types": ["node", "jest"],
     "skipLibCheck": false,
     "sourceMap": true,
     "outDir": "dist",

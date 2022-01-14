@@ -33,7 +33,7 @@ function sendEmail(args) {
             from: `${fromHeader} <${NODEMAILER_AUTH_EMAIL}>`,
             to: mailTo,
             subject: subject,
-            html: mailHtml
+            html: mailHtml,
         });
     });
 }

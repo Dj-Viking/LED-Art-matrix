@@ -1,12 +1,5 @@
 require("dotenv").config();
-import {
-  pre,
-  prop,
-  plugin,
-  Ref,
-  DocumentType,
-  modelOptions,
-} from "@typegoose/typegoose";
+import { pre, prop, plugin, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
 import bcrypt from "bcrypt";
@@ -20,8 +13,7 @@ import { SearchTermClass } from "./SearchTerm";
   schemaOptions: { collection: "users" },
 })
 @pre<UserClass>("save", async function (next) {
-  if (this.isNew)
-    this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
+  if (this.isNew) this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
   next();
 })
 @plugin(mongooseUniqueValidator)
@@ -50,10 +42,7 @@ export class UserClass {
   @prop({ ref: () => SearchTermClass })
   public userSearchTerm?: Ref<SearchTermClass>;
 
-  public async isCorrectPassword(
-    this: DocumentType<UserClass>,
-    plainPass: string
-  ) {
+  public async isCorrectPassword(this: DocumentType<UserClass>, plainPass: string) {
     return bcrypt.compare(plainPass, this.password);
   }
 }

@@ -62,3 +62,35 @@ export interface MySendEmailOptions {
   fromHeader?: string;
   subject?: string;
 }
+export interface ICreateUserPayload {
+  username?: string;
+  password?: string;
+  email?: string;
+}
+
+export interface ICreateUserResponse {
+  _id: string;
+  token: string;
+}
+
+export interface IPreset {
+  presetName: string;
+}
+
+export interface ILoginPayload {
+  usernameOrEmail: {
+    username?: string | void;
+    email?: string | void;
+  };
+  password: string;
+}
+
+export interface ILoginResponse {
+  user: {
+    username: string;
+    email: string;
+    password?: string;
+    token: string;
+    defaultPreset: IPreset;
+  };
+}

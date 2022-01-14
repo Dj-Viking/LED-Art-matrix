@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = __importDefault(require("path"));
-require('dotenv').config();
+require("dotenv").config();
 const constants_1 = require("./constants");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
@@ -23,7 +23,10 @@ const PORT = process.env.PORT || 3001;
 const corsRegexp = (() => new RegExp(constants_1.APP_DOMAIN_PREFIX, "g"))();
 app.use(express_1.default.urlencoded({ extended: false }));
 app.use(express_1.default.json());
-app.use((0, cors_1.default)({ origin: constants_1.IS_PROD ? corsRegexp : "http://localhost:3000", credentials: true }));
+app.use((0, cors_1.default)({
+    origin: constants_1.IS_PROD ? corsRegexp : "http://localhost:3000",
+    credentials: true,
+}));
 app.use(router_1.default);
 const connection_1 = __importDefault(require("./config/connection"));
 const models_1 = require("./models");
@@ -34,7 +37,7 @@ function seedSearchTerms() {
             yield models_1.SearchTerm.create({
                 termText: "trippy",
                 termCategory: "trippy",
-                limit: "10"
+                limit: "10",
             });
         }
         else {
@@ -42,20 +45,20 @@ function seedSearchTerms() {
         }
     });
 }
-if (process.env.NODE_ENV === 'production') {
-    app.use(express_1.default.static(path_1.default.resolve('../client/build')));
-    app.get('*', (_, res) => {
+if (process.env.NODE_ENV === "production") {
+    app.use(express_1.default.static(path_1.default.resolve("../client/build")));
+    app.get("*", (_, res) => {
         console.log("IN THE GET STAR");
-        res.sendFile(path_1.default.resolve('../client/build/index.html'));
+        res.sendFile(path_1.default.resolve("../client/build/index.html"));
     });
     app.use((req, res, next) => {
-        if (req.header('x-forwarded-proto') !== 'https') {
-            res.redirect(`https://${req.header('host')}${req.url}`);
+        if (req.header("x-forwarded-proto") !== "https") {
+            res.redirect(`https://${req.header("host")}${req.url}`);
         }
         next();
     });
 }
-connection_1.default.once('open', () => {
+connection_1.default.once("open", () => {
     console.log("connection opened");
     app.listen(PORT, () => {
         setTimeout(() => {

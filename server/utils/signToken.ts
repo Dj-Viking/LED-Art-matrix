@@ -7,7 +7,6 @@ import {
 } from "../types";
 readEnv();
 
-
 const { SECRET, EXPIRATION } = process.env;
 
 export function signToken(
