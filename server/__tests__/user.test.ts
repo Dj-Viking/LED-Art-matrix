@@ -75,7 +75,6 @@ describe("test this runs through CRUD of a user entity", () => {
         defaultPreset: "waves",
       } as IUpdateUserPresetPayload);
     const parsed = JSON.parse(update.text) as IUpdateUserPresetResponse;
-    console.log("parsed update", parsed);
 
     expect(update.status).toBe(200);
     expect(typeof parsed.updated).toBe("string");
