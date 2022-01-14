@@ -4,7 +4,14 @@ import mongoose from "mongoose";
 import { readEnv } from "../utils/readEnv";
 import { TEST_DB_URL, TEST_EMAIL, TEST_PASSWORD, TEST_USERNAME } from "../constants";
 import { createTestServer } from "../testServer";
-import { ICreateUserResponse, ILoginPayload, ILoginResponse } from "../types";
+import {
+  ICreateUserPayload,
+  ICreateUserResponse,
+  ILoginPayload,
+  ILoginResponse,
+  IUpdateUserPresetPayload,
+  IUpdateUserPresetResponse,
+} from "../types";
 import { User } from "../models";
 readEnv();
 
@@ -27,11 +34,13 @@ let newUserToken: null | string = "";
 
 describe("test this runs through CRUD of a user entity", () => {
   test("/POST a user gets created", async () => {
-    const createUser = await request(app).post("/user").send({
-      username: TEST_USERNAME,
-      email: TEST_EMAIL,
-      password: TEST_PASSWORD,
-    });
+    const createUser = await request(app)
+      .post("/user")
+      .send({
+        username: TEST_USERNAME,
+        email: TEST_EMAIL,
+        password: TEST_PASSWORD,
+      } as ICreateUserPayload);
     const parsed = JSON.parse(createUser.text) as ICreateUserResponse;
     expect(createUser.status).toBe(201);
     expect(typeof parsed._id).toBe("string");
@@ -54,6 +63,23 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(login.status).toBe(200);
     expect(typeof parsed.user.token).toBe("string");
     expect(parsed.user.token !== newUserToken).toBe(true);
+  });
+
+  test("/PUT update a user's default preset", async () => {
+    const update = await request(app)
+      .put("/user/update-preset")
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      })
+      .send({
+        defaultPreset: "waves",
+      } as IUpdateUserPresetPayload);
+    const parsed = JSON.parse(update.text) as IUpdateUserPresetResponse;
+    console.log("parsed update", parsed);
+
+    expect(update.status).toBe(200);
+    expect(typeof parsed.updated).toBe("string");
+    expect(parsed.updated).toBe("waves");
   });
 
   test("deletes the user we just made", async () => {

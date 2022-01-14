@@ -94,3 +94,11 @@ export interface ILoginResponse {
     defaultPreset: IPreset;
   };
 }
+
+export interface IUpdateUserPresetPayload {
+  defaultPreset: string;
+}
+
+export interface IUpdateUserPresetResponse {
+  updated?: string | void;
+}
