@@ -7,6 +7,7 @@
     "test:ci": "cd server; npm run server:ci",
     "start": "sh start.sh",
     "start:prod": "sh server.sh",
+    "clear:jest": "cd server; npm run clear:jest",
     "client:dev": "cd client; npm start",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev\" \"cd client && npm start\"",
     "server:dev": "sh server.sh",
