@@ -33,7 +33,6 @@ export const UserController = {
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: error.message || error });
     }
   },
@@ -48,7 +47,6 @@ export const UserController = {
       }
       return res.status(200).json({ preset: foundUser?.defaultPreset?.presetName });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: error.message || error });
     }
   },
@@ -58,7 +56,6 @@ export const UserController = {
   ): Promise<Response | void> {
     try {
       const { defaultPreset } = req.body;
-      console.log("default preset", defaultPreset);
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if (typeof defaultPreset !== "string")
@@ -77,7 +74,6 @@ export const UserController = {
       }
       return res.status(200).json({ updated: foundUser?.defaultPreset?.presetName });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: error.message || error });
     }
   },
@@ -138,7 +134,6 @@ export const UserController = {
       };
       return res.status(200).json({ user: returnUser });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: error.message || error });
     }
   },
@@ -175,7 +170,6 @@ export const UserController = {
 
       return res.status(200).json({ message: "success" });
     } catch (error) {
-      console.error(error);
       return res.status(500).json({ error: error.message || error });
     }
   },
@@ -204,7 +198,6 @@ export const UserController = {
 
       return res.status(200).json({ done: true, token: newToken });
     } catch (error) {
-      console.error("error when changing password", error);
       return res.status(500).json({ error: error.message || error });
     }
   },
