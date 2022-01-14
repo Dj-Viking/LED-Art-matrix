@@ -85,3 +85,5 @@ describe("test this runs through CRUD of a user entity", () => {
     await User.deleteOne({ _id: newUserId as string });
   });
 });
+
+afterAll(() => setTimeout(() => process.exit(), 1000));
