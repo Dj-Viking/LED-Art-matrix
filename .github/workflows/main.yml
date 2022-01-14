@@ -43,8 +43,8 @@ jobs:
             $${{ runner.os }}-
       # Install dependencies of project
       - name: install all packages with version from project's own package-lock.json
-        run: 
-          npm ci
+          run: 
+            npm ci
       # Install mongoDB
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.7.0
