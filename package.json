@@ -9,7 +9,7 @@
     "cover": "npm run cover:all",
     "cover:ci": "npm run cover:all:ci",
     "cover:all": " npm run test:server && npm run test:client;",
-    "cover:all:ci": "nyc --reporter=lcov; npm run server:ci; npm run test:client; npx codecov",
+    "cover:all:ci": "nyc reporter --reporter=lcov; npm run server:ci; npm run test:client; npx codecov",
     "test": "sh test.sh",
     "test:server": "cd server; ENV_TXT=$(cat env.txt) npm test",
     "test:server:ci": "cd server; npm run server:ci",
