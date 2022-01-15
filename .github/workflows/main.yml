@@ -36,11 +36,11 @@ jobs:
           npm ci
       # Runs a set of commands using the runners shell
       - name: Run automated tests
-        run: echo Running automated tests; npm run clear:jest; npm run test:ci;
+        run: echo Running automated tests; npm run test:ci;
         env: 
           ENV_TXT: ${{ secrets.ENV_TXT }}
       # Upload code coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v1
         with:
-            token: ${{ secrets.CODECOV_TOKEN}}
+            token: ${{ secrets.CODECOV_TOKEN }}

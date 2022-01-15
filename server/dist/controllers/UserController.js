@@ -26,7 +26,9 @@ exports.UserController = {
             try {
                 const { username, email, password } = req.body;
                 if (!Boolean(username && email && password))
-                    return res.status(400).json({ error: "missing username, email, or password in the signup request." });
+                    return res.status(400).json({
+                        error: "missing username, email, or password in the signup request.",
+                    });
                 const newUser = yield models_1.User.create(Object.assign({}, req.body));
                 const token = (0, utils_1.signToken)({
                     username: newUser.username,
@@ -35,10 +37,9 @@ exports.UserController = {
                     _id: newUser._id,
                 });
                 yield models_1.User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: { presetName: "" } }, { new: true }).select("-password");
-                return res.status(201).json({ token });
+                return res.status(201).json({ token, _id: newUser._id });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -54,7 +55,6 @@ exports.UserController = {
                 return res.status(200).json({ preset: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -64,13 +64,12 @@ exports.UserController = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { defaultPreset } = req.body;
-                console.log("default preset", defaultPreset);
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
                 const foundUser = yield models_1.User.findOneAndUpdate({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }, {
                     defaultPreset: {
-                        presetName: defaultPreset
-                    }
+                        presetName: defaultPreset,
+                    },
                 }, { new: true }).select("-password");
                 if (foundUser === null) {
                     return res.status(404).json({ error: "user not found" });
@@ -78,7 +77,6 @@ exports.UserController = {
                 return res.status(200).json({ updated: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -87,7 +85,7 @@ exports.UserController = {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { usernameOrEmail: { username, email }, password } = req.body;
+                const { usernameOrEmail: { username, email }, password, } = req.body;
                 let foundUser;
                 if (username) {
                     foundUser = yield models_1.User.findOne({ username: username });
@@ -106,26 +104,26 @@ exports.UserController = {
                     username: foundUser === null || foundUser === void 0 ? void 0 : foundUser.username,
                     email: foundUser === null || foundUser === void 0 ? void 0 : foundUser.email,
                     uuid: uuid.v4(),
-                    _id: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id
+                    _id: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
                 });
                 if (username) {
                     foundUser = yield models_1.User.findOneAndUpdate({ username }, {
-                        token
+                        token,
                     }, { new: true }).select("-password");
                 }
                 if (email) {
                     foundUser = yield models_1.User.findOneAndUpdate({ email }, {
-                        token
+                        token,
                     }, { new: true }).select("-password");
                 }
                 const returnUser = {
+                    _id: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
                     defaultPreset: (_a = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _a === void 0 ? void 0 : _a.presetName,
                     token: foundUser === null || foundUser === void 0 ? void 0 : foundUser.token,
                 };
                 return res.status(200).json({ user: returnUser });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -144,7 +142,7 @@ exports.UserController = {
                 const token = (0, utils_1.signToken)({
                     uuid: resetUuid,
                     resetEmail: email,
-                    exp: RESET_EXPIRATION
+                    exp: RESET_EXPIRATION,
                 });
                 const sendEmailArgs = {
                     fromHeader: "Password Reset",
@@ -161,7 +159,6 @@ exports.UserController = {
                 return res.status(200).json({ message: "success" });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -171,11 +168,11 @@ exports.UserController = {
             try {
                 const { password, token } = req.body;
                 const decoded = yield (0, utils_1.verifyTokenAsync)(token);
-                if ((decoded instanceof Error))
+                if (decoded instanceof Error)
                     return res.status(403).json({ error: decoded });
                 const hashed = yield bcrypt_1.default.hash(password, Number(process.env.SALT));
                 const user = yield models_1.User.findOneAndUpdate({ email: decoded === null || decoded === void 0 ? void 0 : decoded.resetEmail }, {
-                    password: hashed
+                    password: hashed,
                 }, { new: true }).select("-password");
                 if (user === null)
                     return res.status(400).json({ error: "unable to complete this request" });
@@ -183,12 +180,11 @@ exports.UserController = {
                     username: user.username,
                     email: user.email,
                     _id: user._id,
-                    uuid: uuid.v4()
+                    uuid: uuid.v4(),
                 });
                 return res.status(200).json({ done: true, token: newToken });
             }
             catch (error) {
-                console.error("error when changing password", error);
                 return res.status(500).json({ error: error.message || error });
             }
         });

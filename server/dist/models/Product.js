@@ -40,7 +40,7 @@ __decorate([
 ], ProductClass.prototype, "category", void 0);
 ProductClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "products" }
+        schemaOptions: { collection: "products" },
     })
 ], ProductClass);
 exports.ProductClass = ProductClass;

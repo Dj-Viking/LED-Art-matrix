@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authMiddleware = void 0;
 const utils_1 = require("../utils");
-require('dotenv').config();
+require("dotenv").config();
 function authMiddleware(req, res, next) {
     return __awaiter(this, void 0, void 0, function* () {
         let token = null;

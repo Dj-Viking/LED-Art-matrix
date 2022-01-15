@@ -13,11 +13,4 @@ const SearchTerm = getModelForClass(SearchTermClass);
 const Category = getModelForClass(CategoryClass);
 const Gif = getModelForClass(GifClass);
 
-export { 
-  User, 
-  SearchTerm, 
-  Product, 
-  Category, 
-  Order, 
-  Gif 
-};
+export { User, SearchTerm, Product, Category, Order, Gif };

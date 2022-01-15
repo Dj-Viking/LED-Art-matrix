@@ -1,7 +1,7 @@
 import { prop, modelOptions } from "@typegoose/typegoose";
 
 @modelOptions({
-  schemaOptions: { collection: "gifs" }
+  schemaOptions: { collection: "gifs" },
 })
 export class GifClass {
   @prop({ trim: true })
@@ -29,6 +29,6 @@ export class GifClass {
 //   }
 // });
 
-// const Gif = mongoose.model('Gif', gifSchema); 
+// const Gif = mongoose.model('Gif', gifSchema);
 
 // module.exports = Gif;

@@ -1,4 +1,3 @@
-
 import { prop } from "@typegoose/typegoose";
 
 class PresetClass {
@@ -12,7 +11,5 @@ class PresetClass {
 //     trim: true
 //   }
 // });
-
-
 
 export { PresetClass };

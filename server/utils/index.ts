@@ -10,5 +10,5 @@ export {
   getRandomIntLimit,
   sendEmail,
   signToken,
-  verifyTokenAsync
-}
+  verifyTokenAsync,
+};

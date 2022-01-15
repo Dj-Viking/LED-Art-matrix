@@ -19,7 +19,7 @@ __decorate([
 ], CategoryClass.prototype, "name", void 0);
 CategoryClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "categories" }
+        schemaOptions: { collection: "categories" },
     })
 ], CategoryClass);
 exports.CategoryClass = CategoryClass;
