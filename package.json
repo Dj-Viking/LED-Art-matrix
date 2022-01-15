@@ -20,7 +20,8 @@
     "client:dev": "cd client; npm start",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev\" \"cd client && npm start\"",
     "server:dev": "sh server.sh",
-    "install": "sh install.sh",
+    "install": "cd server && npm i && cd ../client && npm i",
+    "install:ci": "sh install:ci.sh",
     "seed": "cd server && npm run seed",
     "heroku-postbuild": "cd client && npm run build"
   },

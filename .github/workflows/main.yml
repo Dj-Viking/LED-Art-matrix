@@ -33,7 +33,7 @@ jobs:
           mongodb-version: 4.4.3
       - name: install all packages with version from project's own package-lock.json
         run: 
-          npm ci
+          sh install:ci.sh
       # Runs a set of commands using the runners shell
       - name: Run automated tests
         run: echo Running automated tests; npm run test:ci;
