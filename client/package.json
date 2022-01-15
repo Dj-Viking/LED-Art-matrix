@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
-    "test:ci": "node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
+    "test": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
+    "test:ci": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
     "clear:jest": "jest --clearCache",
     "eject": "react-scripts eject",
     "deploy-gh": "gh-pages -d build"
@@ -132,7 +132,7 @@
       "<rootDir>/src"
     ],
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
+      "src/**/*.{ts,tsx}",
       "!src/**/*.d.ts"
     ],
     "setupFiles": [
@@ -182,10 +182,5 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   }
 }
