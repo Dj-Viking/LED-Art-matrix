@@ -1,6 +1,5 @@
 import request from "supertest";
 import mongoose from "mongoose";
-// import { User } from "../models";
 import { readEnv } from "../utils/readEnv";
 import { TEST_DB_URL, TEST_EMAIL, TEST_PASSWORD, TEST_USERNAME } from "../constants";
 import { createTestServer } from "../testServer";
@@ -102,8 +101,6 @@ describe("test this runs through CRUD of a user entity", () => {
   });
 
   // TODO: TEST USER EMAIL RESET STUB
-
-  // TODO: USERS CANNOT UPDATE OTHER USER'S PRESETS
 
   test("deletes the user we just made", async () => {
     await User.deleteOne({ _id: newUserId as string });
