@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cd server; npm test",
-    "test:ci": "cd server; npm run server:ci",
+    "test:ci": "cd server; npm run server:ci; npm run test:client",
+    "test": "npm run test:server; npm run test:client",
+    "test:server": "cd server; ENV_TXT=$(cat env.txt) npm test",
+    "test:client": "cd client; npm test",
     "start": "sh start.sh",
     "start:prod": "sh server.sh",
     "clear:jest": "cd server; npm run clear:jest",
@@ -27,6 +29,7 @@
   },
   "homepage": "https://github.com/Dj-Viking/03-project#readme",
   "dependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "jest": "^27.4.7"
   }
 }

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --updateSnapshot --verbose --watchAll",
+    "test": "node scripts/test.js --updateSnapshot --verbose --watchAll=false",
+    "test:ci": "node scripts/test.js --updateSnapshot --verbose --watchAll=false",
     "clear:jest": "jest --clearCache",
     "eject": "react-scripts eject",
     "deploy-gh": "gh-pages -d build"
