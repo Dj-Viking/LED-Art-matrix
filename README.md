@@ -1,4 +1,4 @@
-
+server test coverage [![codecov](https://codecov.io/gh/Dj-Viking/LED-Art-matrix/branch/main/graph/badge.svg?token=6KIXEPI5DA)](https://codecov.io/gh/Dj-Viking/LED-Art-matrix)
 
 # LED Art matrix
 
