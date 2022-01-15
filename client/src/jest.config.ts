@@ -5,7 +5,7 @@ export async function MyConfig(): Promise<Config.InitialOptions> {
     verbose: true,
     watchAll: true,
     modulePaths: ["<rootDir>"],
-    transformIgnorePatterns: ["<rootDir>/node_modules/"],
+    transformIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/**/*.js"],
     testMatch: ["**/?(*.)+(spec|test).tsx"],
     moduleFileExtensions: [...defaults.moduleFileExtensions, "tsx", "jsx", "ts"],
     transform: {

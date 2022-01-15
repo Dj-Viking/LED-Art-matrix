@@ -168,15 +168,12 @@
       "@types/(.*)": "<rootDir>/node_modules/$1"
     },
     "moduleFileExtensions": [
-      "web.js",
-      "js",
       "css",
-      "web.ts",
       "ts",
       "web.tsx",
       "tsx",
+      "js",
       "json",
-      "web.jsx",
       "jsx",
       "node"
     ],
