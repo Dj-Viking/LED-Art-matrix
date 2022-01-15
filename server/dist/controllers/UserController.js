@@ -40,7 +40,6 @@ exports.UserController = {
                 return res.status(201).json({ token, _id: newUser._id });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -56,7 +55,6 @@ exports.UserController = {
                 return res.status(200).json({ preset: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -66,7 +64,6 @@ exports.UserController = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { defaultPreset } = req.body;
-                console.log("default preset", defaultPreset);
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
                 const foundUser = yield models_1.User.findOneAndUpdate({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }, {
@@ -80,7 +77,6 @@ exports.UserController = {
                 return res.status(200).json({ updated: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -128,7 +124,6 @@ exports.UserController = {
                 return res.status(200).json({ user: returnUser });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -164,7 +159,6 @@ exports.UserController = {
                 return res.status(200).json({ message: "success" });
             }
             catch (error) {
-                console.error(error);
                 return res.status(500).json({ error: error.message || error });
             }
         });
@@ -191,7 +185,6 @@ exports.UserController = {
                 return res.status(200).json({ done: true, token: newToken });
             }
             catch (error) {
-                console.error("error when changing password", error);
                 return res.status(500).json({ error: error.message || error });
             }
         });

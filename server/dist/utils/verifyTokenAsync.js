@@ -22,7 +22,7 @@ function verifyTokenAsync(token) {
         return new Promise((resolve) => {
             let returnMe;
             jsonwebtoken_1.default.verify(token, SECRET, { maxAge: EXPIRATION }, (error, decoded) => {
-                if (!!(error === null || error === void 0 ? void 0 : error.message))
+                if (!!error)
                     returnMe = error;
                 if (decoded)
                     returnMe = decoded;

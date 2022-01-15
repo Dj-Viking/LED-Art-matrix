@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test": "cd server; npm test",
     "test:ci": "cd server; npm run server:ci",
     "start": "sh start.sh",
     "start:prod": "sh server.sh",

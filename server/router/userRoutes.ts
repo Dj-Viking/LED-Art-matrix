@@ -1,6 +1,6 @@
 const router = require("express").Router();
 import { UserController } from "../controllers";
-const { authMiddleware, accessControl } = require("../middleware");
+import { authMiddleware, accessControl } from "../middleware";
 const { getUserDefaultPreset, login, updateDefaultPreset, signup, forgotPassword, changePassword } =
   UserController;
 

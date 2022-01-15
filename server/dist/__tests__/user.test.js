@@ -19,6 +19,7 @@ const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
 const models_1 = require("../models");
 (0, readEnv_1.readEnv)();
+const { INVALID_SIGNATURE } = process.env;
 beforeEach((done) => {
     mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
 });
@@ -30,7 +31,9 @@ let newUserId = "";
 let newUserToken = "";
 describe("test this runs through CRUD of a user entity", () => {
     test("/POST a user gets created", () => __awaiter(void 0, void 0, void 0, function* () {
-        const createUser = yield (0, supertest_1.default)(app).post("/user").send({
+        const createUser = yield (0, supertest_1.default)(app)
+            .post("/user")
+            .send({
             username: constants_1.TEST_USERNAME,
             email: constants_1.TEST_EMAIL,
             password: constants_1.TEST_PASSWORD,
@@ -56,6 +59,37 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(login.status).toBe(200);
         expect(typeof parsed.user.token).toBe("string");
         expect(parsed.user.token !== newUserToken).toBe(true);
+    }));
+    test("/PUT update a user's default preset", () => __awaiter(void 0, void 0, void 0, function* () {
+        const update = yield (0, supertest_1.default)(app)
+            .put("/user/update-preset")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        })
+            .send({
+            defaultPreset: "waves",
+        });
+        const parsed = JSON.parse(update.text);
+        expect(update.status).toBe(200);
+        expect(typeof parsed.updated).toBe("string");
+        expect(parsed.updated).toBe("waves");
+    }));
+    test("/PUT try to update preset with invalid token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const invalidSig = yield (0, supertest_1.default)(app)
+            .put("/user/update-preset")
+            .set({
+            authorization: `Bearer ${INVALID_SIGNATURE}`,
+        })
+            .send({
+            usernameOrEmail: {
+                username: constants_1.TEST_USERNAME,
+                email: "",
+            },
+            password: constants_1.TEST_PASSWORD,
+        });
+        expect(invalidSig.status).toBe(403);
+        const parsed = JSON.parse(invalidSig.text);
+        expect(parsed.error.message).toBe("invalid token");
     }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });

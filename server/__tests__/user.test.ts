@@ -7,6 +7,7 @@ import { createTestServer } from "../testServer";
 import {
   ICreateUserPayload,
   ICreateUserResponse,
+  IInvalidSigError,
   ILoginPayload,
   ILoginResponse,
   IUpdateUserPresetPayload,
@@ -15,7 +16,7 @@ import {
 import { User } from "../models";
 readEnv();
 
-// const { EXPIRED_TOKEN, INVALID_SIGNATURE } = process.env;
+const { INVALID_SIGNATURE } = process.env;
 
 beforeEach((done) => {
   mongoose.connect(TEST_DB_URL, {}, () => done());
@@ -41,6 +42,7 @@ describe("test this runs through CRUD of a user entity", () => {
         email: TEST_EMAIL,
         password: TEST_PASSWORD,
       } as ICreateUserPayload);
+
     const parsed = JSON.parse(createUser.text) as ICreateUserResponse;
     expect(createUser.status).toBe(201);
     expect(typeof parsed._id).toBe("string");
@@ -80,6 +82,28 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(typeof parsed.updated).toBe("string");
     expect(parsed.updated).toBe("waves");
   });
+
+  test("/PUT try to update preset with invalid token", async () => {
+    const invalidSig = await request(app)
+      .put("/user/update-preset")
+      .set({
+        authorization: `Bearer ${INVALID_SIGNATURE}`,
+      })
+      .send({
+        usernameOrEmail: {
+          username: TEST_USERNAME,
+          email: "",
+        },
+        password: TEST_PASSWORD,
+      } as ILoginPayload);
+    expect(invalidSig.status).toBe(403);
+    const parsed = JSON.parse(invalidSig.text) as IInvalidSigError;
+    expect(parsed.error.message).toBe("invalid token");
+  });
+
+  // TODO: TEST USER EMAIL RESET STUB
+
+  // TODO: USERS CANNOT UPDATE OTHER USER'S PRESETS
 
   test("deletes the user we just made", async () => {
     await User.deleteOne({ _id: newUserId as string });

@@ -102,3 +102,16 @@ export interface IUpdateUserPresetPayload {
 export interface IUpdateUserPresetResponse {
   updated?: string | void;
 }
+
+export interface IInvalidSigError {
+  error: {
+    name: string;
+    message: string;
+  };
+}
+export interface IExpiredTokenError {
+  error: {
+    name: string;
+    message: string;
+  };
+}
