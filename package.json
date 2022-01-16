@@ -9,7 +9,7 @@
     "cover": "npm run cover:all",
     "cover:all": "npm run test:server; npm run test:client; npx codecov",
     "cover:ci": "npm run cover:all:ci",
-    "cover:all:ci": "npm run test:server:ci; npm run test:client; npx codecov",
+    "cover:all:ci": "npm run test:server:ci; npm run test:client;",
     "test": "sh test.sh",
     "test:server": "cd server; ENV_TXT=$(cat env.txt) npm test",
     "test:server:ci": "cd server; npm run server:ci",
