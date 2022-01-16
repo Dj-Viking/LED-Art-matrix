@@ -211,7 +211,7 @@ describe("Tests network error message", () => {
       </Provider>
     );
 
-    const link = await screen.findByText(/^Sign\sUp$/g);
+    const link = await screen.findByText(/^Login$/g);
 
     fireEvent.click(link);
 
@@ -225,7 +225,7 @@ describe("Tests network error message", () => {
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
     };
 
-    const btn = screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+    const btn = screen.getAllByRole("button", { name: "Login" }).find((btn) => {
       return btn.classList.contains("form-btn");
     }) as HTMLElement;
 

@@ -28,11 +28,16 @@ export const LOGIN_MOCK_NO_TOKEN = {
     _id: "weeeeeeeee"
   }
 };
+
 export const LOGIN_MOCK_TOKEN = {
   user:  {
     token: "TOKEN YO",
     _id: "weeeeeeeee"
   }
+};
+
+export const FORGOT_MOCK_RES = {
+  message: "success"
 };
 
 export const SIGNUP_MOCK_PAYLOAD_SAME_USER = {
