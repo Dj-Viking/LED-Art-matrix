@@ -6,7 +6,7 @@ import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_ERROR_CODE, LOGIN_MOCK_PAYLOAD_EMAIL, LOGIN_MOCK_RESPONSE, SIGNUP_MOCK_PAYLOAD } from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_PAYLOAD_EMAIL, SIGNUP_MOCK_PAYLOAD, LOGIN_MOCK_NO_TOKEN, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -34,14 +34,14 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 
 
-describe("Test rendering signup correctly", () => {
+describe("Test rendering login correctly", () => {
 
   const originalFetch = global.fetch;
   beforeEach(() => {
     // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() =>
+    global.fetch = jest.fn(() => 
       Promise.resolve({
-        json: () => Promise.resolve(LOGIN_MOCK_ERROR_CODE),
+        status: 400
       })
     );
   });
@@ -90,7 +90,7 @@ describe("Test rendering signup correctly", () => {
   });
 });
 
-describe("test signup functionality", () => {
+describe("test signup functionality with no token", () => {
 
   //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
@@ -98,7 +98,7 @@ describe("test signup functionality", () => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve(LOGIN_MOCK_RESPONSE),
+        json: () => Promise.resolve(LOGIN_MOCK_NO_TOKEN),
       })
     );
   });
@@ -109,57 +109,83 @@ describe("test signup functionality", () => {
   });
 
   it("Checks the input fields are available and can submit with a stubbed api", async () => {
-
     render(
       <Provider store={store}>
         <App />
       </Provider>
     );
-
     const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
-
     fireEvent.click(page);
-
-    // act(() => {
-    //   page.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
-
     const inputEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
+      btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      }) as HTMLElement
     };
-
-    const btn = screen.getAllByRole("button", { name: "Login" }).find((btn) => {
-      return btn.classList.contains("form-btn");
-    }) as HTMLElement;
-
-    //check the input elements are in the document
     expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
-    expect(btn).toBeInTheDocument();
-
-    // type inputs to form fields and submit
-
+    expect(inputEls.btn).toBeInTheDocument();
     fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
     fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
-
-    // act(() => {
-    //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
-    //   inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
-    //   inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
-    // });
-
-    //click signup to simulate api mock
-    
-    fireEvent.click(btn);
+    fireEvent.click(inputEls.btn);
 
     // act(() => {
     //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     // });
   });
 });
+describe("test signup functionality with token", () => {
+
+  //create a reference to the original fetch before we change it swap it back
+  const originalFetch = global.fetch;
+  beforeEach(() => {
+    // @ts-ignore trying to mock fetch
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        status: 200,
+        json: () => Promise.resolve(LOGIN_MOCK_TOKEN),
+      })
+    );
+  });
+  
+  afterEach(() => {
+    cleanup();
+    global.fetch = originalFetch;
+  });
+
+  it("Checks the input fields are available and can submit with a stubbed api", async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+    const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+    fireEvent.click(page);
+    const inputEls = {
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
+      btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      }) as HTMLElement
+    };
+    expect(inputEls.emailOrUsername).toBeInTheDocument();
+    expect(inputEls.password).toBeInTheDocument();
+    expect(inputEls.btn).toBeInTheDocument();
+    fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
+    fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
+    fireEvent.click(inputEls.btn);
+
+    // act(() => {
+    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    // });
+  });
+});
+
 describe("Tests network error message", () => {
 
   const originalFetch = global.fetch;

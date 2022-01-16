@@ -32,8 +32,6 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-
-
 describe("Test rendering signup correctly", () => {
 
   const originalFetch = global.fetch;
@@ -144,12 +142,6 @@ describe("test signup functionality", () => {
 
     fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
     fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
-
-    // act(() => {
-    //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
-    //   inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
-    //   inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
-    // });
 
     //click signup to simulate api mock
     

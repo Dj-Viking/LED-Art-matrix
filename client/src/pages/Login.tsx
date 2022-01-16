@@ -36,16 +36,9 @@ const Login: React.FC = (): JSX.Element => {
       let booleanOrError;
       if (window.navigator.onLine) {
         booleanOrError = await API.login({ usernameOrEmail, password });
-        console.log("what is boolean or error on login", booleanOrError);
-        switch (true) {
-          case !booleanOrError || (booleanOrError instanceof Error): 
-            setError(`${booleanOrError}`);
-          break;
-          case booleanOrError === true: 
-            setLoading(false);
-            setError("");
-          break;
-          default: break;
+        if (booleanOrError) {
+          setLoading(false);
+          setError("");
         }
         setLoading(false);
       } else {

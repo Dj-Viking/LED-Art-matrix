@@ -18,12 +18,21 @@ export const LOGIN_MOCK_RESPONSE = {
 };
 
 export const LOGIN_MOCK_ERROR_CODE = {
-  status: 400
+  status: 400,
+  error: new Error("Invalid credentials")
 };
 
-export const SIGNUP_MOCK_NO_TOKEN = {
-  token: void 0,
-  _id: "weeeeeeeee"
+export const LOGIN_MOCK_NO_TOKEN = {
+  user:  {
+    token: void 0,
+    _id: "weeeeeeeee"
+  }
+};
+export const LOGIN_MOCK_TOKEN = {
+  user:  {
+    token: "TOKEN YO",
+    _id: "weeeeeeeee"
+  }
 };
 
 export const SIGNUP_MOCK_PAYLOAD_SAME_USER = {
