@@ -27,13 +27,13 @@ export interface IApiService {
 
 class ApiService implements IApiService {
   protected isAlive: any;
-  signup!: (args: ISignupArgs) => Promise<boolean | void>;
-  login!: (args: ILoginArgs) => Promise<boolean | void>;
-  getDefaultPreset!: (token: string) => Promise<string | boolean>;
-  updateDefaultPreset!: (token: string) => Promise<string | void>;
-  getGifs!: () => Promise<IGif[]>;
-  forgotPassword!: (email: string) => Promise<boolean | void>;
-  changePassword!: (password: string) => Promise<void | { done: boolean; token: string; }>;
+  public signup!: (args: ISignupArgs) => Promise<boolean | void>;
+  public login!: (args: ILoginArgs) => Promise<boolean | void>;
+  public getDefaultPreset!: (token: string) => Promise<string | boolean>;
+  public updateDefaultPreset!: (token: string) => Promise<string | void>;
+  public getGifs!: () => Promise<IGif[]>;
+  public forgotPassword!: (email: string) => Promise<boolean | void>;
+  public changePassword!: (password: string) => Promise<void | { done: boolean; token: string; }>;
   constructor(isAlive: any) {
     this.isAlive = isAlive;
   }
@@ -56,7 +56,7 @@ class ApiService implements IApiService {
         }),
         headers,
       });
-      console.log("res now", res);
+      console.log("data now", (await res.json()));
       const data = await res.json();
       console.log("data test", data);
       if (!data.token) {
@@ -65,7 +65,7 @@ class ApiService implements IApiService {
       auth.login(data.token);
       return true;
     } catch (error) {
-      console.error("error when signing up", error);
+      console.error("error when signing up in service", error);
       const err = error as Error;
       throw new Error(err.message);
     }
