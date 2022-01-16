@@ -71,7 +71,7 @@ class ApiService implements IApiService {
     }
   }
 
-  public static async login(args: ILoginArgs): Promise<boolean | void> {
+  public static async login(args: ILoginArgs): Promise<boolean | Error> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     const { usernameOrEmail, password } = args;
@@ -142,7 +142,7 @@ class ApiService implements IApiService {
     }
   }
 
-  public static async getGifs(): Promise<Array<string> | void> {
+  public static async getGifs(): Promise<Array<IGif> | void> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     try {

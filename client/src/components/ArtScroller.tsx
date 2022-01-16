@@ -218,7 +218,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                 <img 
                   key={gif._id}
                   alt={`gif-${index}`}
-                  src={gif.gifSrc}
+                  src={gif.gifSrc as string}
                   style={{
                     position: "absolute",
                     // @ts-expect-error whatever

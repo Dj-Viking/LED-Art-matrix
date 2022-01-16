@@ -6,7 +6,7 @@ import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { SIGNUP_MOCK_NO_TOKEN, SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_ERROR_CODE, LOGIN_MOCK_PAYLOAD_EMAIL, LOGIN_MOCK_RESPONSE, SIGNUP_MOCK_PAYLOAD } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -41,7 +41,7 @@ describe("Test rendering signup correctly", () => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve(SIGNUP_MOCK_NO_TOKEN),
+        json: () => Promise.resolve(LOGIN_MOCK_ERROR_CODE),
       })
     );
   });
@@ -59,7 +59,7 @@ describe("Test rendering signup correctly", () => {
       </Provider>
     );
 
-    const link = await screen.findByText(/^Sign\sUp$/g);
+    const link = await screen.findByText(/^Login$/g);
 
     fireEvent.click(link);
 
@@ -68,32 +68,37 @@ describe("Test rendering signup correctly", () => {
     // });
 
     const formEls = {
-      username: screen.getByPlaceholderText(/my_username/g),
-      email: screen.getByPlaceholderText(/example@email.com/g),
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
-      signup: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+      login: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
         return btn.classList.contains("form-btn");
       }) as HTMLElement
     };
 
-    expect(formEls.username).toBeInTheDocument();
-    expect(formEls.email).toBeInTheDocument();
+    expect(formEls.emailOrUsername).toBeInTheDocument();
     expect(formEls.password).toBeInTheDocument();
-    expect(formEls.signup).toBeInTheDocument();
+    expect(formEls.login).toBeInTheDocument();
 
-    fireEvent.click(formEls.signup);
+    //type in email here
+    // eslint-disable-next-line
+      fireEvent.change(formEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername }});
+      fireEvent.change(formEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.password }});
+
+    //submit login
+    fireEvent.click(formEls.login);
 
   });
 });
 
 describe("test signup functionality", () => {
 
+  //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
   beforeEach(() => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
+        json: () => Promise.resolve(LOGIN_MOCK_RESPONSE),
       })
     );
   });
@@ -111,7 +116,7 @@ describe("test signup functionality", () => {
       </Provider>
     );
 
-    const page = (await screen.findAllByText(/^Sign\sUp$/g)).find((el) => {
+    const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
 
@@ -122,26 +127,23 @@ describe("test signup functionality", () => {
     // });
 
     const inputEls = {
-      username: screen.getByPlaceholderText(/my_username/g),
-      email: screen.getByPlaceholderText(/example@email.com/g),
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
     };
 
-    const btn = screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+    const btn = screen.getAllByRole("button", { name: "Login" }).find((btn) => {
       return btn.classList.contains("form-btn");
     }) as HTMLElement;
 
     //check the input elements are in the document
-    expect(inputEls.username).toBeInTheDocument();
-    expect(inputEls.email).toBeInTheDocument();
+    expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
     expect(btn).toBeInTheDocument();
 
     // type inputs to form fields and submit
 
-    fireEvent.change(inputEls.username, { target: { value: SIGNUP_MOCK_PAYLOAD.username }});
-    fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
-    fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
+    fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
+    fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
 
     // act(() => {
     //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));

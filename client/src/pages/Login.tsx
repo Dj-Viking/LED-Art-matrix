@@ -142,7 +142,7 @@ const Login: React.FC = (): JSX.Element => {
                   </div>
                   <Spinner />
                 </>
-)
+              )
               : null
             }
           </div>
