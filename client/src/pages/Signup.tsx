@@ -32,7 +32,6 @@ const Signup: React.FC = (): JSX.Element => {
       setLoading(false);
       const error = err as Error;
       setError(error.message);
-      console.log("error when signing up", error);
     }
   } 
 

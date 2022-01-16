@@ -25,6 +25,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <a
           class="nav-button"
           href="/signup"
+          role="link"
           style="color: white; text-decoration: none; margin-right: 5px; margin-left: 5px;"
         >
           Sign Up

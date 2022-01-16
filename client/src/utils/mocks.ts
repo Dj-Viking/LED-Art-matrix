@@ -36,8 +36,17 @@ export const LOGIN_MOCK_TOKEN = {
   }
 };
 
+export const FORGOT_MOCK_INPUT = {
+  email: "test@email.com"
+};
+
 export const FORGOT_MOCK_RES = {
+  status: 200,
   message: "success"
+};
+
+export const FORGOT_MOCK_RES_ERROR = {
+  status: 500,
 };
 
 export const SIGNUP_MOCK_PAYLOAD_SAME_USER = {
@@ -45,6 +54,7 @@ export const SIGNUP_MOCK_PAYLOAD_SAME_USER = {
   email: "testemail@email.com",
   password: "test password",
 };
+
 export const SIGNUP_MOCK_PAYLOAD = {
   username: "test user" + Date.now(),
   email: "testemail" + Date.now() + "@email.com",

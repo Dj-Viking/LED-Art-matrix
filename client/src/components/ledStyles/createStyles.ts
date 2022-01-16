@@ -76,13 +76,6 @@ animation-duration: ${(led / 32) + (row / led)}s;
 //anim duration: 4s
 //anim delay: (index / 16) + (index / (2 * row.rowNumber))
  */
-
-export function appendStyle(tag: HTMLStyleElement): void {
-  document.head.appendChild(tag);
-}
-export function removeStyle(tag: HTMLStyleElement): void {
-  document.head.removeChild(tag);
-}
 export function ledRowStyle(): { display: string, flexDirection: string } {
   return {
     display: "flex",

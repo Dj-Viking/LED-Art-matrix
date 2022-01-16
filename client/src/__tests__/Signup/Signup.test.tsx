@@ -6,7 +6,7 @@ import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { SIGNUP_MOCK_NO_TOKEN, SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
+import { SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -41,7 +41,7 @@ describe("Test rendering signup correctly", () => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        json: () => Promise.resolve(SIGNUP_MOCK_NO_TOKEN),
+        json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
       })
     );
   });
@@ -111,7 +111,7 @@ describe("test signup functionality", () => {
       </Provider>
     );
 
-    const page = (await screen.findAllByText(/^Sign\sUp$/g)).find((el) => {
+    const page = (await screen.findAllByRole("link", { name: "Logout" })).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
 
@@ -143,19 +143,10 @@ describe("test signup functionality", () => {
     fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
     fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
 
-    // act(() => {
-    //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
-    //   inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
-    //   inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
-    // });
-
     //click signup to simulate api mock
     
     fireEvent.click(btn);
 
-    // act(() => {
-    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
   });
 });
 describe("Tests network error message", () => {
@@ -187,10 +178,6 @@ describe("Tests network error message", () => {
 
     fireEvent.click(link);
 
-    // act(() => {
-    //   link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
-
     const inputEls = {
       username: screen.getByPlaceholderText(/my_username/g),
       email: screen.getByPlaceholderText(/example@email.com/g),
@@ -211,20 +198,7 @@ describe("Tests network error message", () => {
     fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
     fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
 
-    // type inputs to form fields and submit
-    // act(() => {
-    //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
-    //   inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
-    //   inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
-    // });
-
-    //click signup to simulate api mock
-
     fireEvent.click(btn);
-
-    // act(() => {
-    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
 
     expect(fetch).toReturn();
     

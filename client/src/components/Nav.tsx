@@ -84,6 +84,7 @@ const Nav: React.FC = (): JSX.Element => {
           <div>
             <Link 
               to="/signup"
+              role="link"
               style={{
                 color: "white",
                 textDecoration: "none",

@@ -30,7 +30,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
         }
       }
     } catch (error) {
-      console.log("error when trying to get gifs", error);
+      return void 0;
     }
   }
 

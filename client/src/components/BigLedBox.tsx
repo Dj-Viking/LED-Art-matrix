@@ -25,7 +25,6 @@ const BigLedBox: React.FC = (): JSX.Element => {
       }
       throw new TypeError(`preset returned was not a string! it's value was ${preset}`);
     } catch (error) {
-      console.error("error when getting default preset in use callback", error);
       return void 0;
     }
   }, []);

@@ -56,16 +56,13 @@ class ApiService implements IApiService {
         }),
         headers,
       });
-      console.log("data now", (await res.json()));
       const data = await res.json();
-      console.log("data test", data);
       if (!data.token) {
         throw new Error("can't login without a token");
       }
       auth.login(data.token);
       return true;
     } catch (error) {
-      console.error("error when signing up in service", error);
       const err = error as Error;
       throw new Error(err.message);
     }
@@ -97,7 +94,6 @@ class ApiService implements IApiService {
       auth.login(data.user.token);
       return true;
     } catch (error) {
-      console.error("error when logging in", error);
       const err = error as Error;
       throw new Error(err.message);
     }
@@ -116,7 +112,6 @@ class ApiService implements IApiService {
       if (data.error) throw new Error(`${data.error}`);
       return data.preset;
     } catch (error) {
-      console.error("error when getting default preset", error);
       return false;
     }
   }
@@ -137,7 +132,6 @@ class ApiService implements IApiService {
       if (res.ok) return void 0;
       return void 0;
     } catch (error) {
-      console.error("error when updating default preset", error);
       return error as Error;
     }
   }
@@ -153,7 +147,6 @@ class ApiService implements IApiService {
       const data = await res.json();
       return data.gifs;
     } catch (error) {
-      console.error("error when trying to get gifs", error);
       return void 0;
     }
   }
@@ -162,13 +155,18 @@ class ApiService implements IApiService {
     try {
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
-      await fetch(`${API_URL}/user/forgot`, {
+      const res = await fetch(`${API_URL}/user/forgot`, {
         method: "POST",
         body: JSON.stringify({ email }),
         headers
       });
+      if (res.status === 500) {
+        throw new Error("error");
+      }
+      const data = await res.json();
+      if (data.message) return true;
     } catch (error) {
-      console.error("error when submitting forgot password request", error);
+      throw new Error("error");
     }
   }
 
@@ -188,7 +186,6 @@ class ApiService implements IApiService {
       const data = await res.json();
       return data;
     } catch (error) {
-      console.error("error when changing password", error);
       return void 0;
     }
   }

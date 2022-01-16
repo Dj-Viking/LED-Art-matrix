@@ -48,7 +48,6 @@ const Login: React.FC = (): JSX.Element => {
       setLoading(false);
       const error = err as Error;
       setError(error.message);
-      console.log("error when logging in", error);
     }
   }
 
@@ -110,13 +109,18 @@ const Login: React.FC = (): JSX.Element => {
             <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Link 
                 to="/forgotPassword"
-                style={{
-                  color: "white",
-                  textDecoration: "none"
-                }}
               >
-                Forgot Password?
-
+                <button
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    color: "white",
+                    textDecoration: "none"
+                  }}
+                >
+                  Forgot Password?
+                </button>
               </Link>
             </div>
             <button
