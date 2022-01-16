@@ -124,6 +124,7 @@ const Signup: React.FC = (): JSX.Element => {
           >
             <button
               type="submit"
+              name="signup-button"
               disabled={false}
               className="form-btn"
             >

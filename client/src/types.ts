@@ -78,7 +78,12 @@ export interface ILedIsAnimatingAction {
 }
 // will get the type eventually
 // eslint-disable-next-line 
-export type IGif = any;
+export interface IGif {
+  gifCategory: string;
+  gifSrc: string | URL;
+  limit: string;
+  _id: string;
+}
 export interface IGetGifsAction {
   type: "GET_GIFS";
   payload: Array<IGif>;

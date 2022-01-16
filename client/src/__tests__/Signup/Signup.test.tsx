@@ -1,0 +1,128 @@
+// eslint-disable-next-line
+// @ts-ignore
+import React from "react";
+import App from "../../App";
+import allReducers from "../../reducers";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import { render, cleanup, screen } from "@testing-library/react";
+import { SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
+import "@types/jest";
+import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/extend-expect";
+import { act } from "react-dom/test-utils";
+
+//mock api service
+// @ts-expect-error trying to mock fetch
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
+  })
+);
+
+
+
+console.log("what is fetch result here");
+
+
+const store = createStore(
+  allReducers,
+  // @ts-expect-error this will exist in the browser
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+
+//letting these methods be available to silence the jest errors
+window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
+window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
+window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
+// eslint-disable-next-line
+// @ts-ignore
+window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+
+// const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
+
+beforeEach(() => {
+  // @ts-ignore trying to mock fetch
+  // fetch.mockClear();
+});
+afterEach(() => {
+  cleanup();
+});
+
+describe("Test rendering signup correctly", () => {
+  it("Render the home page and then click sign up button to go to that page", async () => {
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    const link = await screen.findByText(/^Sign\sUp$/g);
+    act(() => {
+      link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    const formEls = {
+      username: (await screen.findByText(/Username:/g)),
+      email: (await screen.findByText(/Email:/g)),
+      password: (await screen.findByText(/Password:/g)),
+      signup: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      })
+    };
+
+    expect(formEls.username).toBeInTheDocument();
+    expect(formEls.email).toBeInTheDocument();
+    expect(formEls.password).toBeInTheDocument();
+    expect(formEls.signup).toBeInTheDocument();
+
+  });
+});
+
+describe("test signup functionality", () => {
+  it("Checks the input fields are available and can submit with a stubbed api", async () => {
+
+    render(
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
+
+    const page = (await screen.findAllByText(/^Sign\sUp$/g)).find((el) => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+
+    act(() => {
+      page.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    const inputEls = {
+      username: screen.getByPlaceholderText(/my_username/g),
+      email: screen.getByPlaceholderText(/example@email.com/g),
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
+    };
+
+    const btn = screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+      return btn.classList.contains("form-btn");
+    }) as HTMLElement;
+
+    //check the input elements are in the document
+    expect(inputEls.username).toBeInTheDocument();
+    expect(inputEls.email).toBeInTheDocument();
+    expect(inputEls.password).toBeInTheDocument();
+    expect(btn).toBeInTheDocument();
+
+    // type inputs to form fields and submit
+    act(() => {
+      inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
+      inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
+      inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
+    });
+
+    //click signup to simulate api mock
+    act(() => {
+      btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    
+  });
+});

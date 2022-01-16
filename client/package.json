@@ -59,6 +59,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "mini-css-extract-plugin": "^2.4.5",
+    "msw": "^0.36.4",
     "node-sass": "^7.0.1",
     "p5": "^1.2.0",
     "postcss": "^8.4.4",
@@ -133,7 +134,8 @@
     ],
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}",
-      "!src/**/*.d.ts"
+      "!src/**/*.d.ts",
+      "!src/index.tsx"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"

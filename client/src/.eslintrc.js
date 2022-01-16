@@ -36,6 +36,8 @@ module.exports = {
     "react-native",
   ],
   rules: {
+    "t@typescript-eslint/no-extra-semi": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "import/no-named-as-default-member": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "class-methods-use-this": "off",
