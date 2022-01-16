@@ -15,25 +15,31 @@ interface ILoginArgs {
 }
 
 export interface IApiService {
-  isAlive: any;
   alive: () => void;
   signup: (args: ISignupArgs) => Promise<boolean | void>;
   login: (args: ILoginArgs) => Promise<boolean | void>;
   getDefaultPreset: (token: string) => Promise<string | boolean>;
   updateDefaultPreset: (token: string) => Promise<string | void>;
   getGifs: () => Promise<Array<IGif>>;
-  forgotPassword: (email: string) => Promise<
-  changePassword: () => 
+  forgotPassword: (email: string) => Promise<boolean | void>;
+  changePassword: (password: string) => Promise<{done: boolean, token: string } | void>;
 }
 
 class ApiService implements IApiService {
-  private isAlive: any;
+  protected isAlive: any;
+  signup!: (args: ISignupArgs) => Promise<boolean | void>;
+  login!: (args: ILoginArgs) => Promise<boolean | void>;
+  getDefaultPreset!: (token: string) => Promise<string | boolean>;
+  updateDefaultPreset!: (token: string) => Promise<string | void>;
+  getGifs!: () => Promise<IGif[]>;
+  forgotPassword!: (email: string) => Promise<boolean | void>;
+  changePassword!: (password: string) => Promise<void | { done: boolean; token: string; }>;
   constructor(isAlive: any) {
     this.isAlive = isAlive;
   }
 
-  public alive(): void {
-    console.log("I am alive", this.isAlive);
+  public alive(): any {
+    return this.isAlive;
   }
 
   public static async signup(args: ISignupArgs): Promise<boolean | void> {
@@ -52,6 +58,7 @@ class ApiService implements IApiService {
       });
       console.log("res now", res);
       const data = await res.json();
+      console.log("data test", data);
       if (!data.token) {
         throw new Error("can't login without a token");
       }
@@ -188,3 +195,4 @@ class ApiService implements IApiService {
 }
 
 export default ApiService;
+export { ApiService };

@@ -11,19 +11,8 @@ import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-
-//mock api service
-// @ts-expect-error trying to mock fetch
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
-  })
-);
-
-
-
-console.log("what is fetch result here");
-
+import { TestApiServiceClass } from "../../utils/TestApiServiceClass";
+const tapi = new TestApiServiceClass("alive");
 
 const store = createStore(
   allReducers,
@@ -41,16 +30,28 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-beforeEach(() => {
-  // @ts-ignore trying to mock fetch
-  // fetch.mockClear();
-});
-afterEach(() => {
-  cleanup();
-});
+
 
 describe("Test rendering signup correctly", () => {
+
+  const originalFetch = global.fetch;
+  beforeEach(() => {
+    // @ts-ignore trying to mock fetch
+    // @ts-expect-error trying to mock fetch
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
+      })
+    );
+  });
+
+  afterEach(() => {
+    cleanup();
+    global.fetch = originalFetch;
+  });
+  
   it("Render the home page and then click sign up button to go to that page", async () => {
+    expect(tapi.alive()).toBe("alive");
     render(
       <Provider store={store}>
         <App />
@@ -80,6 +81,23 @@ describe("Test rendering signup correctly", () => {
 });
 
 describe("test signup functionality", () => {
+
+  const originalFetch = global.fetch;
+  beforeEach(() => {
+    // @ts-ignore trying to mock fetch
+    // @ts-expect-error trying to mock fetch
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(SIGNUP_MOCK_RESULT),
+      })
+    );
+  });
+  
+  afterEach(() => {
+    cleanup();
+    global.fetch = originalFetch;
+  });
+
   it("Checks the input fields are available and can submit with a stubbed api", async () => {
 
     render(
