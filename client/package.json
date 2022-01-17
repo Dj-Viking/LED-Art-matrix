@@ -17,6 +17,7 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@stripe/stripe-js": "^1.12.1",
     "@svgr/webpack": "^5.5.0",
+    "@testing-library/dom": "^8.11.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",

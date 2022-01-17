@@ -3,11 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
 import {
   signupUsernameChange,
-  signupUsernameCompleted,
   signupEmailChange,
-  signupEmailCompleted,
   signupPasswordChange,
-  signupPasswordCompleted
 } from "../actions/signup-form-actions";
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
@@ -38,15 +35,12 @@ const Signup: React.FC = (): JSX.Element => {
   function handleChange(event: any): void {
     if (event.target.type === "text") {
       dispatch(signupUsernameChange(event.target.value));
-      dispatch(signupUsernameCompleted(event.target.value));
     }
     if (event.target.type === "email") {
       dispatch(signupEmailChange(event.target.value));
-      dispatch(signupEmailCompleted(event.target.value));
     }
     if (event.target.type === "password") {
       dispatch(signupPasswordChange(event.target.value));
-      dispatch(signupPasswordCompleted(event.target.value));
     }
   }
 

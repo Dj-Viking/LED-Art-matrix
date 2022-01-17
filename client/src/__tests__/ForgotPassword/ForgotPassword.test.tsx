@@ -7,6 +7,8 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
 import { FORGOT_MOCK_INPUT, FORGOT_MOCK_RES, FORGOT_MOCK_RES_ERROR, } from "../../utils/mocks";
+import user from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -39,6 +41,7 @@ describe("Test rendering forgot password page", () => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
+        status: 200,
         json: () => Promise.resolve(FORGOT_MOCK_RES),
       })
     );
@@ -58,17 +61,19 @@ describe("Test rendering forgot password page", () => {
     );
 
     const link = await screen.findByText(/^Login$/g);
+    expect(link).toBeInTheDocument();
     fireEvent.click(link);
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
     expect(forgotLink).toBeInTheDocument();
     fireEvent.click(forgotLink);
+
     const forgotEls = {
       forgotEmail: screen.getByPlaceholderText(/email@example.com/g),
     };
     expect(forgotEls.forgotEmail).toBeInTheDocument();
-    fireEvent.change(forgotEls.forgotEmail);
 
     expect(fetch).toHaveBeenCalledTimes(0);
 
@@ -82,6 +87,7 @@ describe("Test sending forgot pass request", () => {
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
+        status: 200,
         json: () => Promise.resolve(FORGOT_MOCK_RES),
       })
     );
@@ -101,22 +107,30 @@ describe("Test sending forgot pass request", () => {
     );
 
     const link = await screen.findByText(/^Login$/g);
+    expect(link).toBeInTheDocument();
     fireEvent.click(link);
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
     expect(forgotLink).toBeInTheDocument();
     fireEvent.click(forgotLink);
+
     const forgotEls = {
-      forgotEmail: screen.getByPlaceholderText(/email@example.com/g),
+      forgotEmail: screen.getByPlaceholderText(/email@example.com/g) as HTMLInputElement,
       btn: screen.getAllByRole("button", { name: "Submit" }).find((btn) => {
         return btn.classList.contains("form-btn-disabled");
       }) as HTMLElement
     };
     expect(forgotEls.forgotEmail).toBeInTheDocument();
     expect(forgotEls.btn).toBeInTheDocument();
-    fireEvent.change(forgotEls.forgotEmail, { target: { value: FORGOT_MOCK_INPUT.email } });
-    fireEvent.click(forgotEls.btn);
+
+    user.type(forgotEls.forgotEmail, FORGOT_MOCK_INPUT.email);
+    expect(forgotEls.forgotEmail.value).toBe(FORGOT_MOCK_INPUT.email);
+
+    await act(async () => {
+      forgotEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
 
   });
 });
@@ -147,22 +161,30 @@ describe("Test request error mock", () => {
     );
 
     const link = await screen.findByText(/^Login$/g);
+    expect(link).toBeInTheDocument();
     fireEvent.click(link);
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
     expect(forgotLink).toBeInTheDocument();
     fireEvent.click(forgotLink);
+
     const forgotEls = {
-      forgotEmail: screen.getByPlaceholderText(/email@example.com/g),
+      forgotEmail: screen.getByPlaceholderText(/email@example.com/g) as HTMLInputElement,
       btn: screen.getAllByRole("button", { name: "Submit" }).find((btn) => {
         return btn.classList.contains("form-btn-disabled");
       }) as HTMLElement
     };
     expect(forgotEls.forgotEmail).toBeInTheDocument();
     expect(forgotEls.btn).toBeInTheDocument();
-    fireEvent.change(forgotEls.forgotEmail, { target: { value: FORGOT_MOCK_INPUT.email } });
-    fireEvent.click(forgotEls.btn);
+    
+    user.type(forgotEls.forgotEmail, FORGOT_MOCK_INPUT.email);
+    expect(forgotEls.forgotEmail.value).toBe(FORGOT_MOCK_INPUT.email);
+    await act(async () => {
+      forgotEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
 
   });
 });

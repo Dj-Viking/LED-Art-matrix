@@ -7,7 +7,7 @@
 
 - how to mock apis things to try
   * <a href="https://stackoverflow.com/questions/65946740/mocking-fetch-with-jest-fn-in-react" rel="noopener noreferrer">GETTING DATA FROM MOCKED RESPONSE</a>
-  ```js
+  ```jsx
       describe("Test", () => {
           let originalFetch;
 
@@ -36,3 +36,18 @@
   ```
   * <a href="https://www.leighhalliday.com/mock-fetch-jest" rel="noopener noreferrer">JEST MOCK FETCH</a>
   * <a href="https://mswjs.io/docs/api/response/network-error" rel="noopener noreferrer">MSW (mock service worker)</a>
+
+
+
+* <a href="https://testing-library.com/docs/ecosystem-user-event/" rel="noopener noreferrer">@testing-library/user-event for properly updating state in the react app...</a>
+
+* <a href="https://kentcdodds.com/blog/fix-the-not-wrapped-in-act-warning" rel="noopener noreferrer">Finally can remove the act() warning</a>
+    - 
+    ```ts
+    //clicking the button will start an asynchronous fetch 
+    // that will update state during and after the async function is done
+    await act(async () => {
+        inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+    ```
+       

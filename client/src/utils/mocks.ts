@@ -41,7 +41,6 @@ export const FORGOT_MOCK_INPUT = {
 };
 
 export const FORGOT_MOCK_RES = {
-  status: 200,
   message: "success"
 };
 

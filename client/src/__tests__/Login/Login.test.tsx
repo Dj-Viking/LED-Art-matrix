@@ -5,12 +5,13 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_PAYLOAD_EMAIL, SIGNUP_MOCK_PAYLOAD, LOGIN_MOCK_NO_TOKEN, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_PAYLOAD_EMAIL, LOGIN_MOCK_NO_TOKEN, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-// import { act } from "react-dom/test-utils";
+import { act } from "react-dom/test-utils";
 import { TestApiServiceClass } from "../../utils/TestApiServiceClass";
 const tapi = new TestApiServiceClass("alive");
 
@@ -28,7 +29,7 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
-//TODO IMPLEMENT WINDOW NAVIGATION window.location.assign() for signup test
+//TODO IMPLEMENT WINDOW NAVIGATION window.location.assign() for login test
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
@@ -51,7 +52,7 @@ describe("Test rendering login correctly", () => {
     global.fetch = originalFetch;
   });
 
-  it("Render the home page and then click sign up button to go to that page", async () => {
+  it("Render the home page and then click Login button to go to that page", async () => {
     expect(tapi.alive()).toBe("alive");
     render(
       <Provider store={store}>
@@ -59,17 +60,18 @@ describe("Test rendering login correctly", () => {
       </Provider>
     );
 
-    const link = await screen.findByText(/^Login$/g);
-
-    fireEvent.click(link);
-
+    const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+    expect(page).toBeInTheDocument();
+    fireEvent.click(page);
     // act(() => {
-      // link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    //   link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     // });
 
     const formEls = {
-      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
       login: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
         return btn.classList.contains("form-btn");
       }) as HTMLElement
@@ -80,12 +82,19 @@ describe("Test rendering login correctly", () => {
     expect(formEls.login).toBeInTheDocument();
 
     //type in email here
-    // eslint-disable-next-line
-      fireEvent.change(formEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername }});
-      fireEvent.change(formEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.password }});
+    // fireEvent.change(formEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername }});
+    // fireEvent.change(formEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_EMAIL.password }});
+    user.type(formEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+    user.type(formEls.password, LOGIN_MOCK_PAYLOAD_EMAIL.password);
+    expect(formEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+    expect(formEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.password);
 
     //submit login
-    fireEvent.click(formEls.login);
+    // fireEvent.click(formEls.login);
+
+    await act(async () => {
+      formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
 
   });
 });
@@ -114,27 +123,44 @@ describe("test signup functionality with no token", () => {
         <App />
       </Provider>
     );
-    const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
+
+    const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
+    expect(page).toBeInTheDocument();
     fireEvent.click(page);
+
     const inputEls = {
-      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
       btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
         return btn.classList.contains("form-btn");
       }) as HTMLElement
     };
+
     expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
     expect(inputEls.btn).toBeInTheDocument();
-    fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
-    fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
-    fireEvent.click(inputEls.btn);
 
-    // act(() => {
-    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
+    // fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
+    // fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
+    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
+    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
+    expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
+    expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.password);
+    
+    // fireEvent.click(inputEls.btn);
+    await act(async () => {
+      inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    // const logout = (await screen.findAllByText(/Logout/g)).find(el => {
+    //   return el.classList.contains("nav-button");
+    // }) as HTMLElement;
+
+    // expect(logout).toBeInTheDocument();
+
+    // fireEvent.click(logout);
   });
 });
 describe("test signup functionality with token", () => {
@@ -154,6 +180,7 @@ describe("test signup functionality with token", () => {
   afterEach(() => {
     cleanup();
     global.fetch = originalFetch;
+    localStorage.clear(); //clear local storage since this test will set a token in LS and log a user in
   });
 
   it("Checks the input fields are available and can submit with a stubbed api", async () => {
@@ -162,13 +189,20 @@ describe("test signup functionality with token", () => {
         <App />
       </Provider>
     );
-    const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
+
+    const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
+    expect(page).toBeInTheDocument();
     fireEvent.click(page);
+
+    // act(() => {
+    //   page.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    // });
+
     const inputEls = {
-      emailOrUsername: screen.getByPlaceholderText(/my_username/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g),
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
       btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
         return btn.classList.contains("form-btn");
       }) as HTMLElement
@@ -176,13 +210,30 @@ describe("test signup functionality with token", () => {
     expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
     expect(inputEls.btn).toBeInTheDocument();
-    fireEvent.change(inputEls.emailOrUsername, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername }});
-    fireEvent.change(inputEls.password, { target: { value: LOGIN_MOCK_PAYLOAD_USERNAME.password }});
-    fireEvent.click(inputEls.btn);
 
-    // act(() => {
-    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
+    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
+    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
+    
+    user.clear(inputEls.emailOrUsername);
+    user.clear(inputEls.password);
+    
+    expect(inputEls.emailOrUsername.value).toBe("");
+    expect(inputEls.password.value).toBe("");
+    
+    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
+    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
+    // fireEvent.click(inputEls.btn);
+    await act(async () => {
+      inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    const logout = (await screen.findAllByText(/Login/g)).find(el => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+
+    expect(logout).toBeInTheDocument();
+
+    fireEvent.click(logout);
   });
 });
 
@@ -203,7 +254,7 @@ describe("Tests network error message", () => {
     global.fetch = originalFetch;
   });
 
-  it("Checks the input fields are available and can submit with a stubbed api", async () => {
+  it("Checks the input fields are available and can submit with a stubbed api to get the network error message", async () => {
 
     render(
       <Provider store={store}>
@@ -211,50 +262,42 @@ describe("Tests network error message", () => {
       </Provider>
     );
 
-    const link = await screen.findByText(/^Login$/g);
-
-    fireEvent.click(link);
-
-    // act(() => {
-    //   link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
+    const page = (await screen.findAllByText(/Login/g)).find(el => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+    expect(page).toBeInTheDocument();
+    fireEvent.click(page);
 
     const inputEls = {
-      username: screen.getByPlaceholderText(/my_username/g),
-      email: screen.getByPlaceholderText(/example@email.com/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
+      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
+      btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      }) as HTMLElement
     };
 
-    const btn = screen.getAllByRole("button", { name: "Login" }).find((btn) => {
-      return btn.classList.contains("form-btn");
-    }) as HTMLElement;
-
     //check the input elements are in the document
-    expect(inputEls.username).toBeInTheDocument();
-    expect(inputEls.email).toBeInTheDocument();
+    expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
-    expect(btn).toBeInTheDocument();
-
-    fireEvent.change(inputEls.username, { target: { value: SIGNUP_MOCK_PAYLOAD.username }});
-    fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
-    fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
+    expect(inputEls.btn).toBeInTheDocument();
 
     // type inputs to form fields and submit
-    // act(() => {
-    //   inputEls.username.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.username));
-    //   inputEls.email.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.email));
-    //   inputEls.password.dispatchEvent(new KeyboardEvent(SIGNUP_MOCK_PAYLOAD.password));
-    // });
+    act(() => {
+      inputEls.emailOrUsername.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername));
+      inputEls.password.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.password));
+    });
 
+    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_EMAIL.password);
+    expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+    expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.password);
+
+    
     //click signup to simulate api mock
-
-    fireEvent.click(btn);
-
-    // act(() => {
-    //   btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
-
-    expect(fetch).toReturn();
+    //clicking the button will start an asynchronous fetch that will update state during and after the async function is done
+    await act(async () => {
+      inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
     
   });
 });

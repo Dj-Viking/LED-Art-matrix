@@ -10,7 +10,8 @@ import { SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-// import { act } from "react-dom/test-utils";
+import user from "@testing-library/user-event";
+import { act } from "react-dom/test-utils";
 import { TestApiServiceClass } from "../../utils/TestApiServiceClass";
 const tapi = new TestApiServiceClass("alive");
 
@@ -60,12 +61,8 @@ describe("Test rendering signup correctly", () => {
     );
 
     const link = await screen.findByText(/^Sign\sUp$/g);
-
+    expect(link).toBeInTheDocument();
     fireEvent.click(link);
-
-    // act(() => {
-      // link.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
 
     const formEls = {
       username: screen.getByPlaceholderText(/my_username/g),
@@ -80,8 +77,6 @@ describe("Test rendering signup correctly", () => {
     expect(formEls.email).toBeInTheDocument();
     expect(formEls.password).toBeInTheDocument();
     expect(formEls.signup).toBeInTheDocument();
-
-    fireEvent.click(formEls.signup);
 
   });
 });
@@ -111,41 +106,52 @@ describe("test signup functionality", () => {
       </Provider>
     );
 
-    const page = (await screen.findAllByRole("link", { name: "Logout" })).find((el) => {
+    const page = (await screen.findAllByRole("link", { name: "Sign Up" })).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
-
+    expect(page).toBeInTheDocument();
     fireEvent.click(page);
 
-    // act(() => {
-    //   page.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    // });
-
-    const inputEls = {
-      username: screen.getByPlaceholderText(/my_username/g),
-      email: screen.getByPlaceholderText(/example@email.com/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
+    const formEls = {
+      username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      email: screen.getByPlaceholderText(/example@email.com/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
+      btn: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      }) as HTMLElement
     };
 
-    const btn = screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
-      return btn.classList.contains("form-btn");
-    }) as HTMLElement;
-
     //check the input elements are in the document
-    expect(inputEls.username).toBeInTheDocument();
-    expect(inputEls.email).toBeInTheDocument();
-    expect(inputEls.password).toBeInTheDocument();
-    expect(btn).toBeInTheDocument();
+    expect(formEls.username).toBeInTheDocument();
+    expect(formEls.email).toBeInTheDocument();
+    expect(formEls.password).toBeInTheDocument();
+    expect(formEls.btn).toBeInTheDocument();
 
     // type inputs to form fields and submit
 
-    fireEvent.change(inputEls.username, { target: { value: SIGNUP_MOCK_PAYLOAD.username }});
-    fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
-    fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
+    user.type(formEls.username, SIGNUP_MOCK_PAYLOAD.username);
+    user.type(formEls.email, SIGNUP_MOCK_PAYLOAD.email);
+    user.type(formEls.password, SIGNUP_MOCK_PAYLOAD.password);
+    
+    user.clear(formEls.username);
+    user.clear(formEls.email);
+    user.clear(formEls.password);
+    expect(formEls.username.value).toBe("");
+    expect(formEls.email.value).toBe("");
+    expect(formEls.password.value).toBe("");
+    
+    user.type(formEls.username, SIGNUP_MOCK_PAYLOAD.username);
+    user.type(formEls.email, SIGNUP_MOCK_PAYLOAD.email);
+    user.type(formEls.password, SIGNUP_MOCK_PAYLOAD.password);
+    expect(formEls.username.value).toBe(SIGNUP_MOCK_PAYLOAD.username);
+    expect(formEls.email.value).toBe(SIGNUP_MOCK_PAYLOAD.email);
+    expect(formEls.password.value).toBe(SIGNUP_MOCK_PAYLOAD.password);
 
     //click signup to simulate api mock
     
-    fireEvent.click(btn);
+    await act(async () => {
+      formEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
 
   });
 });
@@ -176,31 +182,35 @@ describe("Tests network error message", () => {
 
     const link = await screen.findByText(/^Sign\sUp$/g);
 
+    expect(link).toBeInTheDocument();
+
     fireEvent.click(link);
 
-    const inputEls = {
-      username: screen.getByPlaceholderText(/my_username/g),
-      email: screen.getByPlaceholderText(/example@email.com/g),
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g)
+    const formEls = {
+      username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+      email: screen.getByPlaceholderText(/example@email.com/g) as HTMLInputElement,
+      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
+      btn: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
+        return btn.classList.contains("form-btn");
+      }) as HTMLElement
+
     };
-
-    const btn = screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
-      return btn.classList.contains("form-btn");
-    }) as HTMLElement;
-
     //check the input elements are in the document
-    expect(inputEls.username).toBeInTheDocument();
-    expect(inputEls.email).toBeInTheDocument();
-    expect(inputEls.password).toBeInTheDocument();
-    expect(btn).toBeInTheDocument();
-
-    fireEvent.change(inputEls.username, { target: { value: SIGNUP_MOCK_PAYLOAD.username }});
-    fireEvent.change(inputEls.email, { target: { value: SIGNUP_MOCK_PAYLOAD.email }});
-    fireEvent.change(inputEls.password, { target: { value: SIGNUP_MOCK_PAYLOAD.password }});
-
-    fireEvent.click(btn);
-
-    expect(fetch).toReturn();
+    expect(formEls.username).toBeInTheDocument();
+    expect(formEls.email).toBeInTheDocument();
+    expect(formEls.password).toBeInTheDocument();
+    expect(formEls.btn).toBeInTheDocument();
+    
+    user.type(formEls.username, SIGNUP_MOCK_PAYLOAD.username);
+    user.type(formEls.email, SIGNUP_MOCK_PAYLOAD.email);
+    user.type(formEls.password, SIGNUP_MOCK_PAYLOAD.password);
+    expect(formEls.username.value).toBe(SIGNUP_MOCK_PAYLOAD.username);
+    expect(formEls.email.value).toBe(SIGNUP_MOCK_PAYLOAD.email);
+    expect(formEls.password.value).toBe(SIGNUP_MOCK_PAYLOAD.password);
+    
+    await act(async () => {
+      formEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
     
   });
 });

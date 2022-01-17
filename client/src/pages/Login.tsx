@@ -4,9 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
 import {
   loginEmailChange,
-  loginEmailCompleted,
   loginPasswordChange,
-  loginPasswordCompleted
 } from "../actions/login-form-actions";
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
@@ -20,11 +18,9 @@ const Login: React.FC = (): JSX.Element => {
   function handleChange(event: any): void {
     if (event.target.type === "text") {
       dispatch(loginEmailChange(event.target.value));
-      dispatch(loginEmailCompleted(event.target.value));
     }
     if (event.target.type === "password") {
       dispatch(loginPasswordChange(event.target.value));
-      dispatch(loginPasswordCompleted(event.target.value));
     }
   }
 

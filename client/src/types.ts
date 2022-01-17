@@ -97,15 +97,11 @@ export interface ILoginFormState {
 }
 export type ILoginFormActionTypes = 
 | "LOGIN_EMAIL_OR_USERNAME_CHANGE"
-| "LOGIN_EMAIL_COMPLETED"
 | "LOGIN_PASSWORD_CHANGE"
-| "LOGIN_PASSWORD_COMPLETED";
 
 export type ILoginFormActionPayloads =
 | ILoginUsernameOrEmailChangeAction["payload"]
-| ILoginEmailCompletedAction["payload"]
 | ILoginPasswordChangeAction["payload"]
-| ILoginPasswordCompletedAction["payload"];
 
 export interface ILoginFormAction {
   type: ILoginFormActionTypes;
@@ -115,17 +111,9 @@ export interface ILoginUsernameOrEmailChangeAction {
   type: "LOGIN_EMAIL_OR_USERNAME_CHANGE";
   payload: string;
 }
-export interface ILoginEmailCompletedAction {
-  type: "LOGIN_EMAIL_COMPLETED";
-  payload: boolean;
-}
 export interface ILoginPasswordChangeAction {
   type: "LOGIN_PASSWORD_CHANGE";
   payload: string;
-}
-export interface ILoginPasswordCompletedAction {
-  type: "LOGIN_PASSWORD_COMPLETED";
-  payload: boolean;
 }
 export interface ISignupFormState {
   username: string;
@@ -137,19 +125,13 @@ export interface ISignupFormState {
 }
 export type ISignupFormActionTypes = 
 | "SIGNUP_USERNAME_CHANGE"
-| "SIGNUP_USERNAME_COMPLETED"
 | "SIGNUP_EMAIL_CHANGE"
-| "SIGNUP_EMAIL_COMPLETED"
-| "SIGNUP_PASSWORD_CHANGE"
-| "SIGNUP_PASSWORD_COMPLETED";
+| "SIGNUP_PASSWORD_CHANGE";
 
 export type ISignupFormActionPayloads =
 | ISignupEmailChangeAction["payload"]
-| ISignupEmailCompletedAction["payload"]
 | ISignupUsernameChangeAction["payload"]
-| ISignupUsernameCompletedAction["payload"]
-| ISignupPasswordChangeAction["payload"]
-| ISignupPasswordCompletedAction["payload"];
+| ISignupPasswordChangeAction["payload"];
 
 export interface ISignupFormAction {
   type: ISignupFormActionTypes
@@ -160,25 +142,13 @@ export interface ISignupUsernameChangeAction {
   type: "SIGNUP_USERNAME_CHANGE";
   payload: string;
 }
-export interface ISignupUsernameCompletedAction {
-  type: "SIGNUP_USERNAME_COMPLETED";
-  payload: boolean;
-}
 export interface ISignupEmailChangeAction {
   type: "SIGNUP_EMAIL_CHANGE";
   payload: string;
 }
-export interface ISignupEmailCompletedAction {
-  type: "SIGNUP_EMAIL_COMPLETED";
-  payload: boolean;
-}
 export interface ISignupPasswordChangeAction {
   type: "SIGNUP_PASSWORD_CHANGE";
   payload: string;
-}
-export interface ISignupPasswordCompletedAction {
-  type: "SIGNUP_PASSWORD_COMPLETED";
-  payload: boolean;
 }
 
 export interface IArtScrollerState {
