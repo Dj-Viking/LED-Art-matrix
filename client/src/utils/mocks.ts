@@ -1,6 +1,21 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
 
+export const CHANGE_PASS_MOCK_RES = {
+  message: "success",
+  done: true,
+  token: "HERES A TOKEN YAY"
+};
+
+export const CHANGE_PASS_INPUT_MATCH = {
+  newPass: "newer password",
+  confirmPass: "newer password"
+};
+export const CHANGE_PASS_INPUT_NOT_MATCH = {
+  newPass: "newer password",
+  confirmPass: "newer password1"
+};
+
 export const LOGIN_MOCK_PAYLOAD_USERNAME = {
   emailOrUsername: "i exist",
   password: "believe it"

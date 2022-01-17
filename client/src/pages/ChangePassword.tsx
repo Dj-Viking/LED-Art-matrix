@@ -15,12 +15,9 @@ const ChangePassword: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     // get the token inside the URL
-    console.log("url params initially", urlToken);
     if (window && window.location && window.location.pathname) {
-      console.log("we have a window and a pathname", window.location.pathname);
       const token = window.location.pathname.split("/")[2];
       setUrlParam(token);
-      console.log("what is params state now should be a token", urlToken);
     }
     return void 0;
   }, [urlToken, setUrlParam]);
@@ -44,10 +41,8 @@ const ChangePassword: React.FC = (): JSX.Element => {
     try {
       const res = await API.changePassword({ password, token: urlToken }) as { done: boolean, token: string };
       if (res.done) return Auth.login(res.token);
-      return void 0;
     } catch (err) {
       setLoading(false);
-      console.log(err);
       return void 0;
     }
   }
@@ -82,7 +77,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
           required
           value={password}
           onChange={handlePassChange}
-          placeholder="***************"
+          placeholder="New Password"
           className="form-password-input"
           autoComplete="off"
         />
@@ -99,7 +94,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
           required
           value={confirmPass}
           onChange={handleConfirmPassChange}
-          placeholder="***************"
+          placeholder="Confirm Password"
           className="form-password-input"
           autoComplete="off"
         />

@@ -50,4 +50,6 @@
         inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     ```
+
+* <a href="https://medium.com/@rickhanlonii/understanding-jest-mocks-f0046c68e53c" rel="noopener noreferrer">Good article on jest mocks</a>
        
