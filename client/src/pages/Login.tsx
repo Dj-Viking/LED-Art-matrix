@@ -102,23 +102,6 @@ const Login: React.FC = (): JSX.Element => {
           <div
             className="form-button-container"
           >
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <Link 
-                to="/forgotPassword"
-              >
-                <button
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    color: "white",
-                    textDecoration: "none"
-                  }}
-                >
-                  Forgot Password?
-                </button>
-              </Link>
-            </div>
             <button
               type="submit"
               disabled={false}
@@ -140,6 +123,24 @@ const Login: React.FC = (): JSX.Element => {
             }
           </div>
         </form>
+        <div style={{ display: "flex", justifyContent: "center"}}>
+          <Link 
+            to="/forgotPassword"
+          >
+            <button
+            type="button"
+              style={{
+                cursor: "pointer",
+                backgroundColor: "transparent",
+                border: "none",
+                color: "white",
+                textDecoration: "none"
+              }}
+            >
+              Forgot Password?
+            </button>
+          </Link>
+        </div>
       </div>
     </>
   );
