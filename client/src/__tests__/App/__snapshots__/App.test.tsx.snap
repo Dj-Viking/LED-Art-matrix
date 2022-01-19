@@ -398,28 +398,25 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <button
           class="preset-button rainbow-anim"
+          data-testid="rainbowTest"
+          role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-          >
-            rainbowTest
-          </span>
+          rainbowTest
         </button>
         <button
           class="preset-button"
+          data-testid="v2"
+          role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-            style="width: 100%;"
-          >
-            V2
-          </span>
+          V2
         </button>
         <button
           class="preset-button-disabled"
+          data-testid="waves"
           disabled=""
+          role="button"
           style="opacity: 0;"
         >
           <span
@@ -430,40 +427,36 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         </button>
         <button
           class="preset-button-disabled"
+          data-testid="spiral"
           disabled=""
+          role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-          >
-            spiral
-          </span>
+          spiral
         </button>
         <button
           class="preset-button-disabled"
+          data-testid="fourSpirals"
           disabled=""
+          role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-          >
-            fourSpirals
-          </span>
+          fourSpirals
         </button>
         <button
           class="preset-button-disabled"
+          data-testid="dm5"
           disabled=""
+          role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-          >
-            DM5
-          </span>
+          DM5
         </button>
         <button
           class="preset-button-disabled"
+          data-testid="saveDefault"
           disabled=""
+          role="button"
           style="opacity: 0;"
         >
           Save as Default
@@ -479,99 +472,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-1"
+          id="led1-1"
         />
         <div
           class="led2-1"
+          id="led2-1"
         />
         <div
           class="led3-1"
+          id="led3-1"
         />
         <div
           class="led4-1"
+          id="led4-1"
         />
         <div
           class="led5-1"
+          id="led5-1"
         />
         <div
           class="led6-1"
+          id="led6-1"
         />
         <div
           class="led7-1"
+          id="led7-1"
         />
         <div
           class="led8-1"
+          id="led8-1"
         />
         <div
           class="led9-1"
+          id="led9-1"
         />
         <div
           class="led10-1"
+          id="led10-1"
         />
         <div
           class="led11-1"
+          id="led11-1"
         />
         <div
           class="led12-1"
+          id="led12-1"
         />
         <div
           class="led13-1"
+          id="led13-1"
         />
         <div
           class="led14-1"
+          id="led14-1"
         />
         <div
           class="led15-1"
+          id="led15-1"
         />
         <div
           class="led16-1"
+          id="led16-1"
         />
         <div
           class="led17-1"
+          id="led17-1"
         />
         <div
           class="led18-1"
+          id="led18-1"
         />
         <div
           class="led19-1"
+          id="led19-1"
         />
         <div
           class="led20-1"
+          id="led20-1"
         />
         <div
           class="led21-1"
+          id="led21-1"
         />
         <div
           class="led22-1"
+          id="led22-1"
         />
         <div
           class="led23-1"
+          id="led23-1"
         />
         <div
           class="led24-1"
+          id="led24-1"
         />
         <div
           class="led25-1"
+          id="led25-1"
         />
         <div
           class="led26-1"
+          id="led26-1"
         />
         <div
           class="led27-1"
+          id="led27-1"
         />
         <div
           class="led28-1"
+          id="led28-1"
         />
         <div
           class="led29-1"
+          id="led29-1"
         />
         <div
           class="led30-1"
+          id="led30-1"
         />
         <div
           class="led31-1"
+          id="led31-1"
         />
         <div
           class="led32-1"
+          id="led32-1"
         />
       </div>
       <div
@@ -579,99 +604,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-2"
+          id="led1-2"
         />
         <div
           class="led2-2"
+          id="led2-2"
         />
         <div
           class="led3-2"
+          id="led3-2"
         />
         <div
           class="led4-2"
+          id="led4-2"
         />
         <div
           class="led5-2"
+          id="led5-2"
         />
         <div
           class="led6-2"
+          id="led6-2"
         />
         <div
           class="led7-2"
+          id="led7-2"
         />
         <div
           class="led8-2"
+          id="led8-2"
         />
         <div
           class="led9-2"
+          id="led9-2"
         />
         <div
           class="led10-2"
+          id="led10-2"
         />
         <div
           class="led11-2"
+          id="led11-2"
         />
         <div
           class="led12-2"
+          id="led12-2"
         />
         <div
           class="led13-2"
+          id="led13-2"
         />
         <div
           class="led14-2"
+          id="led14-2"
         />
         <div
           class="led15-2"
+          id="led15-2"
         />
         <div
           class="led16-2"
+          id="led16-2"
         />
         <div
           class="led17-2"
+          id="led17-2"
         />
         <div
           class="led18-2"
+          id="led18-2"
         />
         <div
           class="led19-2"
+          id="led19-2"
         />
         <div
           class="led20-2"
+          id="led20-2"
         />
         <div
           class="led21-2"
+          id="led21-2"
         />
         <div
           class="led22-2"
+          id="led22-2"
         />
         <div
           class="led23-2"
+          id="led23-2"
         />
         <div
           class="led24-2"
+          id="led24-2"
         />
         <div
           class="led25-2"
+          id="led25-2"
         />
         <div
           class="led26-2"
+          id="led26-2"
         />
         <div
           class="led27-2"
+          id="led27-2"
         />
         <div
           class="led28-2"
+          id="led28-2"
         />
         <div
           class="led29-2"
+          id="led29-2"
         />
         <div
           class="led30-2"
+          id="led30-2"
         />
         <div
           class="led31-2"
+          id="led31-2"
         />
         <div
           class="led32-2"
+          id="led32-2"
         />
       </div>
       <div
@@ -679,99 +736,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-3"
+          id="led1-3"
         />
         <div
           class="led2-3"
+          id="led2-3"
         />
         <div
           class="led3-3"
+          id="led3-3"
         />
         <div
           class="led4-3"
+          id="led4-3"
         />
         <div
           class="led5-3"
+          id="led5-3"
         />
         <div
           class="led6-3"
+          id="led6-3"
         />
         <div
           class="led7-3"
+          id="led7-3"
         />
         <div
           class="led8-3"
+          id="led8-3"
         />
         <div
           class="led9-3"
+          id="led9-3"
         />
         <div
           class="led10-3"
+          id="led10-3"
         />
         <div
           class="led11-3"
+          id="led11-3"
         />
         <div
           class="led12-3"
+          id="led12-3"
         />
         <div
           class="led13-3"
+          id="led13-3"
         />
         <div
           class="led14-3"
+          id="led14-3"
         />
         <div
           class="led15-3"
+          id="led15-3"
         />
         <div
           class="led16-3"
+          id="led16-3"
         />
         <div
           class="led17-3"
+          id="led17-3"
         />
         <div
           class="led18-3"
+          id="led18-3"
         />
         <div
           class="led19-3"
+          id="led19-3"
         />
         <div
           class="led20-3"
+          id="led20-3"
         />
         <div
           class="led21-3"
+          id="led21-3"
         />
         <div
           class="led22-3"
+          id="led22-3"
         />
         <div
           class="led23-3"
+          id="led23-3"
         />
         <div
           class="led24-3"
+          id="led24-3"
         />
         <div
           class="led25-3"
+          id="led25-3"
         />
         <div
           class="led26-3"
+          id="led26-3"
         />
         <div
           class="led27-3"
+          id="led27-3"
         />
         <div
           class="led28-3"
+          id="led28-3"
         />
         <div
           class="led29-3"
+          id="led29-3"
         />
         <div
           class="led30-3"
+          id="led30-3"
         />
         <div
           class="led31-3"
+          id="led31-3"
         />
         <div
           class="led32-3"
+          id="led32-3"
         />
       </div>
       <div
@@ -779,99 +868,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-4"
+          id="led1-4"
         />
         <div
           class="led2-4"
+          id="led2-4"
         />
         <div
           class="led3-4"
+          id="led3-4"
         />
         <div
           class="led4-4"
+          id="led4-4"
         />
         <div
           class="led5-4"
+          id="led5-4"
         />
         <div
           class="led6-4"
+          id="led6-4"
         />
         <div
           class="led7-4"
+          id="led7-4"
         />
         <div
           class="led8-4"
+          id="led8-4"
         />
         <div
           class="led9-4"
+          id="led9-4"
         />
         <div
           class="led10-4"
+          id="led10-4"
         />
         <div
           class="led11-4"
+          id="led11-4"
         />
         <div
           class="led12-4"
+          id="led12-4"
         />
         <div
           class="led13-4"
+          id="led13-4"
         />
         <div
           class="led14-4"
+          id="led14-4"
         />
         <div
           class="led15-4"
+          id="led15-4"
         />
         <div
           class="led16-4"
+          id="led16-4"
         />
         <div
           class="led17-4"
+          id="led17-4"
         />
         <div
           class="led18-4"
+          id="led18-4"
         />
         <div
           class="led19-4"
+          id="led19-4"
         />
         <div
           class="led20-4"
+          id="led20-4"
         />
         <div
           class="led21-4"
+          id="led21-4"
         />
         <div
           class="led22-4"
+          id="led22-4"
         />
         <div
           class="led23-4"
+          id="led23-4"
         />
         <div
           class="led24-4"
+          id="led24-4"
         />
         <div
           class="led25-4"
+          id="led25-4"
         />
         <div
           class="led26-4"
+          id="led26-4"
         />
         <div
           class="led27-4"
+          id="led27-4"
         />
         <div
           class="led28-4"
+          id="led28-4"
         />
         <div
           class="led29-4"
+          id="led29-4"
         />
         <div
           class="led30-4"
+          id="led30-4"
         />
         <div
           class="led31-4"
+          id="led31-4"
         />
         <div
           class="led32-4"
+          id="led32-4"
         />
       </div>
       <div
@@ -879,99 +1000,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-5"
+          id="led1-5"
         />
         <div
           class="led2-5"
+          id="led2-5"
         />
         <div
           class="led3-5"
+          id="led3-5"
         />
         <div
           class="led4-5"
+          id="led4-5"
         />
         <div
           class="led5-5"
+          id="led5-5"
         />
         <div
           class="led6-5"
+          id="led6-5"
         />
         <div
           class="led7-5"
+          id="led7-5"
         />
         <div
           class="led8-5"
+          id="led8-5"
         />
         <div
           class="led9-5"
+          id="led9-5"
         />
         <div
           class="led10-5"
+          id="led10-5"
         />
         <div
           class="led11-5"
+          id="led11-5"
         />
         <div
           class="led12-5"
+          id="led12-5"
         />
         <div
           class="led13-5"
+          id="led13-5"
         />
         <div
           class="led14-5"
+          id="led14-5"
         />
         <div
           class="led15-5"
+          id="led15-5"
         />
         <div
           class="led16-5"
+          id="led16-5"
         />
         <div
           class="led17-5"
+          id="led17-5"
         />
         <div
           class="led18-5"
+          id="led18-5"
         />
         <div
           class="led19-5"
+          id="led19-5"
         />
         <div
           class="led20-5"
+          id="led20-5"
         />
         <div
           class="led21-5"
+          id="led21-5"
         />
         <div
           class="led22-5"
+          id="led22-5"
         />
         <div
           class="led23-5"
+          id="led23-5"
         />
         <div
           class="led24-5"
+          id="led24-5"
         />
         <div
           class="led25-5"
+          id="led25-5"
         />
         <div
           class="led26-5"
+          id="led26-5"
         />
         <div
           class="led27-5"
+          id="led27-5"
         />
         <div
           class="led28-5"
+          id="led28-5"
         />
         <div
           class="led29-5"
+          id="led29-5"
         />
         <div
           class="led30-5"
+          id="led30-5"
         />
         <div
           class="led31-5"
+          id="led31-5"
         />
         <div
           class="led32-5"
+          id="led32-5"
         />
       </div>
       <div
@@ -979,99 +1132,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-6"
+          id="led1-6"
         />
         <div
           class="led2-6"
+          id="led2-6"
         />
         <div
           class="led3-6"
+          id="led3-6"
         />
         <div
           class="led4-6"
+          id="led4-6"
         />
         <div
           class="led5-6"
+          id="led5-6"
         />
         <div
           class="led6-6"
+          id="led6-6"
         />
         <div
           class="led7-6"
+          id="led7-6"
         />
         <div
           class="led8-6"
+          id="led8-6"
         />
         <div
           class="led9-6"
+          id="led9-6"
         />
         <div
           class="led10-6"
+          id="led10-6"
         />
         <div
           class="led11-6"
+          id="led11-6"
         />
         <div
           class="led12-6"
+          id="led12-6"
         />
         <div
           class="led13-6"
+          id="led13-6"
         />
         <div
           class="led14-6"
+          id="led14-6"
         />
         <div
           class="led15-6"
+          id="led15-6"
         />
         <div
           class="led16-6"
+          id="led16-6"
         />
         <div
           class="led17-6"
+          id="led17-6"
         />
         <div
           class="led18-6"
+          id="led18-6"
         />
         <div
           class="led19-6"
+          id="led19-6"
         />
         <div
           class="led20-6"
+          id="led20-6"
         />
         <div
           class="led21-6"
+          id="led21-6"
         />
         <div
           class="led22-6"
+          id="led22-6"
         />
         <div
           class="led23-6"
+          id="led23-6"
         />
         <div
           class="led24-6"
+          id="led24-6"
         />
         <div
           class="led25-6"
+          id="led25-6"
         />
         <div
           class="led26-6"
+          id="led26-6"
         />
         <div
           class="led27-6"
+          id="led27-6"
         />
         <div
           class="led28-6"
+          id="led28-6"
         />
         <div
           class="led29-6"
+          id="led29-6"
         />
         <div
           class="led30-6"
+          id="led30-6"
         />
         <div
           class="led31-6"
+          id="led31-6"
         />
         <div
           class="led32-6"
+          id="led32-6"
         />
       </div>
       <div
@@ -1079,99 +1264,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-7"
+          id="led1-7"
         />
         <div
           class="led2-7"
+          id="led2-7"
         />
         <div
           class="led3-7"
+          id="led3-7"
         />
         <div
           class="led4-7"
+          id="led4-7"
         />
         <div
           class="led5-7"
+          id="led5-7"
         />
         <div
           class="led6-7"
+          id="led6-7"
         />
         <div
           class="led7-7"
+          id="led7-7"
         />
         <div
           class="led8-7"
+          id="led8-7"
         />
         <div
           class="led9-7"
+          id="led9-7"
         />
         <div
           class="led10-7"
+          id="led10-7"
         />
         <div
           class="led11-7"
+          id="led11-7"
         />
         <div
           class="led12-7"
+          id="led12-7"
         />
         <div
           class="led13-7"
+          id="led13-7"
         />
         <div
           class="led14-7"
+          id="led14-7"
         />
         <div
           class="led15-7"
+          id="led15-7"
         />
         <div
           class="led16-7"
+          id="led16-7"
         />
         <div
           class="led17-7"
+          id="led17-7"
         />
         <div
           class="led18-7"
+          id="led18-7"
         />
         <div
           class="led19-7"
+          id="led19-7"
         />
         <div
           class="led20-7"
+          id="led20-7"
         />
         <div
           class="led21-7"
+          id="led21-7"
         />
         <div
           class="led22-7"
+          id="led22-7"
         />
         <div
           class="led23-7"
+          id="led23-7"
         />
         <div
           class="led24-7"
+          id="led24-7"
         />
         <div
           class="led25-7"
+          id="led25-7"
         />
         <div
           class="led26-7"
+          id="led26-7"
         />
         <div
           class="led27-7"
+          id="led27-7"
         />
         <div
           class="led28-7"
+          id="led28-7"
         />
         <div
           class="led29-7"
+          id="led29-7"
         />
         <div
           class="led30-7"
+          id="led30-7"
         />
         <div
           class="led31-7"
+          id="led31-7"
         />
         <div
           class="led32-7"
+          id="led32-7"
         />
       </div>
       <div
@@ -1179,99 +1396,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-8"
+          id="led1-8"
         />
         <div
           class="led2-8"
+          id="led2-8"
         />
         <div
           class="led3-8"
+          id="led3-8"
         />
         <div
           class="led4-8"
+          id="led4-8"
         />
         <div
           class="led5-8"
+          id="led5-8"
         />
         <div
           class="led6-8"
+          id="led6-8"
         />
         <div
           class="led7-8"
+          id="led7-8"
         />
         <div
           class="led8-8"
+          id="led8-8"
         />
         <div
           class="led9-8"
+          id="led9-8"
         />
         <div
           class="led10-8"
+          id="led10-8"
         />
         <div
           class="led11-8"
+          id="led11-8"
         />
         <div
           class="led12-8"
+          id="led12-8"
         />
         <div
           class="led13-8"
+          id="led13-8"
         />
         <div
           class="led14-8"
+          id="led14-8"
         />
         <div
           class="led15-8"
+          id="led15-8"
         />
         <div
           class="led16-8"
+          id="led16-8"
         />
         <div
           class="led17-8"
+          id="led17-8"
         />
         <div
           class="led18-8"
+          id="led18-8"
         />
         <div
           class="led19-8"
+          id="led19-8"
         />
         <div
           class="led20-8"
+          id="led20-8"
         />
         <div
           class="led21-8"
+          id="led21-8"
         />
         <div
           class="led22-8"
+          id="led22-8"
         />
         <div
           class="led23-8"
+          id="led23-8"
         />
         <div
           class="led24-8"
+          id="led24-8"
         />
         <div
           class="led25-8"
+          id="led25-8"
         />
         <div
           class="led26-8"
+          id="led26-8"
         />
         <div
           class="led27-8"
+          id="led27-8"
         />
         <div
           class="led28-8"
+          id="led28-8"
         />
         <div
           class="led29-8"
+          id="led29-8"
         />
         <div
           class="led30-8"
+          id="led30-8"
         />
         <div
           class="led31-8"
+          id="led31-8"
         />
         <div
           class="led32-8"
+          id="led32-8"
         />
       </div>
       <div
@@ -1279,99 +1528,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-9"
+          id="led1-9"
         />
         <div
           class="led2-9"
+          id="led2-9"
         />
         <div
           class="led3-9"
+          id="led3-9"
         />
         <div
           class="led4-9"
+          id="led4-9"
         />
         <div
           class="led5-9"
+          id="led5-9"
         />
         <div
           class="led6-9"
+          id="led6-9"
         />
         <div
           class="led7-9"
+          id="led7-9"
         />
         <div
           class="led8-9"
+          id="led8-9"
         />
         <div
           class="led9-9"
+          id="led9-9"
         />
         <div
           class="led10-9"
+          id="led10-9"
         />
         <div
           class="led11-9"
+          id="led11-9"
         />
         <div
           class="led12-9"
+          id="led12-9"
         />
         <div
           class="led13-9"
+          id="led13-9"
         />
         <div
           class="led14-9"
+          id="led14-9"
         />
         <div
           class="led15-9"
+          id="led15-9"
         />
         <div
           class="led16-9"
+          id="led16-9"
         />
         <div
           class="led17-9"
+          id="led17-9"
         />
         <div
           class="led18-9"
+          id="led18-9"
         />
         <div
           class="led19-9"
+          id="led19-9"
         />
         <div
           class="led20-9"
+          id="led20-9"
         />
         <div
           class="led21-9"
+          id="led21-9"
         />
         <div
           class="led22-9"
+          id="led22-9"
         />
         <div
           class="led23-9"
+          id="led23-9"
         />
         <div
           class="led24-9"
+          id="led24-9"
         />
         <div
           class="led25-9"
+          id="led25-9"
         />
         <div
           class="led26-9"
+          id="led26-9"
         />
         <div
           class="led27-9"
+          id="led27-9"
         />
         <div
           class="led28-9"
+          id="led28-9"
         />
         <div
           class="led29-9"
+          id="led29-9"
         />
         <div
           class="led30-9"
+          id="led30-9"
         />
         <div
           class="led31-9"
+          id="led31-9"
         />
         <div
           class="led32-9"
+          id="led32-9"
         />
       </div>
       <div
@@ -1379,99 +1660,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-10"
+          id="led1-10"
         />
         <div
           class="led2-10"
+          id="led2-10"
         />
         <div
           class="led3-10"
+          id="led3-10"
         />
         <div
           class="led4-10"
+          id="led4-10"
         />
         <div
           class="led5-10"
+          id="led5-10"
         />
         <div
           class="led6-10"
+          id="led6-10"
         />
         <div
           class="led7-10"
+          id="led7-10"
         />
         <div
           class="led8-10"
+          id="led8-10"
         />
         <div
           class="led9-10"
+          id="led9-10"
         />
         <div
           class="led10-10"
+          id="led10-10"
         />
         <div
           class="led11-10"
+          id="led11-10"
         />
         <div
           class="led12-10"
+          id="led12-10"
         />
         <div
           class="led13-10"
+          id="led13-10"
         />
         <div
           class="led14-10"
+          id="led14-10"
         />
         <div
           class="led15-10"
+          id="led15-10"
         />
         <div
           class="led16-10"
+          id="led16-10"
         />
         <div
           class="led17-10"
+          id="led17-10"
         />
         <div
           class="led18-10"
+          id="led18-10"
         />
         <div
           class="led19-10"
+          id="led19-10"
         />
         <div
           class="led20-10"
+          id="led20-10"
         />
         <div
           class="led21-10"
+          id="led21-10"
         />
         <div
           class="led22-10"
+          id="led22-10"
         />
         <div
           class="led23-10"
+          id="led23-10"
         />
         <div
           class="led24-10"
+          id="led24-10"
         />
         <div
           class="led25-10"
+          id="led25-10"
         />
         <div
           class="led26-10"
+          id="led26-10"
         />
         <div
           class="led27-10"
+          id="led27-10"
         />
         <div
           class="led28-10"
+          id="led28-10"
         />
         <div
           class="led29-10"
+          id="led29-10"
         />
         <div
           class="led30-10"
+          id="led30-10"
         />
         <div
           class="led31-10"
+          id="led31-10"
         />
         <div
           class="led32-10"
+          id="led32-10"
         />
       </div>
       <div
@@ -1479,99 +1792,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-11"
+          id="led1-11"
         />
         <div
           class="led2-11"
+          id="led2-11"
         />
         <div
           class="led3-11"
+          id="led3-11"
         />
         <div
           class="led4-11"
+          id="led4-11"
         />
         <div
           class="led5-11"
+          id="led5-11"
         />
         <div
           class="led6-11"
+          id="led6-11"
         />
         <div
           class="led7-11"
+          id="led7-11"
         />
         <div
           class="led8-11"
+          id="led8-11"
         />
         <div
           class="led9-11"
+          id="led9-11"
         />
         <div
           class="led10-11"
+          id="led10-11"
         />
         <div
           class="led11-11"
+          id="led11-11"
         />
         <div
           class="led12-11"
+          id="led12-11"
         />
         <div
           class="led13-11"
+          id="led13-11"
         />
         <div
           class="led14-11"
+          id="led14-11"
         />
         <div
           class="led15-11"
+          id="led15-11"
         />
         <div
           class="led16-11"
+          id="led16-11"
         />
         <div
           class="led17-11"
+          id="led17-11"
         />
         <div
           class="led18-11"
+          id="led18-11"
         />
         <div
           class="led19-11"
+          id="led19-11"
         />
         <div
           class="led20-11"
+          id="led20-11"
         />
         <div
           class="led21-11"
+          id="led21-11"
         />
         <div
           class="led22-11"
+          id="led22-11"
         />
         <div
           class="led23-11"
+          id="led23-11"
         />
         <div
           class="led24-11"
+          id="led24-11"
         />
         <div
           class="led25-11"
+          id="led25-11"
         />
         <div
           class="led26-11"
+          id="led26-11"
         />
         <div
           class="led27-11"
+          id="led27-11"
         />
         <div
           class="led28-11"
+          id="led28-11"
         />
         <div
           class="led29-11"
+          id="led29-11"
         />
         <div
           class="led30-11"
+          id="led30-11"
         />
         <div
           class="led31-11"
+          id="led31-11"
         />
         <div
           class="led32-11"
+          id="led32-11"
         />
       </div>
       <div
@@ -1579,99 +1924,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-12"
+          id="led1-12"
         />
         <div
           class="led2-12"
+          id="led2-12"
         />
         <div
           class="led3-12"
+          id="led3-12"
         />
         <div
           class="led4-12"
+          id="led4-12"
         />
         <div
           class="led5-12"
+          id="led5-12"
         />
         <div
           class="led6-12"
+          id="led6-12"
         />
         <div
           class="led7-12"
+          id="led7-12"
         />
         <div
           class="led8-12"
+          id="led8-12"
         />
         <div
           class="led9-12"
+          id="led9-12"
         />
         <div
           class="led10-12"
+          id="led10-12"
         />
         <div
           class="led11-12"
+          id="led11-12"
         />
         <div
           class="led12-12"
+          id="led12-12"
         />
         <div
           class="led13-12"
+          id="led13-12"
         />
         <div
           class="led14-12"
+          id="led14-12"
         />
         <div
           class="led15-12"
+          id="led15-12"
         />
         <div
           class="led16-12"
+          id="led16-12"
         />
         <div
           class="led17-12"
+          id="led17-12"
         />
         <div
           class="led18-12"
+          id="led18-12"
         />
         <div
           class="led19-12"
+          id="led19-12"
         />
         <div
           class="led20-12"
+          id="led20-12"
         />
         <div
           class="led21-12"
+          id="led21-12"
         />
         <div
           class="led22-12"
+          id="led22-12"
         />
         <div
           class="led23-12"
+          id="led23-12"
         />
         <div
           class="led24-12"
+          id="led24-12"
         />
         <div
           class="led25-12"
+          id="led25-12"
         />
         <div
           class="led26-12"
+          id="led26-12"
         />
         <div
           class="led27-12"
+          id="led27-12"
         />
         <div
           class="led28-12"
+          id="led28-12"
         />
         <div
           class="led29-12"
+          id="led29-12"
         />
         <div
           class="led30-12"
+          id="led30-12"
         />
         <div
           class="led31-12"
+          id="led31-12"
         />
         <div
           class="led32-12"
+          id="led32-12"
         />
       </div>
       <div
@@ -1679,99 +2056,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-13"
+          id="led1-13"
         />
         <div
           class="led2-13"
+          id="led2-13"
         />
         <div
           class="led3-13"
+          id="led3-13"
         />
         <div
           class="led4-13"
+          id="led4-13"
         />
         <div
           class="led5-13"
+          id="led5-13"
         />
         <div
           class="led6-13"
+          id="led6-13"
         />
         <div
           class="led7-13"
+          id="led7-13"
         />
         <div
           class="led8-13"
+          id="led8-13"
         />
         <div
           class="led9-13"
+          id="led9-13"
         />
         <div
           class="led10-13"
+          id="led10-13"
         />
         <div
           class="led11-13"
+          id="led11-13"
         />
         <div
           class="led12-13"
+          id="led12-13"
         />
         <div
           class="led13-13"
+          id="led13-13"
         />
         <div
           class="led14-13"
+          id="led14-13"
         />
         <div
           class="led15-13"
+          id="led15-13"
         />
         <div
           class="led16-13"
+          id="led16-13"
         />
         <div
           class="led17-13"
+          id="led17-13"
         />
         <div
           class="led18-13"
+          id="led18-13"
         />
         <div
           class="led19-13"
+          id="led19-13"
         />
         <div
           class="led20-13"
+          id="led20-13"
         />
         <div
           class="led21-13"
+          id="led21-13"
         />
         <div
           class="led22-13"
+          id="led22-13"
         />
         <div
           class="led23-13"
+          id="led23-13"
         />
         <div
           class="led24-13"
+          id="led24-13"
         />
         <div
           class="led25-13"
+          id="led25-13"
         />
         <div
           class="led26-13"
+          id="led26-13"
         />
         <div
           class="led27-13"
+          id="led27-13"
         />
         <div
           class="led28-13"
+          id="led28-13"
         />
         <div
           class="led29-13"
+          id="led29-13"
         />
         <div
           class="led30-13"
+          id="led30-13"
         />
         <div
           class="led31-13"
+          id="led31-13"
         />
         <div
           class="led32-13"
+          id="led32-13"
         />
       </div>
       <div
@@ -1779,99 +2188,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-14"
+          id="led1-14"
         />
         <div
           class="led2-14"
+          id="led2-14"
         />
         <div
           class="led3-14"
+          id="led3-14"
         />
         <div
           class="led4-14"
+          id="led4-14"
         />
         <div
           class="led5-14"
+          id="led5-14"
         />
         <div
           class="led6-14"
+          id="led6-14"
         />
         <div
           class="led7-14"
+          id="led7-14"
         />
         <div
           class="led8-14"
+          id="led8-14"
         />
         <div
           class="led9-14"
+          id="led9-14"
         />
         <div
           class="led10-14"
+          id="led10-14"
         />
         <div
           class="led11-14"
+          id="led11-14"
         />
         <div
           class="led12-14"
+          id="led12-14"
         />
         <div
           class="led13-14"
+          id="led13-14"
         />
         <div
           class="led14-14"
+          id="led14-14"
         />
         <div
           class="led15-14"
+          id="led15-14"
         />
         <div
           class="led16-14"
+          id="led16-14"
         />
         <div
           class="led17-14"
+          id="led17-14"
         />
         <div
           class="led18-14"
+          id="led18-14"
         />
         <div
           class="led19-14"
+          id="led19-14"
         />
         <div
           class="led20-14"
+          id="led20-14"
         />
         <div
           class="led21-14"
+          id="led21-14"
         />
         <div
           class="led22-14"
+          id="led22-14"
         />
         <div
           class="led23-14"
+          id="led23-14"
         />
         <div
           class="led24-14"
+          id="led24-14"
         />
         <div
           class="led25-14"
+          id="led25-14"
         />
         <div
           class="led26-14"
+          id="led26-14"
         />
         <div
           class="led27-14"
+          id="led27-14"
         />
         <div
           class="led28-14"
+          id="led28-14"
         />
         <div
           class="led29-14"
+          id="led29-14"
         />
         <div
           class="led30-14"
+          id="led30-14"
         />
         <div
           class="led31-14"
+          id="led31-14"
         />
         <div
           class="led32-14"
+          id="led32-14"
         />
       </div>
       <div
@@ -1879,99 +2320,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-15"
+          id="led1-15"
         />
         <div
           class="led2-15"
+          id="led2-15"
         />
         <div
           class="led3-15"
+          id="led3-15"
         />
         <div
           class="led4-15"
+          id="led4-15"
         />
         <div
           class="led5-15"
+          id="led5-15"
         />
         <div
           class="led6-15"
+          id="led6-15"
         />
         <div
           class="led7-15"
+          id="led7-15"
         />
         <div
           class="led8-15"
+          id="led8-15"
         />
         <div
           class="led9-15"
+          id="led9-15"
         />
         <div
           class="led10-15"
+          id="led10-15"
         />
         <div
           class="led11-15"
+          id="led11-15"
         />
         <div
           class="led12-15"
+          id="led12-15"
         />
         <div
           class="led13-15"
+          id="led13-15"
         />
         <div
           class="led14-15"
+          id="led14-15"
         />
         <div
           class="led15-15"
+          id="led15-15"
         />
         <div
           class="led16-15"
+          id="led16-15"
         />
         <div
           class="led17-15"
+          id="led17-15"
         />
         <div
           class="led18-15"
+          id="led18-15"
         />
         <div
           class="led19-15"
+          id="led19-15"
         />
         <div
           class="led20-15"
+          id="led20-15"
         />
         <div
           class="led21-15"
+          id="led21-15"
         />
         <div
           class="led22-15"
+          id="led22-15"
         />
         <div
           class="led23-15"
+          id="led23-15"
         />
         <div
           class="led24-15"
+          id="led24-15"
         />
         <div
           class="led25-15"
+          id="led25-15"
         />
         <div
           class="led26-15"
+          id="led26-15"
         />
         <div
           class="led27-15"
+          id="led27-15"
         />
         <div
           class="led28-15"
+          id="led28-15"
         />
         <div
           class="led29-15"
+          id="led29-15"
         />
         <div
           class="led30-15"
+          id="led30-15"
         />
         <div
           class="led31-15"
+          id="led31-15"
         />
         <div
           class="led32-15"
+          id="led32-15"
         />
       </div>
       <div
@@ -1979,99 +2452,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-16"
+          id="led1-16"
         />
         <div
           class="led2-16"
+          id="led2-16"
         />
         <div
           class="led3-16"
+          id="led3-16"
         />
         <div
           class="led4-16"
+          id="led4-16"
         />
         <div
           class="led5-16"
+          id="led5-16"
         />
         <div
           class="led6-16"
+          id="led6-16"
         />
         <div
           class="led7-16"
+          id="led7-16"
         />
         <div
           class="led8-16"
+          id="led8-16"
         />
         <div
           class="led9-16"
+          id="led9-16"
         />
         <div
           class="led10-16"
+          id="led10-16"
         />
         <div
           class="led11-16"
+          id="led11-16"
         />
         <div
           class="led12-16"
+          id="led12-16"
         />
         <div
           class="led13-16"
+          id="led13-16"
         />
         <div
           class="led14-16"
+          id="led14-16"
         />
         <div
           class="led15-16"
+          id="led15-16"
         />
         <div
           class="led16-16"
+          id="led16-16"
         />
         <div
           class="led17-16"
+          id="led17-16"
         />
         <div
           class="led18-16"
+          id="led18-16"
         />
         <div
           class="led19-16"
+          id="led19-16"
         />
         <div
           class="led20-16"
+          id="led20-16"
         />
         <div
           class="led21-16"
+          id="led21-16"
         />
         <div
           class="led22-16"
+          id="led22-16"
         />
         <div
           class="led23-16"
+          id="led23-16"
         />
         <div
           class="led24-16"
+          id="led24-16"
         />
         <div
           class="led25-16"
+          id="led25-16"
         />
         <div
           class="led26-16"
+          id="led26-16"
         />
         <div
           class="led27-16"
+          id="led27-16"
         />
         <div
           class="led28-16"
+          id="led28-16"
         />
         <div
           class="led29-16"
+          id="led29-16"
         />
         <div
           class="led30-16"
+          id="led30-16"
         />
         <div
           class="led31-16"
+          id="led31-16"
         />
         <div
           class="led32-16"
+          id="led32-16"
         />
       </div>
       <div
@@ -2079,99 +2584,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-17"
+          id="led1-17"
         />
         <div
           class="led2-17"
+          id="led2-17"
         />
         <div
           class="led3-17"
+          id="led3-17"
         />
         <div
           class="led4-17"
+          id="led4-17"
         />
         <div
           class="led5-17"
+          id="led5-17"
         />
         <div
           class="led6-17"
+          id="led6-17"
         />
         <div
           class="led7-17"
+          id="led7-17"
         />
         <div
           class="led8-17"
+          id="led8-17"
         />
         <div
           class="led9-17"
+          id="led9-17"
         />
         <div
           class="led10-17"
+          id="led10-17"
         />
         <div
           class="led11-17"
+          id="led11-17"
         />
         <div
           class="led12-17"
+          id="led12-17"
         />
         <div
           class="led13-17"
+          id="led13-17"
         />
         <div
           class="led14-17"
+          id="led14-17"
         />
         <div
           class="led15-17"
+          id="led15-17"
         />
         <div
           class="led16-17"
+          id="led16-17"
         />
         <div
           class="led17-17"
+          id="led17-17"
         />
         <div
           class="led18-17"
+          id="led18-17"
         />
         <div
           class="led19-17"
+          id="led19-17"
         />
         <div
           class="led20-17"
+          id="led20-17"
         />
         <div
           class="led21-17"
+          id="led21-17"
         />
         <div
           class="led22-17"
+          id="led22-17"
         />
         <div
           class="led23-17"
+          id="led23-17"
         />
         <div
           class="led24-17"
+          id="led24-17"
         />
         <div
           class="led25-17"
+          id="led25-17"
         />
         <div
           class="led26-17"
+          id="led26-17"
         />
         <div
           class="led27-17"
+          id="led27-17"
         />
         <div
           class="led28-17"
+          id="led28-17"
         />
         <div
           class="led29-17"
+          id="led29-17"
         />
         <div
           class="led30-17"
+          id="led30-17"
         />
         <div
           class="led31-17"
+          id="led31-17"
         />
         <div
           class="led32-17"
+          id="led32-17"
         />
       </div>
       <div
@@ -2179,99 +2716,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-18"
+          id="led1-18"
         />
         <div
           class="led2-18"
+          id="led2-18"
         />
         <div
           class="led3-18"
+          id="led3-18"
         />
         <div
           class="led4-18"
+          id="led4-18"
         />
         <div
           class="led5-18"
+          id="led5-18"
         />
         <div
           class="led6-18"
+          id="led6-18"
         />
         <div
           class="led7-18"
+          id="led7-18"
         />
         <div
           class="led8-18"
+          id="led8-18"
         />
         <div
           class="led9-18"
+          id="led9-18"
         />
         <div
           class="led10-18"
+          id="led10-18"
         />
         <div
           class="led11-18"
+          id="led11-18"
         />
         <div
           class="led12-18"
+          id="led12-18"
         />
         <div
           class="led13-18"
+          id="led13-18"
         />
         <div
           class="led14-18"
+          id="led14-18"
         />
         <div
           class="led15-18"
+          id="led15-18"
         />
         <div
           class="led16-18"
+          id="led16-18"
         />
         <div
           class="led17-18"
+          id="led17-18"
         />
         <div
           class="led18-18"
+          id="led18-18"
         />
         <div
           class="led19-18"
+          id="led19-18"
         />
         <div
           class="led20-18"
+          id="led20-18"
         />
         <div
           class="led21-18"
+          id="led21-18"
         />
         <div
           class="led22-18"
+          id="led22-18"
         />
         <div
           class="led23-18"
+          id="led23-18"
         />
         <div
           class="led24-18"
+          id="led24-18"
         />
         <div
           class="led25-18"
+          id="led25-18"
         />
         <div
           class="led26-18"
+          id="led26-18"
         />
         <div
           class="led27-18"
+          id="led27-18"
         />
         <div
           class="led28-18"
+          id="led28-18"
         />
         <div
           class="led29-18"
+          id="led29-18"
         />
         <div
           class="led30-18"
+          id="led30-18"
         />
         <div
           class="led31-18"
+          id="led31-18"
         />
         <div
           class="led32-18"
+          id="led32-18"
         />
       </div>
       <div
@@ -2279,99 +2848,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-19"
+          id="led1-19"
         />
         <div
           class="led2-19"
+          id="led2-19"
         />
         <div
           class="led3-19"
+          id="led3-19"
         />
         <div
           class="led4-19"
+          id="led4-19"
         />
         <div
           class="led5-19"
+          id="led5-19"
         />
         <div
           class="led6-19"
+          id="led6-19"
         />
         <div
           class="led7-19"
+          id="led7-19"
         />
         <div
           class="led8-19"
+          id="led8-19"
         />
         <div
           class="led9-19"
+          id="led9-19"
         />
         <div
           class="led10-19"
+          id="led10-19"
         />
         <div
           class="led11-19"
+          id="led11-19"
         />
         <div
           class="led12-19"
+          id="led12-19"
         />
         <div
           class="led13-19"
+          id="led13-19"
         />
         <div
           class="led14-19"
+          id="led14-19"
         />
         <div
           class="led15-19"
+          id="led15-19"
         />
         <div
           class="led16-19"
+          id="led16-19"
         />
         <div
           class="led17-19"
+          id="led17-19"
         />
         <div
           class="led18-19"
+          id="led18-19"
         />
         <div
           class="led19-19"
+          id="led19-19"
         />
         <div
           class="led20-19"
+          id="led20-19"
         />
         <div
           class="led21-19"
+          id="led21-19"
         />
         <div
           class="led22-19"
+          id="led22-19"
         />
         <div
           class="led23-19"
+          id="led23-19"
         />
         <div
           class="led24-19"
+          id="led24-19"
         />
         <div
           class="led25-19"
+          id="led25-19"
         />
         <div
           class="led26-19"
+          id="led26-19"
         />
         <div
           class="led27-19"
+          id="led27-19"
         />
         <div
           class="led28-19"
+          id="led28-19"
         />
         <div
           class="led29-19"
+          id="led29-19"
         />
         <div
           class="led30-19"
+          id="led30-19"
         />
         <div
           class="led31-19"
+          id="led31-19"
         />
         <div
           class="led32-19"
+          id="led32-19"
         />
       </div>
       <div
@@ -2379,99 +2980,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-20"
+          id="led1-20"
         />
         <div
           class="led2-20"
+          id="led2-20"
         />
         <div
           class="led3-20"
+          id="led3-20"
         />
         <div
           class="led4-20"
+          id="led4-20"
         />
         <div
           class="led5-20"
+          id="led5-20"
         />
         <div
           class="led6-20"
+          id="led6-20"
         />
         <div
           class="led7-20"
+          id="led7-20"
         />
         <div
           class="led8-20"
+          id="led8-20"
         />
         <div
           class="led9-20"
+          id="led9-20"
         />
         <div
           class="led10-20"
+          id="led10-20"
         />
         <div
           class="led11-20"
+          id="led11-20"
         />
         <div
           class="led12-20"
+          id="led12-20"
         />
         <div
           class="led13-20"
+          id="led13-20"
         />
         <div
           class="led14-20"
+          id="led14-20"
         />
         <div
           class="led15-20"
+          id="led15-20"
         />
         <div
           class="led16-20"
+          id="led16-20"
         />
         <div
           class="led17-20"
+          id="led17-20"
         />
         <div
           class="led18-20"
+          id="led18-20"
         />
         <div
           class="led19-20"
+          id="led19-20"
         />
         <div
           class="led20-20"
+          id="led20-20"
         />
         <div
           class="led21-20"
+          id="led21-20"
         />
         <div
           class="led22-20"
+          id="led22-20"
         />
         <div
           class="led23-20"
+          id="led23-20"
         />
         <div
           class="led24-20"
+          id="led24-20"
         />
         <div
           class="led25-20"
+          id="led25-20"
         />
         <div
           class="led26-20"
+          id="led26-20"
         />
         <div
           class="led27-20"
+          id="led27-20"
         />
         <div
           class="led28-20"
+          id="led28-20"
         />
         <div
           class="led29-20"
+          id="led29-20"
         />
         <div
           class="led30-20"
+          id="led30-20"
         />
         <div
           class="led31-20"
+          id="led31-20"
         />
         <div
           class="led32-20"
+          id="led32-20"
         />
       </div>
       <div
@@ -2479,99 +3112,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-21"
+          id="led1-21"
         />
         <div
           class="led2-21"
+          id="led2-21"
         />
         <div
           class="led3-21"
+          id="led3-21"
         />
         <div
           class="led4-21"
+          id="led4-21"
         />
         <div
           class="led5-21"
+          id="led5-21"
         />
         <div
           class="led6-21"
+          id="led6-21"
         />
         <div
           class="led7-21"
+          id="led7-21"
         />
         <div
           class="led8-21"
+          id="led8-21"
         />
         <div
           class="led9-21"
+          id="led9-21"
         />
         <div
           class="led10-21"
+          id="led10-21"
         />
         <div
           class="led11-21"
+          id="led11-21"
         />
         <div
           class="led12-21"
+          id="led12-21"
         />
         <div
           class="led13-21"
+          id="led13-21"
         />
         <div
           class="led14-21"
+          id="led14-21"
         />
         <div
           class="led15-21"
+          id="led15-21"
         />
         <div
           class="led16-21"
+          id="led16-21"
         />
         <div
           class="led17-21"
+          id="led17-21"
         />
         <div
           class="led18-21"
+          id="led18-21"
         />
         <div
           class="led19-21"
+          id="led19-21"
         />
         <div
           class="led20-21"
+          id="led20-21"
         />
         <div
           class="led21-21"
+          id="led21-21"
         />
         <div
           class="led22-21"
+          id="led22-21"
         />
         <div
           class="led23-21"
+          id="led23-21"
         />
         <div
           class="led24-21"
+          id="led24-21"
         />
         <div
           class="led25-21"
+          id="led25-21"
         />
         <div
           class="led26-21"
+          id="led26-21"
         />
         <div
           class="led27-21"
+          id="led27-21"
         />
         <div
           class="led28-21"
+          id="led28-21"
         />
         <div
           class="led29-21"
+          id="led29-21"
         />
         <div
           class="led30-21"
+          id="led30-21"
         />
         <div
           class="led31-21"
+          id="led31-21"
         />
         <div
           class="led32-21"
+          id="led32-21"
         />
       </div>
       <div
@@ -2579,99 +3244,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-22"
+          id="led1-22"
         />
         <div
           class="led2-22"
+          id="led2-22"
         />
         <div
           class="led3-22"
+          id="led3-22"
         />
         <div
           class="led4-22"
+          id="led4-22"
         />
         <div
           class="led5-22"
+          id="led5-22"
         />
         <div
           class="led6-22"
+          id="led6-22"
         />
         <div
           class="led7-22"
+          id="led7-22"
         />
         <div
           class="led8-22"
+          id="led8-22"
         />
         <div
           class="led9-22"
+          id="led9-22"
         />
         <div
           class="led10-22"
+          id="led10-22"
         />
         <div
           class="led11-22"
+          id="led11-22"
         />
         <div
           class="led12-22"
+          id="led12-22"
         />
         <div
           class="led13-22"
+          id="led13-22"
         />
         <div
           class="led14-22"
+          id="led14-22"
         />
         <div
           class="led15-22"
+          id="led15-22"
         />
         <div
           class="led16-22"
+          id="led16-22"
         />
         <div
           class="led17-22"
+          id="led17-22"
         />
         <div
           class="led18-22"
+          id="led18-22"
         />
         <div
           class="led19-22"
+          id="led19-22"
         />
         <div
           class="led20-22"
+          id="led20-22"
         />
         <div
           class="led21-22"
+          id="led21-22"
         />
         <div
           class="led22-22"
+          id="led22-22"
         />
         <div
           class="led23-22"
+          id="led23-22"
         />
         <div
           class="led24-22"
+          id="led24-22"
         />
         <div
           class="led25-22"
+          id="led25-22"
         />
         <div
           class="led26-22"
+          id="led26-22"
         />
         <div
           class="led27-22"
+          id="led27-22"
         />
         <div
           class="led28-22"
+          id="led28-22"
         />
         <div
           class="led29-22"
+          id="led29-22"
         />
         <div
           class="led30-22"
+          id="led30-22"
         />
         <div
           class="led31-22"
+          id="led31-22"
         />
         <div
           class="led32-22"
+          id="led32-22"
         />
       </div>
       <div
@@ -2679,99 +3376,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-23"
+          id="led1-23"
         />
         <div
           class="led2-23"
+          id="led2-23"
         />
         <div
           class="led3-23"
+          id="led3-23"
         />
         <div
           class="led4-23"
+          id="led4-23"
         />
         <div
           class="led5-23"
+          id="led5-23"
         />
         <div
           class="led6-23"
+          id="led6-23"
         />
         <div
           class="led7-23"
+          id="led7-23"
         />
         <div
           class="led8-23"
+          id="led8-23"
         />
         <div
           class="led9-23"
+          id="led9-23"
         />
         <div
           class="led10-23"
+          id="led10-23"
         />
         <div
           class="led11-23"
+          id="led11-23"
         />
         <div
           class="led12-23"
+          id="led12-23"
         />
         <div
           class="led13-23"
+          id="led13-23"
         />
         <div
           class="led14-23"
+          id="led14-23"
         />
         <div
           class="led15-23"
+          id="led15-23"
         />
         <div
           class="led16-23"
+          id="led16-23"
         />
         <div
           class="led17-23"
+          id="led17-23"
         />
         <div
           class="led18-23"
+          id="led18-23"
         />
         <div
           class="led19-23"
+          id="led19-23"
         />
         <div
           class="led20-23"
+          id="led20-23"
         />
         <div
           class="led21-23"
+          id="led21-23"
         />
         <div
           class="led22-23"
+          id="led22-23"
         />
         <div
           class="led23-23"
+          id="led23-23"
         />
         <div
           class="led24-23"
+          id="led24-23"
         />
         <div
           class="led25-23"
+          id="led25-23"
         />
         <div
           class="led26-23"
+          id="led26-23"
         />
         <div
           class="led27-23"
+          id="led27-23"
         />
         <div
           class="led28-23"
+          id="led28-23"
         />
         <div
           class="led29-23"
+          id="led29-23"
         />
         <div
           class="led30-23"
+          id="led30-23"
         />
         <div
           class="led31-23"
+          id="led31-23"
         />
         <div
           class="led32-23"
+          id="led32-23"
         />
       </div>
       <div
@@ -2779,99 +3508,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-24"
+          id="led1-24"
         />
         <div
           class="led2-24"
+          id="led2-24"
         />
         <div
           class="led3-24"
+          id="led3-24"
         />
         <div
           class="led4-24"
+          id="led4-24"
         />
         <div
           class="led5-24"
+          id="led5-24"
         />
         <div
           class="led6-24"
+          id="led6-24"
         />
         <div
           class="led7-24"
+          id="led7-24"
         />
         <div
           class="led8-24"
+          id="led8-24"
         />
         <div
           class="led9-24"
+          id="led9-24"
         />
         <div
           class="led10-24"
+          id="led10-24"
         />
         <div
           class="led11-24"
+          id="led11-24"
         />
         <div
           class="led12-24"
+          id="led12-24"
         />
         <div
           class="led13-24"
+          id="led13-24"
         />
         <div
           class="led14-24"
+          id="led14-24"
         />
         <div
           class="led15-24"
+          id="led15-24"
         />
         <div
           class="led16-24"
+          id="led16-24"
         />
         <div
           class="led17-24"
+          id="led17-24"
         />
         <div
           class="led18-24"
+          id="led18-24"
         />
         <div
           class="led19-24"
+          id="led19-24"
         />
         <div
           class="led20-24"
+          id="led20-24"
         />
         <div
           class="led21-24"
+          id="led21-24"
         />
         <div
           class="led22-24"
+          id="led22-24"
         />
         <div
           class="led23-24"
+          id="led23-24"
         />
         <div
           class="led24-24"
+          id="led24-24"
         />
         <div
           class="led25-24"
+          id="led25-24"
         />
         <div
           class="led26-24"
+          id="led26-24"
         />
         <div
           class="led27-24"
+          id="led27-24"
         />
         <div
           class="led28-24"
+          id="led28-24"
         />
         <div
           class="led29-24"
+          id="led29-24"
         />
         <div
           class="led30-24"
+          id="led30-24"
         />
         <div
           class="led31-24"
+          id="led31-24"
         />
         <div
           class="led32-24"
+          id="led32-24"
         />
       </div>
       <div
@@ -2879,99 +3640,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-25"
+          id="led1-25"
         />
         <div
           class="led2-25"
+          id="led2-25"
         />
         <div
           class="led3-25"
+          id="led3-25"
         />
         <div
           class="led4-25"
+          id="led4-25"
         />
         <div
           class="led5-25"
+          id="led5-25"
         />
         <div
           class="led6-25"
+          id="led6-25"
         />
         <div
           class="led7-25"
+          id="led7-25"
         />
         <div
           class="led8-25"
+          id="led8-25"
         />
         <div
           class="led9-25"
+          id="led9-25"
         />
         <div
           class="led10-25"
+          id="led10-25"
         />
         <div
           class="led11-25"
+          id="led11-25"
         />
         <div
           class="led12-25"
+          id="led12-25"
         />
         <div
           class="led13-25"
+          id="led13-25"
         />
         <div
           class="led14-25"
+          id="led14-25"
         />
         <div
           class="led15-25"
+          id="led15-25"
         />
         <div
           class="led16-25"
+          id="led16-25"
         />
         <div
           class="led17-25"
+          id="led17-25"
         />
         <div
           class="led18-25"
+          id="led18-25"
         />
         <div
           class="led19-25"
+          id="led19-25"
         />
         <div
           class="led20-25"
+          id="led20-25"
         />
         <div
           class="led21-25"
+          id="led21-25"
         />
         <div
           class="led22-25"
+          id="led22-25"
         />
         <div
           class="led23-25"
+          id="led23-25"
         />
         <div
           class="led24-25"
+          id="led24-25"
         />
         <div
           class="led25-25"
+          id="led25-25"
         />
         <div
           class="led26-25"
+          id="led26-25"
         />
         <div
           class="led27-25"
+          id="led27-25"
         />
         <div
           class="led28-25"
+          id="led28-25"
         />
         <div
           class="led29-25"
+          id="led29-25"
         />
         <div
           class="led30-25"
+          id="led30-25"
         />
         <div
           class="led31-25"
+          id="led31-25"
         />
         <div
           class="led32-25"
+          id="led32-25"
         />
       </div>
       <div
@@ -2979,99 +3772,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-26"
+          id="led1-26"
         />
         <div
           class="led2-26"
+          id="led2-26"
         />
         <div
           class="led3-26"
+          id="led3-26"
         />
         <div
           class="led4-26"
+          id="led4-26"
         />
         <div
           class="led5-26"
+          id="led5-26"
         />
         <div
           class="led6-26"
+          id="led6-26"
         />
         <div
           class="led7-26"
+          id="led7-26"
         />
         <div
           class="led8-26"
+          id="led8-26"
         />
         <div
           class="led9-26"
+          id="led9-26"
         />
         <div
           class="led10-26"
+          id="led10-26"
         />
         <div
           class="led11-26"
+          id="led11-26"
         />
         <div
           class="led12-26"
+          id="led12-26"
         />
         <div
           class="led13-26"
+          id="led13-26"
         />
         <div
           class="led14-26"
+          id="led14-26"
         />
         <div
           class="led15-26"
+          id="led15-26"
         />
         <div
           class="led16-26"
+          id="led16-26"
         />
         <div
           class="led17-26"
+          id="led17-26"
         />
         <div
           class="led18-26"
+          id="led18-26"
         />
         <div
           class="led19-26"
+          id="led19-26"
         />
         <div
           class="led20-26"
+          id="led20-26"
         />
         <div
           class="led21-26"
+          id="led21-26"
         />
         <div
           class="led22-26"
+          id="led22-26"
         />
         <div
           class="led23-26"
+          id="led23-26"
         />
         <div
           class="led24-26"
+          id="led24-26"
         />
         <div
           class="led25-26"
+          id="led25-26"
         />
         <div
           class="led26-26"
+          id="led26-26"
         />
         <div
           class="led27-26"
+          id="led27-26"
         />
         <div
           class="led28-26"
+          id="led28-26"
         />
         <div
           class="led29-26"
+          id="led29-26"
         />
         <div
           class="led30-26"
+          id="led30-26"
         />
         <div
           class="led31-26"
+          id="led31-26"
         />
         <div
           class="led32-26"
+          id="led32-26"
         />
       </div>
       <div
@@ -3079,99 +3904,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-27"
+          id="led1-27"
         />
         <div
           class="led2-27"
+          id="led2-27"
         />
         <div
           class="led3-27"
+          id="led3-27"
         />
         <div
           class="led4-27"
+          id="led4-27"
         />
         <div
           class="led5-27"
+          id="led5-27"
         />
         <div
           class="led6-27"
+          id="led6-27"
         />
         <div
           class="led7-27"
+          id="led7-27"
         />
         <div
           class="led8-27"
+          id="led8-27"
         />
         <div
           class="led9-27"
+          id="led9-27"
         />
         <div
           class="led10-27"
+          id="led10-27"
         />
         <div
           class="led11-27"
+          id="led11-27"
         />
         <div
           class="led12-27"
+          id="led12-27"
         />
         <div
           class="led13-27"
+          id="led13-27"
         />
         <div
           class="led14-27"
+          id="led14-27"
         />
         <div
           class="led15-27"
+          id="led15-27"
         />
         <div
           class="led16-27"
+          id="led16-27"
         />
         <div
           class="led17-27"
+          id="led17-27"
         />
         <div
           class="led18-27"
+          id="led18-27"
         />
         <div
           class="led19-27"
+          id="led19-27"
         />
         <div
           class="led20-27"
+          id="led20-27"
         />
         <div
           class="led21-27"
+          id="led21-27"
         />
         <div
           class="led22-27"
+          id="led22-27"
         />
         <div
           class="led23-27"
+          id="led23-27"
         />
         <div
           class="led24-27"
+          id="led24-27"
         />
         <div
           class="led25-27"
+          id="led25-27"
         />
         <div
           class="led26-27"
+          id="led26-27"
         />
         <div
           class="led27-27"
+          id="led27-27"
         />
         <div
           class="led28-27"
+          id="led28-27"
         />
         <div
           class="led29-27"
+          id="led29-27"
         />
         <div
           class="led30-27"
+          id="led30-27"
         />
         <div
           class="led31-27"
+          id="led31-27"
         />
         <div
           class="led32-27"
+          id="led32-27"
         />
       </div>
       <div
@@ -3179,99 +4036,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-28"
+          id="led1-28"
         />
         <div
           class="led2-28"
+          id="led2-28"
         />
         <div
           class="led3-28"
+          id="led3-28"
         />
         <div
           class="led4-28"
+          id="led4-28"
         />
         <div
           class="led5-28"
+          id="led5-28"
         />
         <div
           class="led6-28"
+          id="led6-28"
         />
         <div
           class="led7-28"
+          id="led7-28"
         />
         <div
           class="led8-28"
+          id="led8-28"
         />
         <div
           class="led9-28"
+          id="led9-28"
         />
         <div
           class="led10-28"
+          id="led10-28"
         />
         <div
           class="led11-28"
+          id="led11-28"
         />
         <div
           class="led12-28"
+          id="led12-28"
         />
         <div
           class="led13-28"
+          id="led13-28"
         />
         <div
           class="led14-28"
+          id="led14-28"
         />
         <div
           class="led15-28"
+          id="led15-28"
         />
         <div
           class="led16-28"
+          id="led16-28"
         />
         <div
           class="led17-28"
+          id="led17-28"
         />
         <div
           class="led18-28"
+          id="led18-28"
         />
         <div
           class="led19-28"
+          id="led19-28"
         />
         <div
           class="led20-28"
+          id="led20-28"
         />
         <div
           class="led21-28"
+          id="led21-28"
         />
         <div
           class="led22-28"
+          id="led22-28"
         />
         <div
           class="led23-28"
+          id="led23-28"
         />
         <div
           class="led24-28"
+          id="led24-28"
         />
         <div
           class="led25-28"
+          id="led25-28"
         />
         <div
           class="led26-28"
+          id="led26-28"
         />
         <div
           class="led27-28"
+          id="led27-28"
         />
         <div
           class="led28-28"
+          id="led28-28"
         />
         <div
           class="led29-28"
+          id="led29-28"
         />
         <div
           class="led30-28"
+          id="led30-28"
         />
         <div
           class="led31-28"
+          id="led31-28"
         />
         <div
           class="led32-28"
+          id="led32-28"
         />
       </div>
       <div
@@ -3279,99 +4168,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-29"
+          id="led1-29"
         />
         <div
           class="led2-29"
+          id="led2-29"
         />
         <div
           class="led3-29"
+          id="led3-29"
         />
         <div
           class="led4-29"
+          id="led4-29"
         />
         <div
           class="led5-29"
+          id="led5-29"
         />
         <div
           class="led6-29"
+          id="led6-29"
         />
         <div
           class="led7-29"
+          id="led7-29"
         />
         <div
           class="led8-29"
+          id="led8-29"
         />
         <div
           class="led9-29"
+          id="led9-29"
         />
         <div
           class="led10-29"
+          id="led10-29"
         />
         <div
           class="led11-29"
+          id="led11-29"
         />
         <div
           class="led12-29"
+          id="led12-29"
         />
         <div
           class="led13-29"
+          id="led13-29"
         />
         <div
           class="led14-29"
+          id="led14-29"
         />
         <div
           class="led15-29"
+          id="led15-29"
         />
         <div
           class="led16-29"
+          id="led16-29"
         />
         <div
           class="led17-29"
+          id="led17-29"
         />
         <div
           class="led18-29"
+          id="led18-29"
         />
         <div
           class="led19-29"
+          id="led19-29"
         />
         <div
           class="led20-29"
+          id="led20-29"
         />
         <div
           class="led21-29"
+          id="led21-29"
         />
         <div
           class="led22-29"
+          id="led22-29"
         />
         <div
           class="led23-29"
+          id="led23-29"
         />
         <div
           class="led24-29"
+          id="led24-29"
         />
         <div
           class="led25-29"
+          id="led25-29"
         />
         <div
           class="led26-29"
+          id="led26-29"
         />
         <div
           class="led27-29"
+          id="led27-29"
         />
         <div
           class="led28-29"
+          id="led28-29"
         />
         <div
           class="led29-29"
+          id="led29-29"
         />
         <div
           class="led30-29"
+          id="led30-29"
         />
         <div
           class="led31-29"
+          id="led31-29"
         />
         <div
           class="led32-29"
+          id="led32-29"
         />
       </div>
       <div
@@ -3379,99 +4300,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-30"
+          id="led1-30"
         />
         <div
           class="led2-30"
+          id="led2-30"
         />
         <div
           class="led3-30"
+          id="led3-30"
         />
         <div
           class="led4-30"
+          id="led4-30"
         />
         <div
           class="led5-30"
+          id="led5-30"
         />
         <div
           class="led6-30"
+          id="led6-30"
         />
         <div
           class="led7-30"
+          id="led7-30"
         />
         <div
           class="led8-30"
+          id="led8-30"
         />
         <div
           class="led9-30"
+          id="led9-30"
         />
         <div
           class="led10-30"
+          id="led10-30"
         />
         <div
           class="led11-30"
+          id="led11-30"
         />
         <div
           class="led12-30"
+          id="led12-30"
         />
         <div
           class="led13-30"
+          id="led13-30"
         />
         <div
           class="led14-30"
+          id="led14-30"
         />
         <div
           class="led15-30"
+          id="led15-30"
         />
         <div
           class="led16-30"
+          id="led16-30"
         />
         <div
           class="led17-30"
+          id="led17-30"
         />
         <div
           class="led18-30"
+          id="led18-30"
         />
         <div
           class="led19-30"
+          id="led19-30"
         />
         <div
           class="led20-30"
+          id="led20-30"
         />
         <div
           class="led21-30"
+          id="led21-30"
         />
         <div
           class="led22-30"
+          id="led22-30"
         />
         <div
           class="led23-30"
+          id="led23-30"
         />
         <div
           class="led24-30"
+          id="led24-30"
         />
         <div
           class="led25-30"
+          id="led25-30"
         />
         <div
           class="led26-30"
+          id="led26-30"
         />
         <div
           class="led27-30"
+          id="led27-30"
         />
         <div
           class="led28-30"
+          id="led28-30"
         />
         <div
           class="led29-30"
+          id="led29-30"
         />
         <div
           class="led30-30"
+          id="led30-30"
         />
         <div
           class="led31-30"
+          id="led31-30"
         />
         <div
           class="led32-30"
+          id="led32-30"
         />
       </div>
       <div
@@ -3479,99 +4432,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-31"
+          id="led1-31"
         />
         <div
           class="led2-31"
+          id="led2-31"
         />
         <div
           class="led3-31"
+          id="led3-31"
         />
         <div
           class="led4-31"
+          id="led4-31"
         />
         <div
           class="led5-31"
+          id="led5-31"
         />
         <div
           class="led6-31"
+          id="led6-31"
         />
         <div
           class="led7-31"
+          id="led7-31"
         />
         <div
           class="led8-31"
+          id="led8-31"
         />
         <div
           class="led9-31"
+          id="led9-31"
         />
         <div
           class="led10-31"
+          id="led10-31"
         />
         <div
           class="led11-31"
+          id="led11-31"
         />
         <div
           class="led12-31"
+          id="led12-31"
         />
         <div
           class="led13-31"
+          id="led13-31"
         />
         <div
           class="led14-31"
+          id="led14-31"
         />
         <div
           class="led15-31"
+          id="led15-31"
         />
         <div
           class="led16-31"
+          id="led16-31"
         />
         <div
           class="led17-31"
+          id="led17-31"
         />
         <div
           class="led18-31"
+          id="led18-31"
         />
         <div
           class="led19-31"
+          id="led19-31"
         />
         <div
           class="led20-31"
+          id="led20-31"
         />
         <div
           class="led21-31"
+          id="led21-31"
         />
         <div
           class="led22-31"
+          id="led22-31"
         />
         <div
           class="led23-31"
+          id="led23-31"
         />
         <div
           class="led24-31"
+          id="led24-31"
         />
         <div
           class="led25-31"
+          id="led25-31"
         />
         <div
           class="led26-31"
+          id="led26-31"
         />
         <div
           class="led27-31"
+          id="led27-31"
         />
         <div
           class="led28-31"
+          id="led28-31"
         />
         <div
           class="led29-31"
+          id="led29-31"
         />
         <div
           class="led30-31"
+          id="led30-31"
         />
         <div
           class="led31-31"
+          id="led31-31"
         />
         <div
           class="led32-31"
+          id="led32-31"
         />
       </div>
       <div
@@ -3579,99 +4564,131 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       >
         <div
           class="led1-32"
+          id="led1-32"
         />
         <div
           class="led2-32"
+          id="led2-32"
         />
         <div
           class="led3-32"
+          id="led3-32"
         />
         <div
           class="led4-32"
+          id="led4-32"
         />
         <div
           class="led5-32"
+          id="led5-32"
         />
         <div
           class="led6-32"
+          id="led6-32"
         />
         <div
           class="led7-32"
+          id="led7-32"
         />
         <div
           class="led8-32"
+          id="led8-32"
         />
         <div
           class="led9-32"
+          id="led9-32"
         />
         <div
           class="led10-32"
+          id="led10-32"
         />
         <div
           class="led11-32"
+          id="led11-32"
         />
         <div
           class="led12-32"
+          id="led12-32"
         />
         <div
           class="led13-32"
+          id="led13-32"
         />
         <div
           class="led14-32"
+          id="led14-32"
         />
         <div
           class="led15-32"
+          id="led15-32"
         />
         <div
           class="led16-32"
+          id="led16-32"
         />
         <div
           class="led17-32"
+          id="led17-32"
         />
         <div
           class="led18-32"
+          id="led18-32"
         />
         <div
           class="led19-32"
+          id="led19-32"
         />
         <div
           class="led20-32"
+          id="led20-32"
         />
         <div
           class="led21-32"
+          id="led21-32"
         />
         <div
           class="led22-32"
+          id="led22-32"
         />
         <div
           class="led23-32"
+          id="led23-32"
         />
         <div
           class="led24-32"
+          id="led24-32"
         />
         <div
           class="led25-32"
+          id="led25-32"
         />
         <div
           class="led26-32"
+          id="led26-32"
         />
         <div
           class="led27-32"
+          id="led27-32"
         />
         <div
           class="led28-32"
+          id="led28-32"
         />
         <div
           class="led29-32"
+          id="led29-32"
         />
         <div
           class="led30-32"
+          id="led30-32"
         />
         <div
           class="led31-32"
+          id="led31-32"
         />
         <div
           class="led32-32"
+          id="led32-32"
         />
       </div>
     </section>

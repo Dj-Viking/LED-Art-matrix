@@ -45,7 +45,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     // get the classname string split from the classname of one of the led's being displayed
     const presetString = getPresetFromDom(event.target);
 
-    console.log("preset string", presetString);
     await API.updateDefaultPreset({ name: presetString, token: Auth.getToken() as string });
   }
   return (
@@ -80,6 +79,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
       >
         <animated.button
           style={rainbowButtonSpring}
+          role="button"
+          data-testid="rainbowTest"
           className="preset-button rainbow-anim"
           onClick={() => {
             dispatch(presetSwitch("rainbowTestAllAnim"));
@@ -89,13 +90,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("rainbowTestAllAnim");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            rainbowTest
-          </span>
+          rainbowTest
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="v2"
           style={V2ButtonSpring}
           className="preset-button"
           onClick={() => {
@@ -103,14 +103,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("V2");
           }}
         >
-          <span
-            className="preset-button-text"
-            style={{ width: "100%" }}
-          >
-            V2
-          </span>
+          V2
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="waves"
           style={wavesButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -125,7 +123,10 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             waves
           </span>
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="spiral"
           style={spiralButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -134,13 +135,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("spiral");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            spiral
-          </span>
+          spiral
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="fourSpirals"
           style={fourSpiralsButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -149,13 +149,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("fourSpirals");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            fourSpirals
-          </span>
+          fourSpirals
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="dm5"
           style={dm5ButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -164,15 +163,13 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("dm5");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
             DM5
-          </span>
         </animated.button>
 
         {/* save as new login preset */}
         <animated.button
+          role="button"
+          data-testid="saveDefault"
           style={saveButtonSpring}
           className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in

@@ -99,10 +99,11 @@ const BigLedBox: React.FC = (): JSX.Element => {
                 style={ledRowStyle()}
               >
                 {
-                  leds.map((led, index) => (
-                    <div 
-                      key={`led${led.ledNumber}-${index + 1}`} 
-                      className={`led${index + 1}-${row.rowNumber}${presetName}`}
+                  leds.map((led) => (
+                    <div
+                      id={`led${led.ledNumber}-${row.rowNumber}`}
+                      key={`led${led.ledNumber}-${Math.random() * 10}`} 
+                      className={`led${led.ledNumber}-${row.rowNumber}${presetName}`}
                     />
                   ))
                 }
