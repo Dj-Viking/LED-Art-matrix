@@ -102,11 +102,11 @@ describe("test clicking all the preset buttons and that they change the led styl
       </>
     );
 
-    const led = container.querySelector("#led1-1") as HTMLElement;
-    expect(led.classList.contains("led1-1")).toBe(true);
-    console.log("led classlist", led.classList);
+    const ledPre = container.querySelector("#led1-1") as HTMLElement;
+    expect(ledPre.classList.contains("led1-1")).toBe(true);
+    console.log("ledPre classlist", ledPre.classList);
 
-    led.classList.forEach((val: string, key: number, parent: DOMTokenList) => {
+    ledPre.classList.forEach((val: string, key: number, parent: DOMTokenList) => {
       console.log("val", val, "key", key, "parent", parent);
     });
 
@@ -128,16 +128,20 @@ describe("test clicking all the preset buttons and that they change the led styl
     expect(preset_buttons.dm5).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
 
-    await act(async () => {
-      preset_buttons.rainbowTest.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    act(() => {
+      preset_buttons.v2.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    console.log("led classlist", led.classList);
 
-    expect(led.classList.contains("led1-1rainbowTestAllAnim")).toBe(true);
+    const ledPost = container.querySelector("#led1-1") as HTMLElement;
+    expect(ledPost.classList.contains("led1-1V2")).toBe(true);
+    console.log("ledPost classlist", ledPost.classList);
 
-    const styleTag = document.querySelector("#led-style");
+    ledPost.classList.forEach((val: string, key: number, parent: DOMTokenList) => {
+      console.log("val", val, "key", key, "parent", parent);
+    });
+
+    const styleTag = container.querySelector("#led-style");
     expect(styleTag).toBe("kdjkfjkd");
-
 
   });
 

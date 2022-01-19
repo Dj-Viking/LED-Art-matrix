@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
+    "test": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll --coverage",
     "test:ci": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
     "clear:jest": "jest --clearCache",
     "eject": "react-scripts eject",
@@ -82,7 +82,6 @@
     "react-router-dom": "^5.2.0",
     "react-spring": "^8.0.27",
     "react-svg": "^11.2.4",
-    "react-test-renderer": "^17.0.2",
     "redux": "^4.0.5",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",

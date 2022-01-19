@@ -142,10 +142,10 @@ export class LedStyleEngine {
   }
 
   public appendStyle(tag: HTMLStyleElement): void {
-    document.head.appendChild(tag);
+    document.querySelector("#root")?.appendChild(tag);
   }
 
   public removeStyle(tag: HTMLStyleElement): void {
-    document.head.removeChild(tag);
+    document.querySelector("#root")?.removeChild(tag);
   }
 }
