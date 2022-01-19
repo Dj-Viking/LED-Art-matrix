@@ -400,6 +400,14 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         class="preset-button-container"
       >
         <button
+          class="preset-button"
+          data-testid="clear"
+          role="button"
+          style="opacity: 0;"
+        >
+          clear
+        </button>
+        <button
           class="preset-button rainbow-anim"
           data-testid="rainbowTest"
           role="button"
@@ -422,11 +430,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           role="button"
           style="opacity: 0;"
         >
-          <span
-            class="preset-button-text"
-          >
-            waves
-          </span>
+          waves
         </button>
         <button
           class="preset-button-disabled"

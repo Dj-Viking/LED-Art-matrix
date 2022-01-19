@@ -13,6 +13,7 @@
     "test": "sh test.sh",
     "test:server": "cd server; ENV_TXT=$(cat env.txt) npm test",
     "test:server:ci": "cd server; npm run server:ci",
+    "test:client:ci": "cd client; npm run test:ci",
     "test:client": "cd client; npm test",
     "start": "sh start.sh",
     "start:prod": "sh server.sh",
