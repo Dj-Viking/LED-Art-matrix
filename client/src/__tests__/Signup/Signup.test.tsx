@@ -305,6 +305,7 @@ describe("need to impl window.location.assign()", () => {
 
 
     expect(window.location.assign).toHaveBeenCalledTimes(1);
+    expect(window.location.assign).toHaveBeenLastCalledWith("/");
     
   });
 

@@ -92,6 +92,8 @@ describe("need to implement window methods here", () => {
     });
 
     expect(window.location.assign).toHaveBeenCalledTimes(1);
+    expect(window.location.assign).toHaveBeenLastCalledWith("/");
+
 
   });
 });

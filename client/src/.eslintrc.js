@@ -36,6 +36,7 @@ module.exports = {
     "react-native",
   ],
   rules: {
+    "prefer-const": "off",
     "testing-library/no-container": "off",
     "testing-library/no-node-access": "off",
     "@typescript-eslint/no-extra-semi": "off",

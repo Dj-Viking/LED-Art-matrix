@@ -18,7 +18,6 @@ export class LedStyleEngine {
   constructor(preset: string) {
     this.preset = preset;
   }
-
   /**
    * 
    * @returns a newly generated style tag to append the the <head> element
@@ -40,12 +39,10 @@ export class LedStyleEngine {
    * LedEngine.appendStyle(styleTag);
    * 
    */
-  public generateStyle(tag: HTMLStyleElement): HTMLStyleElement {
-    const _tag = tag;
-    _tag.textContent = this.createStyleSheet();
-    return _tag;
+  public createStyleSheet(): string {
+    return this.generateStyle();
   }
-  private createStyleSheet(): string {
+  private generateStyle(): string {
     let str = "";
     switch (this.preset) {
       case "rainbowTestAllAnim":
@@ -141,11 +138,4 @@ export class LedStyleEngine {
     return columnDelays;
   }
 
-  public appendStyle(tag: HTMLStyleElement): void {
-    document.querySelector("#root")?.appendChild(tag);
-  }
-
-  public removeStyle(tag: HTMLStyleElement): void {
-    document.querySelector("#root")?.removeChild(tag);
-  }
 }

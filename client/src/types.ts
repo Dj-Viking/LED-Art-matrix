@@ -166,8 +166,34 @@ export interface IArtScrollerAction {
   payload: IArtScrollerPayloads
 }
 
+export interface ILedSetStyleAction {
+  type: "SET_STYLE";
+  payload: string;
+}
+export interface ILedClearStyleAction {
+  type: "CLEAR_STYLE";
+  payload: "";
+}
+
+export interface ILedStyleTagState {
+  html: string
+}
+
+export type ILedStyleTagActionTypes = 
+| "SET_STYLE"
+| "CLEAR_STYLE"
+
+export type ILedStyleTagActionPayloads =
+| ILedSetStyleAction["payload"]
+| ILedClearStyleAction["payload"];
+
+export interface ILedStyleAction {
+  type: ILedStyleTagActionTypes
+  payload: ILedStyleTagActionPayloads
+}
 export interface MyRootState {
   ledState: ILedState;
+  ledStyleTagState: ILedStyleTagState;
   loginFormState: ILoginFormState;
   signupFormState: ISignupFormState;
   artScrollerState: IArtScrollerState;
