@@ -1,6 +1,13 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
 
+export const SAVE_DEFAULT_MOCK_SUCCESS = {
+  updated: "presetName goes here hahahah"
+};
+export const SAVE_DEFAULT_MOCK_ERROR = {
+  error: "ERROR"
+};
+
 export const CHANGE_PASS_MOCK_RES = {
   message: "success",
   done: true,
@@ -62,6 +69,8 @@ export const FORGOT_MOCK_RES = {
 export const FORGOT_MOCK_RES_ERROR = {
   status: 500,
 };
+
+export const SIGNUP_MOCK_ERROR = {};
 
 export const SIGNUP_MOCK_PAYLOAD_SAME_USER = {
   username: "test user",
