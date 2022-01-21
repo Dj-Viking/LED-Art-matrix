@@ -14,8 +14,8 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
-import { TestApiServiceClass } from "../../utils/TestApiServiceClass";
-const tapi = new TestApiServiceClass("alive");
+import { TestService } from "../../utils/TestServiceClass";
+const tapi = new TestService("alive");
 
 const store = createStore(
   allReducers,

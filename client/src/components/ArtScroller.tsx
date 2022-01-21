@@ -96,12 +96,16 @@ const ArtScroller: React.FC = (): JSX.Element => {
 
             <animated.button
               style={leftInitButtonSpring}
+              role="button"
+              data-testid="start-art"
               className="scroller-fetch-button"
               onClick={handleGetGifs}
             >
               Start Art Scroller!
             </animated.button>
             <animated.button
+              role="button"
+              data-testid="switch-scroller"
               style={scrollerOnOffButtonSpring}
               className={figureIsOnState ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
               onClick={handleFigureChange}
@@ -129,6 +133,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
               name="scroller-circle-width"
               className="slider-style"
               type="range"
+              data-testid="circle-width"
               min="0"
               max="100"
               value={scrollerCircleWidth}
@@ -146,6 +151,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             <input 
               name="vertical-positioning"
               className="slider-style"
+              data-testid="vert-pos"
               type="range"
               min="0"
               max="200"
@@ -166,6 +172,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
               className="slider-style"
               type="range"
               min="0"
+              data-testid="horiz-pos"
               max="100"
               value={horizontalPositionState}
               onChange={handleHorizontalPositionStateChange}
@@ -182,6 +189,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
               className="slider-style"
               name="invert"
               type="range"
+              data-testid="invert"
               min="0"
               max="100"
               value={invertState}
@@ -199,6 +207,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
               className="slider-style"
               name="animation-duration"
               type="range"
+              data-testid="anim-duration"
               min="1"
               max="100"
               value={animationDurationState}
@@ -217,6 +226,8 @@ const ArtScroller: React.FC = (): JSX.Element => {
               && gifs.map((gif, index) => (
                 <img 
                   key={gif._id}
+                  data-testid={`gif-${index}`}
+                  id={`gif-${index}`}
                   alt={`gif-${index}`}
                   src={gif.gifSrc as string}
                   style={{

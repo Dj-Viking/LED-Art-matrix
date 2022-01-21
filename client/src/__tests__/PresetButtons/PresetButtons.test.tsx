@@ -31,9 +31,6 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-
-
-
 describe("testing router because if i log in then i can route back to home and click the previously disabled buttons", () => {
 
   beforeEach(() => {
