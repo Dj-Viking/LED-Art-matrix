@@ -220,7 +220,7 @@ describe("test signup functionality with token", () => {
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    console.log("local storage", localStorage.getItem("id_token"));
+    // console.log("local storage", localStorage.getItem("id_token"));
 
     //not sure why logout button can't be found might have to fake local storage too.
     const logout = (await screen.findAllByText(/Logout/g)).find(el => {

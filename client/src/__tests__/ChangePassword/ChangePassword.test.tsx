@@ -4,6 +4,8 @@ import ChangePassword from "../../pages/ChangePassword";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import { render, cleanup, screen } from "@testing-library/react";
 import { CHANGE_PASS_INPUT_MATCH, CHANGE_PASS_MOCK_RES, } from "../../utils/mocks";
 import "@types/jest";
@@ -11,6 +13,7 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+import { HiddenLocationDisplay } from "../../App";
 
 
 const store = createStore(
@@ -26,25 +29,20 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
+const mockHistoryReplace = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({
+    replace: mockHistoryReplace,
+  }),
+}));
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-describe("need to implement window methods here", () => {
+describe("test that the fake window location pathname works with the jest test", () => {
   
   const originalFetch = global.fetch;
   beforeEach(() => {
-    // @ts-ignore need to redefine prop for jest
-    delete window.location;
-    // console.log("checking window location", window.location);
-    // @ts-ignore need to redefine prop for jest
-    window.location = {
-      //for the dynamic setting of the urlparams state for the token arg to change pass api call
-      pathname: "testkjdfdjkf/tksjkd/HERESATOKEN",
-      assign: jest.fn(() => {
-        return void 0;
-      })
-    };
-    // console.log("checking window location", window.location);
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() =>
       Promise.resolve({
@@ -60,15 +58,22 @@ describe("need to implement window methods here", () => {
   });
 
 
-  it("render the change password page", async () => {
+  it("render the change password page and enter a new password, should redirect to home", async () => {
+    const history = createMemoryHistory({
+      initialEntries: ["/changePassword/HERESATOKEN"]
+    });
 
     render(
       <>
         <Provider store={store}>
-          <ChangePassword />
+          <Router history={history}>
+            <ChangePassword />
+            <HiddenLocationDisplay />
+          </Router>
         </Provider>
       </>
     );
+    expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
     const formEls = {
       newPass: screen.getByPlaceholderText(/New Password/g) as HTMLInputElement,
@@ -90,6 +95,9 @@ describe("need to implement window methods here", () => {
     await act(async () => {
       formEls.submit.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
+
+    expect(mockHistoryReplace).toHaveBeenCalledTimes(1);
+    expect(mockHistoryReplace).toHaveBeenCalledWith("/");
 
   });
 });

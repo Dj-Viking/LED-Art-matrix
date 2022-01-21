@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
+import { useHistory } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
 
 const ChangePassword: React.FC = (): JSX.Element => {
+  const history = useHistory();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(""); 
@@ -40,7 +42,10 @@ const ChangePassword: React.FC = (): JSX.Element => {
     
     try {
       const res = await API.changePassword({ password, token: urlToken }) as { done: boolean, token: string };
-      if (res.done) return Auth.login(res.token);
+      if (res.done) {
+        Auth.login(res.token);
+        history.replace("/");
+      }
     } catch (err) {
       setLoading(false);
       return void 0;

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
+import { useHistory } from "react-router-dom";
 
 // audio player and big led box
 const ForgotPassword: React.FC = (): JSX.Element => {
+  const history = useHistory();
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>(""); 
@@ -18,11 +20,13 @@ const ForgotPassword: React.FC = (): JSX.Element => {
     try {
       if (!window.navigator.onLine) throw new Error("Internet is disconnected, please try again later.");
       setSubmitted(true);
-      await API.forgotPassword(email);
-      setTimeout(() => {
-        setLoading(false);
-        window.location.replace("/");
-      }, 5000);
+      const res = await API.forgotPassword(email);
+      if (res) {
+        setTimeout(() => {
+          setLoading(false);
+          history.replace("/");
+        }, 5000);
+      }
     } catch (err) {
       setSubmitted(false);
       setLoading(false);
@@ -64,7 +68,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
           className="form-email-input"
           autoComplete="off"
         />
-        <button className={disabled ? "form-btn-disabled" : "form-btn"} type="submit">
+        <button disabled={disabled} className={disabled ? "form-btn-disabled" : "form-btn"} type="submit">
           Submit
         </button>
         {// login error rendering

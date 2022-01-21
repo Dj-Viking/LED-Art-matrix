@@ -32,9 +32,7 @@ export const HiddenLocationDisplay = (): JSX.Element => {
 };
 
 const App: React.FC = (): JSX.Element => {
-	// console.log(store);
 	const history = createBrowserHistory();
-	
 	return (
 		<>
 			<Provider store={store}>
