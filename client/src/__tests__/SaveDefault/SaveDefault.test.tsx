@@ -13,7 +13,8 @@ import "@jest/types";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
+import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
+import { API_URL } from "../../constants";
 
 const store = createStore(
   allReducers,
@@ -134,17 +135,22 @@ describe("test the save default button is making the request, mock the response"
     expect(fetch).toHaveBeenCalledTimes(2);
   });
   it("tests the save default button with error response", async () => {
+    
+
     expect(localStorage.getItem("id_token")).toBeTruthy();
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() => 
+    //res
       Promise.resolve({
-        status: 400,
-        json: () => Promise.resolve(SAVE_DEFAULT_MOCK_ERROR)
+        ok: void 0,
+        json: () => Promise.resolve({
+          preset: "waves"
+        })
       })
     );
     const history = createMemoryHistory();
 
-    render(
+    const { container } = render(
       <>
         <Provider store={store}>
           <Router history={history}>
@@ -157,19 +163,84 @@ describe("test the save default button is making the request, mock the response"
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func
     expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(API_URL + "/user", 
+                                      {"headers": {
+                                        "Content-Type": "application/json",
+                                        "authorization": "Bearer TOKEN YO"
+                                      },
+                                      "method": "GET"});
 
     const preset_buttons = {
+      waves: screen.getByTestId("waves"),
       saveDefault: screen.getByTestId("saveDefault")
     };
-    
+
+    expect(preset_buttons.waves).toBeInTheDocument();
+    expect(preset_buttons.waves).not.toBeDisabled();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
     expect(preset_buttons.saveDefault).not.toBeDisabled();
+
+    // get led ref and style tag ref for after the click event and state updates
+    let ledPostRef: HTMLElement | null = null;
+    let styleTagRef: HTMLStyleElement | null = null;
+
+    await act(async () => {
+      preset_buttons.waves.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+    });
+
+    ledPostRef = screen.getByTestId("led1-1") as HTMLElement;
+    expect(ledPostRef).toBeInTheDocument();
+    expect(ledPostRef.classList.length).toBe(1);
+    // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.waves.classListItem);
+
+    styleTagRef = container.querySelector("#led-style");
+    expect(typeof styleTagRef).toBe("object");
+    expect(!!styleTagRef?.textContent).toBe(true);
+
+    // parse the styleTagRef content to get the animation name and confirm it matches the
+    // style in the classlist so therefore the @keyframes animation name should appear
+    // in the keyframe matching array
+    const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
+    const animationNameMatches: string[] | [] = splitTagText.map(str => {
+      if (ASSERT_ANIMATION.waves.regex.test(str)) {
+        return str;
+      }
+      return void 0;
+    }).filter(item => typeof item === "string") as string[] | [];
+
+    const keyFramesMatches = animationNameMatches.map(str => {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
+        return str;
+      }
+      return void 0;
+    }).filter(item => typeof item === "string");
+    // console.log("key frames arr", keyFramesMatches);
+
+    expect(keyFramesMatches).toHaveLength(1);
+
+    // @ts-ignore trying to mock fetch for update preset fetch request
+    global.fetch = jest.fn(() => 
+    //res
+      Promise.resolve({
+        ok: void 0,
+        json: () => Promise.resolve(SAVE_DEFAULT_MOCK_ERROR)
+      })
+    );
 
     await act(async () => {
       preset_buttons.saveDefault.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith(API_URL + "/user/update-preset",
+                                      { "body": "{\"defaultPreset\":\"waves\"}",
+                                        "headers": {
+                                            "Content-Type": "application/json", 
+                                            "authorization": "Bearer TOKEN YO"
+                                        }, 
+                                        "method": "PUT"});
+
   });
 
 });

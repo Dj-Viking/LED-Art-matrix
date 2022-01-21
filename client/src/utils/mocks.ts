@@ -8,6 +8,36 @@ export const SAVE_DEFAULT_MOCK_ERROR = {
   error: "ERROR"
 };
 
+export const ASSERT_ANIMATION = {
+  clearLed: "led1-1",
+  keyframes: /keyframes/g,
+  rainbowTest: {
+    regex: /rainbowTestAllAnim/g,
+    classListItem: "led1-1rainbowTestAllAnim"
+  },
+  v2: {
+    regex: /V2/g,
+    classListItem: "led1-1V2",
+  },
+  waves: {
+    regex: /waves/g,
+    classListItem: "led1-1waves",
+    
+  },
+  spiral: {
+    regex: /spiral/g,
+    classListItem: "led1-1spiral"
+  },
+  fourSpirals: {
+    regex: /fourSpirals/g,
+    classListItem: "led1-1fourSpirals"
+  },
+  dm5: {
+    regex: /dm5/g,
+    classListItem: "led1-1dm5"
+  },
+};
+
 export const CHANGE_PASS_MOCK_RES = {
   message: "success",
   done: true,

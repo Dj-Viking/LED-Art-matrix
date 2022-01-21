@@ -13,7 +13,7 @@ import "@jest/types";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
+import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
 
 const store = createStore(
   allReducers,
@@ -164,36 +164,6 @@ describe("test clicking all the preset buttons and that they change the led styl
     localStorage.clear();
   });
 
-  const assertAnimation = {
-    clearLed: "led1-1",
-    keyframes: /keyframes/g,
-    rainbowTest: {
-      regex: /rainbowTestAllAnim/g,
-      classListItem: "led1-1rainbowTestAllAnim"
-    },
-    v2: {
-      regex: /V2/g,
-      classListItem: "led1-1V2",
-    },
-    waves: {
-      regex: /waves/g,
-      classListItem: "led1-1waves",
-      
-    },
-    spiral: {
-      regex: /spiral/g,
-      classListItem: "led1-1spiral"
-    },
-    fourSpirals: {
-      regex: /fourSpirals/g,
-      classListItem: "led1-1fourSpirals"
-    },
-    dm5: {
-      regex: /dm5/g,
-      classListItem: "led1-1dm5"
-    },
-  };
-
   //RAINBOW TEST
   it("tests the led styles change to rainbowTest when rainbow button is clicked", async () => {
     const history = createMemoryHistory();
@@ -254,14 +224,14 @@ describe("test clicking all the preset buttons and that they change the led styl
 
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.rainbowTest.regex.test(str)) {
+      if (ASSERT_ANIMATION.rainbowTest.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -305,7 +275,7 @@ describe("test clicking all the preset buttons and that they change the led styl
     //get ref to led element and check it's there+
     const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPreRef).toBeInTheDocument();
-    expect(ledPreRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(ledPreRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
@@ -339,7 +309,7 @@ describe("test clicking all the preset buttons and that they change the led styl
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
     // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
-    expect(ledPostRef.classList[0]).toBe(assertAnimation.v2.classListItem);
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.v2.classListItem);
 
 
     styleTagRef = container.querySelector("#led-style");
@@ -351,14 +321,14 @@ describe("test clicking all the preset buttons and that they change the led styl
     // in the keyframe matching array
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.v2.regex.test(str)) {
+      if (ASSERT_ANIMATION.v2.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -376,7 +346,7 @@ describe("test clicking all the preset buttons and that they change the led styl
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
     // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
-    expect(clearLedRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
 
@@ -401,35 +371,6 @@ describe("test logging in and checking buttons become un-disabled", () => {
     global.fetch = originalFetch;
     //keep local storage token from the login
   });
-  const assertAnimation = {
-    clearLed: "led1-1",
-    keyframes: /keyframes/g,
-    rainbowTest: {
-      regex: /rainbowTestAllAnim/g,
-      classListItem: "led1-1rainbowTestAllAnim"
-    },
-    v2: {
-      regex: /V2/g,
-      classListItem: "led1-1V2",
-    },
-    waves: {
-      regex: /waves/g,
-      classListItem: "led1-1waves",
-      
-    },
-    spiral: {
-      regex: /spiral/g,
-      classListItem: "led1-1spiral"
-    },
-    fourSpirals: {
-      regex: /fourSpirals/g,
-      classListItem: "led1-1fourSpirals"
-    },
-    dm5: {
-      regex: /dm5/g,
-      classListItem: "led1-1dm5"
-    },
-  };
 
   it("Checks the input fields are available and can submit with a stubbed api", async () => {
     const history = createMemoryHistory();
@@ -562,7 +503,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
     // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
-    expect(ledPostRef.classList[0]).toBe(assertAnimation.waves.classListItem);
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.waves.classListItem);
 
     styleTagRef = container.querySelector("#led-style");
     expect(typeof styleTagRef).toBe("object");
@@ -573,14 +514,14 @@ describe("test logging in and checking buttons become un-disabled", () => {
     // in the keyframe matching array
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.waves.regex.test(str)) {
+      if (ASSERT_ANIMATION.waves.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -598,7 +539,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
     // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
-    expect(clearLedRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
 
@@ -658,7 +599,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
     // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
-    expect(ledPostRef.classList[0]).toBe(assertAnimation.spiral.classListItem);
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.spiral.classListItem);
 
     styleTagRef = container.querySelector("#led-style");
     expect(typeof styleTagRef).toBe("object");
@@ -669,14 +610,14 @@ describe("test logging in and checking buttons become un-disabled", () => {
     // in the keyframe matching array
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.spiral.regex.test(str)) {
+      if (ASSERT_ANIMATION.spiral.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -694,7 +635,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
     // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
-    expect(clearLedRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
 
@@ -754,7 +695,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
     // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
-    expect(ledPostRef.classList[0]).toBe(assertAnimation.fourSpirals.classListItem);
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.fourSpirals.classListItem);
 
     styleTagRef = container.querySelector("#led-style");
     expect(typeof styleTagRef).toBe("object");
@@ -765,14 +706,14 @@ describe("test logging in and checking buttons become un-disabled", () => {
     // in the keyframe matching array
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.fourSpirals.regex.test(str)) {
+      if (ASSERT_ANIMATION.fourSpirals.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -790,7 +731,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
     // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
-    expect(clearLedRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
 
@@ -850,7 +791,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
     // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
-    expect(ledPostRef.classList[0]).toBe(assertAnimation.dm5.classListItem);
+    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.dm5.classListItem);
 
     styleTagRef = container.querySelector("#led-style");
     expect(typeof styleTagRef).toBe("object");
@@ -861,14 +802,14 @@ describe("test logging in and checking buttons become un-disabled", () => {
     // in the keyframe matching array
     const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (assertAnimation.dm5.regex.test(str)) {
+      if (ASSERT_ANIMATION.dm5.regex.test(str)) {
         return str;
       }
       return void 0;
     }).filter(item => typeof item === "string") as string[] | [];
 
     const keyFramesMatches = animationNameMatches.map(str => {
-      if (assertAnimation.keyframes.test(str)) {
+      if (ASSERT_ANIMATION.keyframes.test(str)) {
         return str;
       }
       return void 0;
@@ -886,7 +827,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
     // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
-    expect(clearLedRef.classList[0]).toBe(assertAnimation.clearLed);
+    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
 

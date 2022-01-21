@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { 
@@ -16,7 +16,7 @@ import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { presetSwitch } from "../actions/led-actions";
 import { clearStyle, setLedStyle } from "../actions/style-actions";
-import { getPresetFromDom } from "../utils/getPresetFromDom";
+import { MyRootState } from "../types";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
   const V2ButtonSpring = useSpring(_V2ButtonSpring);
@@ -28,6 +28,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const clear = useSpring(_clear);
   const dispatch = useDispatch();
+  const { presetName } = useSelector((state: MyRootState) => state.ledState);
   
   let LedEngine = new LedStyleEngine("");
 
@@ -39,11 +40,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    event.persist();
-    // get the classname string split from the classname of one of the led's being displayed
-    const presetString = getPresetFromDom(event.target);
-
-    await API.updateDefaultPreset({ name: presetString, token: Auth.getToken() as string });
+    await API.updateDefaultPreset({ name: presetName, token: Auth.getToken() as string });
   }
   return (
     <>
