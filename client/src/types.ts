@@ -78,7 +78,12 @@ export interface ILedIsAnimatingAction {
 }
 // will get the type eventually
 // eslint-disable-next-line 
-export type IGif = any;
+export interface IGif {
+  gifCategory: string;
+  gifSrc: string | URL;
+  limit: string;
+  _id: string;
+}
 export interface IGetGifsAction {
   type: "GET_GIFS";
   payload: Array<IGif>;
@@ -92,15 +97,11 @@ export interface ILoginFormState {
 }
 export type ILoginFormActionTypes = 
 | "LOGIN_EMAIL_OR_USERNAME_CHANGE"
-| "LOGIN_EMAIL_COMPLETED"
 | "LOGIN_PASSWORD_CHANGE"
-| "LOGIN_PASSWORD_COMPLETED";
 
 export type ILoginFormActionPayloads =
 | ILoginUsernameOrEmailChangeAction["payload"]
-| ILoginEmailCompletedAction["payload"]
 | ILoginPasswordChangeAction["payload"]
-| ILoginPasswordCompletedAction["payload"];
 
 export interface ILoginFormAction {
   type: ILoginFormActionTypes;
@@ -110,17 +111,9 @@ export interface ILoginUsernameOrEmailChangeAction {
   type: "LOGIN_EMAIL_OR_USERNAME_CHANGE";
   payload: string;
 }
-export interface ILoginEmailCompletedAction {
-  type: "LOGIN_EMAIL_COMPLETED";
-  payload: boolean;
-}
 export interface ILoginPasswordChangeAction {
   type: "LOGIN_PASSWORD_CHANGE";
   payload: string;
-}
-export interface ILoginPasswordCompletedAction {
-  type: "LOGIN_PASSWORD_COMPLETED";
-  payload: boolean;
 }
 export interface ISignupFormState {
   username: string;
@@ -132,19 +125,13 @@ export interface ISignupFormState {
 }
 export type ISignupFormActionTypes = 
 | "SIGNUP_USERNAME_CHANGE"
-| "SIGNUP_USERNAME_COMPLETED"
 | "SIGNUP_EMAIL_CHANGE"
-| "SIGNUP_EMAIL_COMPLETED"
-| "SIGNUP_PASSWORD_CHANGE"
-| "SIGNUP_PASSWORD_COMPLETED";
+| "SIGNUP_PASSWORD_CHANGE";
 
 export type ISignupFormActionPayloads =
 | ISignupEmailChangeAction["payload"]
-| ISignupEmailCompletedAction["payload"]
 | ISignupUsernameChangeAction["payload"]
-| ISignupUsernameCompletedAction["payload"]
-| ISignupPasswordChangeAction["payload"]
-| ISignupPasswordCompletedAction["payload"];
+| ISignupPasswordChangeAction["payload"];
 
 export interface ISignupFormAction {
   type: ISignupFormActionTypes
@@ -155,25 +142,13 @@ export interface ISignupUsernameChangeAction {
   type: "SIGNUP_USERNAME_CHANGE";
   payload: string;
 }
-export interface ISignupUsernameCompletedAction {
-  type: "SIGNUP_USERNAME_COMPLETED";
-  payload: boolean;
-}
 export interface ISignupEmailChangeAction {
   type: "SIGNUP_EMAIL_CHANGE";
   payload: string;
 }
-export interface ISignupEmailCompletedAction {
-  type: "SIGNUP_EMAIL_COMPLETED";
-  payload: boolean;
-}
 export interface ISignupPasswordChangeAction {
   type: "SIGNUP_PASSWORD_CHANGE";
   payload: string;
-}
-export interface ISignupPasswordCompletedAction {
-  type: "SIGNUP_PASSWORD_COMPLETED";
-  payload: boolean;
 }
 
 export interface IArtScrollerState {
@@ -191,8 +166,58 @@ export interface IArtScrollerAction {
   payload: IArtScrollerPayloads
 }
 
+export interface ILedSetStyleAction {
+  type: "SET_STYLE";
+  payload: string;
+}
+export interface ILedClearStyleAction {
+  type: "CLEAR_STYLE";
+  payload: "";
+}
+
+export interface ILedStyleTagState {
+  html: string
+}
+
+export type ILedStyleTagActionTypes = 
+| "SET_STYLE"
+| "CLEAR_STYLE"
+
+export type ILedStyleTagActionPayloads =
+| ILedSetStyleAction["payload"]
+| ILedClearStyleAction["payload"];
+
+export interface ILedStyleAction {
+  type: ILedStyleTagActionTypes
+  payload: ILedStyleTagActionPayloads
+}
+export interface ILoggedInState {
+  loggedIn: boolean;
+}
+export interface ILoggedinAction {
+  type: ILoggedInActionTypes,
+  payload: ILoggedInActionPayloads
+}
+
+export type ILoggedInActionTypes = 
+| "LOG_IN"
+| "LOG_OUT";
+
+export type ILoggedInActionPayloads =
+| ILoginAction["payload"]
+| ILogoutAction["payload"];
+export interface ILoginAction {
+  type: "LOG_IN";
+  payload: true;
+}
+export interface ILogoutAction {
+  type: "LOG_OUT";
+  payload: false;
+}
 export interface MyRootState {
   ledState: ILedState;
+  loggedInState: ILoggedInState;
+  ledStyleTagState: ILedStyleTagState;
   loginFormState: ILoginFormState;
   signupFormState: ISignupFormState;
   artScrollerState: IArtScrollerState;

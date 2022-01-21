@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
-import Auth from "../utils/auth";
+import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
+import { useHistory } from "react-router-dom";
 import { Spinner } from "../components/Spinner";
 
 const ChangePassword: React.FC = (): JSX.Element => {
+  const history = useHistory();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(""); 
@@ -15,12 +17,9 @@ const ChangePassword: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     // get the token inside the URL
-    console.log("url params initially", urlToken);
     if (window && window.location && window.location.pathname) {
-      console.log("we have a window and a pathname", window.location.pathname);
       const token = window.location.pathname.split("/")[2];
       setUrlParam(token);
-      console.log("what is params state now should be a token", urlToken);
     }
     return void 0;
   }, [urlToken, setUrlParam]);
@@ -30,7 +29,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
     return true;
   }
 
-  async function submitChangePassword(event: React.SyntheticEvent): Promise<void> {
+  async function submitChangePassword(event: React.SyntheticEvent): Promise<void | boolean> {
     event.preventDefault();
     setLoading(true);
 
@@ -43,11 +42,12 @@ const ChangePassword: React.FC = (): JSX.Element => {
     
     try {
       const res = await API.changePassword({ password, token: urlToken }) as { done: boolean, token: string };
-      if (res.done) return Auth.login(res.token);
-      return void 0;
+      if (res.done) {
+        Auth.login(res.token);
+        history.replace("/");
+      }
     } catch (err) {
       setLoading(false);
-      console.log(err);
       return void 0;
     }
   }
@@ -82,7 +82,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
           required
           value={password}
           onChange={handlePassChange}
-          placeholder="***************"
+          placeholder="New Password"
           className="form-password-input"
           autoComplete="off"
         />
@@ -99,7 +99,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
           required
           value={confirmPass}
           onChange={handleConfirmPassChange}
-          placeholder="***************"
+          placeholder="Confirm Password"
           className="form-password-input"
           autoComplete="off"
         />

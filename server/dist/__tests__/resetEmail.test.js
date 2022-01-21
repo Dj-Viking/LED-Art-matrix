@@ -39,8 +39,10 @@ const testServer_1 = require("../testServer");
 const models_1 = require("../models");
 (0, readEnv_1.readEnv)();
 const foo_bar_baz_1 = __importStar(require("../stubs/foo-bar-baz"));
-jest.mock("../foo-bar-baz", () => {
-    const originalModule = jest.requireActual("../foo-bar-baz");
+const sendEmail_1 = require("../utils/sendEmail");
+jest.mock("../utils/sendEmail.ts");
+jest.mock("../stubs/foo-bar-baz", () => {
+    const originalModule = jest.requireActual("../stubs/foo-bar-baz");
     return Object.assign(Object.assign({ __esModule: true }, originalModule), { default: jest.fn(() => "mocked baz"), foo: "mocked foo" });
 });
 beforeEach((done) => {
@@ -51,7 +53,7 @@ afterEach((done) => {
 });
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";
-describe("test this runs through CRUD of a user entity", () => {
+describe("test the reset email function gets actually called but doesn't send an email", () => {
     test("/POST a user gets created", () => __awaiter(void 0, void 0, void 0, function* () {
         const createUser = yield (0, supertest_1.default)(app)
             .post("/user")
@@ -66,6 +68,13 @@ describe("test this runs through CRUD of a user entity", () => {
         newUserId = parsed._id;
     }));
     test("/POST test dispatch user reset email func gets called", () => __awaiter(void 0, void 0, void 0, function* () {
+        const forgotPassword = yield (0, supertest_1.default)(app).post("/user/forgot").send({
+            email: constants_1.TEST_EMAIL,
+        });
+        expect(forgotPassword.status).toBe(200);
+        expect(sendEmail_1.sendEmail).toHaveBeenCalledTimes(1);
+        const parsed = JSON.parse(forgotPassword.text);
+        expect(parsed.message).toBe("success");
     }));
     test("should do a partial mock", () => {
         const defaultExportResult = (0, foo_bar_baz_1.default)();

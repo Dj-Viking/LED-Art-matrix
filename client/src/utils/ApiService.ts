@@ -1,6 +1,7 @@
-import auth from "./auth";
+import { AuthService as Auth } from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
+import { IGif } from "../types";
 
 let headers = {};
 interface ISignupArgs {
@@ -13,8 +14,35 @@ interface ILoginArgs {
   password: string;
 }
 
-class ApiService {
-  public async signup(args: ISignupArgs): Promise<boolean | Error> {
+export interface IApiService {
+  alive: () => void;
+  signup: (args: ISignupArgs) => Promise<boolean | void>;
+  login: (args: ILoginArgs) => Promise<boolean | void>;
+  getDefaultPreset: (token: string) => Promise<string | boolean>;
+  updateDefaultPreset: (token: string) => Promise<string | void>;
+  getGifs: () => Promise<Array<IGif>>;
+  forgotPassword: (email: string) => Promise<boolean | void>;
+  changePassword: (password: string) => Promise<{done: boolean, token: string } | void>;
+}
+
+class ApiService implements IApiService {
+  protected isAlive: any;
+  public signup!: (args: ISignupArgs) => Promise<boolean | void>;
+  public login!: (args: ILoginArgs) => Promise<boolean | void>;
+  public getDefaultPreset!: (token: string) => Promise<string | boolean>;
+  public updateDefaultPreset!: (token: string) => Promise<string | void>;
+  public getGifs!: () => Promise<IGif[]>;
+  public forgotPassword!: (email: string) => Promise<boolean | void>;
+  public changePassword!: (password: string) => Promise<void | { done: boolean; token: string; }>;
+  constructor(isAlive: any) {
+    this.isAlive = isAlive;
+  }
+
+  public alive(): any {
+    return this.isAlive;
+  }
+
+  public static async signup(args: ISignupArgs): Promise<boolean | void> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     const { username, password, email } = args;
@@ -32,15 +60,15 @@ class ApiService {
       if (!data.token) {
         throw new Error("can't login without a token");
       }
-      auth.login(data.token);
+      Auth.login(data.token);
       return true;
     } catch (error) {
-      console.error("error when signing up", error);
-      return error as Error;
+      const err = error as Error;
+      throw new Error(err.message);
     }
   }
 
-  public async login(args: ILoginArgs): Promise<boolean | Error> {
+  public static async login(args: ILoginArgs): Promise<boolean | Error> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     const { usernameOrEmail, password } = args;
@@ -57,21 +85,21 @@ class ApiService {
         headers,
       });
       if (res.status === 400) {
-        return new Error("Invalid credentials");
+        throw new Error("Invalid credentials");
       }
       const data = await res.json();
       if (!data.user.token) {
         throw new Error("can't login without a token");
       }
-      auth.login(data.user.token);
+      Auth.login(data.user.token);
       return true;
     } catch (error) {
-      console.error("error when logging in", error);
-      return error as Error;
+      const err = error as Error;
+      throw new Error(err.message);
     }
   }
 
-  public async getDefaultPreset(token: string): Promise<string | boolean> {
+  public static async getDefaultPreset(token: string): Promise<string | boolean> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
@@ -84,12 +112,11 @@ class ApiService {
       if (data.error) throw new Error(`${data.error}`);
       return data.preset;
     } catch (error) {
-      console.error("error when getting default preset", error);
       return false;
     }
   }
 
-  public async updateDefaultPreset(
+  public static async updateDefaultPreset(
     args: { name: string, token: string }
   ): Promise<void | Error> {
     try {
@@ -105,12 +132,11 @@ class ApiService {
       if (res.ok) return void 0;
       return void 0;
     } catch (error) {
-      console.error("error when updating default preset", error);
       return error as Error;
     }
   }
 
-  public async getGifs(): Promise<Array<string> | void> {
+  public static async getGifs(): Promise<Array<IGif> | void> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     try {
@@ -121,26 +147,30 @@ class ApiService {
       const data = await res.json();
       return data.gifs;
     } catch (error) {
-      console.error("error when trying to get gifs", error);
       return void 0;
     }
   }
 
-  public async forgotPassword(email: string): Promise<boolean | void> {
+  public static async forgotPassword(email: string): Promise<boolean | void> {
     try {
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
-      await fetch(`${API_URL}/user/forgot`, {
+      const res = await fetch(`${API_URL}/user/forgot`, {
         method: "POST",
         body: JSON.stringify({ email }),
         headers
       });
+      if (res.status === 500) {
+        throw new Error("error");
+      }
+      const data = await res.json();
+      if (data.message) return true;
     } catch (error) {
-      console.error("error when submitting forgot password request", error);
+      throw new Error("error");
     }
   }
 
-  public async changePassword(
+  public static async changePassword(
     args: { password: string, token: string }
   ): Promise<{done: boolean, token: string } | void> {
     try {
@@ -156,10 +186,10 @@ class ApiService {
       const data = await res.json();
       return data;
     } catch (error) {
-      console.error("error when changing password", error);
       return void 0;
     }
   }
 }
 
-export default new ApiService();
+export default ApiService;
+export { ApiService };

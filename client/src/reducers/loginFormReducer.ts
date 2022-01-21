@@ -1,4 +1,4 @@
-import { ILoginEmailCompletedAction, ILoginFormAction, ILoginFormState, ILoginPasswordChangeAction, ILoginPasswordCompletedAction, ILoginUsernameOrEmailChangeAction } from "../types";
+import { ILoginFormAction, ILoginFormState, ILoginPasswordChangeAction,  ILoginUsernameOrEmailChangeAction } from "../types";
 
 const loginFormReducer = (
   state: ILoginFormState = {
@@ -15,20 +15,10 @@ const loginFormReducer = (
         ...state,
         usernameOrEmail: action.payload as ILoginUsernameOrEmailChangeAction["payload"]
       };
-    case "LOGIN_EMAIL_COMPLETED":
-      return {
-        ...state,
-        emailIsComplete: action.payload as ILoginEmailCompletedAction["payload"]
-      };
     case "LOGIN_PASSWORD_CHANGE":
       return {
         ...state,
         password: action.payload as ILoginPasswordChangeAction["payload"]
-      };
-    case "LOGIN_PASSWORD_COMPLETED":
-      return {
-        ...state,
-        passwordIsComplete: action.payload as ILoginPasswordCompletedAction["payload"]
       };
     default: return state;
   }

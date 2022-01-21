@@ -3,16 +3,16 @@ import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
 import {
   signupUsernameChange,
-  signupUsernameCompleted,
   signupEmailChange,
-  signupEmailCompleted,
   signupPasswordChange,
-  signupPasswordCompleted
 } from "../actions/signup-form-actions";
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
+import { useHistory } from "react-router-dom";
+import { login } from "../actions/logged-in-actions";
  
 const Signup: React.FC = (): JSX.Element => {
+  const history = useHistory();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { username, email, password } = useSelector((state: MyRootState) => state.signupFormState);
@@ -24,7 +24,9 @@ const Signup: React.FC = (): JSX.Element => {
     try {
       if (window.navigator.onLine) {
         await API.signup({ username, email, password });
+        dispatch(login());
         setLoading(false);
+        history.push("/");
       } else {
         setError("\nInternet is disconnected, please try again later");
       }
@@ -32,22 +34,18 @@ const Signup: React.FC = (): JSX.Element => {
       setLoading(false);
       const error = err as Error;
       setError(error.message);
-      console.log("error when signing up", error);
     }
   } 
 
   function handleChange(event: any): void {
     if (event.target.type === "text") {
       dispatch(signupUsernameChange(event.target.value));
-      dispatch(signupUsernameCompleted(event.target.value));
     }
     if (event.target.type === "email") {
       dispatch(signupEmailChange(event.target.value));
-      dispatch(signupEmailCompleted(event.target.value));
     }
     if (event.target.type === "password") {
       dispatch(signupPasswordChange(event.target.value));
-      dispatch(signupPasswordCompleted(event.target.value));
     }
   }
 
@@ -124,6 +122,7 @@ const Signup: React.FC = (): JSX.Element => {
           >
             <button
               type="submit"
+              name="signup-button"
               disabled={false}
               className="form-btn"
             >

@@ -1,7 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useSpring, animated } from "react-spring";
-import { createMyStyleTag } from "../utils/createMyStyleTag";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { 
   _V2ButtonSpring, 
@@ -10,11 +9,13 @@ import {
   _spiralButtonSpring, 
   _fourSpiralsButtonSpring, 
   _saveButtonSpring,
-  _dm5ButtonSpring
+  _dm5ButtonSpring,
+  _clear
 } from "./SpringButtons";
-import Auth from "../utils/auth";
+import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { presetSwitch } from "../actions/led-actions";
+import { clearStyle, setLedStyle } from "../actions/style-actions";
 import { getPresetFromDom } from "../utils/getPresetFromDom";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
@@ -25,18 +26,15 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
   const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
   const saveButtonSpring = useSpring(_saveButtonSpring);
+  const clear = useSpring(_clear);
   const dispatch = useDispatch();
   
   let LedEngine = new LedStyleEngine("");
-  let styleTag = createMyStyleTag();
 
   function setStyle(preset: string): void {
-    if (document.querySelector("#led-style")) {
-      LedEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
     LedEngine = new LedStyleEngine(preset);
-    styleTag = LedEngine.generateStyle(styleTag);
-    LedEngine.appendStyle(styleTag);
+    const styleHTML = LedEngine.createStyleSheet();
+    dispatch(setLedStyle(styleHTML));
   }
 
   async function handleSaveDefault(event: any): Promise<void> {
@@ -45,7 +43,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     // get the classname string split from the classname of one of the led's being displayed
     const presetString = getPresetFromDom(event.target);
 
-    console.log("preset string", presetString);
     await API.updateDefaultPreset({ name: presetString, token: Auth.getToken() as string });
   }
   return (
@@ -79,23 +76,34 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         // }}
       >
         <animated.button
+          style={clear}
+          role="button"
+          data-testid="clear"
+          className="preset-button"
+          onClick={() => {
+            dispatch(presetSwitch(""));
+            dispatch(clearStyle());
+          }}
+        >
+          clear
+        </animated.button>
+        
+        <animated.button
           style={rainbowButtonSpring}
+          role="button"
+          data-testid="rainbowTest"
           className="preset-button rainbow-anim"
           onClick={() => {
             dispatch(presetSwitch("rainbowTestAllAnim"));
-            setTimeout(() => {
-              document.querySelector("#led-box")?.scrollIntoView({ behavior: "smooth" });
-            }, 300);
             setStyle("rainbowTestAllAnim");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            rainbowTest
-          </span>
+          rainbowTest
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="v2"
           style={V2ButtonSpring}
           className="preset-button"
           onClick={() => {
@@ -103,14 +111,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("V2");
           }}
         >
-          <span
-            className="preset-button-text"
-            style={{ width: "100%" }}
-          >
-            V2
-          </span>
+          V2
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="waves"
           style={wavesButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -119,13 +125,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("waves");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            waves
-          </span>
+          waves
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="spiral"
           style={spiralButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -134,13 +139,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("spiral");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            spiral
-          </span>
+          spiral
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="fourSpirals"
           style={fourSpiralsButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -149,13 +153,12 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("fourSpirals");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
-            fourSpirals
-          </span>
+          fourSpirals
         </animated.button>
+
         <animated.button
+          role="button"
+          data-testid="dm5"
           style={dm5ButtonSpring}
           className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in
@@ -164,15 +167,13 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             setStyle("dm5");
           }}
         >
-          <span
-            className="preset-button-text"
-          >
             DM5
-          </span>
         </animated.button>
 
         {/* save as new login preset */}
         <animated.button
+          role="button"
+          data-testid="saveDefault"
           style={saveButtonSpring}
           className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
           disabled={!Auth.loggedIn()}// enable if logged in

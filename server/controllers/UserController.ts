@@ -144,6 +144,8 @@ export const UserController = {
       //silently dont send the email if the email wasn't the right format
       if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
       const user = await User.findOne({ email }).select("-password");
+      // console.log("got a user", user);
+
       //dont return anything else just a 204 status code which will not carry a response body
       if (user === null) return res.status(200).json({ message: "success" });
 

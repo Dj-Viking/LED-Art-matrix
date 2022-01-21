@@ -1,7 +1,17 @@
 import { config } from "react-spring";
 
+export const _clear = {
+  delay: 0,
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  }
+};
+
 export const _rainbowButtonSpring = {
-  delay: 1000,
+  delay: 0,
   from: {
     opacity: 0,
   },
@@ -11,7 +21,7 @@ export const _rainbowButtonSpring = {
 };
 
 export const _V2ButtonSpring = {
-  delay: 1300,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -21,7 +31,7 @@ export const _V2ButtonSpring = {
 };
 
 export const _wavesButtonSpring = {
-  delay: 1500,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -31,7 +41,7 @@ export const _wavesButtonSpring = {
 };
 
 export const _spiralButtonSpring = {
-  delay: 1700,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -41,7 +51,7 @@ export const _spiralButtonSpring = {
 };
 
 export const _fourSpiralsButtonSpring = {
-  delay: 2000,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -50,7 +60,7 @@ export const _fourSpiralsButtonSpring = {
   }
 };
 export const _dm5ButtonSpring = {
-  delay: 2300,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -60,7 +70,7 @@ export const _dm5ButtonSpring = {
 };
 
 export const _saveButtonSpring = {
-  delay: 2600,
+  delay: 0,
   from: {
     opacity: 0
   },
@@ -72,7 +82,7 @@ export const _saveButtonSpring = {
 // init button spring
 export const _leftInitButtonSpring = {
   config: config.wobbly,
-  delay: 100,
+  delay: 0,
   from: {
     opacity: 0,
     marginRight: "1000px" 
@@ -86,7 +96,7 @@ export const _leftInitButtonSpring = {
 // scroller on/off button spring
 export const _scrollerOnOffButtonSpring = {
   config: config.wobbly,
-  delay: 100,
+  delay: 0,
   from: {
     opacity: 0
   },

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --updateSnapshot --verbose --watchAll",
+    "test": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
+    "test:ci": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
     "clear:jest": "jest --clearCache",
     "eject": "react-scripts eject",
     "deploy-gh": "gh-pages -d build"
@@ -16,9 +17,11 @@
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@stripe/stripe-js": "^1.12.1",
     "@svgr/webpack": "^5.5.0",
+    "@testing-library/dom": "^8.11.2",
     "@testing-library/jest-dom": "^5.11.9",
     "@testing-library/react": "^11.2.5",
     "@testing-library/user-event": "^12.8.3",
+    "@types/he": "^1.1.2",
     "@types/jest": "^27.4.0",
     "@types/jsonwebtoken": "^8.5.6",
     "@types/react": "^17.0.38",
@@ -50,6 +53,8 @@
     "eslint-webpack-plugin": "^3.1.1",
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
+    "he": "^1.2.0",
+    "history": "^5.2.0",
     "html-webpack-plugin": "^5.5.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.3",
@@ -58,6 +63,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "mini-css-extract-plugin": "^2.4.5",
+    "msw": "^0.36.4",
     "node-sass": "^7.0.1",
     "p5": "^1.2.0",
     "postcss": "^8.4.4",
@@ -79,7 +85,6 @@
     "react-router-dom": "^5.2.0",
     "react-spring": "^8.0.27",
     "react-svg": "^11.2.4",
-    "react-test-renderer": "^17.0.2",
     "redux": "^4.0.5",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
@@ -131,8 +136,14 @@
       "<rootDir>/src"
     ],
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/index.tsx",
+      "!src/components/ledStyles/index.ts",
+      "!src/actions/index.ts",
+      "!src/service-worker.ts",
+      "!src/serviceWorkerRegistration.ts",
+      "!src/TestApiServiceClass.ts"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
@@ -167,15 +178,12 @@
       "@types/(.*)": "<rootDir>/node_modules/$1"
     },
     "moduleFileExtensions": [
-      "web.js",
-      "js",
       "css",
-      "web.ts",
       "ts",
       "web.tsx",
       "tsx",
+      "js",
       "json",
-      "web.jsx",
       "jsx",
       "node"
     ],
@@ -184,10 +192,5 @@
       "jest-watch-typeahead/testname"
     ],
     "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
-    ]
   }
 }
