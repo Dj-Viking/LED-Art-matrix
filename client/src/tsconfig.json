@@ -29,7 +29,7 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "@types/*": [ "node_modules/@types" ]
+      "@types/*": [ "node_modules/@types/*" ]
     },
     "allowJs": true,
     "strict": true,
