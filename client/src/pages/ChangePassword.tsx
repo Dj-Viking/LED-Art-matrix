@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Auth from "../utils/auth";
+import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
 
@@ -27,7 +27,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
     return true;
   }
 
-  async function submitChangePassword(event: React.SyntheticEvent): Promise<void> {
+  async function submitChangePassword(event: React.SyntheticEvent): Promise<void | boolean> {
     event.preventDefault();
     setLoading(true);
 

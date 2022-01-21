@@ -12,7 +12,7 @@ import {
   _dm5ButtonSpring,
   _clear
 } from "./SpringButtons";
-import Auth from "../utils/auth";
+import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { presetSwitch } from "../actions/led-actions";
 import { clearStyle, setLedStyle } from "../actions/style-actions";

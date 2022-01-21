@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link , useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
 import {
@@ -8,12 +8,16 @@ import {
 } from "../actions/login-form-actions";
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
+import { login } from "../actions/logged-in-actions";
 
 const Login: React.FC = (): JSX.Element => {
+  
+  const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const { usernameOrEmail, password } = useSelector((state: MyRootState) => state.loginFormState);
   const dispatch = useDispatch();
+
 
   function handleChange(event: any): void {
     if (event.target.type === "text") {
@@ -32,9 +36,11 @@ const Login: React.FC = (): JSX.Element => {
       let booleanOrError;
       if (window.navigator.onLine) {
         booleanOrError = await API.login({ usernameOrEmail, password });
-        if (booleanOrError) {
+        if (!(booleanOrError instanceof Error)) {
           setLoading(false);
           setError("");
+          dispatch(login());
+          history.push("/");
         }
         setLoading(false);
       } else {

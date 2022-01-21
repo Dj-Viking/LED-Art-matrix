@@ -5724,5 +5724,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       </div>
     </section>
   </main>
+  <div
+    data-testid="location-display"
+    style="display: hidden;"
+  >
+    /
+  </div>
 </DocumentFragment>
 `;

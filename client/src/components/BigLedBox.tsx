@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
-import Auth from "../utils/auth";
+import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";

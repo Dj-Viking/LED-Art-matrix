@@ -191,8 +191,32 @@ export interface ILedStyleAction {
   type: ILedStyleTagActionTypes
   payload: ILedStyleTagActionPayloads
 }
+export interface ILoggedInState {
+  loggedIn: boolean;
+}
+export interface ILoggedinAction {
+  type: ILoggedInActionTypes,
+  payload: ILoggedInActionPayloads
+}
+
+export type ILoggedInActionTypes = 
+| "LOG_IN"
+| "LOG_OUT";
+
+export type ILoggedInActionPayloads =
+| ILoginAction["payload"]
+| ILogoutAction["payload"];
+export interface ILoginAction {
+  type: "LOG_IN";
+  payload: true;
+}
+export interface ILogoutAction {
+  type: "LOG_OUT";
+  payload: false;
+}
 export interface MyRootState {
   ledState: ILedState;
+  loggedInState: ILoggedInState;
   ledStyleTagState: ILedStyleTagState;
   loginFormState: ILoginFormState;
   signupFormState: ISignupFormState;

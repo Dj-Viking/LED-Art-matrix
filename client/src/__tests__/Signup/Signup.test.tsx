@@ -5,6 +5,8 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
 import { SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
 import "@types/jest";
@@ -248,19 +250,25 @@ describe("need to impl window.location.assign()", () => {
     localStorage.clear();
   });
 
-  it("checks that assign() is implemented and the app tries to redirect after successful signup", async () => {
+  it("app tries to redirect after successful signup", async () => {
+    const history = createMemoryHistory();
 
     render(
       <Provider store={store}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     );
+    expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
     const page = (await screen.findAllByRole("link", { name: "Sign Up" })).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
     expect(page).toBeInTheDocument();
     fireEvent.click(page);
+
+    expect(screen.getByTestId("location-display")).toHaveTextContent("/signup");
 
     const formEls = {
       username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
@@ -303,9 +311,7 @@ describe("need to impl window.location.assign()", () => {
       formEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-
-    expect(window.location.assign).toHaveBeenCalledTimes(1);
-    expect(window.location.assign).toHaveBeenLastCalledWith("/");
+    expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     
   });
 

@@ -210,30 +210,26 @@ describe("test signup functionality with token", () => {
     expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
     expect(inputEls.btn).toBeInTheDocument();
-
-    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
-    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
-    
-    user.clear(inputEls.emailOrUsername);
-    user.clear(inputEls.password);
-    
-    expect(inputEls.emailOrUsername.value).toBe("");
-    expect(inputEls.password.value).toBe("");
     
     user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
+    expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
+    expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.password);
     // fireEvent.click(inputEls.btn);
     await act(async () => {
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    const logout = (await screen.findAllByText(/Login/g)).find(el => {
+    console.log("local storage", localStorage.getItem("id_token"));
+
+    //not sure why logout button can't be found might have to fake local storage too.
+    const logout = (await screen.findAllByText(/Logout/g)).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
 
     expect(logout).toBeInTheDocument();
 
-    fireEvent.click(logout);
+    // fireEvent.click(logout);
   });
 });
 
@@ -308,78 +304,64 @@ describe("Tests network error message", () => {
 // https://www.benmvp.com/blog/mocking-window-location-methods-jest-jsdom/
 // @ts-ignore need to redefine prop for jest
 
-describe("need to implement window methods here", () => {
-  const assignMock = jest.fn(() => {
-    return void 0;
-  });
-  const fetchMock = jest.fn(() => {
-    return Promise.resolve({
-      status: 200,
-      json: () => Promise.resolve(LOGIN_MOCK_TOKEN)
-    });
-  });
-  beforeEach(() => {
-    // @ts-ignore need to redefine prop for jest
-    delete window.location;
-    // console.log("checking window location", window.location);
-    // @ts-ignore need to redefine prop for jest
-    window.location = {
-      //for the dynamic setting of the urlparams state for the token arg to change pass api call
-      pathname: "testkjdfdjkf/tksjkd/HERESATOKEN",
-      assign: assignMock
-    };
-    // console.log("window.location.assign should be a jest mock fn", window.location);
-    // @ts-ignore
-    global.fetch = fetchMock;
-  });
+// describe("need to implement window methods here", () => {
+//   const fetchMock = jest.fn(() => {
+//     return Promise.resolve({
+//       status: 200,
+//       json: () => Promise.resolve(LOGIN_MOCK_TOKEN)
+//     });
+//   });
+//   beforeEach(() => {
+//     // @ts-ignore
+//     global.fetch = fetchMock;
+//   });
 
-  afterEach(() => {
-    cleanup();
-    localStorage.clear();
-    assignMock.mockClear();
-    fetchMock.mockClear();
-  });
+//   afterEach(() => {
+//     cleanup();
+//     localStorage.clear();
+//     fetchMock.mockClear();
+//   });
 
 
-  it("test the navigation happens after login page to test render", async () => {
+//   it("test the navigation happens after login page to test render", async () => {
 
-    render(
-      <>
-        <Provider store={store}>
-          <App />
-        </Provider>
-      </>
-    );
+//     render(
+//       <>
+//         <Provider store={store}>
+//           <App />
+//         </Provider>
+//       </>
+//     );
 
-    const page = (await screen.findAllByText(/Login/g)).find(el => {
-      return el.classList.contains("nav-button");
-    }) as HTMLElement;
-    expect(page).toBeInTheDocument();
-    fireEvent.click(page);
+//     const page = (await screen.findAllByText(/Login/g)).find(el => {
+//       return el.classList.contains("nav-button");
+//     }) as HTMLElement;
+//     expect(page).toBeInTheDocument();
+//     fireEvent.click(page);
 
-    const inputEls = {
-      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
-      btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
-        return btn.classList.contains("form-btn");
-      }) as HTMLElement
-    };
+//     const inputEls = {
+//       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
+//       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
+//       btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
+//         return btn.classList.contains("form-btn");
+//       }) as HTMLElement
+//     };
 
-    // type inputs to form fields and submit
-    act(() => {
-      inputEls.emailOrUsername.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername));
-      inputEls.password.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.password));
-    });
+//     // type inputs to form fields and submit
+//     act(() => {
+//       inputEls.emailOrUsername.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername));
+//       inputEls.password.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.password));
+//     });
 
-    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
-    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_EMAIL.password);
-    expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
-    expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.password);
+//     user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+//     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_EMAIL.password);
+//     expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
+//     expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.password);
 
-     //clicking the button will start an asynchronous fetch that will update state during and after the async function is done
-    await act(async () => {
-      inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    }); 
+//      //clicking the button will start an asynchronous fetch that will update state during and after the async function is done
+//     await act(async () => {
+//       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+//     }); 
 
-  });
-});
+//   });
+// });

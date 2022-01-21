@@ -1,4 +1,4 @@
-import auth from "./auth";
+import { AuthService as Auth } from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
 import { IGif } from "../types";
@@ -60,7 +60,7 @@ class ApiService implements IApiService {
       if (!data.token) {
         throw new Error("can't login without a token");
       }
-      auth.login(data.token);
+      Auth.login(data.token);
       return true;
     } catch (error) {
       const err = error as Error;
@@ -91,7 +91,7 @@ class ApiService implements IApiService {
       if (!data.user.token) {
         throw new Error("can't login without a token");
       }
-      auth.login(data.user.token);
+      Auth.login(data.user.token);
       return true;
     } catch (error) {
       const err = error as Error;

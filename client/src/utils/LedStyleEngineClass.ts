@@ -19,25 +19,7 @@ export class LedStyleEngine {
     this.preset = preset;
   }
   /**
-   * 
-   * @returns a newly generated style tag to append the the <head> element
-   * @example
-   * 
-   * //remove the previously appended style to create a new one
-   * if (document.querySelector("#led-style")) {
-      LedEngine.removeStyle(document.querySelector("#led-style") as HTMLStyleElement);
-    }
-   * 
-   * //create the style tag and set the id
-   * let styleTag = document.createElement("style");
-   * styleTag.setAttribute("id", "led-style");
-   * 
-   * const LedEngine = new LedStyleEngine("V2");
-   * styleTag = LedEngine.generateStyle(styleTag);
-   * 
-   * // append the style tag to the <head>
-   * LedEngine.appendStyle(styleTag);
-   * 
+   * @returns just a css string to add as "HTML" to a style tag
    */
   public createStyleSheet(): string {
     return this.generateStyle();

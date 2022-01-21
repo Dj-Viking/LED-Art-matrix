@@ -91,10 +91,6 @@ describe("need to implement window methods here", () => {
       formEls.submit.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(window.location.assign).toHaveBeenCalledTimes(1);
-    expect(window.location.assign).toHaveBeenLastCalledWith("/");
-
-
   });
 });
 

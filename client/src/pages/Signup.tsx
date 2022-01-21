@@ -8,8 +8,11 @@ import {
 } from "../actions/signup-form-actions";
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
+import { useHistory } from "react-router-dom";
+import { login } from "../actions/logged-in-actions";
  
 const Signup: React.FC = (): JSX.Element => {
+  const history = useHistory();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { username, email, password } = useSelector((state: MyRootState) => state.signupFormState);
@@ -21,7 +24,9 @@ const Signup: React.FC = (): JSX.Element => {
     try {
       if (window.navigator.onLine) {
         await API.signup({ username, email, password });
+        dispatch(login());
         setLoading(false);
+        history.push("/");
       } else {
         setError("\nInternet is disconnected, please try again later");
       }
