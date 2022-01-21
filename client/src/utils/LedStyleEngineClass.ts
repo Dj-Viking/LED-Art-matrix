@@ -63,7 +63,6 @@ export class LedStyleEngine {
           ${this.createLedClass()}
         `;
       break;
-      default: break;
     }
     return str;
   }
@@ -115,7 +114,6 @@ export class LedStyleEngine {
       case "dm5": 
         columnDelays = dm5Delay(led, row);
       break;
-      default: break;
     }
     return columnDelays;
   }

@@ -142,7 +142,8 @@
       "!src/components/ledStyles/index.ts",
       "!src/actions/index.ts",
       "!src/service-worker.ts",
-      "!src/serviceWorkerRegistration.ts"
+      "!src/serviceWorkerRegistration.ts",
+      "!src/TestApiServiceClass.ts"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"
