@@ -215,6 +215,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             />
           </div>
           <figure
+            data-testid="gifs-container"
             style={{
               display: `${figureIsOnState ? "block" : "none"}`,
               margin: "0"

@@ -388,6 +388,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           </div>
           <figure
             class="figure-transition-style"
+            data-testid="gifs-container"
             style="display: none; margin: 0px;"
           />
         </section>

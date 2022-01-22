@@ -8,7 +8,6 @@
       "es2017",
       "esnext.asynciterable"
     ],
-    "typeRoots": ["./node_modules/@types"],
     "skipLibCheck": false,
     "sourceMap": true,
     "outDir": "dist",
@@ -29,7 +28,7 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "@types/*": [ "node_modules/@types/*" ]
+      "@types/*": [ "node_modules/*" ]
     },
     "allowJs": true,
     "strict": true,

@@ -56,7 +56,6 @@ describe("test the reset email function gets actually called but doesn't send an
     newUserId = parsed._id;
   });
 
-  // TODO: TEST USER EMAIL RESET STUB
   test("/POST test dispatch user reset email func gets called", async () => {
     const forgotPassword = await request(app).post("/user/forgot").send({
       email: TEST_EMAIL,
