@@ -268,11 +268,11 @@ describe("test art scroller turning on with gifs", () => {
     expect(screen.getByTestId("gif-0")).toBeInTheDocument();
     expect(screen.getByTestId("gif-0").id).toBe("gif-0");
 
-    const stopBtn = screen.getByTestId("switch-scroller");
-    expect(stopBtn).toBeInTheDocument();
+    const toggleBtn = screen.getByTestId("switch-scroller");
+    expect(toggleBtn).toBeInTheDocument();
 
     act(() => {
-      stopBtn.dispatchEvent(TestService.createBubbledEvent("click"));
+      toggleBtn.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
     const gifsContainer = screen.getByTestId("gifs-container");
@@ -282,7 +282,7 @@ describe("test art scroller turning on with gifs", () => {
     expect(gifContainerStyle.values["display"]).toBe("none");
 
     act(() => {
-      stopBtn.dispatchEvent(TestService.createBubbledEvent("click"));
+      toggleBtn.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
     const gifsContainer2 = screen.getByTestId("gifs-container");
