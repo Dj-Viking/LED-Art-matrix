@@ -74,21 +74,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
   function handleVolumeChange(event: any, data: number) {
     setVolumeState(event.target.value || data);
   }
-
-  // .slider-style {
-  //   width: 70%;
-  //   margin: 0 auto;
-  // }
-  // const sliderStyle = {
-  //   width: '70%',
-  //   margin: '0 auto'
-  // };
-
-  // .slider-container {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  // }
+  
   const sliderContainerStyle = {
     display: "flex",
     flexDirection: "column",
