@@ -44,7 +44,8 @@ const Nav: React.FC = (): JSX.Element => {
                 </Link>
               </div>
               <div>
-                <a 
+                <a
+                  data-testid="logout-btn"
                   href="/"
                   style={{
                     textDecoration: "none",
