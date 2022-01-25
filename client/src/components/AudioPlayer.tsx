@@ -6,6 +6,7 @@ import "react-h5-audio-player/lib/styles.css";
 
 // SONGS
 import G6 from "./music/G6_-24_db_for_web_test.m4a";
+// import REVERB_STUDY from "./music/175-Reverb-study.m4a";
 
 // TEXT ANIMATIONS
 import "./aux-styles/trackAnimStyles.css";
@@ -20,8 +21,8 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
       filePath: G6
     },
     // {
-    //   trackName: 'ReverbStudy',
-    //   filePath: REVERBSTUDY
+    //   trackName: "ReverbStudy",
+    //   filePath: REVERB_STUDY
     // },
     // {
     //   trackName: 'Waterfalls',
@@ -73,21 +74,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
   function handleVolumeChange(event: any, data: number) {
     setVolumeState(event.target.value || data);
   }
-
-  // .slider-style {
-  //   width: 70%;
-  //   margin: 0 auto;
-  // }
-  // const sliderStyle = {
-  //   width: '70%',
-  //   margin: '0 auto'
-  // };
-
-  // .slider-container {
-  //   display: flex;
-  //   flex-direction: column;
-  //   justify-content: center;
-  // }
+  
   const sliderContainerStyle = {
     display: "flex",
     flexDirection: "column",
@@ -121,15 +108,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
           {" "}
           {volumeState}
         </label>
-        {/* <input
-          name="player-volume"
-          type="range"
-          min="0"
-          max="1000"
-          value={volumeState}
-          onChange={handleVolumeChange}
-          style={sliderStyle}
-        ></input> */}
       </div>
       <section
         style={{

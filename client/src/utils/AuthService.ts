@@ -10,14 +10,15 @@ class AuthService {
     } 
       return false;
   }
-  public static getProfile(): MyJwtData {
-    return decode(AuthService.getToken() as string);
-  }
 
   public static loggedIn(): boolean {
     // Checks if there is a saved token and it's still valid
     const token = AuthService.getToken();
-    if (typeof token === "string") return true;
+    if (typeof token === "string") {
+      if (!AuthService.isTokenExpired(token)) {
+        return true;
+      }
+    }
     return false;
   }
 
@@ -32,11 +33,10 @@ class AuthService {
     }
   }
 
-  public static login(token: string): boolean {
+  public static login(token: string): boolean | void {
     // Saves user token to localStorage
     localStorage.setItem("id_token", token);
     if (AuthService.getToken()) return true;
-    return false;
   }
 
   public static logout(): void {

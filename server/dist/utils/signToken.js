@@ -34,16 +34,15 @@ function signToken(args) {
                 role: "admin",
             }, SECRET, { expiresIn: "240000h" });
         }
-        case Boolean(username && email && _id && someUuid && typeof role === "undefined"):
-            {
-                return jsonwebtoken_1.default.sign({
-                    someUuid,
-                    username,
-                    email,
-                    _id,
-                    role: void 0,
-                }, SECRET, { expiresIn: EXPIRATION });
-            }
+        case Boolean(username && email && _id && someUuid && typeof role === "undefined"): {
+            return jsonwebtoken_1.default.sign({
+                someUuid,
+                username,
+                email,
+                _id,
+                role: void 0,
+            }, SECRET, { expiresIn: EXPIRATION });
+        }
         default:
             return `couldn't create a token from the input args in signToken, one of the properties in the args input object was possibly null or undefined`;
     }

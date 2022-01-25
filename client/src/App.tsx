@@ -20,36 +20,36 @@ const store = createStore(
 );
 
 export const HiddenLocationDisplay = (): JSX.Element => {
-	const location = useLocation();
-	return (
-		<div 
-			style={{ display: "hidden" }} 
-			data-testid="location-display"
-		>
-			{location.pathname}
-		</div>
-	);
+  const location = useLocation();
+  return (
+    <div
+      style={{ display: "hidden", height: 0, width: 0 }}
+      data-testid="location-display"
+    >
+      {location.pathname}
+    </div>
+  );
 };
 
 const App: React.FC = (): JSX.Element => {
-	const history = createBrowserHistory();
-	return (
-		<>
-			<Provider store={store}>
-				<Router history={history}>
-					<BrowserRouter>
-						<SplashHeader />
-						<Route exact path="/" component={Home} />
-						<Route exact path="/login" component={Login} />
-						<Route exact path="/signup" component={Signup} />
-						<Route exact path="/forgotPassword" component={ForgotPassword} />
-						<Route exact path="/changePassword/:token?" component={ChangePassword} />
-						<HiddenLocationDisplay />
-					</BrowserRouter>
-				</Router>
-			</Provider>
-		</>
-	);
+  const history = createBrowserHistory();
+  return (
+    <>
+      <Provider store={store}>
+        <Router history={history}>
+          <BrowserRouter>
+            <SplashHeader />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/signup" component={Signup} />
+            <Route exact path="/forgotPassword" component={ForgotPassword} />
+            <Route exact path="/changePassword/:token?" component={ChangePassword} />
+            <HiddenLocationDisplay />
+          </BrowserRouter>
+        </Router>
+      </Provider>
+    </>
+  );
 };
 
 export default App;

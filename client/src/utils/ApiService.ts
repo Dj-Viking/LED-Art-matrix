@@ -129,7 +129,7 @@ class ApiService implements IApiService {
         body: JSON.stringify({ defaultPreset: name }),
         headers,
       });
-      if (res.ok) return void 0;
+      if (!res.ok) throw new Error("Update could not happen at this time.");
       return void 0;
     } catch (error) {
       return error as Error;

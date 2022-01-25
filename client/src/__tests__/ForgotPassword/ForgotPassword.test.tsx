@@ -11,10 +11,10 @@ import { act } from "react-dom/test-utils";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { TestApiServiceClass } from "../../utils/TestApiServiceClass";
+import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-const tapi = new TestApiServiceClass("alive");
+const tapi = new TestService("alive");
 
 const store = createStore(
   allReducers,

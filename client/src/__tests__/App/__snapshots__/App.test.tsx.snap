@@ -288,12 +288,16 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           >
             <button
               class="scroller-fetch-button"
+              data-testid="start-art"
+              role="button"
               style="opacity: 0; margin-right: 1000px;"
             >
               Start Art Scroller!
             </button>
             <button
               class="scroller-toggle-button-off"
+              data-testid="switch-scroller"
+              role="button"
               style="opacity: 0;"
             >
               <span
@@ -314,6 +318,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             </label>
             <input
               class="slider-style"
+              data-testid="circle-width"
               max="100"
               min="0"
               name="scroller-circle-width"
@@ -328,6 +333,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             </label>
             <input
               class="slider-style"
+              data-testid="vert-pos"
               max="200"
               min="0"
               name="vertical-positioning"
@@ -342,6 +348,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             </label>
             <input
               class="slider-style"
+              data-testid="horiz-pos"
               max="100"
               min="0"
               name="horizontal-positioning"
@@ -356,6 +363,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             </label>
             <input
               class="slider-style"
+              data-testid="invert"
               max="100"
               min="0"
               name="invert"
@@ -370,6 +378,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             </label>
             <input
               class="slider-style"
+              data-testid="anim-duration"
               max="100"
               min="1"
               name="animation-duration"
@@ -379,6 +388,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           </div>
           <figure
             class="figure-transition-style"
+            data-testid="gifs-container"
             style="display: none; margin: 0px;"
           />
         </section>
@@ -5726,7 +5736,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
   </main>
   <div
     data-testid="location-display"
-    style="display: hidden;"
+    style="display: hidden; height: 0px; width: 0px;"
   >
     /
   </div>
