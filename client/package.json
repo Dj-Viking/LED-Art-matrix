@@ -143,7 +143,8 @@
       "!src/actions/index.ts",
       "!src/service-worker.ts",
       "!src/serviceWorkerRegistration.ts",
-      "!src/TestApiServiceClass.ts"
+      "!src/TestApiServiceClass.ts",
+      "!src/components/AudioPlayer.tsx"
     ],
     "setupFiles": [
       "react-app-polyfill/jsdom"

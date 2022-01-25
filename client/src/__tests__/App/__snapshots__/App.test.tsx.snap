@@ -261,13 +261,6 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     >
       g6
     </div>
-    <div
-      class=""
-      id="175-Reverb-study.m4a"
-      style="text-decoration: none; color: white; cursor: pointer; list-style: none; display: inline; margin-bottom: 10px; margin-left: auto; margin-right: auto; padding: 10px 20px; justify-content: center; transition: 1s; border-radius: 10px;"
-    >
-      ReverbStudy
-    </div>
   </section>
   <main
     class="box-style"

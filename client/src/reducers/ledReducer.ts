@@ -1,4 +1,4 @@
-import { ILedAction, ILedAlphaFaderChangeAction, ILedAnimationDelayChange, ILedAnimationDurationChangeAction, ILedLoadUserSplashConfigAction, ILedPresetSwitchAction, ILedState } from "../types";
+import { ILedAction, ILedPresetSwitchAction, ILedState } from "../types";
 
 const ledChangeReducer = (
   state: ILedState = {
@@ -11,36 +11,31 @@ const ledChangeReducer = (
   action: ILedAction
 ): ILedState => {
   switch (action.type) {
-    case "LOAD_USER_SPLASH_CONFIG":
-      return {
-        ...state,
-        ...action.payload as ILedLoadUserSplashConfigAction["payload"]
-      };
-    case "INVERT_SWITCH": 
-      return {
-        ...state,
-        isInverted: !action.payload
-      };
+    // case "LOAD_USER_SPLASH_CONFIG":
+    //   return {
+    //     ...state,
+    //     ...action.payload as ILedLoadUserSplashConfigAction["payload"]
+    //   };
     case "PRESET_SWITCH":
       return {
         ...state,
         presetName: action.payload as ILedPresetSwitchAction["payload"]
       };
-    case "ANIMATION_DELAY_CHANGE":
-      return {
-        ...state,
-        animationDelayState: action.payload as ILedAnimationDelayChange["payload"]
-      };
-    case "ANIMATION_DURATION_CHANGE":
-      return {
-        ...state,
-        animationDurationState: action.payload as ILedAnimationDurationChangeAction["payload"]
-      };
-    case "ALPHA_FADER_CHANGE":
-      return {
-        ...state,
-        alpha: action.payload as ILedAlphaFaderChangeAction["payload"]
-      };
+    // case "ANIMATION_DELAY_CHANGE":
+    //   return {
+    //     ...state,
+    //     animationDelayState: action.payload as ILedAnimationDelayChange["payload"]
+    //   };
+    // case "ANIMATION_DURATION_CHANGE":
+    //   return {
+    //     ...state,
+    //     animationDurationState: action.payload as ILedAnimationDurationChangeAction["payload"]
+    //   };
+    // case "ALPHA_FADER_CHANGE":
+    //   return {
+    //     ...state,
+    //     alpha: action.payload as ILedAlphaFaderChangeAction["payload"]
+    //   };
     default: return state;
   }
 };

@@ -5,10 +5,13 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, screen } from "@testing-library/react";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
+import { createMemoryHistory } from "history";
+import { EXPIRED_TOKEN } from "../../utils/mocks";
+import { Router } from "react-router-dom";
 
 const store = createStore(
   allReducers,
@@ -42,5 +45,38 @@ describe("test rendering the app and snapshot", () => {
       </Provider>
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("tests if we arrive to home page with an expired token in storage that, the logout button is not there", async () => {
+    const history = createMemoryHistory();
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", EXPIRED_TOKEN);
+
+    //@ts-ignore
+    global.fetch = jest.fn(() => {
+      return Promise.resolve({
+        status: 400,
+        json: () => {
+          return Promise.resolve({
+            error: "could not get preset at this time"
+          });
+        },
+      });
+    });
+
+    render(
+      <>
+        <Provider store={store}>
+          <Router history={history}>
+            <App />
+          </Router>
+        </Provider>
+      </>
+    );
+    expect(screen.getByTestId("location-display").textContent).toBe("/");
+    const loginPageLink = (await screen.findAllByText(/^Login$/g)).find((el) => {
+      return el.classList.contains("nav-button");
+    }) as HTMLElement;
+    expect(loginPageLink).toBeInTheDocument();
   });
 });

@@ -163,12 +163,6 @@ describe("test the save default button is making the request, mock the response"
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(API_URL + "/user", 
-                                      {"headers": {
-                                        "Content-Type": "application/json",
-                                        "authorization": "Bearer TOKEN YO"
-                                      },
-                                      "method": "GET"});
 
     const preset_buttons = {
       waves: screen.getByTestId("waves"),
@@ -233,13 +227,6 @@ describe("test the save default button is making the request, mock the response"
     });
 
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith(API_URL + "/user/update-preset",
-                                      { "body": "{\"defaultPreset\":\"waves\"}",
-                                        "headers": {
-                                            "Content-Type": "application/json", 
-                                            "authorization": "Bearer TOKEN YO"
-                                        }, 
-                                        "method": "PUT"});
 
   });
 

@@ -6,7 +6,7 @@ import "react-h5-audio-player/lib/styles.css";
 
 // SONGS
 import G6 from "./music/G6_-24_db_for_web_test.m4a";
-import REVERB_STUDY from "./music/175-Reverb-study.m4a";
+// import REVERB_STUDY from "./music/175-Reverb-study.m4a";
 
 // TEXT ANIMATIONS
 import "./aux-styles/trackAnimStyles.css";
@@ -20,10 +20,10 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
       trackName: "g6",
       filePath: G6
     },
-    {
-      trackName: "ReverbStudy",
-      filePath: REVERB_STUDY
-    },
+    // {
+    //   trackName: "ReverbStudy",
+    //   filePath: REVERB_STUDY
+    // },
     // {
     //   trackName: 'Waterfalls',
     //   filePath: WATERFALLS
@@ -108,15 +108,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
           {" "}
           {volumeState}
         </label>
-        {/* <input
-          name="player-volume"
-          type="range"
-          min="0"
-          max="1000"
-          value={volumeState}
-          onChange={handleVolumeChange}
-          style={sliderStyle}
-        ></input> */}
       </div>
       <section
         style={{

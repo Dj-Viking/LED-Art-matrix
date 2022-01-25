@@ -10,14 +10,15 @@ class AuthService {
     } 
       return false;
   }
-  public static getProfile(): MyJwtData {
-    return decode(AuthService.getToken() as string);
-  }
 
   public static loggedIn(): boolean {
     // Checks if there is a saved token and it's still valid
     const token = AuthService.getToken();
-    if (typeof token === "string" && !AuthService.isTokenExpired(token)) return true;
+    if (typeof token === "string") {
+      if (!AuthService.isTokenExpired(token)) {
+        return true;
+      }
+    }
     return false;
   }
 

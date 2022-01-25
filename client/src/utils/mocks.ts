@@ -1,5 +1,7 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
+import jwt from "jsonwebtoken";
+
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
   updated: "presetName goes here hahahah"
@@ -62,10 +64,11 @@ export const LOGIN_MOCK_PAYLOAD_EMAIL = {
   emailOrUsername: "iexist@exist.com",
   password: "believe it"
 };
+export const EXPIRED_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lVXVpZCI6IjcxNmYzMzJlLTMxODQtNDJmMC04Y2I3LTRjOWNlNmJmODdkOCIsInVzZXJuYW1lIjoidGVzdC11c2VyIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIl9pZCI6IjYxZTIxMzgwNTdjOTc4NGYyNDllNjIzNSIsImlhdCI6MTY0MjIwNjA4MCwiZXhwIjoxNjQyMjA5NjgwfQ.kShMP7vYDqYvw-raT1WUq1_XVD4LgU9YsJBZ_8qAqpM";
 
 export const LOGIN_MOCK_RESPONSE = {
   _id: "kdjfkdfj",
-  token: "token man",
+  token: "dkfdkj",
   defaultPreset: "waves"
 };
 
@@ -81,9 +84,14 @@ export const LOGIN_MOCK_NO_TOKEN = {
   }
 };
 
+
+// TODO: sign a new token!!
 export const LOGIN_MOCK_TOKEN = {
   user:  {
-    token: "TOKEN YO",
+    token: jwt.sign({
+      username: "weeeee",
+      _id: "weeeeeee",
+    }, "SECRET!!!!", { expiresIn: "1h" }),
     _id: "weeeeeeeee"
   }
 };
@@ -118,8 +126,8 @@ export const SIGNUP_MOCK_RESULT = {
   token: "heres a token",
   _id: "heres an id"
 };
-// const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
+// with msw (mock service worker)
 // export const server = setupServer(
 //   rest.post("http://localhost:3001/user", async (_req, res, ctx) => {
 //     return res(ctx.json(SIGNUP_MOCK_RESULT));

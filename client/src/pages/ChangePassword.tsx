@@ -110,6 +110,7 @@ const ChangePassword: React.FC = (): JSX.Element => {
           error
           ? (
             <div
+              data-testid="error-message"
               style={{ color: "red" }}
             >
               {error}
