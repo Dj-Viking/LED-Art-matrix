@@ -91,7 +91,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         autoPlay
         preload="auto"
         src={currentSong}
-        onPlay={() => console.log("onPlay")}
         volume={volumeState}
         onVolumeChange={(event: any) => {
           handleVolumeChange(event, event.target.volume);
