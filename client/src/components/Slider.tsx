@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
   inputValueState: number;
@@ -18,7 +18,7 @@ const Slider: React.FC<SliderProps> = ({
 }) => {
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+      <div className="led-slider-container">
 
         <label
           htmlFor={name}
@@ -27,6 +27,7 @@ const Slider: React.FC<SliderProps> = ({
           {label}{inputValueState}
         </label>
 
+        {/* TODO figure out what kinds of labels to use for particular sliders */}
         <span style={{color: "white", marginLeft: "20%"}}>
           &nbsp; <span style={{color: "white", marginLeft: "60%"}}>&nbsp;</span>
         </span>
