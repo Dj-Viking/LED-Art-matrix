@@ -84,7 +84,7 @@ export class LedStyleEngine {
         ${this.createDelays(led, row, coeff)}
         display: flex;
         flex-direction: row;
-        border-radius: 1px;
+        border-radius: 5px;
         background: transparent;
         width: 10vw;
         height: 3vh;

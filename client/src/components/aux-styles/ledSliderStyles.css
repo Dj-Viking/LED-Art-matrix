@@ -1,0 +1,16 @@
+.led-slider-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2em;
+}
+
+.led-slider-label {
+  color: "white";
+  margin: 0 auto;
+}
+
+.slider-style {
+  width: 70%;
+  margin: 0 auto;
+}
