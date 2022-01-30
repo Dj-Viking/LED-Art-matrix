@@ -20,11 +20,13 @@ const testServer_1 = require("../testServer");
 const models_1 = require("../models");
 (0, readEnv_1.readEnv)();
 const { INVALID_SIGNATURE } = process.env;
-beforeEach((done) => {
+beforeAll((done) => {
     mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
 });
-afterEach((done) => {
-    mongoose_1.default.connection.close(() => done());
+afterAll((done) => {
+    mongoose_1.default.connection.db.dropDatabase(() => {
+        mongoose_1.default.connection.close(() => done());
+    });
 });
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";

@@ -45,11 +45,13 @@ jest.mock("../stubs/foo-bar-baz", () => {
     const originalModule = jest.requireActual("../stubs/foo-bar-baz");
     return Object.assign(Object.assign({ __esModule: true }, originalModule), { default: jest.fn(() => "mocked baz"), foo: "mocked foo" });
 });
-beforeEach((done) => {
+beforeAll((done) => {
     mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
 });
-afterEach((done) => {
-    mongoose_1.default.connection.close(() => done());
+afterAll((done) => {
+    mongoose_1.default.connection.db.dropDatabase(() => {
+        mongoose_1.default.connection.close(() => done());
+    });
 });
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";

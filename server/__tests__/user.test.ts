@@ -17,15 +17,15 @@ readEnv();
 
 const { INVALID_SIGNATURE } = process.env;
 
-beforeEach((done) => {
+beforeAll((done) => {
   mongoose.connect(TEST_DB_URL, {}, () => done());
 });
 
-afterEach((done) => {
-  // mongoose.connection.db.dropDatabase(() => {
-  //   mongoose.connection.close(() => done());
-  // });
-  mongoose.connection.close(() => done());
+afterAll((done) => {
+  mongoose.connection.db.dropDatabase(() => {
+    mongoose.connection.close(() => done());
+  });
+  // mongoose.connection.close(() => done());
 });
 const app = createTestServer();
 let newUserId: null | string = "";

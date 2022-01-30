@@ -43,10 +43,8 @@ const BigLedBox: React.FC = (): JSX.Element => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
         if (typeof preset === "string") {
-          // set the presetname state for the react element
+          // TODO: load preset with saved coefficient parameters
           dispatch(presetSwitch(preset));
-          // recreate the styletag with the corresponding animation for the given preset
-          // have to use useRef because "React" I guess..I don't get why, it works without useRef but whatever
           LedEngineRef.current = new LedStyleEngine(preset);
           styleHTMLRef.current = LedEngineRef.current.createStyleSheet();
           dispatch(setLedStyle(styleHTMLRef.current));
@@ -97,6 +95,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
             ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
           ) && 
           <Slider
+            name="vertical-positioning"
             testid="led-anim-delay"
             label="LED Animation Variation: " 
             inputValueState={animPresetDelayCoeff} 
