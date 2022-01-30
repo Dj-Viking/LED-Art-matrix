@@ -266,6 +266,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     class="box-style"
   >
     <style
+      data-testid="led-style"
       id="led-style"
     />
     <section
