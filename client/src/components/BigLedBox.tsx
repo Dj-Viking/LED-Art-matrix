@@ -30,9 +30,9 @@ const BigLedBox: React.FC = (): JSX.Element => {
       return void 0;
     }
   }, []);
-  const [animPresetDelayCoeff, setAnimPresetDelayCoeff] = useState<number>(64);
-  function handlePresetDelayChange(event: any): void {
-    setAnimPresetDelayCoeff(event.target.value);
+  const [animPresetVariationCoeff, setAnimPresetVariationCoeff] = useState<number>(64);
+  function handlePresetVariationChange(event: any): void {
+    setAnimPresetVariationCoeff(event.target.value);
   }
 
   // function that sets the starting preset name of the user logging on
@@ -56,10 +56,9 @@ const BigLedBox: React.FC = (): JSX.Element => {
   
   //second use effect to re-render when the preset parameters change and also when the preset switch happens.
   useEffect(() => {
-    console.log("what is anim preset delay coeff", animPresetDelayCoeff);
-    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetDelayCoeff);
+    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetVariationCoeff);
     dispatch(setLedStyle(styleHTMLRef.current));
-  }, [animPresetDelayCoeff, presetName, dispatch]);
+  }, [animPresetVariationCoeff, presetName, dispatch]);
 
   const leds: Array<{ ledNumber: number }> = [];
   function createLedObjectsArray(num: number): void {
@@ -93,14 +92,17 @@ const BigLedBox: React.FC = (): JSX.Element => {
         {
           (
             ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
-          ) && 
-          <Slider
-            name="vertical-positioning"
-            testid="led-anim-delay"
-            label="LED Animation Variation: " 
-            inputValueState={animPresetDelayCoeff} 
-            handleChange={handlePresetDelayChange}
-          />
+          ) && (
+            <>
+              <Slider
+                name="led-anim-var"
+                testid="led-anim-variation"
+                label="LED Animation Variation: " 
+                inputValueState={animPresetVariationCoeff} 
+                handleChange={handlePresetVariationChange}
+              />
+            </>
+          )
         }
         <section
           id="led-box"
@@ -119,7 +121,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
                     <div
                       data-testid={`led${led.ledNumber}-${row.rowNumber}`}
                       id={`led${led.ledNumber}-${row.rowNumber}`}
-                      key={`led${led.ledNumber}-${Math.random() * 10}`} 
+                      key={`led${led.ledNumber}-${Math.random() * 1000}`} 
                       className={`led${led.ledNumber}-${row.rowNumber}${presetName}`}
                     />
                   ))

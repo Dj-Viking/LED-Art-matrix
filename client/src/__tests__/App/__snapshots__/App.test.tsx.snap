@@ -480,35 +480,6 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         </button>
       </div>
     </section>
-    <div
-      style="display: flex; flex-direction: column; justify-content: center;"
-    >
-      <label
-        for="vertical-positioning"
-        style="color: white; margin: 0px auto;"
-      >
-        LED Animation Variation: 64
-      </label>
-      <span
-        style="color: white; margin-left: 20%;"
-      >
-          
-        <span
-          style="color: white; margin-left: 60%;"
-        >
-           
-        </span>
-      </span>
-      <input
-        class="slider-style"
-        data-testid="led-anim-delay"
-        max="200"
-        min="0"
-        name="vertical-positioning"
-        type="range"
-        value="64"
-      />
-    </div>
     <section
       class="led-matrix-container"
       id="led-box"

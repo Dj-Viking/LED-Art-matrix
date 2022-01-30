@@ -179,10 +179,6 @@ describe("test clicking all the preset buttons and that they change the led styl
     const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPreRef).toBeInTheDocument();
 
-    // ledPreRef.classList.forEach((value: string, key: number, parent: DOMTokenList) => {
-      // console.log("value", value, "key", key, "parent", parent);
-    // });
-
     expect(ledPreRef.classList.contains("led1-1")).toBe(true);
 
     const preset_buttons = {
