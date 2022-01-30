@@ -58,12 +58,9 @@ const BigLedBox: React.FC = (): JSX.Element => {
   
   //second use effect to re-render when the preset parameters change and also when the preset switch happens.
   useEffect(() => {
-    // console.log("delay coeff changed", animPresetDelayCoeff);
-    // console.log("preset name changed", presetName, "style ref when changed", styleHTMLRef.current);
+    console.log("what is anim preset delay coeff", animPresetDelayCoeff);
     styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetDelayCoeff);
     dispatch(setLedStyle(styleHTMLRef.current));
-    // const matches = styleHTMLRef.current.match(/animation-duration: ([0-9.s]+)/g);
-    // console.log("html state", matches?.length ? matches[0] : null);
   }, [animPresetDelayCoeff, presetName, dispatch]);
 
   const leds: Array<{ ledNumber: number }> = [];
@@ -76,8 +73,8 @@ const BigLedBox: React.FC = (): JSX.Element => {
     for (let i = 1; i < num; i++) { rows.push({ rowNumber: i }); }
   }
 
-  createLedObjectsArray(32);
-  createLedRowsArray(32);
+  createLedObjectsArray(33);
+  createLedRowsArray(33);
   
   return (
     <>
@@ -95,12 +92,17 @@ const BigLedBox: React.FC = (): JSX.Element => {
           <div className="border-top-led" />
           <PresetButtons />
         </section>
-        <Slider
-          testid="led-anim-delay"
-          label="LED Animation Delay Change: " 
-          inputValueState={animPresetDelayCoeff} 
-          handleChange={handlePresetDelayChange}
-        />
+        {
+          (
+            ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
+          ) && 
+          <Slider
+            testid="led-anim-delay"
+            label="LED Animation Variation: " 
+            inputValueState={animPresetDelayCoeff} 
+            handleChange={handlePresetDelayChange}
+          />
+        }
         <section
           id="led-box"
           className="led-matrix-container"

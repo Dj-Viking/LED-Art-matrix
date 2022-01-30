@@ -21,12 +21,12 @@ const Slider: React.FC<SliderProps> = ({
         htmlFor="vertical-positioning"
         style={{ color: "white", margin: "0 auto" }}
       >
-
-        {label}
-        {" "}
-        {inputValueState}
-        {"\n"}
+        {label}{inputValueState}
       </label>
+      <span style={{color: "white", marginLeft: "20%"}}>
+        &nbsp; <span style={{color: "white", marginLeft: "60%"}}>&nbsp;</span>
+      </span>
+      
       <input 
         name="vertical-positioning"
         className="slider-style"

@@ -6,10 +6,7 @@ import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButto
 import "./aux-styles/artScrollerLayoutStyle.css";
 import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
-// ACTIONS
-import {
-  getGifs,
-} from "../actions/art-scroller-actions";
+import { getGifs } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
 const ArtScroller: React.FC = (): JSX.Element => {
@@ -56,13 +53,6 @@ const ArtScroller: React.FC = (): JSX.Element => {
     figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
   }
 
-  // useEffect(() => {
-
-    
-    
-  // }, []);
-
-
   async function handleGetGifs(event: any): Promise<void> {
     event.persist();
     if (figureIsOnState === false) setFigureIsOnState(true);
@@ -73,9 +63,6 @@ const ArtScroller: React.FC = (): JSX.Element => {
       }
     }
   }
-
-  
-  
 
   return (
     <>
