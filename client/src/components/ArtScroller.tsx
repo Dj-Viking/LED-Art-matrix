@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useSpring, animated } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
@@ -15,28 +15,12 @@ import { MyRootState } from "../types";
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
   const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
-  const dispatchREDUX = useDispatch();
-  useEffect(() => () => void 0, []);
+  const dispatch = useDispatch();
   const { gifs } = useSelector((state: MyRootState) => state.artScrollerState);
-
-  async function handleGetGifs(event: any): Promise<void> {
-    event.persist();
-    if (figureIsOnState === false) setFigureIsOnState(true);
-    try {
-      const gifs = await API.getGifs();
-      if (Array.isArray(gifs)) {
-        if (gifs.length) {
-          dispatchREDUX(getGifs(gifs));
-        }
-      }
-    } catch (error) {
-      return void 0;
-    }
-  }
 
   // create animation that scrolls opacity at different animation durations
   // for opacity only
-  const [animationDurationState, setAnimationDurationState] = useState("30");
+  const [animationDurationState, setAnimationDurationState] = useState<string>("30");
   function handleAnimationDurationChange(event: any): void {
     setAnimationDurationState(event.target.value);
   }
@@ -44,33 +28,54 @@ const ArtScroller: React.FC = (): JSX.Element => {
   // position style state
   // input sliders for positioning the circle
   // maybe later can click and drag. and throw around
-  const [verticalPositionState, setVerticalPositionState] = useState("50");
+  const [verticalPositionState, setVerticalPositionState] = useState<string>("50");
   function handleVerticalPositionStateChange(event: any): void {
     setVerticalPositionState(event.target.value);
   }
 
   // horizontal position style state
-  const [horizontalPositionState, setHorizontalPositionState] = useState("33.4");
+  const [horizontalPositionState, setHorizontalPositionState] = useState<string>("33.4");
   function handleHorizontalPositionStateChange(event: any): void {
     setHorizontalPositionState(event.target.value);
   }
 
   // width of circle state maybe
   // input slider for widening the scroller
-  const [scrollerCircleWidth, setScrollerCircleWidth] = useState("30");
+  const [scrollerCircleWidth, setScrollerCircleWidth] = useState<string>("30");
   function handleScrollerCircleWidthChange(event: any): void {
     setScrollerCircleWidth(event.target.value);
   }
 
-  const [invertState, setInvertState] = useState(0);
+  const [invertState, setInvertState] = useState<number>(0);
   function handleInvertChange(event: any): void {
     setInvertState(event.target.value);
   }
 
-  const [figureIsOnState, setFigureIsOnState] = useState(false);
+  const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
   function handleFigureChange(): void {
     figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
   }
+
+  // useEffect(() => {
+
+    
+    
+  // }, []);
+
+
+  async function handleGetGifs(event: any): Promise<void> {
+    event.persist();
+    if (figureIsOnState === false) setFigureIsOnState(true);
+    const gifs = await API.getGifs();
+    if (Array.isArray(gifs)) {
+      if (gifs.length) {
+        dispatch(getGifs(gifs));
+      }
+    }
+  }
+
+  
+  
 
   return (
     <>
@@ -124,7 +129,6 @@ const ArtScroller: React.FC = (): JSX.Element => {
               htmlFor="scroller-circle-width"
               style={{ color: "white" }}
             >
-
               Scroller Circle Width: 
               {" "}
               {scrollerCircleWidth}

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
@@ -11,6 +11,7 @@ import { presetSwitch } from "../actions/led-actions";
 import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
+import { Slider } from "./Slider";
 
 const BigLedBox: React.FC = (): JSX.Element => {
   const { presetName } = useSelector((state: MyRootState) => state.ledState);
@@ -29,6 +30,10 @@ const BigLedBox: React.FC = (): JSX.Element => {
       return void 0;
     }
   }, []);
+  const [animPresetDelayCoeff, setAnimPresetDelayCoeff] = useState<number>(64);
+  function handlePresetDelayChange(event: any): void {
+    setAnimPresetDelayCoeff(event.target.value);
+  }
 
   // function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
@@ -50,6 +55,16 @@ const BigLedBox: React.FC = (): JSX.Element => {
     })();
     return void 0;
   }, [getDefaultPreset, dispatch]);
+  
+  //second use effect to re-render when the preset parameters change and also when the preset switch happens.
+  useEffect(() => {
+    // console.log("delay coeff changed", animPresetDelayCoeff);
+    // console.log("preset name changed", presetName, "style ref when changed", styleHTMLRef.current);
+    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetDelayCoeff);
+    dispatch(setLedStyle(styleHTMLRef.current));
+    // const matches = styleHTMLRef.current.match(/animation-duration: ([0-9.s]+)/g);
+    // console.log("html state", matches?.length ? matches[0] : null);
+  }, [animPresetDelayCoeff, presetName, dispatch]);
 
   const leds: Array<{ ledNumber: number }> = [];
   function createLedObjectsArray(num: number): void {
@@ -61,8 +76,8 @@ const BigLedBox: React.FC = (): JSX.Element => {
     for (let i = 1; i < num; i++) { rows.push({ rowNumber: i }); }
   }
 
-  createLedObjectsArray(33);
-  createLedRowsArray(33);
+  createLedObjectsArray(32);
+  createLedRowsArray(32);
   
   return (
     <>
@@ -80,6 +95,12 @@ const BigLedBox: React.FC = (): JSX.Element => {
           <div className="border-top-led" />
           <PresetButtons />
         </section>
+        <Slider
+          testid="led-anim-delay"
+          label="LED Animation Delay Change: " 
+          inputValueState={animPresetDelayCoeff} 
+          handleChange={handlePresetDelayChange}
+        />
         <section
           id="led-box"
           className="led-matrix-container"

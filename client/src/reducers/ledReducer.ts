@@ -5,7 +5,7 @@ const ledChangeReducer = (
     alpha: "1",
     presetName: "",
     animationDurationState: "4s",
-    animationDelayState: ".5s",
+    animPresetDelayCoeff: 0,
     isInverted: false
   },
   action: ILedAction
