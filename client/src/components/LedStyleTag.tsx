@@ -12,6 +12,7 @@ const LedStyleTag: React.FC = () => {
       <style
         dangerouslySetInnerHTML={{ __html: escapeHTML(html) }}
         id="led-style"
+        data-testid="led-style"
       ></style>
     </>
   );

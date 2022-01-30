@@ -16,8 +16,8 @@ export interface ILedState {
   alpha: string;
   presetName: string;
   animationDurationState: string;
-  animationDelayState: string;
   isInverted: boolean;
+  animPresetDelayCoeff: number;
 }
 export type ILedActionTypes = 
 | "LOAD_USER_SPLASH_CONFIG"
@@ -153,6 +153,12 @@ export interface ISignupPasswordChangeAction {
 
 export interface IArtScrollerState {
   gifs: Array<IGif>;
+  animDuration: string;
+  vertPos: string;
+  hPos: string;
+  circleWidth: string;
+  invert: number;
+  figureOn: boolean;
 }
 
 export type IArtScrollerActionTypes = 

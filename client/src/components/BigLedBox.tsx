@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
@@ -11,6 +11,7 @@ import { presetSwitch } from "../actions/led-actions";
 import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
+import { Slider } from "./Slider";
 
 const BigLedBox: React.FC = (): JSX.Element => {
   const { presetName } = useSelector((state: MyRootState) => state.ledState);
@@ -29,6 +30,10 @@ const BigLedBox: React.FC = (): JSX.Element => {
       return void 0;
     }
   }, []);
+  const [animPresetVariationCoeff, setAnimPresetVariationCoeff] = useState<number>(64);
+  function handlePresetVariationChange(event: any): void {
+    setAnimPresetVariationCoeff(event.target.value);
+  }
 
   // function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
@@ -38,10 +43,8 @@ const BigLedBox: React.FC = (): JSX.Element => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset();
         if (typeof preset === "string") {
-          // set the presetname state for the react element
+          // TODO: load preset with saved coefficient parameters
           dispatch(presetSwitch(preset));
-          // recreate the styletag with the corresponding animation for the given preset
-          // have to use useRef because "React" I guess..I don't get why, it works without useRef but whatever
           LedEngineRef.current = new LedStyleEngine(preset);
           styleHTMLRef.current = LedEngineRef.current.createStyleSheet();
           dispatch(setLedStyle(styleHTMLRef.current));
@@ -50,6 +53,12 @@ const BigLedBox: React.FC = (): JSX.Element => {
     })();
     return void 0;
   }, [getDefaultPreset, dispatch]);
+  
+  //second use effect to re-render when the preset parameters change and also when the preset switch happens.
+  useEffect(() => {
+    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetVariationCoeff);
+    dispatch(setLedStyle(styleHTMLRef.current));
+  }, [animPresetVariationCoeff, presetName, dispatch]);
 
   const leds: Array<{ ledNumber: number }> = [];
   function createLedObjectsArray(num: number): void {
@@ -80,6 +89,21 @@ const BigLedBox: React.FC = (): JSX.Element => {
           <div className="border-top-led" />
           <PresetButtons />
         </section>
+        {
+          (
+            ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
+          ) && (
+            <>
+              <Slider
+                name="led-anim-var"
+                testid="led-anim-variation"
+                label="LED Animation Variation: " 
+                inputValueState={animPresetVariationCoeff} 
+                handleChange={handlePresetVariationChange}
+              />
+            </>
+          )
+        }
         <section
           id="led-box"
           className="led-matrix-container"
@@ -97,7 +121,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
                     <div
                       data-testid={`led${led.ledNumber}-${row.rowNumber}`}
                       id={`led${led.ledNumber}-${row.rowNumber}`}
-                      key={`led${led.ledNumber}-${Math.random() * 10}`} 
+                      key={`led${led.ledNumber}-${Math.random() * 1000}`} 
                       className={`led${led.ledNumber}-${row.rowNumber}${presetName}`}
                     />
                   ))

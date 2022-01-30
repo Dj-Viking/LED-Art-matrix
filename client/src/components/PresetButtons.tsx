@@ -38,6 +38,11 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     dispatch(setLedStyle(styleHTML));
   }
 
+  // TODO: load buttons dynamically according to the account logged in.
+  // have the starting buttons there, but when a new preset is being created
+  // with new parameters, we could save that preset with those coefficient parameters
+  // as a new button, and a new preset in the user's database model. 
+
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
     await API.updateDefaultPreset({ name: presetName, token: Auth.getToken() as string });

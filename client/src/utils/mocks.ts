@@ -13,9 +13,11 @@ export const SAVE_DEFAULT_MOCK_ERROR = {
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",
   keyframes: /keyframes/g,
+  durationStyleRegex: /animation-duration: ([0-9.s])+/,
+  delayStyleRegex: /animation-delay: ([0-9.s])+/,
   rainbowTest: {
     regex: /rainbowTestAllAnim/g,
-    classListItem: "led1-1rainbowTestAllAnim"
+    classListItem: "led1-1rainbowTestAllAnim",
   },
   v2: {
     regex: /V2/g,
