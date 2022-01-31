@@ -1,61 +1,36 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useSpring, animated } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
-import { getGifs } from "../actions/art-scroller-actions";
+import { getGifs, setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos, toggleFigure } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
   const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
   const dispatch = useDispatch();
-  const { gifs } = useSelector((state: MyRootState) => state.artScrollerState);
+  const { 
+    gifs, 
+    animDuration, 
+    vertPos, 
+    hPos, 
+    circleWidth, 
+    invert, 
+    figureOn 
+  } = useSelector((state: MyRootState) => state.artScrollerState);
 
-  // create animation that scrolls opacity at different animation durations
-  // for opacity only
-  const [animationDurationState, setAnimationDurationState] = useState<string>("30");
-  function handleAnimationDurationChange(event: any): void {
-    setAnimationDurationState(event.target.value);
-  }
-
-  // position style state
-  // input sliders for positioning the circle
-  // maybe later can click and drag. and throw around
-  const [verticalPositionState, setVerticalPositionState] = useState<string>("50");
-  function handleVerticalPositionStateChange(event: any): void {
-    setVerticalPositionState(event.target.value);
-  }
-
-  // horizontal position style state
-  const [horizontalPositionState, setHorizontalPositionState] = useState<string>("33.4");
-  function handleHorizontalPositionStateChange(event: any): void {
-    setHorizontalPositionState(event.target.value);
-  }
-
-  // width of circle state maybe
-  // input slider for widening the scroller
-  const [scrollerCircleWidth, setScrollerCircleWidth] = useState<string>("30");
-  function handleScrollerCircleWidthChange(event: any): void {
-    setScrollerCircleWidth(event.target.value);
-  }
-
-  const [invertState, setInvertState] = useState<number>(0);
-  function handleInvertChange(event: any): void {
-    setInvertState(event.target.value);
-  }
-
-  const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
-  function handleFigureChange(): void {
-    figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
-  }
+  // const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
+  // function handleFigureChange(): void {
+  //   figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
+  // }
 
   async function handleGetGifs(event: any): Promise<void> {
     event.persist();
-    if (figureIsOnState === false) setFigureIsOnState(true);
+    if (figureOn === false) dispatch(toggleFigure(figureOn));
     const gifs = await API.getGifs();
     if (Array.isArray(gifs)) {
       if (gifs.length) {
@@ -99,11 +74,14 @@ const ArtScroller: React.FC = (): JSX.Element => {
               role="button"
               data-testid="switch-scroller"
               style={scrollerOnOffButtonSpring}
-              className={figureIsOnState ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
-              onClick={handleFigureChange}
+              className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
+              onClick={(event) => {
+                event.preventDefault();
+                dispatch(toggleFigure(figureOn));
+              }}
             >
               {
-                figureIsOnState
+                figureOn
                 ? <span style={{ color: "white" }}>Turn Off Scroller</span>
                 : <span style={{ color: "white" }}>Turn On Scroller</span>
               }
@@ -118,7 +96,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             >
               Scroller Circle Width: 
               {" "}
-              {scrollerCircleWidth}
+              {circleWidth}
             </label>
             <input 
               name="scroller-circle-width"
@@ -127,8 +105,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
               data-testid="circle-width"
               min="0"
               max="100"
-              value={scrollerCircleWidth}
-              onChange={handleScrollerCircleWidthChange}
+              value={circleWidth}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setCircleWidth(event.target.value));
+              }}
             />
             <label
               htmlFor="vertical-positioning"
@@ -137,7 +118,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
 
               Scroller Vert Positioning: 
               {" "}
-              {verticalPositionState}
+              {vertPos}
             </label>
             <input 
               name="vertical-positioning"
@@ -146,8 +127,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
               type="range"
               min="0"
               max="200"
-              value={verticalPositionState}
-              onChange={handleVerticalPositionStateChange}
+              value={vertPos}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setVertPos(event.target.value));
+              }}
             />
             <label
               htmlFor="horizontal-positioning"
@@ -156,7 +140,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
 
               Scroller Horizontal Positioning: 
               {" "}
-              {Number(horizontalPositionState) / 1000}
+              {Number(hPos) / 1000}
             </label>
             <input 
               name="horizontal-positioning"
@@ -165,8 +149,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
               min="0"
               data-testid="horiz-pos"
               max="100"
-              value={horizontalPositionState}
-              onChange={handleHorizontalPositionStateChange}
+              value={hPos}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setHPos(event.target.value));
+              }}
             />
             <label
               htmlFor="invert"
@@ -174,7 +161,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             >
               Invert Colors: 
               {" "}
-              {invertState / 100}
+              {Number(invert) / 100}
             </label>
             <input
               className="slider-style"
@@ -183,8 +170,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
               data-testid="invert"
               min="0"
               max="100"
-              value={invertState}
-              onChange={handleInvertChange}
+              value={invert}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setInvert(event.target.value));
+              }}
             />
             <label
               htmlFor="animation-duration"
@@ -192,7 +182,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             >
               Scroll Speed: 
               {" "}
-              {Number(animationDurationState) / 100}
+              {Number(animDuration) / 100}
             </label>
             <input
               className="slider-style"
@@ -201,14 +191,17 @@ const ArtScroller: React.FC = (): JSX.Element => {
               data-testid="anim-duration"
               min="1"
               max="100"
-              value={animationDurationState}
-              onChange={handleAnimationDurationChange}
+              value={animDuration}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setAnimDuration(event.target.value));
+              }}
             />
           </div>
           <figure
             data-testid="gifs-container"
             style={{
-              display: `${figureIsOnState ? "block" : "none"}`,
+              display: `${figureOn ? "block" : "none"}`,
               margin: "0"
             }}
             className="figure-transition-style"
@@ -227,17 +220,17 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     // @ts-expect-error whatever
                     zIndex: "1",
                     // opacity: `${opacityState/100}`,
-                    filter: `invert(${invertState / 100})`,
+                    filter: `invert(${Number(invert) / 100})`,
                     borderRadius: "50%",
                     animationName: "scrollAnim",
-                    animationDuration: `${Number(animationDurationState) / 100 * (index + getRandomIntLimit(index, 20))}s`,
+                    animationDuration: `${Number(animDuration) / 100 * (index + getRandomIntLimit(index, 20))}s`,
                     animationDelay: `0.${index + 1}`,
                     animationTimingFunction: "ease-in",
                     animationDirection: "reverse",
                     animationIterationCount: "infinite",
-                    top: `${verticalPositionState}vh`,
-                    width: `${scrollerCircleWidth}vw`,
-                    left: `${horizontalPositionState}vw`
+                    top: `${vertPos}vh`,
+                    width: `${circleWidth}vw`,
+                    left: `${hPos}vw`
                   }}
                   className="scroller-media"
                 />

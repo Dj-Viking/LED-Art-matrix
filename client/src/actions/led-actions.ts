@@ -1,4 +1,4 @@
-import { ILedPresetSwitchAction } from "../types";
+import { ILedAnimVarCoeffChangeAction, ILedPresetSwitchAction } from "../types";
 
 // LED CHANGE ACTIONS
 // export const loadUserSplashConfig = (
@@ -14,6 +14,10 @@ import { ILedPresetSwitchAction } from "../types";
 export const presetSwitch = (preset: string): ILedPresetSwitchAction => ({
   type: "PRESET_SWITCH",
   payload: preset
+});
+export const animVarCoeffChange = (coeff: string): ILedAnimVarCoeffChangeAction => ({
+  type: "VAR_COEFF_CHANGE",
+  payload: coeff
 });
 // export const animationDurationChange = (data: string): ILedAnimationDurationChangeAction => ({
 //   type: "ANIMATION_DURATION_CHANGE",

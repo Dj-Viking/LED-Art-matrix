@@ -17,20 +17,20 @@ export interface ILedState {
   presetName: string;
   animationDurationState: string;
   isInverted: boolean;
-  animPresetDelayCoeff: number;
+  animVarCoeff: string;
 }
 export type ILedActionTypes = 
 | "LOAD_USER_SPLASH_CONFIG"
 | "INVERT_SWITCH"
 | "PRESET_SWITCH"
-| "ANIMATION_DELAY_CHANGE"
-| "ANIMATION_DURATION_CHANGE"
-| "ALPHA_FADER_CHANGE"
+| "VAR_COEFF_CHANGE"
+| "ALPHA_FADER_CHANGE";
 
 export type ILedActionPayloads = 
 | ILedLoadUserSplashConfigAction["payload"]
 | ILedAlphaFaderChangeAction["payload"]
 | ILedAnimationDelayChange["payload"]
+| ILedAnimVarCoeffChangeAction["payload"]
 | ILedAnimationDurationChangeAction["payload"]
 | ILedPresetSwitchAction["payload"]
 
@@ -39,6 +39,10 @@ export interface ILedAction {
   payload: ILedActionPayloads;
 }
 
+export interface ILedAnimVarCoeffChangeAction {
+  type: "VAR_COEFF_CHANGE";
+  payload: string;
+}
 export interface ILedLoadUserSplashConfigAction {
   type: "LOAD_USER_SPLASH_CONFIG";
   payload: {
@@ -83,6 +87,30 @@ export interface IGif {
   gifSrc: string | URL;
   limit: string;
   _id: string;
+}
+export interface ISetHPosAction {
+  type: "SET_H_POS",
+  payload: string;
+}
+export interface ISetCircleWidthAction {
+  type: "SET_CIRCLE_WIDTH",
+  payload: string;
+}
+export interface ISetInvertAction {
+  type: "SET_INVERT",
+  payload: string;
+}
+export interface ISetFigureOnAction {
+  type: "TOGGLE_FIGURE",
+  payload: boolean;
+}
+export interface ISetVertPosAction {
+  type: "SET_VERT_POS",
+  payload: string;
+}
+export interface ISetAnimDurationAction {
+  type: "SET_ANIM_DUR",
+  payload: string;
 }
 export interface IGetGifsAction {
   type: "GET_GIFS";
@@ -157,15 +185,27 @@ export interface IArtScrollerState {
   vertPos: string;
   hPos: string;
   circleWidth: string;
-  invert: number;
+  invert: string;
   figureOn: boolean;
 }
 
 export type IArtScrollerActionTypes = 
 | IGetGifsAction["type"]
+| ISetAnimDurationAction["type"]
+| ISetVertPosAction["type"]
+| ISetHPosAction["type"]
+| ISetCircleWidthAction["type"]
+| ISetInvertAction["type"]
+| ISetFigureOnAction["type"]
 
 export type IArtScrollerPayloads = 
 | IGetGifsAction["payload"]
+| ISetAnimDurationAction["payload"]
+| ISetVertPosAction["payload"]
+| ISetHPosAction["payload"]
+| ISetCircleWidthAction["payload"]
+| ISetInvertAction["payload"]
+| ISetFigureOnAction["payload"]
 
 export interface IArtScrollerAction {
   type: IArtScrollerActionTypes;

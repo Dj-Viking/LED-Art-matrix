@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
@@ -7,14 +7,14 @@ import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
-import { presetSwitch } from "../actions/led-actions";
+import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
 import { Slider } from "./Slider";
 
 const BigLedBox: React.FC = (): JSX.Element => {
-  const { presetName } = useSelector((state: MyRootState) => state.ledState);
+  const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const dispatch = useDispatch();
   const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
   const styleHTMLRef = useRef<string>("");
@@ -30,10 +30,6 @@ const BigLedBox: React.FC = (): JSX.Element => {
       return void 0;
     }
   }, []);
-  const [animPresetVariationCoeff, setAnimPresetVariationCoeff] = useState<number>(64);
-  function handlePresetVariationChange(event: any): void {
-    setAnimPresetVariationCoeff(event.target.value);
-  }
 
   // function that sets the starting preset name of the user logging on
   // conditionally render whether they are logged on => load with that default preset
@@ -56,9 +52,9 @@ const BigLedBox: React.FC = (): JSX.Element => {
   
   //second use effect to re-render when the preset parameters change and also when the preset switch happens.
   useEffect(() => {
-    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animPresetVariationCoeff);
+    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
     dispatch(setLedStyle(styleHTMLRef.current));
-  }, [animPresetVariationCoeff, presetName, dispatch]);
+  }, [animVarCoeff, presetName, dispatch]);
 
   const leds: Array<{ ledNumber: number }> = [];
   function createLedObjectsArray(num: number): void {
@@ -98,8 +94,11 @@ const BigLedBox: React.FC = (): JSX.Element => {
                 name="led-anim-var"
                 testid="led-anim-variation"
                 label="LED Animation Variation: " 
-                inputValueState={animPresetVariationCoeff} 
-                handleChange={handlePresetVariationChange}
+                inputValueState={animVarCoeff} 
+                handleChange={(event) => {
+                  event.preventDefault();
+                  dispatch(animVarCoeffChange(event.target.value));
+                }}
               />
             </>
           )
