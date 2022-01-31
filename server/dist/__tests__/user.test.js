@@ -18,20 +18,27 @@ const readEnv_1 = require("../utils/readEnv");
 const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
 const models_1 = require("../models");
+const utils_1 = require("../utils");
+const uuid = require("uuid");
 (0, readEnv_1.readEnv)();
 const { INVALID_SIGNATURE } = process.env;
-beforeAll((done) => {
-    mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
-});
-afterAll((done) => {
-    mongoose_1.default.connection.db.dropDatabase(() => {
-        mongoose_1.default.connection.close(() => done());
-    });
+beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
+}));
+afterAll(() => {
+    mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield mongoose_1.default.connection.close();
+    }));
 });
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";
 let newUserToken = "";
 describe("test this runs through CRUD of a user entity", () => {
+    test("POST /user try to sign up with out data", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield (0, supertest_1.default)(app).post("/user");
+        expect(user.status).toBe(400);
+        expect(JSON.parse(user.text).error).toBe("missing username, email, or password in the signup request.");
+    }));
     test("/POST a user gets created", () => __awaiter(void 0, void 0, void 0, function* () {
         const createUser = yield (0, supertest_1.default)(app)
             .post("/user")
@@ -47,7 +54,55 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(typeof parsed.token).toBe("string");
         newUserToken = parsed.token;
     }));
-    test("/POST this new user can now login", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("GET /user get the user info and their default preset", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield (0, supertest_1.default)(app)
+            .get("/user")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        });
+        expect(user.status).toBe(200);
+        const parsed = JSON.parse(user.text);
+        expect(parsed.preset).toBe("waves");
+    }));
+    test("POST /user/login with just email", () => __awaiter(void 0, void 0, void 0, function* () {
+        const login = yield (0, supertest_1.default)(app)
+            .post("/user/login")
+            .send({
+            usernameOrEmail: {
+                username: void 0,
+                email: constants_1.TEST_EMAIL,
+            },
+            password: constants_1.TEST_PASSWORD,
+        });
+        expect(login.status).toBe(200);
+    }));
+    test("POST /user/login try to login with bad password", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badPass = yield (0, supertest_1.default)(app)
+            .post("/user/login")
+            .send({
+            usernameOrEmail: {
+                username: constants_1.TEST_USERNAME,
+                email: void 0,
+            },
+            password: "dkjfkdjfk",
+        });
+        expect(badPass.status).toBe(400);
+        expect(JSON.parse(badPass.text).error).toBe("Incorrect Credentials");
+    }));
+    test("POST /user/login try to login with wrong credentials", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badCreds = yield (0, supertest_1.default)(app)
+            .post("/user/login")
+            .send({
+            usernameOrEmail: {
+                username: void 0,
+                email: void 0,
+            },
+            password: constants_1.TEST_PASSWORD,
+        });
+        expect(badCreds.status).toBe(400);
+        expect(JSON.parse(badCreds.text).error).toBe("Incorrect Credentials");
+    }));
+    test("POST /user/login this new user can now login", () => __awaiter(void 0, void 0, void 0, function* () {
         const login = yield (0, supertest_1.default)(app)
             .post("/user/login")
             .send({
@@ -62,7 +117,66 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(typeof parsed.user.token).toBe("string");
         expect(parsed.user.token !== newUserToken).toBe(true);
     }));
-    test("/PUT update a user's default preset", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("PUT /change-pass user attempt to change password with bad token", () => __awaiter(void 0, void 0, void 0, function* () {
+        let resetToken = (0, utils_1.signToken)({
+            resetEmail: constants_1.TEST_EMAIL,
+            uuid: uuid.v4(),
+            exp: "5m",
+        });
+        resetToken += resetToken.replace(resetToken[0], "kdjkfdjfdk");
+        const change = yield (0, supertest_1.default)(app).put("/user/change-pass").send({
+            password: "new password",
+            token: resetToken,
+        });
+        expect(change.status).toBe(403);
+    }));
+    test("PUT /change-pass user attempt to change password with bad email", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resetToken = (0, utils_1.signToken)({
+            resetEmail: "kdfjkdkfj@dkfjdkjf.com",
+            uuid: uuid.v4(),
+            exp: "5m",
+        });
+        const badEmail = yield (0, supertest_1.default)(app).put("/user/change-pass").send({
+            password: "new password",
+            token: resetToken,
+        });
+        expect(badEmail.status).toBe(400);
+    }));
+    test("PUT /change-pass user attempt to change password", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resetToken = (0, utils_1.signToken)({
+            resetEmail: constants_1.TEST_EMAIL,
+            uuid: uuid.v4(),
+            exp: "5m",
+        });
+        const change = yield (0, supertest_1.default)(app).put("/user/change-pass").send({
+            password: "new password",
+            token: resetToken,
+        });
+        expect(change.status).toBe(200);
+        expect(JSON.parse(change.text).done).toBe(true);
+        expect(typeof JSON.parse(change.text).token).toBe("string");
+    }));
+    test("POST /user/login with the new password", () => __awaiter(void 0, void 0, void 0, function* () {
+        const reset = yield (0, supertest_1.default)(app)
+            .post("/user/login")
+            .send({
+            usernameOrEmail: {
+                username: constants_1.TEST_USERNAME,
+            },
+            password: "new password",
+        });
+        expect(reset.status).toBe(200);
+    }));
+    test("PUT /update-preset try update preset without data", () => __awaiter(void 0, void 0, void 0, function* () {
+        const update = yield (0, supertest_1.default)(app)
+            .put("/user/update-preset")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        });
+        expect(update.status).toBe(400);
+        expect(JSON.parse(update.text).error).toBe("missing preset name in request");
+    }));
+    test("PUT /update-preset a user's default preset", () => __awaiter(void 0, void 0, void 0, function* () {
         const update = yield (0, supertest_1.default)(app)
             .put("/user/update-preset")
             .set({

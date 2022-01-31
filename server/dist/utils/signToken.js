@@ -11,28 +11,12 @@ const { SECRET, EXPIRATION } = process.env;
 function signToken(args) {
     const { username, _id, role, uuid: someUuid, email, } = args;
     const { resetEmail, uuid, exp } = args;
-    const { adminUuid } = args;
     switch (true) {
-        case Boolean(username && someUuid && email && _id && role): {
-            return jsonwebtoken_1.default.sign({
-                username,
-                _id,
-                role,
-                uuid: someUuid,
-                email,
-            }, SECRET, { expiresIn: EXPIRATION });
-        }
         case Boolean(uuid && exp && resetEmail): {
             return jsonwebtoken_1.default.sign({
                 resetEmail,
                 uuid,
             }, SECRET, { expiresIn: exp });
-        }
-        case Boolean(adminUuid): {
-            return jsonwebtoken_1.default.sign({
-                adminUuid,
-                role: "admin",
-            }, SECRET, { expiresIn: "240000h" });
         }
         case Boolean(username && email && _id && someUuid && typeof role === "undefined"): {
             return jsonwebtoken_1.default.sign({

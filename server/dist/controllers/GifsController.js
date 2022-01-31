@@ -16,12 +16,15 @@ exports.GifsController = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const models_1 = require("../models");
 const utils_1 = require("../utils");
+const utils_2 = require("../utils");
+(0, utils_2.readEnv)();
+const { API_KEY } = process.env;
 exports.GifsController = {
     getGifsAndOrUpdate: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${process.env.API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
-                const gifInfo = yield (0, node_fetch_1.default)(`${gifLink}`);
+                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
+                const gifInfo = yield (0, node_fetch_1.default)(gifLink);
                 const gifJson = yield gifInfo.json();
                 const gifDB = yield models_1.Gif.find();
                 let newGif = {};
@@ -54,11 +57,8 @@ exports.GifsController = {
                         return res.status(200).json({ gifs: newGifs });
                     }
                 }
-                return res.status(200).json({ message: "found get gifs route" });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
 };

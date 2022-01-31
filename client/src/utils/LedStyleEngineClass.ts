@@ -142,7 +142,7 @@ export class LedStyleEngine {
   private wavesDelay(led: number, row: number, coeff = 1): string {
     // animation-duration: ${(led / 32) + (row / led)}s;
     return `
-    animation-duration: ${(led / 32) + (row / led)}s;
+      animation-duration: ${(led / 32) + (row / led)}s;
       animation-iteration-count: infinite;
       animation-delay: ${(led / 16) + led / (row / led - (2 * coeff))}s;
       animation-direction: reverse;

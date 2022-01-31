@@ -7,6 +7,16 @@ export default async (): Promise<Config.InitialOptions> => {
       "^.+\\.tsx?$": "ts-jest",
     },
     collectCoverage: true,
+    collectCoverageFrom: [
+      "!utils/sendEmail.ts",
+      "!dist/*.js",
+      "!dist/**/*.js",
+      "!coverage/*",
+      "!index.ts",
+      "!./config/*",
+      "!jest.config.ts",
+      "!./stubs/*"
+    ],
     coverageReporters: ["json", "html"],
     moduleFileExtensions: ["ts", "js"],
     testMatch: ["**/?(*.)+(spec|test).ts"],

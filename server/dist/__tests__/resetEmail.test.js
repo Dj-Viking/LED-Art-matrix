@@ -45,14 +45,14 @@ jest.mock("../stubs/foo-bar-baz", () => {
     const originalModule = jest.requireActual("../stubs/foo-bar-baz");
     return Object.assign(Object.assign({ __esModule: true }, originalModule), { default: jest.fn(() => "mocked baz"), foo: "mocked foo" });
 });
-beforeAll((done) => {
-    mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
-});
-afterAll((done) => {
-    mongoose_1.default.connection.db.dropDatabase(() => {
-        mongoose_1.default.connection.close(() => done());
-    });
-});
+beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
+}));
+afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield mongoose_1.default.connection.close();
+    }));
+}));
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";
 describe("test the reset email function gets actually called but doesn't send an email", () => {
@@ -68,6 +68,24 @@ describe("test the reset email function gets actually called but doesn't send an
         expect(createUser.status).toBe(201);
         expect(typeof parsed._id).toBe("string");
         newUserId = parsed._id;
+    }));
+    test("/POST try to send good email but doesn't exist", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badEmail = yield (0, supertest_1.default)(app).post("/user/forgot").send({
+            email: "dkfjkdjkf@dkjfdkj.com",
+        });
+        expect(badEmail.status).toBe(200);
+        expect(sendEmail_1.sendEmail).toHaveBeenCalledTimes(0);
+        const parsed = JSON.parse(badEmail.text);
+        expect(parsed.message).toBe("success");
+    }));
+    test("/POST try to send bad email", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badEmail = yield (0, supertest_1.default)(app).post("/user/forgot").send({
+            email: "dkfjkdjkf",
+        });
+        expect(badEmail.status).toBe(200);
+        expect(sendEmail_1.sendEmail).toHaveBeenCalledTimes(0);
+        const parsed = JSON.parse(badEmail.text);
+        expect(parsed.message).toBe("success");
     }));
     test("/POST test dispatch user reset email func gets called", () => __awaiter(void 0, void 0, void 0, function* () {
         const forgotPassword = yield (0, supertest_1.default)(app).post("/user/forgot").send({

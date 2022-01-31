@@ -4,19 +4,20 @@ import { Gif } from "../models";
 import { getRandomIntLimit } from "../utils";
 import { Express } from "../types";
 import { Response } from "express";
+import { readEnv } from "../utils";
+readEnv();
+const { API_KEY } = process.env;
 export const GifsController = {
   getGifsAndOrUpdate: async function (
     _: Express.MyRequest,
     res: Response
   ): Promise<Response | void> {
     try {
-      const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${
-        process.env.API_KEY
-      }&q=trippy&limit=${getRandomIntLimit(10, 15)}&offset=${getRandomIntLimit(
-        1,
-        5
-      )}&rating=g&lang=en`;
-      const gifInfo = await fetch(`${gifLink}`);
+      const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${getRandomIntLimit(
+        10,
+        15
+      )}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
+      const gifInfo = await fetch(gifLink);
       const gifJson = await gifInfo.json();
       const gifDB = await Gif.find();
       let newGif = {};
@@ -50,9 +51,6 @@ export const GifsController = {
           return res.status(200).json({ gifs: newGifs });
         }
       }
-      return res.status(200).json({ message: "found get gifs route" });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+    } catch (error) {}
   },
 };

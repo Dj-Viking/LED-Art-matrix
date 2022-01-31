@@ -4,7 +4,8 @@ import { authMiddleware, accessControl } from "../middleware";
 const { getUserDefaultPreset, login, updateDefaultPreset, signup, forgotPassword, changePassword } =
   UserController;
 
-router.route("/").get(accessControl, authMiddleware, getUserDefaultPreset).post(signup);
+router.route("/").get(accessControl, authMiddleware, getUserDefaultPreset);
+router.route("/").post(signup);
 
 // router.route("/all")
 //   .get(getAllUsers);

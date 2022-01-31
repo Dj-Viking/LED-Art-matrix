@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
 import bcrypt from "bcrypt";
@@ -6,7 +7,7 @@ import { Express } from "../types";
 import { Response } from "express";
 const uuid = require("uuid");
 readEnv();
-const { RESET_EXPIRATION } = process.env;
+const { RESET_EXPIRATION, SALT } = process.env;
 export const UserController = {
   signup: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -28,27 +29,20 @@ export const UserController = {
 
       await User.findOneAndUpdate(
         { _id: newUser._id },
-        { token, defaultPreset: { presetName: "" } },
+        { token, defaultPreset: { presetName: "waves" } },
         { new: true }
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+    } catch (error) {}
   },
   getUserDefaultPreset: async function (
     req: Express.MyRequest,
     res: Response
   ): Promise<Response | void> {
     try {
-      const foundUser = await User.findOne({ _id: req.user?._id }).select("-password");
-      if (foundUser === null) {
-        return res.status(404).json({ error: "user not found" });
-      }
-      return res.status(200).json({ preset: foundUser?.defaultPreset?.presetName });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+      const foundUser = await User.findOne({ _id: req.user!._id }).select("-password");
+      return res.status(200).json({ preset: foundUser!.defaultPreset!.presetName });
+    } catch (error) {}
   },
   updateDefaultPreset: async function (
     req: Express.MyRequest,
@@ -61,7 +55,7 @@ export const UserController = {
       if (typeof defaultPreset !== "string")
         return res.status(400).json({ error: "missing preset name in request" });
       const foundUser = await User.findOneAndUpdate(
-        { _id: req.user?._id },
+        { _id: req.user!._id },
         {
           defaultPreset: {
             presetName: defaultPreset,
@@ -69,13 +63,8 @@ export const UserController = {
         },
         { new: true }
       ).select("-password");
-      if (foundUser === null) {
-        return res.status(404).json({ error: "user not found" });
-      }
-      return res.status(200).json({ updated: foundUser?.defaultPreset?.presetName });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+      return res.status(200).json({ updated: foundUser!.defaultPreset!.presetName });
+    } catch (error) {}
   },
   login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -84,58 +73,48 @@ export const UserController = {
         password,
       } = req.body;
 
-      let foundUser;
+      let foundUser = null;
       if (username) {
-        foundUser = await User.findOne({ username: username as string });
+        foundUser = await User.findOne({ username });
       }
       if (email) {
         foundUser = await User.findOne({ email });
       }
 
       if (foundUser === null) {
-        return res.status(400).json({ error: "incorrect credentials" });
+        return res.status(400).json({ error: "Incorrect Credentials" });
       }
 
-      const validPass = await foundUser?.isCorrectPassword(password);
+      const validPass = await foundUser!.isCorrectPassword(password);
       if (!validPass) {
-        return res.status(400).json({ error: "incorrect credentials" });
+        return res.status(400).json({ error: "Incorrect Credentials" });
       }
 
       const token = signToken({
-        username: foundUser?.username as string,
-        email: foundUser?.email as string,
+        username: foundUser!.username as string,
+        email: foundUser!.email as string,
         uuid: uuid.v4(),
-        _id: foundUser?._id,
+        _id: foundUser!._id,
       });
 
       if (username) {
-        foundUser = await User.findOneAndUpdate(
-          { username },
-          {
-            token,
-          },
-          { new: true }
-        ).select("-password");
+        foundUser = await User.findOneAndUpdate({ username }, { token }, { new: true }).select(
+          "-password"
+        );
       }
       if (email) {
-        foundUser = await User.findOneAndUpdate(
-          { email },
-          {
-            token,
-          },
-          { new: true }
-        ).select("-password");
+        foundUser = await User.findOneAndUpdate({ email }, { token }, { new: true }).select(
+          "-password"
+        );
       }
 
       const returnUser = {
-        _id: foundUser?._id as string,
-        defaultPreset: foundUser?.defaultPreset?.presetName as string,
-        token: foundUser?.token as string,
+        _id: foundUser!._id as string,
+        defaultPreset: foundUser!.defaultPreset!.presetName as string,
+        token: foundUser!.token as string,
       };
       return res.status(200).json({ user: returnUser });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+    } catch (error) {}
   },
   forgotPassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -171,9 +150,7 @@ export const UserController = {
       await sendEmail(sendEmailArgs);
 
       return res.status(200).json({ message: "success" });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+    } catch (error) {}
   },
   changePassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -181,9 +158,9 @@ export const UserController = {
       const decoded = await verifyTokenAsync(token);
       if (decoded instanceof Error) return res.status(403).json({ error: decoded });
 
-      const hashed = await bcrypt.hash(password, Number(process.env.SALT));
+      const hashed = await bcrypt.hash(password, Number(SALT));
       const user = await User.findOneAndUpdate(
-        { email: decoded?.resetEmail },
+        { email: decoded!.resetEmail },
         {
           password: hashed,
         },
@@ -199,17 +176,6 @@ export const UserController = {
       });
 
       return res.status(200).json({ done: true, token: newToken });
-    } catch (error) {
-      return res.status(500).json({ error: error.message || error });
-    }
+    } catch (error) {}
   },
-  // getAllUsers: async function(_, res) {
-  //   try {
-  //     const all = await User.find().select("-password");
-  //     return res.status(200).json({ all });
-  //   } catch (error) {
-  //     console.error(error);
-  //     return res.status(500).json({ error: error.message || error });
-  //   }
-  // }
 };

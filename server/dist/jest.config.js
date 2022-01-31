@@ -16,6 +16,16 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
             "^.+\\.tsx?$": "ts-jest",
         },
         collectCoverage: true,
+        collectCoverageFrom: [
+            "!utils/sendEmail.ts",
+            "!dist/*.js",
+            "!dist/**/*.js",
+            "!coverage/*",
+            "!index.ts",
+            "!./config/*",
+            "!jest.config.ts",
+            "!./stubs/*"
+        ],
         coverageReporters: ["json", "html"],
         moduleFileExtensions: ["ts", "js"],
         testMatch: ["**/?(*.)+(spec|test).ts"],

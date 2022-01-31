@@ -19,7 +19,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const constants_1 = require("../constants");
 const uuid = require("uuid");
 (0, utils_1.readEnv)();
-const { RESET_EXPIRATION } = process.env;
+const { RESET_EXPIRATION, SALT } = process.env;
 exports.UserController = {
     signup: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -36,96 +36,75 @@ exports.UserController = {
                     uuid: uuid.v4(),
                     _id: newUser._id,
                 });
-                yield models_1.User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: { presetName: "" } }, { new: true }).select("-password");
+                yield models_1.User.findOneAndUpdate({ _id: newUser._id }, { token, defaultPreset: { presetName: "waves" } }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
     getUserDefaultPreset: function (req, res) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const foundUser = yield models_1.User.findOne({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }).select("-password");
-                if (foundUser === null) {
-                    return res.status(404).json({ error: "user not found" });
-                }
-                return res.status(200).json({ preset: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
+                const foundUser = yield models_1.User.findOne({ _id: req.user._id }).select("-password");
+                return res.status(200).json({ preset: foundUser.defaultPreset.presetName });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
     updateDefaultPreset: function (req, res) {
-        var _a, _b;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { defaultPreset } = req.body;
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
-                const foundUser = yield models_1.User.findOneAndUpdate({ _id: (_a = req.user) === null || _a === void 0 ? void 0 : _a._id }, {
+                const foundUser = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
                     defaultPreset: {
                         presetName: defaultPreset,
                     },
                 }, { new: true }).select("-password");
-                if (foundUser === null) {
-                    return res.status(404).json({ error: "user not found" });
-                }
-                return res.status(200).json({ updated: (_b = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName });
+                return res.status(200).json({ updated: foundUser.defaultPreset.presetName });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
     login: function (req, res) {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { usernameOrEmail: { username, email }, password, } = req.body;
-                let foundUser;
+                let foundUser = null;
                 if (username) {
-                    foundUser = yield models_1.User.findOne({ username: username });
+                    foundUser = yield models_1.User.findOne({ username });
                 }
                 if (email) {
                     foundUser = yield models_1.User.findOne({ email });
                 }
                 if (foundUser === null) {
-                    return res.status(400).json({ error: "incorrect credentials" });
+                    return res.status(400).json({ error: "Incorrect Credentials" });
                 }
-                const validPass = yield (foundUser === null || foundUser === void 0 ? void 0 : foundUser.isCorrectPassword(password));
+                const validPass = yield foundUser.isCorrectPassword(password);
                 if (!validPass) {
-                    return res.status(400).json({ error: "incorrect credentials" });
+                    return res.status(400).json({ error: "Incorrect Credentials" });
                 }
                 const token = (0, utils_1.signToken)({
-                    username: foundUser === null || foundUser === void 0 ? void 0 : foundUser.username,
-                    email: foundUser === null || foundUser === void 0 ? void 0 : foundUser.email,
+                    username: foundUser.username,
+                    email: foundUser.email,
                     uuid: uuid.v4(),
-                    _id: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
+                    _id: foundUser._id,
                 });
                 if (username) {
-                    foundUser = yield models_1.User.findOneAndUpdate({ username }, {
-                        token,
-                    }, { new: true }).select("-password");
+                    foundUser = yield models_1.User.findOneAndUpdate({ username }, { token }, { new: true }).select("-password");
                 }
                 if (email) {
-                    foundUser = yield models_1.User.findOneAndUpdate({ email }, {
-                        token,
-                    }, { new: true }).select("-password");
+                    foundUser = yield models_1.User.findOneAndUpdate({ email }, { token }, { new: true }).select("-password");
                 }
                 const returnUser = {
-                    _id: foundUser === null || foundUser === void 0 ? void 0 : foundUser._id,
-                    defaultPreset: (_a = foundUser === null || foundUser === void 0 ? void 0 : foundUser.defaultPreset) === null || _a === void 0 ? void 0 : _a.presetName,
-                    token: foundUser === null || foundUser === void 0 ? void 0 : foundUser.token,
+                    _id: foundUser._id,
+                    defaultPreset: foundUser.defaultPreset.presetName,
+                    token: foundUser.token,
                 };
                 return res.status(200).json({ user: returnUser });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
     forgotPassword: function (req, res) {
@@ -158,9 +137,7 @@ exports.UserController = {
                 yield (0, utils_1.sendEmail)(sendEmailArgs);
                 return res.status(200).json({ message: "success" });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
     changePassword: function (req, res) {
@@ -170,8 +147,8 @@ exports.UserController = {
                 const decoded = yield (0, utils_1.verifyTokenAsync)(token);
                 if (decoded instanceof Error)
                     return res.status(403).json({ error: decoded });
-                const hashed = yield bcrypt_1.default.hash(password, Number(process.env.SALT));
-                const user = yield models_1.User.findOneAndUpdate({ email: decoded === null || decoded === void 0 ? void 0 : decoded.resetEmail }, {
+                const hashed = yield bcrypt_1.default.hash(password, Number(SALT));
+                const user = yield models_1.User.findOneAndUpdate({ email: decoded.resetEmail }, {
                     password: hashed,
                 }, { new: true }).select("-password");
                 if (user === null)
@@ -184,9 +161,7 @@ exports.UserController = {
                 });
                 return res.status(200).json({ done: true, token: newToken });
             }
-            catch (error) {
-                return res.status(500).json({ error: error.message || error });
-            }
+            catch (error) { }
         });
     },
 };
