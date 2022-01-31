@@ -1,7 +1,7 @@
 // some condition preventing to be on...
 // false by default
 
-import { ISetHPosAction, ISetCircleWidthAction, ISetVertPosAction, IGetGifsAction, IGif, ISetAnimDurationAction } from "../types";
+import { ISetHPosAction, ISetInvertAction, ISetCircleWidthAction, ISetVertPosAction, IGetGifsAction, IGif, ISetAnimDurationAction } from "../types";
 
 // ACTIVATE ON THE RETURN OF API QUERY DATA
 export const getGifs = (data: Array<IGif>): IGetGifsAction => ({
@@ -23,4 +23,8 @@ export const setHPos = (pos: string): ISetHPosAction => ({
 export const setCircleWidth = (width: string): ISetCircleWidthAction => ({
   type: "SET_CIRCLE_WIDTH",
   payload: width
+});
+export const setInvert = (invert: string): ISetInvertAction => ({
+  type: "SET_INVERT",
+  payload: invert
 });

@@ -1,4 +1,4 @@
-import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetHPosAction, ISetVertPosAction } from "../types";
+import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetHPosAction, ISetInvertAction, ISetVertPosAction } from "../types";
 
 const artScrollerReducer = (
   state: IArtScrollerState = {
@@ -37,6 +37,11 @@ const artScrollerReducer = (
       return {
         ...state,
         circleWidth: action.payload as ISetHPosAction["payload"]
+      };
+    case "SET_INVERT":
+      return {
+        ...state,
+        invert: action.payload as ISetInvertAction["payload"]
       };
     default: return state;
   }

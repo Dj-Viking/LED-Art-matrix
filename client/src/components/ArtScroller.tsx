@@ -6,19 +6,19 @@ import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButto
 import "./aux-styles/artScrollerLayoutStyle.css";
 import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
-import { getGifs, setAnimDuration, setCircleWidth, setHPos, setVertPos } from "../actions/art-scroller-actions";
+import { getGifs, setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
   const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
   const dispatch = useDispatch();
-  const { gifs, animDuration, vertPos, hPos, circleWidth } = useSelector((state: MyRootState) => state.artScrollerState);
+  const { gifs, animDuration, vertPos, hPos, circleWidth, invert } = useSelector((state: MyRootState) => state.artScrollerState);
 
-  const [invertState, setInvertState] = useState<number>(0);
-  function handleInvertChange(event: any): void {
-    setInvertState(event.target.value);
-  }
+  // const [invertState, setInvertState] = useState<number>(0);
+  // function handleInvertChange(event: any): void {
+  //   setInvertState(event.target.value);
+  // }
 
   const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
   function handleFigureChange(): void {
@@ -155,7 +155,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             >
               Invert Colors: 
               {" "}
-              {invertState / 100}
+              {Number(invert) / 100}
             </label>
             <input
               className="slider-style"
@@ -164,8 +164,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
               data-testid="invert"
               min="0"
               max="100"
-              value={invertState}
-              onChange={handleInvertChange}
+              value={invert}
+              onChange={(event) => {
+                event.preventDefault();
+                dispatch(setInvert(event.target.value));
+              }}
             />
             <label
               htmlFor="animation-duration"
@@ -211,7 +214,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     // @ts-expect-error whatever
                     zIndex: "1",
                     // opacity: `${opacityState/100}`,
-                    filter: `invert(${invertState / 100})`,
+                    filter: `invert(${Number(invert) / 100})`,
                     borderRadius: "50%",
                     animationName: "scrollAnim",
                     animationDuration: `${Number(animDuration) / 100 * (index + getRandomIntLimit(index, 20))}s`,

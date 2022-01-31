@@ -96,6 +96,10 @@ export interface ISetCircleWidthAction {
   type: "SET_CIRCLE_WIDTH",
   payload: string;
 }
+export interface ISetInvertAction {
+  type: "SET_INVERT",
+  payload: string;
+}
 export interface ISetVertPosAction {
   type: "SET_VERT_POS",
   payload: string;
@@ -187,6 +191,7 @@ export type IArtScrollerActionTypes =
 | ISetVertPosAction["type"]
 | ISetHPosAction["type"]
 | ISetCircleWidthAction["type"]
+| ISetInvertAction["type"]
 
 export type IArtScrollerPayloads = 
 | IGetGifsAction["payload"]
@@ -194,6 +199,7 @@ export type IArtScrollerPayloads =
 | ISetVertPosAction["payload"]
 | ISetHPosAction["payload"]
 | ISetCircleWidthAction["payload"]
+| ISetInvertAction["payload"]
 
 export interface IArtScrollerAction {
   type: IArtScrollerActionTypes;
