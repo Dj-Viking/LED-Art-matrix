@@ -69,6 +69,24 @@ describe("test the reset email function gets actually called but doesn't send an
         expect(typeof parsed._id).toBe("string");
         newUserId = parsed._id;
     }));
+    test("/POST try to send good email but doesn't exist", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badEmail = yield (0, supertest_1.default)(app).post("/user/forgot").send({
+            email: "dkfjkdjkf@dkjfdkj.com",
+        });
+        expect(badEmail.status).toBe(200);
+        expect(sendEmail_1.sendEmail).toHaveBeenCalledTimes(0);
+        const parsed = JSON.parse(badEmail.text);
+        expect(parsed.message).toBe("success");
+    }));
+    test("/POST try to send bad email", () => __awaiter(void 0, void 0, void 0, function* () {
+        const badEmail = yield (0, supertest_1.default)(app).post("/user/forgot").send({
+            email: "dkfjkdjkf",
+        });
+        expect(badEmail.status).toBe(200);
+        expect(sendEmail_1.sendEmail).toHaveBeenCalledTimes(0);
+        const parsed = JSON.parse(badEmail.text);
+        expect(parsed.message).toBe("success");
+    }));
     test("/POST test dispatch user reset email func gets called", () => __awaiter(void 0, void 0, void 0, function* () {
         const forgotPassword = yield (0, supertest_1.default)(app).post("/user/forgot").send({
             email: constants_1.TEST_EMAIL,

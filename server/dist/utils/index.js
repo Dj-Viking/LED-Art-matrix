@@ -1,8 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyTokenAsync = exports.signToken = exports.sendEmail = exports.getRandomIntLimit = exports.decodeToken = exports.readEnv = void 0;
-const decodeToken_1 = require("./decodeToken");
-Object.defineProperty(exports, "decodeToken", { enumerable: true, get: function () { return decodeToken_1.decodeToken; } });
+exports.verifyTokenAsync = exports.signToken = exports.sendEmail = exports.getRandomIntLimit = exports.readEnv = void 0;
 const getRandomIntLimit_1 = require("./getRandomIntLimit");
 Object.defineProperty(exports, "getRandomIntLimit", { enumerable: true, get: function () { return getRandomIntLimit_1.getRandomIntLimit; } });
 const sendEmail_1 = require("./sendEmail");

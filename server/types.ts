@@ -1,5 +1,7 @@
 import { Request } from "express";
+import { DocumentType } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
+import { UserClass } from "./models/User";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
@@ -67,7 +69,49 @@ export interface ICreateUserPayload {
   password?: string;
   email?: string;
 }
+export interface IGif {
+  gifCategory: string;
+  gifSrc: string | URL;
+  limit: string;
+  _id: string;
+}
+export interface IGetUserPresetResponse {
+  preset: string;
+}
 
+export interface IUser {
+  username: string;
+  email: string;
+  token?: string;
+  orders?: Array<IOrder>;
+  preset?: Array<IPreset>;
+  defaultPreset?: IPreset;
+  userSearchTerm?: ISearchTerm;
+  isCorrectPassword: (this: DocumentType<UserClass>, plainPass: string) => Promise<boolean>;
+}
+export interface ISearchTerm {
+  termText?: string;
+  termCategory?: string;
+  limit?: string;
+}
+export interface IOrder {
+  purchaseDate?: Date;
+  products: Array<IProduct>;
+}
+export interface IProduct {
+  name: string;
+  description?: string;
+  image?: string;
+  price: number;
+  quantity?: number;
+  category: ICategory;
+}
+export interface ICategory {
+  name: string;
+}
+export interface IGetGifsResponse {
+  gifs: Array<IGif>;
+}
 export interface ICreateUserResponse {
   _id: string;
   token: string;

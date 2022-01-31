@@ -18,22 +18,7 @@ export function signToken(
 
   const { resetEmail, uuid, exp } = args as SignResetPasswordTokenArgs;
 
-  const { adminUuid } = args as AdminTokenArgs;
-
   switch (true) {
-    case Boolean(username && someUuid && email && _id && role): {
-      return jwt.sign(
-        {
-          username,
-          _id,
-          role,
-          uuid: someUuid,
-          email,
-        },
-        SECRET as string,
-        { expiresIn: EXPIRATION as string }
-      );
-    }
     case Boolean(uuid && exp && resetEmail): {
       return jwt.sign(
         {
@@ -42,16 +27,6 @@ export function signToken(
         },
         SECRET as string,
         { expiresIn: exp }
-      );
-    }
-    case Boolean(adminUuid): {
-      return jwt.sign(
-        {
-          adminUuid,
-          role: "admin",
-        },
-        SECRET as string,
-        { expiresIn: "240000h" }
       );
     }
     case Boolean(username && email && _id && someUuid && typeof role === "undefined"): {

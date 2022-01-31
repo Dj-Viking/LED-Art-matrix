@@ -56,6 +56,26 @@ describe("test the reset email function gets actually called but doesn't send an
     newUserId = parsed._id;
   });
 
+  test("/POST try to send good email but doesn't exist", async () => {
+    const badEmail = await request(app).post("/user/forgot").send({
+      email: "dkfjkdjkf@dkjfdkj.com",
+    });
+    expect(badEmail.status).toBe(200);
+    expect(sendEmail).toHaveBeenCalledTimes(0); //stubbed
+    const parsed = JSON.parse(badEmail.text);
+    expect(parsed.message).toBe("success");
+  });
+
+  test("/POST try to send bad email", async () => {
+    const badEmail = await request(app).post("/user/forgot").send({
+      email: "dkfjkdjkf",
+    });
+    expect(badEmail.status).toBe(200);
+    expect(sendEmail).toHaveBeenCalledTimes(0); //stubbed
+    const parsed = JSON.parse(badEmail.text);
+    expect(parsed.message).toBe("success");
+  });
+
   test("/POST test dispatch user reset email func gets called", async () => {
     const forgotPassword = await request(app).post("/user/forgot").send({
       email: TEST_EMAIL,
@@ -65,6 +85,7 @@ describe("test the reset email function gets actually called but doesn't send an
     const parsed = JSON.parse(forgotPassword.text) as IForgotPasswordResponse;
     expect(parsed.message).toBe("success");
   });
+
   test("should do a partial mock", () => {
     const defaultExportResult = defaultExport();
     expect(defaultExportResult).toBe("mocked baz");
