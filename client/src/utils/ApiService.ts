@@ -104,7 +104,7 @@ class ApiService implements IApiService {
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
     try {
-      const res = await fetch(`${API_URL}/preset`, {
+      const res = await fetch(`${API_URL}/user`, {
         method: "GET",
         headers,
       });
