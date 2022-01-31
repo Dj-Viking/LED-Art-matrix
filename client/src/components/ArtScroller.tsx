@@ -1,33 +1,36 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { useSpring, animated } from "react-spring";
 import { useSelector, useDispatch } from "react-redux";
 import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
-import { getGifs, setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
+import { getGifs, setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos, toggleFigure } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
   const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
   const dispatch = useDispatch();
-  const { gifs, animDuration, vertPos, hPos, circleWidth, invert } = useSelector((state: MyRootState) => state.artScrollerState);
+  const { 
+    gifs, 
+    animDuration, 
+    vertPos, 
+    hPos, 
+    circleWidth, 
+    invert, 
+    figureOn 
+  } = useSelector((state: MyRootState) => state.artScrollerState);
 
-  // const [invertState, setInvertState] = useState<number>(0);
-  // function handleInvertChange(event: any): void {
-  //   setInvertState(event.target.value);
+  // const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
+  // function handleFigureChange(): void {
+  //   figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
   // }
-
-  const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
-  function handleFigureChange(): void {
-    figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
-  }
 
   async function handleGetGifs(event: any): Promise<void> {
     event.persist();
-    if (figureIsOnState === false) setFigureIsOnState(true);
+    if (figureOn === false) dispatch(toggleFigure(figureOn));
     const gifs = await API.getGifs();
     if (Array.isArray(gifs)) {
       if (gifs.length) {
@@ -71,11 +74,14 @@ const ArtScroller: React.FC = (): JSX.Element => {
               role="button"
               data-testid="switch-scroller"
               style={scrollerOnOffButtonSpring}
-              className={figureIsOnState ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
-              onClick={handleFigureChange}
+              className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
+              onClick={(event) => {
+                event.preventDefault();
+                dispatch(toggleFigure(figureOn));
+              }}
             >
               {
-                figureIsOnState
+                figureOn
                 ? <span style={{ color: "white" }}>Turn Off Scroller</span>
                 : <span style={{ color: "white" }}>Turn On Scroller</span>
               }
@@ -195,7 +201,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
           <figure
             data-testid="gifs-container"
             style={{
-              display: `${figureIsOnState ? "block" : "none"}`,
+              display: `${figureOn ? "block" : "none"}`,
               margin: "0"
             }}
             className="figure-transition-style"

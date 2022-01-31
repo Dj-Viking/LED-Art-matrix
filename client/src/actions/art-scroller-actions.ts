@@ -1,7 +1,7 @@
 // some condition preventing to be on...
 // false by default
 
-import { ISetHPosAction, ISetInvertAction, ISetCircleWidthAction, ISetVertPosAction, IGetGifsAction, IGif, ISetAnimDurationAction } from "../types";
+import { ISetHPosAction, ISetFigureOnAction, ISetInvertAction, ISetCircleWidthAction, ISetVertPosAction, IGetGifsAction, IGif, ISetAnimDurationAction } from "../types";
 
 // ACTIVATE ON THE RETURN OF API QUERY DATA
 export const getGifs = (data: Array<IGif>): IGetGifsAction => ({
@@ -27,4 +27,8 @@ export const setCircleWidth = (width: string): ISetCircleWidthAction => ({
 export const setInvert = (invert: string): ISetInvertAction => ({
   type: "SET_INVERT",
   payload: invert
+});
+export const toggleFigure = (currentState: boolean): ISetFigureOnAction => ({
+  type: "TOGGLE_FIGURE",
+  payload: !currentState
 });

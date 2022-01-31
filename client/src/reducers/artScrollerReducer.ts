@@ -1,4 +1,4 @@
-import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetHPosAction, ISetInvertAction, ISetVertPosAction } from "../types";
+import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetFigureOnAction, ISetHPosAction, ISetInvertAction, ISetVertPosAction } from "../types";
 
 const artScrollerReducer = (
   state: IArtScrollerState = {
@@ -42,6 +42,11 @@ const artScrollerReducer = (
       return {
         ...state,
         invert: action.payload as ISetInvertAction["payload"]
+      };
+    case "TOGGLE_FIGURE":
+      return {
+        ...state,
+        figureOn: action.payload as ISetFigureOnAction["payload"]
       };
     default: return state;
   }

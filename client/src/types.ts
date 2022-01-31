@@ -100,6 +100,10 @@ export interface ISetInvertAction {
   type: "SET_INVERT",
   payload: string;
 }
+export interface ISetFigureOnAction {
+  type: "TOGGLE_FIGURE",
+  payload: boolean;
+}
 export interface ISetVertPosAction {
   type: "SET_VERT_POS",
   payload: string;
@@ -192,6 +196,7 @@ export type IArtScrollerActionTypes =
 | ISetHPosAction["type"]
 | ISetCircleWidthAction["type"]
 | ISetInvertAction["type"]
+| ISetFigureOnAction["type"]
 
 export type IArtScrollerPayloads = 
 | IGetGifsAction["payload"]
@@ -200,6 +205,7 @@ export type IArtScrollerPayloads =
 | ISetHPosAction["payload"]
 | ISetCircleWidthAction["payload"]
 | ISetInvertAction["payload"]
+| ISetFigureOnAction["payload"]
 
 export interface IArtScrollerAction {
   type: IArtScrollerActionTypes;
