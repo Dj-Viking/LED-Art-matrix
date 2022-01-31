@@ -21,7 +21,9 @@ beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
 }));
 afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose_1.default.connection.db.dropDatabase();
+    mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield mongoose_1.default.connection.close();
+    }));
 }));
 let _gifs = null;
 describe("test the CRUD on gifs", () => {

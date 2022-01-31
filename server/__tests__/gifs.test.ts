@@ -1,16 +1,19 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import request from "supertest";
 import mongoose from "mongoose";
 import { TEST_DB_URL } from "../constants";
 import { createTestServer } from "../testServer";
 import { IGetGifsResponse, IGif } from "../types";
-const app = createTestServer();
 
+const app = createTestServer();
 beforeAll(async () => {
   await mongoose.connect(TEST_DB_URL, {});
 });
 
 afterAll(async () => {
-  await mongoose.connection.db.dropDatabase();
+  mongoose.connection.db.dropDatabase(async () => {
+    await mongoose.connection.close();
+  });
 });
 
 let _gifs: IGif[] | null = null;
