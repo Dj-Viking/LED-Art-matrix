@@ -20,10 +20,10 @@ export class LedStyleEngine {
    * @param coeff optional coefficient argument set default 1 will change on react state changes on sliders
    * @returns just a css string to add as "HTML" to a style tag
    */
-  public createStyleSheet(coeff = 1): string {
+  public createStyleSheet(coeff = "1"): string {
     return this.generateStyle(coeff);
   }
-  private generateStyle(coeff = 1): string {
+  private generateStyle(coeff = "1"): string {
     let str = "";
     switch (this.preset) {
       case "rainbowTestAllAnim":
@@ -67,7 +67,7 @@ export class LedStyleEngine {
   }
 
   
-  private createLedClass(coeff = 0): string {
+  private createLedClass(coeff = "1"): string {
     let ledClass = "";
     for (let row = 1; row < 33; row++) {
       for (let led = 1; led < 33; led++) {
@@ -77,7 +77,7 @@ export class LedStyleEngine {
     return ledClass;
   }
 
-  private generateLedClass(led: number, row: number, coeff = 0): string {
+  private generateLedClass(led: number, row: number, coeff = "1"): string {
     return `
       .led${led}-${row}${this.preset} {
         animation-name: ${this.preset};
@@ -93,7 +93,7 @@ export class LedStyleEngine {
     `;
   }
 
-  private createDelays(led: number, row: number, coeff = 0): string {
+  private createDelays(led: number, row: number, coeff = "1"): string {
     let columnDelays = "";
     switch (this.preset) {
       case "rainbowTestAllAnim": 
@@ -118,33 +118,33 @@ export class LedStyleEngine {
     return columnDelays;
   }
   // preset animation delays and duration calculators
-  private rainbowTestDelay(led: number, row: number, coeff = 1): string {
+  private rainbowTestDelay(led: number, row: number, coeff = "1"): string {
     return `
-      animation-duration: ${coeff / 100}s;
+      animation-duration: ${Number(coeff) / 100}s;
       animation-iteration-count: infinite;
-      animation-delay: ${(led / 64) + led / (row / led) / ((coeff / 20) + (row / (coeff / 20)))}s;
+      animation-delay: ${(led / 64) + led / (row / led) / ((Number(coeff) / 20) + (row / (Number(coeff) / 20)))}s;
       animation-direction: alternate;
       animation-timing-function: ease-in;
     `;
   }
   
-  private V2Delay(led: number, row: number, coeff = 1): string {
+  private V2Delay(led: number, row: number, coeff = "1"): string {
     // animation-delay: ${(led / 16) + led / (row / led - (2 * row))}s;
     return `
       animation-duration: ${led <= 3 ? led / 2 : led / 8}s;
       animation-iteration-count: infinite;
-      animation-delay: ${(led / 16) + led / (row / led - ((coeff / 5) / 5))}s;
+      animation-delay: ${(led / 16) + led / (row / led - ((Number(coeff) / 5) / 5))}s;
       animation-direction: reverse;
       animation-timing-function: ease-in;
     `;
   }
   
-  private wavesDelay(led: number, row: number, coeff = 1): string {
+  private wavesDelay(led: number, row: number, coeff = "1"): string {
     // animation-duration: ${(led / 32) + (row / led)}s;
     return `
       animation-duration: ${(led / 32) + (row / led)}s;
       animation-iteration-count: infinite;
-      animation-delay: ${(led / 16) + led / (row / led - (2 * coeff))}s;
+      animation-delay: ${(led / 16) + led / (row / led - (2 * Number(coeff)))}s;
       animation-direction: reverse;
       animation-timing-function: ease-in;
     `;
@@ -170,11 +170,11 @@ export class LedStyleEngine {
     `;
   }
   
-  private dm5Delay(led: number, row: number, coeff = 1): string {
+  private dm5Delay(led: number, row: number, coeff = "1"): string {
     return `
       animation-duration: ${led <= 3 ? 1 : (led / 3.14159) / 2}s;
       animation-iteration-count: infinite;
-      animation-delay: ${(row % 5 === 0 ? (led / 3.14159) : led / coeff)}s;
+      animation-delay: ${(row % 5 === 0 ? (led / 3.14159) : led / Number(coeff))}s;
       animation-direction: alternate;
       animation-timing-function: ease-in;
     `;

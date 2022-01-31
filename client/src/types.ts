@@ -17,20 +17,20 @@ export interface ILedState {
   presetName: string;
   animationDurationState: string;
   isInverted: boolean;
-  animPresetDelayCoeff: number;
+  animVarCoeff: string;
 }
 export type ILedActionTypes = 
 | "LOAD_USER_SPLASH_CONFIG"
 | "INVERT_SWITCH"
 | "PRESET_SWITCH"
-| "ANIMATION_DELAY_CHANGE"
-| "ANIMATION_DURATION_CHANGE"
-| "ALPHA_FADER_CHANGE"
+| "VAR_COEFF_CHANGE"
+| "ALPHA_FADER_CHANGE";
 
 export type ILedActionPayloads = 
 | ILedLoadUserSplashConfigAction["payload"]
 | ILedAlphaFaderChangeAction["payload"]
 | ILedAnimationDelayChange["payload"]
+| ILedAnimVarCoeffChangeAction["payload"]
 | ILedAnimationDurationChangeAction["payload"]
 | ILedPresetSwitchAction["payload"]
 
@@ -39,6 +39,10 @@ export interface ILedAction {
   payload: ILedActionPayloads;
 }
 
+export interface ILedAnimVarCoeffChangeAction {
+  type: "VAR_COEFF_CHANGE";
+  payload: string;
+}
 export interface ILedLoadUserSplashConfigAction {
   type: "LOAD_USER_SPLASH_CONFIG";
   payload: {

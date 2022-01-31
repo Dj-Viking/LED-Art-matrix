@@ -2,7 +2,7 @@ import React from "react";
 import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
-  inputValueState: number;
+  inputValueState: string;
   name: string;
   testid: string;
   label: string;
