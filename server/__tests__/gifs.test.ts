@@ -5,12 +5,12 @@ import { createTestServer } from "../testServer";
 import { IGetGifsResponse, IGif } from "../types";
 const app = createTestServer();
 
-beforeAll((done) => {
-  mongoose.connect(TEST_DB_URL, {}, () => done());
+beforeAll(async () => {
+  await mongoose.connect(TEST_DB_URL, {});
 });
 
-afterAll((done) => {
-  mongoose.connection.db.dropDatabase(() => done());
+afterAll(async () => {
+  await mongoose.connection.db.dropDatabase();
 });
 
 let _gifs: IGif[] | null = null;

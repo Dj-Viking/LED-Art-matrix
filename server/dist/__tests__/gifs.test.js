@@ -17,12 +17,12 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
 const app = (0, testServer_1.createTestServer)();
-beforeAll((done) => {
-    mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
-});
-afterAll((done) => {
-    mongoose_1.default.connection.db.dropDatabase(() => done());
-});
+beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
+}));
+afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongoose_1.default.connection.db.dropDatabase();
+}));
 let _gifs = null;
 describe("test the CRUD on gifs", () => {
     test("gifs can be fetched", () => __awaiter(void 0, void 0, void 0, function* () {

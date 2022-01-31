@@ -20,13 +20,13 @@ readEnv();
 
 const { INVALID_SIGNATURE } = process.env;
 
-beforeAll((done) => {
-  mongoose.connect(TEST_DB_URL, {}, () => done());
+beforeAll(async () => {
+  await mongoose.connect(TEST_DB_URL, {});
 });
 
-afterAll((done) => {
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => done());
+afterAll(() => {
+  mongoose.connection.db.dropDatabase(async () => {
+    await mongoose.connection.close();
   });
   // mongoose.connection.close(() => done());
 });

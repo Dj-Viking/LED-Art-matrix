@@ -24,13 +24,13 @@ jest.mock("../stubs/foo-bar-baz", () => {
   };
 });
 
-beforeAll((done) => {
-  mongoose.connect(TEST_DB_URL, {}, () => done());
+beforeAll(async () => {
+  await mongoose.connect(TEST_DB_URL, {});
 });
 
-afterAll((done) => {
-  mongoose.connection.db.dropDatabase(() => {
-    mongoose.connection.close(() => done());
+afterAll(async () => {
+  mongoose.connection.db.dropDatabase(async () => {
+    await mongoose.connection.close();
   });
 
   // mongoose.connection.close(() => done());

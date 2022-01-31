@@ -45,14 +45,14 @@ jest.mock("../stubs/foo-bar-baz", () => {
     const originalModule = jest.requireActual("../stubs/foo-bar-baz");
     return Object.assign(Object.assign({ __esModule: true }, originalModule), { default: jest.fn(() => "mocked baz"), foo: "mocked foo" });
 });
-beforeAll((done) => {
-    mongoose_1.default.connect(constants_1.TEST_DB_URL, {}, () => done());
-});
-afterAll((done) => {
-    mongoose_1.default.connection.db.dropDatabase(() => {
-        mongoose_1.default.connection.close(() => done());
-    });
-});
+beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
+}));
+afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+    mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield mongoose_1.default.connection.close();
+    }));
+}));
 const app = (0, testServer_1.createTestServer)();
 let newUserId = "";
 describe("test the reset email function gets actually called but doesn't send an email", () => {
