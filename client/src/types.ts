@@ -88,6 +88,22 @@ export interface IGif {
   limit: string;
   _id: string;
 }
+export interface ISetHPosAction {
+  type: "SET_H_POS",
+  payload: string;
+}
+export interface ISetCircleWidthAction {
+  type: "SET_CIRCLE_WIDTH",
+  payload: string;
+}
+export interface ISetVertPosAction {
+  type: "SET_VERT_POS",
+  payload: string;
+}
+export interface ISetAnimDurationAction {
+  type: "SET_ANIM_DUR",
+  payload: string;
+}
 export interface IGetGifsAction {
   type: "GET_GIFS";
   payload: Array<IGif>;
@@ -161,15 +177,23 @@ export interface IArtScrollerState {
   vertPos: string;
   hPos: string;
   circleWidth: string;
-  invert: number;
+  invert: string;
   figureOn: boolean;
 }
 
 export type IArtScrollerActionTypes = 
 | IGetGifsAction["type"]
+| ISetAnimDurationAction["type"]
+| ISetVertPosAction["type"]
+| ISetHPosAction["type"]
+| ISetCircleWidthAction["type"]
 
 export type IArtScrollerPayloads = 
 | IGetGifsAction["payload"]
+| ISetAnimDurationAction["payload"]
+| ISetVertPosAction["payload"]
+| ISetHPosAction["payload"]
+| ISetCircleWidthAction["payload"]
 
 export interface IArtScrollerAction {
   type: IArtScrollerActionTypes;

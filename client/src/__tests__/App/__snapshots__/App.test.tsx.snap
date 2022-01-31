@@ -345,7 +345,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               for="horizontal-positioning"
               style="color: white;"
             >
-              Scroller Horizontal Positioning: 0.0334
+              Scroller Horizontal Positioning: 0.04
             </label>
             <input
               class="slider-style"
@@ -354,7 +354,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               min="0"
               name="horizontal-positioning"
               type="range"
-              value="33.4"
+              value="40"
             />
             <label
               for="invert"

@@ -1,4 +1,4 @@
-import { IArtScrollerAction, IArtScrollerState } from "../types";
+import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetHPosAction, ISetVertPosAction } from "../types";
 
 const artScrollerReducer = (
   state: IArtScrollerState = {
@@ -7,7 +7,7 @@ const artScrollerReducer = (
     vertPos: "50",
     hPos: "40",
     circleWidth: "30",
-    invert: 0,
+    invert: "0",
     figureOn: false,
   },
   action: IArtScrollerAction
@@ -16,7 +16,27 @@ const artScrollerReducer = (
     case "GET_GIFS":
       return {
         ...state,
-        gifs: action.payload
+        gifs: action.payload as IGetGifsAction["payload"]
+      };
+    case "SET_ANIM_DUR":
+      return {
+        ...state,
+        animDuration: action.payload as ISetAnimDurationAction["payload"]
+      };
+    case "SET_VERT_POS":
+      return {
+        ...state,
+        vertPos: action.payload as ISetVertPosAction["payload"]
+      };
+    case "SET_H_POS":
+      return {
+        ...state,
+        hPos: action.payload as ISetHPosAction["payload"]
+      };
+    case "SET_CIRCLE_WIDTH":
+      return {
+        ...state,
+        circleWidth: action.payload as ISetHPosAction["payload"]
       };
     default: return state;
   }
