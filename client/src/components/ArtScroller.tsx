@@ -23,11 +23,6 @@ const ArtScroller: React.FC = (): JSX.Element => {
     figureOn 
   } = useSelector((state: MyRootState) => state.artScrollerState);
 
-  // const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
-  // function handleFigureChange(): void {
-  //   figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
-  // }
-
   async function handleGetGifs(event: any): Promise<void> {
     event.persist();
     if (figureOn === false) dispatch(setFigureOn(true));
