@@ -1,4 +1,4 @@
-import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetFigureOnAction, ISetHPosAction, ISetInvertAction, ISetVertPosAction } from "../types";
+import { IArtScrollerAction, IArtScrollerState, IGetGifsAction, ISetAnimDurationAction, ISetCircleWidthAction, ISetFigureOnAction, ISetHPosAction, ISetInvertAction, ISetVertPosAction } from "../types";
 
 const artScrollerReducer = (
   state: IArtScrollerState = {
@@ -36,7 +36,7 @@ const artScrollerReducer = (
     case "SET_CIRCLE_WIDTH":
       return {
         ...state,
-        circleWidth: action.payload as ISetHPosAction["payload"]
+        circleWidth: action.payload as ISetCircleWidthAction["payload"]
       };
     case "SET_INVERT":
       return {
