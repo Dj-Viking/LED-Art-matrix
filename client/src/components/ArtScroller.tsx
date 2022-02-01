@@ -6,7 +6,7 @@ import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButto
 import "./aux-styles/artScrollerLayoutStyle.css";
 import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
-import { getGifs, setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos, toggleFigure } from "../actions/art-scroller-actions";
+import { getGifs, setAnimDuration, setCircleWidth, setFigureOn, setHPos, setInvert, setVertPos} from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
 
 const ArtScroller: React.FC = (): JSX.Element => {
@@ -23,14 +23,9 @@ const ArtScroller: React.FC = (): JSX.Element => {
     figureOn 
   } = useSelector((state: MyRootState) => state.artScrollerState);
 
-  // const [figureIsOnState, setFigureIsOnState] = useState<boolean>(false);
-  // function handleFigureChange(): void {
-  //   figureIsOnState ? setFigureIsOnState(false) : setFigureIsOnState(true);
-  // }
-
   async function handleGetGifs(event: any): Promise<void> {
     event.persist();
-    if (figureOn === false) dispatch(toggleFigure(figureOn));
+    if (figureOn === false) dispatch(setFigureOn(true));
     const gifs = await API.getGifs();
     if (Array.isArray(gifs)) {
       if (gifs.length) {
@@ -77,7 +72,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
               className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
               onClick={(event) => {
                 event.preventDefault();
-                dispatch(toggleFigure(figureOn));
+                dispatch(setFigureOn(!figureOn));
               }}
             >
               {
@@ -244,3 +239,4 @@ const ArtScroller: React.FC = (): JSX.Element => {
 };
 
 export default ArtScroller;
+

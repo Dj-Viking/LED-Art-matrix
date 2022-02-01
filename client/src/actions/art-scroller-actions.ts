@@ -28,7 +28,7 @@ export const setInvert = (invert: string): ISetInvertAction => ({
   type: "SET_INVERT",
   payload: invert
 });
-export const toggleFigure = (currentState: boolean): ISetFigureOnAction => ({
+export const setFigureOn = (on: boolean): ISetFigureOnAction => ({
   type: "TOGGLE_FIGURE",
-  payload: !currentState
+  payload: on
 });
