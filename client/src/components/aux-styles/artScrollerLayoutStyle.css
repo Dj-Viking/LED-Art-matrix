@@ -27,11 +27,25 @@
   margin-bottom: 5px;
 }
 
-.preset-button-container {
+.gif-button-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   margin-top: 20px;
-  height: 30px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+.preset-button {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  height: 50px;
+  text-align: center;
+  color: white;
+  background-color: black;
+  cursor: pointer;
 }
 
 .scroller-toggle-button-on {

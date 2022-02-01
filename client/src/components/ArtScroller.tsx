@@ -53,7 +53,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             Art Scroller Controls
           </span>
           <div
-            className="preset-button-container"
+            className="gif-button-container"
           >
 
             <animated.button

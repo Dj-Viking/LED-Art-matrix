@@ -73,36 +73,29 @@ const BigLedBox: React.FC = (): JSX.Element => {
     <>
       <main className="box-style">
         <LedStyleTag />
-        <section 
-          style={{
-            position: "relative",
-            display: "flex",
-            textAlign: "center",
-            flexDirection: "column"
-          }}
-        >
+        <section className="controls-container">
           <ArtScroller />
           <div className="border-top-led" />
           <PresetButtons />
+          {
+            (
+              ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
+            ) && (
+              <>
+                <Slider
+                  name="led-anim-var"
+                  testid="led-anim-variation"
+                  label="LED Animation Variation: " 
+                  inputValueState={animVarCoeff} 
+                  handleChange={(event) => {
+                    event.preventDefault();
+                    dispatch(animVarCoeffChange(event.target.value));
+                  }}
+                />
+              </>
+            )
+          }
         </section>
-        {
-          (
-            ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
-          ) && (
-            <>
-              <Slider
-                name="led-anim-var"
-                testid="led-anim-variation"
-                label="LED Animation Variation: " 
-                inputValueState={animVarCoeff} 
-                handleChange={(event) => {
-                  event.preventDefault();
-                  dispatch(animVarCoeffChange(event.target.value));
-                }}
-              />
-            </>
-          )
-        }
         <section
           id="led-box"
           className="led-matrix-container"
