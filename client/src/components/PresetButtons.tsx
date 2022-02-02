@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
+import PresetButton from "./PresetButton";
 import { 
   _V2ButtonSpring, 
   _rainbowButtonSpring, 
@@ -10,13 +11,16 @@ import {
   _fourSpiralsButtonSpring, 
   _saveButtonSpring,
   _dm5ButtonSpring,
-  _clear
+  _clear,
+  _saveNewPresetButtonSpring
 } from "./SpringButtons";
 import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { presetSwitch } from "../actions/led-actions";
 import { clearStyle, setLedStyle } from "../actions/style-actions";
 import { MyRootState } from "../types";
+import Modal from "./Modal/ModalBase";
+import SavePresetModalContent from "./Modal/SavePresetModal";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
   const V2ButtonSpring = useSpring(_V2ButtonSpring);
@@ -25,10 +29,13 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const spiralButtonSpring = useSpring(_spiralButtonSpring);
   const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
   const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
+  
   const saveButtonSpring = useSpring(_saveButtonSpring);
+  const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
   const clear = useSpring(_clear);
+  
   const dispatch = useDispatch();
-  const { presetName } = useSelector((state: MyRootState) => state.ledState);
+  const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   
   let LedEngine = new LedStyleEngine("");
 
@@ -47,8 +54,69 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     event.preventDefault();
     await API.updateDefaultPreset({ name: presetName, token: Auth.getToken() as string });
   }
+
+  const [modalOpen, setModalOpen ] = useState<boolean>(false);
+  function openSavePresetModal(event: any): void {
+    event.preventDefault();
+    //open modal, set modal display true
+    setModalOpen(true);
+  }
+
+  // const [presetActive, setPresetActive] = useState<boolean>(false);
+  // function toggleActive (event: any): void {
+  //   event.preventDefault();
+  //   setPresetActive(true);
+  // }
+
+
+  //TODO: EXTRACT TO OWN COMPONENT DONE
+
+  // TODO: create global buttonList state to keep track of all presets that are active
+  // so that we can show which preset is currently active 
+  // dynamically load the buttons (some are default) from the user's account
+  // in which the button pertains to a custom preset the user made themselves
+  // presetState: Array<PresetButtonProps>
+  const presetButtons = [
+    {
+      role: "button",
+      key: (Math.random() * 1000).toString() + "kdjfkdjfkdjfkdj",
+      isActive: false,
+      title: "waves",
+      testid: "waves-test",
+      disabled: () => !Auth.loggedIn(),
+      makeClass: (): string => {
+        if (Auth.loggedIn()) {
+          return "preset-button";
+        } else return "preset-button-disabled";
+      },
+      clickHandler: (event: any) => {
+        event.preventDefault();
+        dispatch(presetSwitch("waves"));
+        setStyle("waves");
+      }
+    }
+  ];
+
   return (
     <>
+    {
+      Array.isArray(presetButtons) && presetButtons.map(button => {
+        return (
+          <PresetButton key={button.key} button={{ ...button }} />
+        );
+      })
+    }
+      <Modal isOpen={modalOpen}>
+        <SavePresetModalContent
+          context={{
+            animVarCoeff
+          }} 
+          onClose={(event) => {
+            event.preventDefault();
+            setModalOpen(false);
+          }}
+        />
+      </Modal>
       <span 
         style={{
           color: "white",
@@ -71,12 +139,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           </>
         )
       }
-      <div
-        className="preset-button-container"
-        // style={{
-        //   display: 'flex',
-        // }}
-      >
+      <div className="preset-button-container">
         <animated.button
           style={clear}
           role="button"
@@ -182,6 +245,17 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           onClick={handleSaveDefault}
         >
           Save as Default
+        </animated.button>
+
+        <animated.button
+          role="button"
+          data-testid="savePreset"
+          style={saveNewPresetButtonSpring}
+          className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={openSavePresetModal}
+        >
+          Save as new Preset
         </animated.button>
       </div>
     </>

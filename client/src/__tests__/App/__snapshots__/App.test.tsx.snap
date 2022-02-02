@@ -270,7 +270,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       id="led-style"
     />
     <section
-      style="position: relative; display: flex; text-align: center; flex-direction: column;"
+      class="controls-container"
     >
       <main
         style="display: flex; flex-direction: column;"
@@ -285,7 +285,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             Art Scroller Controls
           </span>
           <div
-            class="preset-button-container"
+            class="gif-button-container"
           >
             <button
               class="scroller-fetch-button"
@@ -397,6 +397,122 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       <div
         class="border-top-led"
       />
+      <style>
+        
+        
+            .preset-button-disabled {
+              margin-left: 5px;
+              margin-right: 5px;
+              margin-bottom: 10px;
+              height: 50px;
+              width: 100px;
+              border-radius: 10px;
+              text-align: center;
+              cursor: default;
+            }
+          
+      
+      </style>
+      <button
+        class="preset-button-disabled"
+        data-testid="waves-test"
+        disabled=""
+        role="button"
+        style="opacity: 0;"
+      >
+        waves
+      </button>
+      <div
+        style="position: relative; height: 0px; width: 250px; margin: 0px auto;"
+      >
+        <div
+          style="display: none; position: absolute; justify-content: center; background-color: white; border-radius: 10px; height: 250px; width: 250px;"
+        >
+          <style>
+            
+        .modal-close-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: red;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-close-button:hover {
+          transition: .5s;
+          background-color: red;
+          color: white;
+          box-shadow: 5px 4px 9px red; 
+        }
+        .modal-save-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: green;
+          color: white;
+          height: 40px;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-save-button-disabled {
+          height: 40px;
+          border: 1px solid grey;
+          margin: .5em;
+          pointer-events: none;
+          background-color: grey;
+          color: white;
+          border-radius: 10px;
+        }
+        .modal-save-button:hover {
+          transition: .5s;
+          background-color: green;
+          color: white;
+          box-shadow: 5px 4px 9px green; 
+        }
+      
+          </style>
+          <div
+            style="display: flex; flex-direction: column; justify-content: center;"
+          >
+            <span
+              class="modal-close-button"
+            >
+              CLOSE
+            </span>
+            <h1
+              style="color: black;"
+            >
+              SAVE PRESET
+            </h1>
+            <span
+              style="color: black; margin-bottom: 1em;"
+            >
+              Animation Variation: 64
+            </span>
+            <label
+              for="preset-name"
+              style="color: black;"
+            >
+              preset name
+            </label>
+            <input
+              style="color: black;"
+              type="text"
+              value=""
+            />
+            <button
+              class="modal-save-button-disabled"
+              disabled=""
+              type="submit"
+            >
+              SAVE
+            </button>
+          </div>
+        </div>
+      </div>
       <span
         style="color: white; text-align: center;"
       >
@@ -478,6 +594,15 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           style="opacity: 0;"
         >
           Save as Default
+        </button>
+        <button
+          class="preset-button-disabled"
+          data-testid="savePreset"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
+        >
+          Save as new Preset
         </button>
       </div>
     </section>

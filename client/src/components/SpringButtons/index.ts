@@ -1,14 +1,5 @@
 import { config } from "react-spring";
 
-export const _clear = {
-  delay: 0,
-  from: {
-    opacity: 0,
-  },
-  to: {
-    opacity: 1,
-  }
-};
 
 export const _rainbowButtonSpring = {
   delay: 0,
@@ -30,6 +21,15 @@ export const _V2ButtonSpring = {
   }
 };
 
+export const _wavesButtonSpring2 = {
+  delay: 0,
+  from: {
+    opacity: 0
+  },
+  to: {
+    opacity: 1
+  }
+};
 export const _wavesButtonSpring = {
   delay: 0,
   from: {
@@ -78,6 +78,15 @@ export const _saveButtonSpring = {
     opacity: 1
   }
 };
+export const _saveNewPresetButtonSpring = {
+  delay: 0,
+  from: {
+    opacity: 0
+  },
+  to: {
+    opacity: 1
+  }
+};
 
 // init button spring
 export const _leftInitButtonSpring = {
@@ -104,3 +113,13 @@ export const _scrollerOnOffButtonSpring = {
     opacity: 1
   }
 };
+export const _clear = {
+  delay: 0,
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  }
+};
+
