@@ -26,7 +26,7 @@ export class LedStyleEngine {
   private generateStyle(coeff = "1"): string {
     let str = "";
     switch (this.preset) {
-      case "rainbowTestAllAnim":
+      case "rainbowTest":
         str = `
           ${RAINBOW_TEST_ANIMATION}
           ${this.createLedClass(coeff)}
@@ -96,7 +96,7 @@ export class LedStyleEngine {
   private createDelays(led: number, row: number, coeff = "1"): string {
     let columnDelays = "";
     switch (this.preset) {
-      case "rainbowTestAllAnim": 
+      case "rainbowTest": 
         columnDelays = this.rainbowTestDelay(led, row, coeff);
       break;
       case "V2": 

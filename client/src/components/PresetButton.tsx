@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
-import { animated, useSpring } from "react-spring";
 import { escape } from "he";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { presetSwitch } from "../actions/led-actions";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { setLedStyle } from "../actions/style-actions";
+import { checkPresetButtonsActive } from "../actions/preset-button-actions";
+import { MyRootState } from "../types";
 
 interface PresetButtonProps {
   button: {
     id: string;
     role: string;
     presetName: string;
+    isActive: boolean;
     testid: string;
-    disabled: boolean;
     classList?: string;
     clickHandler: React.MouseEventHandler<HTMLElement>
   }
@@ -22,18 +23,9 @@ interface PresetButtonProps {
 const PresetButton: React.FC<PresetButtonProps> = ({
   button
 }) => {
-  const { id, role, presetName, testid, disabled, classList, clickHandler } = button;
+  const { id, role, presetName, testid, isActive, clickHandler } = button;
   const dispatch = useDispatch();
-  const presetButtonSpring = useSpring({
-    delay: 0,
-    from: {
-      opacity: 0,
-    },
-    to: {
-      opacity: 1,
-    }
-  });
-
+  const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   function setStyle(preset: string): void {
     const LedEngine = new LedStyleEngine(preset);
     const styleHTML = LedEngine.createStyleSheet();
@@ -81,21 +73,21 @@ const PresetButton: React.FC<PresetButtonProps> = ({
         }
       `)}}></style>
 
-      <animated.button
+      <button
         id={id}
-        style={presetButtonSpring}
+        style={{}}
         data-testid={testid}
         role={role}
-        className={classList}
-        disabled={disabled}
-        onClick={(event) =>{
+        className={isActive ? "preset-button-active" : "preset-button-inactive"}
+        onClick={(event: any) =>{
           clickHandler(event);
+          dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
           dispatch(presetSwitch(presetName));
           setStyle(presetName);
         }}
       >
         {presetName}
-      </animated.button>
+      </button>
     </>
   );
 };

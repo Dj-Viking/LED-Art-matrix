@@ -15,16 +15,10 @@ import { clearStyle } from "../actions/style-actions";
 import { IPresetButton, MyRootState } from "../types";
 import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { checkPresetButtonsActive, setPresetButtonsList } from "../actions/preset-button-actions";
+import { checkPresetButtonsActive, setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
-  // const V2ButtonSpring = useSpring(_V2ButtonSpring);
-  // const rainbowButtonSpring = useSpring(_rainbowButtonSpring);
-  // const wavesButtonSpring = useSpring(_wavesButtonSpring);
-  // const spiralButtonSpring = useSpring(_spiralButtonSpring);
-  // const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
-  // const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
   
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
@@ -33,18 +27,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const dispatch = useDispatch();
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
-
-
-  // function setStyle(preset: string): void {
-  //   LedEngine = new LedStyleEngine(preset);
-  //   const styleHTML = LedEngine.createStyleSheet();
-  //   dispatch(setLedStyle(styleHTML));
-  // }
-
-  // TODO: load buttons dynamically according to the account logged in.
-  // have the starting buttons there, but when a new preset is being created
-  // with new parameters, we could save that preset with those coefficient parameters
-  // as a new button, and a new preset in the user's database model. 
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
@@ -58,51 +40,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     setModalOpen(true);
   }
 
-  // const [presetActive, setPresetActive] = useState<boolean>(false);
-  // function toggleActive (event: any): void {
-  //   event.preventDefault();
-  //   setPresetActive(true);
-  // }
-
-
-  //TODO: EXTRACT TO OWN COMPONENT DONE
-
-  // TODO: create global buttonList state to keep track of all presets that are active
-  // so that we can show which preset is currently active 
-  // dynamically load the buttons (some are default) from the user's account
-  // in which the button pertains to a custom preset the user made themselves
-  // presetState: Array<PresetButtonProps>
-
-
-  // creating a class initializer to make it easier to pass the entire array of buttons
-  // with props that allow the button to render properly in the UI
-  // const presetButtonsTemp = [
-  //   {
-  //     id: "kdfjkdjkfj",
-  //     role: "button",
-  //     key: (Math.random() * 1000).toString() + "kdjfkdjfkdjfkdj",
-  //     presetName: "waves",
-  //     testid: "waves-test",
-  //     disabled: !Auth.loggedIn,
-  //     classList: ((isActive: boolean): string => {
-  //       let classList = [];
-  //       if (Auth.loggedIn()) {
-  //         classList.push("preset-button");
-  //       } else classList.push("preset-button-disabled");
-  //       if (isActive) {
-  //         classList.push("preset-button-active");
-  //       } else classList.push("preset-button-inactive");
-  //       return classList.join(" ");
-  //     })(false),
-  //     clickHandler: (event: any) => {
-  //       event.preventDefault();
-  //       dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
-  //       dispatch(presetSwitch("waves"));
-  //       setStyle("waves");
-  //     }
-  //   }
-  // ];
-
   const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
     try {
       const presets = await API.getUserPresets(Auth.getToken() as string);
@@ -114,40 +51,40 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   }, []);
 
   useEffect(() => {
+    if (presetButtons.length === 0) {
 
-    if (!Auth.loggedIn()) {
-      const presetNames = ["rainbowTest", "V2", "waves", "spiral", "fourSpirals", "dm5"];
-  
-      const tempPresets = presetNames.map(name => {
-        return {
-          _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
-          presetName: name,
-          needsAuth: /waves|spiral|fourSpirals|dm5/g.test(name)
-        } as IDBPreset;
-      });
-  
-      const tempButtons = new PresetButtonsList((event: any) => {
-        event.preventDefault();
-        dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
-      }, tempPresets, Auth.loggedIn()).getList();
-  
-      dispatch(setPresetButtonsList(tempButtons));
+      if (!Auth.loggedIn()) {
+        const presetNames = ["rainbowTest", "V2", "waves", "spiral", "fourSpirals", "dm5"];
+    
+        const tempPresets = presetNames.map(name => {
+          return {
+            _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
+            presetName: name,
+          } as IDBPreset;
+        });
+    
+        const tempButtons = new PresetButtonsList((event: any) => {
+          event.preventDefault();
+          dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+        }, tempPresets).getList();
+    
+        dispatch(setPresetButtonsList(tempButtons));
+      } else {
+        (async (): Promise<void> => {
+          let presets = await getPresets() as IDBPreset[];
+          
+          const buttons = new PresetButtonsList(
+            (event: any) => {//click handler
+              event.preventDefault();
+              dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+            }, presets
+          ).getList() as IPresetButton[];
+    
+          dispatch(setPresetButtonsList(buttons));
+        })();
+      }
     }
 
-    if (Auth.loggedIn()) {
-      (async (): Promise<void> => {
-        let presets = await getPresets() as IDBPreset[];
-        
-        const buttons = new PresetButtonsList(
-          (event: any) => {//click handler
-            event.preventDefault();
-            dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
-          }, presets, Auth.loggedIn()
-        ).getList() as IPresetButton[];
-
-        dispatch(setPresetButtonsList(buttons));
-      })();
-    }
     return void 0;
 
   }, [dispatch, getPresets, presetButtons.length]);
@@ -196,6 +133,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           onClick={() => {
             dispatch(presetSwitch(""));
             dispatch(clearStyle());
+            dispatch(setAllInactive(presetButtons));
           }}
         >
           clear
@@ -211,88 +149,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             );
           })
         }
-        
-        {/* <animated.button
-          style={rainbowButtonSpring}
-          role="button"
-          data-testid="rainbowTest"
-          className="preset-button rainbow-anim"
-          onClick={() => {
-            dispatch(presetSwitch("rainbowTestAllAnim"));
-            setStyle("rainbowTestAllAnim");
-          }}
-        >
-          rainbowTest
-        </animated.button>
-
-        <animated.button
-          role="button"
-          data-testid="v2"
-          style={V2ButtonSpring}
-          className="preset-button"
-          onClick={() => {
-            dispatch(presetSwitch("V2"));
-            setStyle("V2");
-          }}
-        >
-          V2
-        </animated.button>
-
-        <animated.button
-          role="button"
-          data-testid="waves"
-          style={wavesButtonSpring}
-          className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
-          disabled={!Auth.loggedIn()}// enable if logged in
-          onClick={() => {
-            dispatch(presetSwitch("waves"));
-            setStyle("waves");
-          }}
-        >
-          waves
-        </animated.button>
-
-        <animated.button
-          role="button"
-          data-testid="spiral"
-          style={spiralButtonSpring}
-          className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
-          disabled={!Auth.loggedIn()}// enable if logged in
-          onClick={() => {
-            dispatch(presetSwitch("spiral"));
-            setStyle("spiral");
-          }}
-        >
-          spiral
-        </animated.button>
-
-        <animated.button
-          role="button"
-          data-testid="fourSpirals"
-          style={fourSpiralsButtonSpring}
-          className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
-          disabled={!Auth.loggedIn()}// enable if logged in
-          onClick={() => {
-            dispatch(presetSwitch("fourSpirals"));
-            setStyle("fourSpirals");
-          }}
-        >
-          fourSpirals
-        </animated.button>
-
-        <animated.button
-          role="button"
-          data-testid="dm5"
-          style={dm5ButtonSpring}
-          className={Auth.loggedIn() ? "preset-button" : "preset-button-disabled"}
-          disabled={!Auth.loggedIn()}// enable if logged in
-          onClick={() => {
-            dispatch(presetSwitch("dm5"));
-            setStyle("dm5");
-          }}
-        >
-            DM5
-        </animated.button> */}
 
         {/* save as new login preset */}
         <animated.button

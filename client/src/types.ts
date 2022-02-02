@@ -270,9 +270,7 @@ export interface IPresetButton {
   key: string;
   isActive: boolean;
   presetName: string;
-  needsAuth: boolean;
   testid: string;
-  disabled: boolean;
   classList?: string;
   clickHandler: React.MouseEventHandler<HTMLElement>
 }
@@ -284,6 +282,11 @@ export interface ILoggedinAction {
 export type ILoggedInActionTypes = 
 | "LOG_IN"
 | "LOG_OUT";
+
+export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
+  type: "SET_ALL_INACTIVE";
+  payload: IPresetButton[];
+}
 
 export type ILoggedInActionPayloads =
 | ILoginAction["payload"]
