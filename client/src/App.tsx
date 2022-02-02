@@ -23,7 +23,7 @@ export const HiddenLocationDisplay = (): JSX.Element => {
   const location = useLocation();
   return (
     <div
-      style={{ display: "hidden", height: 0, width: 0 }}
+      style={{ visibility: "hidden", height: 0, width: 0, color: "black" }}
       data-testid="location-display"
     >
       {location.pathname}

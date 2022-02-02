@@ -3,6 +3,8 @@ import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
 import { IGif } from "../types";
 
+import { IDBPreset } from "../utils/PresetButtonsListClass";
+
 let headers = {};
 interface ISignupArgs {
   username: string;
@@ -113,6 +115,25 @@ class ApiService implements IApiService {
       return data.preset;
     } catch (error) {
       return false;
+    }
+  }
+
+  public static async getUserPresets(token: string): Promise<IDBPreset[] | void> {
+    headers = clearHeaders(headers);
+    headers = setInitialHeaders(headers);
+    headers = setAuthHeader(headers, token);
+    try {
+      const res = await fetch(`${API_URL}/user/presets`, {
+        method: "GET",
+        headers,
+      });
+      const data = await res.json();
+      if (data.error) throw new Error("could not fetch preset's at this time");
+      return data;
+    } catch (error) {
+      console.error(error);
+      const err = error as Error;
+      throw new Error(err.message);
     }
   }
 

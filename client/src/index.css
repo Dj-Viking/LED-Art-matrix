@@ -11,6 +11,10 @@ html {
   color: white;
 }
 
+input {
+  color: black;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

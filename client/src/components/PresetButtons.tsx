@@ -1,34 +1,30 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
-import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import PresetButton from "./PresetButton";
 import { 
-  _V2ButtonSpring, 
-  _rainbowButtonSpring, 
-  _wavesButtonSpring, 
-  _spiralButtonSpring, 
-  _fourSpiralsButtonSpring, 
   _saveButtonSpring,
-  _dm5ButtonSpring,
   _clear,
   _saveNewPresetButtonSpring
 } from "./SpringButtons";
 import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { presetSwitch } from "../actions/led-actions";
-import { clearStyle, setLedStyle } from "../actions/style-actions";
-import { MyRootState } from "../types";
+import { clearStyle } from "../actions/style-actions";
+import { IPresetButton, MyRootState } from "../types";
 import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
+import { checkPresetButtonsActive, setPresetButtonsList } from "../actions/preset-button-actions";
+import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
-  const V2ButtonSpring = useSpring(_V2ButtonSpring);
-  const rainbowButtonSpring = useSpring(_rainbowButtonSpring);
-  const wavesButtonSpring = useSpring(_wavesButtonSpring);
-  const spiralButtonSpring = useSpring(_spiralButtonSpring);
-  const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
-  const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
+  // const V2ButtonSpring = useSpring(_V2ButtonSpring);
+  // const rainbowButtonSpring = useSpring(_rainbowButtonSpring);
+  // const wavesButtonSpring = useSpring(_wavesButtonSpring);
+  // const spiralButtonSpring = useSpring(_spiralButtonSpring);
+  // const fourSpiralsButtonSpring = useSpring(_fourSpiralsButtonSpring);
+  // const dm5ButtonSpring = useSpring(_dm5ButtonSpring);
   
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
@@ -36,14 +32,14 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   
   const dispatch = useDispatch();
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
-  
-  let LedEngine = new LedStyleEngine("");
+  const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
 
-  function setStyle(preset: string): void {
-    LedEngine = new LedStyleEngine(preset);
-    const styleHTML = LedEngine.createStyleSheet();
-    dispatch(setLedStyle(styleHTML));
-  }
+
+  // function setStyle(preset: string): void {
+  //   LedEngine = new LedStyleEngine(preset);
+  //   const styleHTML = LedEngine.createStyleSheet();
+  //   dispatch(setLedStyle(styleHTML));
+  // }
 
   // TODO: load buttons dynamically according to the account logged in.
   // have the starting buttons there, but when a new preset is being created
@@ -76,36 +72,88 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   // dynamically load the buttons (some are default) from the user's account
   // in which the button pertains to a custom preset the user made themselves
   // presetState: Array<PresetButtonProps>
-  const presetButtons = [
-    {
-      role: "button",
-      key: (Math.random() * 1000).toString() + "kdjfkdjfkdjfkdj",
-      isActive: false,
-      title: "waves",
-      testid: "waves-test",
-      disabled: () => !Auth.loggedIn(),
-      makeClass: (): string => {
-        if (Auth.loggedIn()) {
-          return "preset-button";
-        } else return "preset-button-disabled";
-      },
-      clickHandler: (event: any) => {
-        event.preventDefault();
-        dispatch(presetSwitch("waves"));
-        setStyle("waves");
-      }
+
+
+  // creating a class initializer to make it easier to pass the entire array of buttons
+  // with props that allow the button to render properly in the UI
+  // const presetButtonsTemp = [
+  //   {
+  //     id: "kdfjkdjkfj",
+  //     role: "button",
+  //     key: (Math.random() * 1000).toString() + "kdjfkdjfkdjfkdj",
+  //     presetName: "waves",
+  //     testid: "waves-test",
+  //     disabled: !Auth.loggedIn,
+  //     classList: ((isActive: boolean): string => {
+  //       let classList = [];
+  //       if (Auth.loggedIn()) {
+  //         classList.push("preset-button");
+  //       } else classList.push("preset-button-disabled");
+  //       if (isActive) {
+  //         classList.push("preset-button-active");
+  //       } else classList.push("preset-button-inactive");
+  //       return classList.join(" ");
+  //     })(false),
+  //     clickHandler: (event: any) => {
+  //       event.preventDefault();
+  //       dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+  //       dispatch(presetSwitch("waves"));
+  //       setStyle("waves");
+  //     }
+  //   }
+  // ];
+
+  const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
+    try {
+      const presets = await API.getUserPresets(Auth.getToken() as string);
+      if (Array.isArray(presets)) return presets;
+      else throw new TypeError(`Presets collection retrieved was not an array but was ${presets}`);
+    } catch (error) {
+      console.error("error when fetching for user's presets", error);
     }
-  ];
+  }, []);
+
+  useEffect(() => {
+
+    if (!Auth.loggedIn()) {
+      const presetNames = ["rainbowTest", "V2", "waves", "spiral", "fourSpirals", "dm5"];
+  
+      const tempPresets = presetNames.map(name => {
+        return {
+          _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
+          presetName: name,
+          needsAuth: /waves|spiral|fourSpirals|dm5/g.test(name)
+        } as IDBPreset;
+      });
+  
+      const tempButtons = new PresetButtonsList((event: any) => {
+        event.preventDefault();
+        dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+      }, tempPresets, Auth.loggedIn()).getList();
+  
+      dispatch(setPresetButtonsList(tempButtons));
+    }
+
+    if (Auth.loggedIn()) {
+      (async (): Promise<void> => {
+        let presets = await getPresets() as IDBPreset[];
+        
+        const buttons = new PresetButtonsList(
+          (event: any) => {//click handler
+            event.preventDefault();
+            dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+          }, presets, Auth.loggedIn()
+        ).getList() as IPresetButton[];
+
+        dispatch(setPresetButtonsList(buttons));
+      })();
+    }
+    return void 0;
+
+  }, [dispatch, getPresets, presetButtons.length]);
 
   return (
     <>
-    {
-      Array.isArray(presetButtons) && presetButtons.map(button => {
-        return (
-          <PresetButton key={button.key} button={{ ...button }} />
-        );
-      })
-    }
       <Modal isOpen={modalOpen}>
         <SavePresetModalContent
           context={{
@@ -152,8 +200,19 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         >
           clear
         </animated.button>
+
+        {
+          Array.isArray(presetButtons) && presetButtons.map(button => {
+            return (
+              <PresetButton 
+                key={button.key} 
+                button={{ ...button }}
+              />
+            );
+          })
+        }
         
-        <animated.button
+        {/* <animated.button
           style={rainbowButtonSpring}
           role="button"
           data-testid="rainbowTest"
@@ -233,7 +292,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           }}
         >
             DM5
-        </animated.button>
+        </animated.button> */}
 
         {/* save as new login preset */}
         <animated.button

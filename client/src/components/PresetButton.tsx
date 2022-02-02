@@ -1,15 +1,20 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { animated, useSpring } from "react-spring";
 import { escape } from "he";
+import { useDispatch } from "react-redux";
+import { presetSwitch } from "../actions/led-actions";
+import { LedStyleEngine } from "../utils/LedStyleEngineClass";
+import { setLedStyle } from "../actions/style-actions";
 
 interface PresetButtonProps {
   button: {
+    id: string;
     role: string;
-    isActive: boolean;
-    title: string;
+    presetName: string;
     testid: string;
-    disabled: () => boolean;
-    makeClass: () => string;
+    disabled: boolean;
+    classList?: string;
     clickHandler: React.MouseEventHandler<HTMLElement>
   }
 }
@@ -17,7 +22,8 @@ interface PresetButtonProps {
 const PresetButton: React.FC<PresetButtonProps> = ({
   button
 }) => {
-  const { isActive, role, title, testid, disabled, makeClass, clickHandler } = button;
+  const { id, role, presetName, testid, disabled, classList, clickHandler } = button;
+  const dispatch = useDispatch();
   const presetButtonSpring = useSpring({
     delay: 0,
     from: {
@@ -27,47 +33,68 @@ const PresetButton: React.FC<PresetButtonProps> = ({
       opacity: 1,
     }
   });
+
+  function setStyle(preset: string): void {
+    const LedEngine = new LedStyleEngine(preset);
+    const styleHTML = LedEngine.createStyleSheet();
+    dispatch(setLedStyle(styleHTML));
+  }
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: escape(`
-        ${
-          isActive
-          ? `
-            .preset-button {
-              margin-left: 5px;
-              margin-right: 5px;
-              margin-bottom: 10px;
-              border-radius: 10px;
-              height: 50px;
-              width: 100px;
-              text-align: center;
-              color: white;
-              background-color: black;
-              cursor: pointer;
-            }
-          ` : `
-            .preset-button-disabled {
-              margin-left: 5px;
-              margin-right: 5px;
-              margin-bottom: 10px;
-              height: 50px;
-              width: 100px;
-              border-radius: 10px;
-              text-align: center;
-              cursor: default;
-            }
-          `
+        .preset-button {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: black;
+          cursor: pointer;
+        }
+        .preset-button-active {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: green;
+          cursor: pointer;
+        }
+
+        .preset-button-inactive {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          height: 50px;
+          width: 100px;
+          border-radius: 10px;
+          background-color: black;
+          text-align: center;
+          cursor: pointer;
         }
       `)}}></style>
+
       <animated.button
+        id={id}
         style={presetButtonSpring}
         data-testid={testid}
         role={role}
-        className={makeClass()}
-        disabled={disabled()}
-        onClick={clickHandler}
+        className={classList}
+        disabled={disabled}
+        onClick={(event) =>{
+          clickHandler(event);
+          dispatch(presetSwitch(presetName));
+          setStyle(presetName);
+        }}
       >
-        {title}
+        {presetName}
       </animated.button>
     </>
   );

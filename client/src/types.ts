@@ -240,6 +240,42 @@ export interface ILedStyleAction {
 export interface ILoggedInState {
   loggedIn: boolean;
 }
+
+export interface IPresetButtonsListState {
+  presetButtons: IPresetButton[];
+}
+export interface ISetPresetButtonsListAction {
+  type: "SET_BUTTONS_LIST";
+  payload: IPresetButton[];
+}
+export type ICheckPresetButtonsActiveAction = (buttons: IPresetButton[], id: string) => {
+  type: "CHECK_BUTTONS_ACTIVE",
+  payload: IPresetButton[]
+}
+export interface IPresetButtonsAction {
+  type: IPresetButtonListActionTypes;
+  payload: IPresetButtonListActionPayloads;
+}
+export type IPresetButtonListActionTypes = 
+| ISetPresetButtonsListAction["type"]
+| "CHECK_BUTTONS_ACTIVE";
+
+export type IPresetButtonListActionPayloads =
+| ISetPresetButtonsListAction["payload"]
+| IPresetButton[];
+
+export interface IPresetButton {
+  id: string;
+  role: string;
+  key: string;
+  isActive: boolean;
+  presetName: string;
+  needsAuth: boolean;
+  testid: string;
+  disabled: boolean;
+  classList?: string;
+  clickHandler: React.MouseEventHandler<HTMLElement>
+}
 export interface ILoggedinAction {
   type: ILoggedInActionTypes,
   payload: ILoggedInActionPayloads
@@ -262,6 +298,7 @@ export interface ILogoutAction {
 }
 export interface MyRootState {
   ledState: ILedState;
+  presetButtonsListState: IPresetButtonsListState;
   loggedInState: ILoggedInState;
   ledStyleTagState: ILedStyleTagState;
   loginFormState: ILoginFormState;
