@@ -258,7 +258,8 @@ export interface IPresetButtonsAction {
 }
 export type IPresetButtonListActionTypes = 
 | ISetPresetButtonsListAction["type"]
-| "CHECK_BUTTONS_ACTIVE";
+| "CHECK_BUTTONS_ACTIVE"
+| "SET_ALL_INACTIVE";
 
 export type IPresetButtonListActionPayloads =
 | ISetPresetButtonsListAction["payload"]

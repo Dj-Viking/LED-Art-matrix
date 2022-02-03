@@ -17,6 +17,11 @@ const presetButtonsListReducer = (
         ...state,
         presetButtons: action.payload as IPresetButton[]
       };
+    case "SET_ALL_INACTIVE": 
+      return {
+        ...state,
+        presetButtons: action.payload as IPresetButton[]
+      };
     default: return state;
   }
 };
