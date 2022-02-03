@@ -199,6 +199,9 @@ describe("test clicking all the preset buttons and that they change the led styl
       preset_buttons.rainbowTest.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
+    expect(preset_buttons.rainbowTest.classList.length).toBe(1);
+    expect(preset_buttons.rainbowTest.classList[0]).toBe("preset-button-active");
+
     ledPost = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPost).toBeInTheDocument();
     expect(ledPost.classList.contains("led1-1rainbowTest")).toBe(true);

@@ -27,6 +27,9 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           cursor: pointer;
           background-color: white;
           color: red;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
           border-radius: 10px;
           margin: .5em;
           transition: .1s;
@@ -44,6 +47,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           background-color: green;
           color: white;
           height: 40px;
+          width: 100px;
           border-radius: 10px;
           margin: .5em;
           transition: .1s;
@@ -51,6 +55,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
         }
         .modal-save-button-disabled {
           height: 40px;
+          width: 100px;
           border: 1px solid grey;
           margin: .5em;
           pointer-events: none;
@@ -71,10 +76,13 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
         style={{ 
           display: "flex", 
           flexDirection: "column", 
-          justifyContent: "center" 
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <span 
+        <button
+          type="button"
+          data-testid="modal-close-button"
           className="modal-close-button"
           onClick={(event) => {
             onClose(event);
@@ -82,10 +90,11 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           }}
         >
           CLOSE
-        </span>
+        </button>
         <h1 style={{ color: "black" }}>SAVE PRESET</h1>
         
-        <span 
+        <span
+          data-testid="modal-anim-var-coeff"
           style={{ 
             color: "black", 
             marginBottom: "1em" 
@@ -93,14 +102,34 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
         >
           Animation Variation: {animVarCoeff}
         </span>
-        
-        <label style={{ color: "black" }} htmlFor="preset-name">preset name</label>
-        
-        <input style= {{ color: "black" }} type="text" value={input} onChange={handleChange} />
-        
-        <button disabled={input.length === 0} type="submit" className={ input.length === 0 ? "modal-save-button-disabled" : "modal-save-button"} onClick={handleSubmit}>
-          SAVE
-        </button>
+
+        <form>
+          <label 
+            style={{ color: "black" }} 
+            htmlFor="preset-name"
+          >
+            Preset Name: 
+          </label>
+          
+          <input
+            name="preset-name"
+            data-testid="modal-preset-name-input"
+            style= {{ color: "black" }} 
+            type="text" 
+            value={input} 
+            onChange={handleChange} 
+          />
+          
+          <button 
+            data-testid="modal-save-button"
+            disabled={input.length === 0} 
+            type="submit" 
+            className={ input.length === 0 ? "modal-save-button-disabled" : "modal-save-button"} 
+            onClick={handleSubmit}
+          >
+            SAVE
+          </button>
+        </form>
 
       </div>
     </>

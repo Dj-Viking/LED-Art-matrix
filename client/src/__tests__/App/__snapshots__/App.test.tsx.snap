@@ -410,6 +410,9 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           cursor: pointer;
           background-color: white;
           color: red;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
           border-radius: 10px;
           margin: .5em;
           transition: .1s;
@@ -427,6 +430,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           background-color: green;
           color: white;
           height: 40px;
+          width: 100px;
           border-radius: 10px;
           margin: .5em;
           transition: .1s;
@@ -434,6 +438,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         }
         .modal-save-button-disabled {
           height: 40px;
+          width: 100px;
           border: 1px solid grey;
           margin: .5em;
           pointer-events: none;
@@ -450,41 +455,49 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       
           </style>
           <div
-            style="display: flex; flex-direction: column; justify-content: center;"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
           >
-            <span
+            <button
               class="modal-close-button"
+              data-testid="modal-close-button"
+              type="button"
             >
               CLOSE
-            </span>
+            </button>
             <h1
               style="color: black;"
             >
               SAVE PRESET
             </h1>
             <span
+              data-testid="modal-anim-var-coeff"
               style="color: black; margin-bottom: 1em;"
             >
               Animation Variation: 64
             </span>
-            <label
-              for="preset-name"
-              style="color: black;"
-            >
-              preset name
-            </label>
-            <input
-              style="color: black;"
-              type="text"
-              value=""
-            />
-            <button
-              class="modal-save-button-disabled"
-              disabled=""
-              type="submit"
-            >
-              SAVE
-            </button>
+            <form>
+              <label
+                for="preset-name"
+                style="color: black;"
+              >
+                Preset Name:
+              </label>
+              <input
+                data-testid="modal-preset-name-input"
+                name="preset-name"
+                style="color: black;"
+                type="text"
+                value=""
+              />
+              <button
+                class="modal-save-button-disabled"
+                data-testid="modal-save-button"
+                disabled=""
+                type="submit"
+              >
+                SAVE
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -552,7 +565,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="496.89909299694324kdjfkdjfkjd"
+          id="121.62510764536694kdjfkdjfkjd"
           role="button"
         >
           rainbowTest
@@ -600,7 +613,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="121.25678059807754kdjfkdjfkjd"
+          id="784.4190388904833kdjfkdjfkjd"
           role="button"
         >
           v2
@@ -648,7 +661,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="597.0803466118019kdjfkdjfkjd"
+          id="723.5855380166643kdjfkdjfkjd"
           role="button"
         >
           waves
@@ -696,7 +709,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="75.02538938649738kdjfkdjfkjd"
+          id="212.79600613841242kdjfkdjfkjd"
           role="button"
         >
           spiral
@@ -744,7 +757,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="452.2305690547401kdjfkdjfkjd"
+          id="614.4737089258274kdjfkdjfkjd"
           role="button"
         >
           fourSpirals
@@ -792,7 +805,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="919.7086745471926kdjfkdjfkjd"
+          id="805.0885671654544kdjfkdjfkjd"
           role="button"
         >
           dm5

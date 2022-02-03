@@ -30,8 +30,6 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
-//TODO IMPLEMENT WINDOW NAVIGATION window.location.assign() for login test
-
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 describe("tests the logout works", () => {
