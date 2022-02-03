@@ -35,15 +35,45 @@ export const UserController = {
       return res.status(201).json({ token, _id: newUser._id });
     } catch (error) {}
   },
+  addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+    try {
+      const { presetName, animVarCoeff } = req.body;
+      const updated = await User.findOneAndUpdate(
+        { email: req.user!.email },
+        {
+          $push: {
+            presets: { presetName, animVarCoeff },
+          },
+        },
+        { new: true }
+      ).select("-password");
+      return res.status(200).json({ presets: updated!.presets });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error });
+    }
+  },
+  getUserPresets: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+    try {
+      const user = await User.findOne({ email: req!.user!.email });
+      return res.status(200).json({ presets: user!.presets });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error });
+    }
+  },
   getUserDefaultPreset: async function (
     req: Express.MyRequest,
     res: Response
   ): Promise<Response | void> {
     try {
-      const foundUser = await User.findOne({ _id: req.user!._id }).select("-password");
+      const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
       return res.status(200).json({ preset: foundUser!.defaultPreset!.presetName });
     } catch (error) {}
   },
+  //TODO: when updating, push this preset into the user's preset collection
+  // make sure to gather the animVarCoeff or whatever parameters on the preset
+  // as part of the default preset prop and include it in the update, (change both default and the preset in the collection)
   updateDefaultPreset: async function (
     req: Express.MyRequest,
     res: Response

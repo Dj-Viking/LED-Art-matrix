@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { DocumentType } from "@typegoose/typegoose";
+import { DocumentType, mongoose } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
 import { UserClass } from "./models/User";
 
@@ -75,7 +75,14 @@ export interface IGif {
   limit: string;
   _id: string;
 }
+
+export interface IAddPresetResponse {
+  presets: IPreset[];
+}
 export interface IGetUserPresetResponse {
+  presets: IPreset[];
+}
+export interface IGetUserDefaultPresetResponse {
   preset: string;
 }
 
@@ -119,6 +126,8 @@ export interface ICreateUserResponse {
 
 export interface IPreset {
   presetName: string;
+  _id: mongoose.Types.ObjectId;
+  animVarCoeff: string;
 }
 
 export interface ILoginPayload {

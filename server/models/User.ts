@@ -33,8 +33,8 @@ export class UserClass {
   @prop({ ref: () => OrderClass })
   public orders?: Ref<OrderClass>[];
 
-  @prop({ type: () => PresetClass })
-  public presets?: PresetClass[];
+  @prop({ type: () => PresetClass, default: [] })
+  public presets: PresetClass[];
 
   @prop()
   public defaultPreset?: PresetClass;
