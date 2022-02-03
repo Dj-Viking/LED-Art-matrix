@@ -1,3 +1,4 @@
+/* eslint-disable testing-library/no-unnecessary-act */
 // @ts-ignore
 import React from "react";
 import App from "../../App";
@@ -14,6 +15,7 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -125,22 +127,12 @@ describe("testing router because if i log in then i can route back to home and c
 
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).toBeDisabled();
-    
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).toBeDisabled();
-    
+
   });
 
 });
@@ -209,7 +201,7 @@ describe("test clicking all the preset buttons and that they change the led styl
 
     ledPost = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPost).toBeInTheDocument();
-    expect(ledPost.classList.contains("led1-1rainbowTestAllAnim")).toBe(true);
+    expect(ledPost.classList.contains("led1-1rainbowTest")).toBe(true);
 
     styleTagRef = container.querySelector("#led-style");
     expect(typeof styleTagRef).toBe("object");
@@ -265,11 +257,6 @@ describe("test clicking all the preset buttons and that they change the led styl
     const hiddenHistoryRef = screen.getByTestId("location-display");
     expect(hiddenHistoryRef).toHaveTextContent("/");
 
-    //get ref to led element and check it's there+
-    const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPreRef).toBeInTheDocument();
-    expect(ledPreRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
-
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
       rainbowTest: screen.getByTestId("rainbowTest"),
@@ -280,6 +267,19 @@ describe("test clicking all the preset buttons and that they change the led styl
       dm5: screen.getByTestId("dm5"),
       saveDefault: screen.getByTestId("saveDefault")
     };
+
+    //get ref to led element and check it's there
+    const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
+    expect(ledPreRef).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.click(preset_buttons.clear);
+      preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+    
+    const ledPost = screen.getByTestId("led1-1") as HTMLElement;
+    expect(ledPost.classList.length).toBe(1);
+    expect(ledPost.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
@@ -422,21 +422,11 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-    
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).not.toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).not.toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).not.toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).not.toBeDisabled();
-
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).not.toBeDisabled();
     
   });
 

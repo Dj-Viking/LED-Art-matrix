@@ -16,12 +16,12 @@ export const ASSERT_ANIMATION = {
   durationStyleRegex: /animation-duration: ([0-9.s])+/,
   delayStyleRegex: /animation-delay: ([0-9.s])+/,
   rainbowTest: {
-    regex: /rainbowTestAllAnim/g,
-    classListItem: "led1-1rainbowTestAllAnim",
+    regex: /rainbowTest/g,
+    classListItem: "led1-1rainbowTest",
   },
   v2: {
-    regex: /V2/g,
-    classListItem: "led1-1V2",
+    regex: /v2/g,
+    classListItem: "led1-1v2",
   },
   waves: {
     regex: /waves/g,

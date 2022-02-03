@@ -54,7 +54,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     if (presetButtons.length === 0) {
 
       if (!Auth.loggedIn()) {
-        const presetNames = ["rainbowTest", "V2", "waves", "spiral", "fourSpirals", "dm5"];
+        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
     
         const tempPresets = presetNames.map(name => {
           return {

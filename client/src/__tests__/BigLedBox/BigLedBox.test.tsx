@@ -39,9 +39,6 @@ describe("Test that the animation variation slider changes the style values", ()
   });
 
   it("tests that slider renders", async () => {
-    expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", "HEYHEY");
-    expect(localStorage.getItem("id_token")).toBe("HEYHEY");
 
     const history = createMemoryHistory();
 

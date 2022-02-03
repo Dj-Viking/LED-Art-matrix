@@ -32,7 +32,7 @@ export class LedStyleEngine {
           ${this.createLedClass(coeff)}
         `;
       break;
-      case "V2":
+      case "v2":
         str = `
           ${RAINBOW_V2_ANIMATION}
           ${this.createLedClass(coeff)}
@@ -99,7 +99,7 @@ export class LedStyleEngine {
       case "rainbowTest": 
         columnDelays = this.rainbowTestDelay(led, row, coeff);
       break;
-      case "V2": 
+      case "v2": 
         columnDelays = this.V2Delay(led, row, coeff);
       break;
       case "waves": 
