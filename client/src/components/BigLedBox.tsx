@@ -79,7 +79,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
           <PresetButtons />
           {
             (
-              ["dm5", "waves", "V2", "rainbowTest"].includes(presetName)
+              ["dm5", "waves", "v2", "rainbowTest"].includes(presetName)
             ) && (
               <>
                 <Slider
