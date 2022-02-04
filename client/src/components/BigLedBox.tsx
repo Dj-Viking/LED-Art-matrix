@@ -25,7 +25,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
       if (typeof preset === "string") {
         return preset;
       }
-      throw new TypeError(`preset returned was not a string! it's value was ${preset}`);
+      console.error(`preset returned was not a string! it's value was ${preset}`);
     } catch (error) {
       return void 0;
     }

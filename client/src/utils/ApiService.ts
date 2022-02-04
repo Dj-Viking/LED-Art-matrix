@@ -22,6 +22,7 @@ export interface IApiService {
   login: (args: ILoginArgs) => Promise<boolean | void>;
   getDefaultPreset: (token: string) => Promise<string | boolean>;
   updateDefaultPreset: (token: string) => Promise<string | void>;
+  getUserPresets: (token: string) => Promise<IDBPreset[] | void>;
   getGifs: () => Promise<Array<IGif>>;
   forgotPassword: (email: string) => Promise<boolean | void>;
   changePassword: (password: string) => Promise<{done: boolean, token: string } | void>;
@@ -32,6 +33,7 @@ class ApiService implements IApiService {
   public signup!: (args: ISignupArgs) => Promise<boolean | void>;
   public login!: (args: ILoginArgs) => Promise<boolean | void>;
   public getDefaultPreset!: (token: string) => Promise<string | boolean>;
+  public getUserPresets!: (token: string) => Promise<IDBPreset[] | void>;
   public updateDefaultPreset!: (token: string) => Promise<string | void>;
   public getGifs!: () => Promise<IGif[]>;
   public forgotPassword!: (email: string) => Promise<boolean | void>;
@@ -111,6 +113,7 @@ class ApiService implements IApiService {
         headers,
       });
       const data = await res.json();
+      console.log("data of get user default", data);
       if (data.error) throw new Error(`${data.error}`);
       return data.preset;
     } catch (error) {

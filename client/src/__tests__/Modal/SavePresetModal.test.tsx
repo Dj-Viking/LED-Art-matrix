@@ -13,6 +13,17 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+// import { ApiService } from "../../utils/ApiService";
+
+// const mockGetUserPresets = jest.fn();
+// jest.mock("../../utils/ApiService.ts", () => ({
+//   ...jest.requireActual("../../utils/ApiService.ts"),
+//   getUserPresets: () => {
+//     return Promise.resolve({
+
+//     });
+//   },
+// }));
 
 
 const store = createStore(
@@ -77,8 +88,10 @@ describe("test the save modal functionality", () => {
         </Router>
       </Provider>
     );
+
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2);
+    // expect(fetch).toHaveBeenLastCalledWith("kdjfkdjf");
 
     //open modal
     const savePresetBtn = screen.getByTestId("savePreset");
@@ -173,9 +186,14 @@ describe("test the save modal functionality", () => {
     global.fetch = originalFetch;
     localStorage.clear();
 
+    console.log("store state end of test 1", store.getState());
+    jest.clearAllMocks();
+
   });
 
-  it("tests that the typeerror happens when when for some reason the api didn't send an array", async () => {
+  it("tests that the api didn't send an array with items, buttons should not render", async () => {
+
+    console.log("store state test 2", store.getState());
 
     global.fetch = originalFetch;
     localStorage.clear();
@@ -191,7 +209,7 @@ describe("test the save modal functionality", () => {
         status: 200,
         json: () => {
           return Promise.resolve({
-            presets: "not an array of presets"
+            presets: []
           });
         }
       });
@@ -210,22 +228,27 @@ describe("test the save modal functionality", () => {
       </>
     );
 
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveLastReturnedWith("kdjdfkjdkjs");
+    expect(fetch).toHaveBeenLastCalledWith("kdjfkdjf");
+
     
-    //alright now for SOME REASON the state is maintained throughout these two it() blocks
+    //alright now for SOME REASON the components are persisting throughout these two it() blocks
     // same problem as this post https://stackoverflow.com/questions/67062331/how-to-reset-redux-store-after-each-test-using-testing-library-react-in-next-js
     // how annoying, I'm trying to test that when I arrive to the page and don't get
     // an array of presets from the API that a button should not render in the button list render loop
-    // however, from the previous test into this one, the state is maintained and not "cleaned up"
+    // however, from the previous test into this one, the components are persisting and not "cleaned up"
 
-    //quite a shame that i have to do this and have to manually reset the state to
+    //quite a shame that i have to do this and have to manually reset the components to
     // demonstrate what actually happens in reality when rendering the page for the first time and not
     // having an array of presets initially...
-    const awaitedButton = await screen.findByText(/v2/);
-    const awaitedWaves = await screen.findByText(/waves/);
-    const buttonsParent = screen.getByTestId("buttons-parent");
-    buttonsParent.removeChild(awaitedButton);
-    buttonsParent.removeChild(awaitedWaves);
-    expect(awaitedButton).not.toBeInTheDocument();
+
+    // const awaitedButton = await screen.findByText(/v2/);
+    // const awaitedWaves = await screen.findByText(/waves/);
+    // const buttonsParent = screen.getByTestId("buttons-parent");
+    // buttonsParent.removeChild(awaitedButton);
+    // buttonsParent.removeChild(awaitedWaves);
+    // expect(awaitedButton).not.toBeInTheDocument();
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
 
