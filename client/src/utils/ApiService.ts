@@ -113,7 +113,6 @@ class ApiService implements IApiService {
         headers,
       });
       const data = await res.json();
-      console.log("data of get user default", data);
       if (data.error) throw new Error(`${data.error}`);
       return data.preset;
     } catch (error) {
