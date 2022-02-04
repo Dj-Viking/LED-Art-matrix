@@ -17,6 +17,7 @@ import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
 import { checkPresetButtonsActive, setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
+import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
   
@@ -44,7 +45,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     try {
       const presets = await API.getUserPresets(Auth.getToken() as string);
       if (Array.isArray(presets)) return presets;
-      else throw new TypeError(`Presets collection retrieved was not an array but was ${presets}`);
     } catch (error) {
       console.error("error when fetching for user's presets", error);
     }
@@ -139,16 +139,19 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           clear
         </animated.button>
 
+        <div data-testid="buttons-parent">
+          <PresetButtonStyles />
         {
           Array.isArray(presetButtons) && presetButtons.map(button => {
             return (
-              <PresetButton 
+              <PresetButton
                 key={button.key} 
                 button={{ ...button }}
               />
             );
           })
         }
+        </div>
 
         {/* save as new login preset */}
         <animated.button

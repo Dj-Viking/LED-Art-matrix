@@ -401,6 +401,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         style="position: relative; height: 0px; width: 250px; margin: 0px auto;"
       >
         <div
+          data-testid="modal-base"
           style="display: none; position: absolute; justify-content: center; background-color: white; border-radius: 10px; height: 250px; width: 250px;"
         >
           <style>
@@ -522,8 +523,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         >
           clear
         </button>
-        <style>
-          
+        <div
+          data-testid="buttons-parent"
+        >
+          <style>
+            
         .preset-button {
           margin-left: 5px;
           margin-right: 5px;
@@ -561,255 +565,56 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           cursor: pointer;
         }
       
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="rainbowTest"
-          id="734.770680512356kdjfkdjfkjd"
-          role="button"
-        >
-          rainbowTest
-        </button>
-        <style>
-          
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="v2"
-          id="754.2558585904642kdjfkdjfkjd"
-          role="button"
-        >
-          v2
-        </button>
-        <style>
-          
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="waves"
-          id="570.5015580230852kdjfkdjfkjd"
-          role="button"
-        >
-          waves
-        </button>
-        <style>
-          
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="spiral"
-          id="195.3547453020388kdjfkdjfkjd"
-          role="button"
-        >
-          spiral
-        </button>
-        <style>
-          
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="fourSpirals"
-          id="269.78825271021975kdjfkdjfkjd"
-          role="button"
-        >
-          fourSpirals
-        </button>
-        <style>
-          
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      
-        </style>
-        <button
-          class="preset-button-inactive"
-          data-testid="dm5"
-          id="776.1240832664522kdjfkdjfkjd"
-          role="button"
-        >
-          dm5
-        </button>
+          </style>
+          <button
+            class="preset-button-inactive"
+            data-testid="rainbowTest"
+            id="305.83910639271926kdjfkdjfkjd"
+            role="button"
+          >
+            rainbowTest
+          </button>
+          <button
+            class="preset-button-inactive"
+            data-testid="v2"
+            id="548.1947254567692kdjfkdjfkjd"
+            role="button"
+          >
+            v2
+          </button>
+          <button
+            class="preset-button-inactive"
+            data-testid="waves"
+            id="533.8472475838381kdjfkdjfkjd"
+            role="button"
+          >
+            waves
+          </button>
+          <button
+            class="preset-button-inactive"
+            data-testid="spiral"
+            id="717.5237775444073kdjfkdjfkjd"
+            role="button"
+          >
+            spiral
+          </button>
+          <button
+            class="preset-button-inactive"
+            data-testid="fourSpirals"
+            id="935.6738107996703kdjfkdjfkjd"
+            role="button"
+          >
+            fourSpirals
+          </button>
+          <button
+            class="preset-button-inactive"
+            data-testid="dm5"
+            id="257.9020383454977kdjfkdjfkjd"
+            role="button"
+          >
+            dm5
+          </button>
+        </div>
         <button
           class="preset-button-disabled"
           data-testid="saveDefault"

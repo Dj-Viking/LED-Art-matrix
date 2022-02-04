@@ -129,7 +129,7 @@ class ApiService implements IApiService {
       });
       const data = await res.json();
       if (data.error) throw new Error("could not fetch preset's at this time");
-      return data;
+      return data.presets;
     } catch (error) {
       console.error(error);
       const err = error as Error;

@@ -20,8 +20,10 @@ const Modal: React.FC<ModalProps> = ({
           margin: "0 auto" 
         }}
       >
-        <div 
+        <div
+          data-testid="modal-base" 
           style={{
+            
             display: isOpen ? "flex" : "none", 
             position: "absolute",
             justifyContent: "center",

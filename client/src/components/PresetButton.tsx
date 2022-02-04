@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
-import { escape } from "he";
 import { useDispatch, useSelector } from "react-redux";
 import { presetSwitch } from "../actions/led-actions";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
@@ -34,48 +33,8 @@ const PresetButton: React.FC<PresetButtonProps> = ({
 
   return (
     <>
-      <style dangerouslySetInnerHTML={{ __html: escape(`
-        .preset-button {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: black;
-          cursor: pointer;
-        }
-        .preset-button-active {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          border-radius: 10px;
-          height: 50px;
-          width: 100px;
-          text-align: center;
-          color: white;
-          background-color: green;
-          cursor: pointer;
-        }
-
-        .preset-button-inactive {
-          margin-left: 5px;
-          margin-right: 5px;
-          margin-bottom: 10px;
-          height: 50px;
-          width: 100px;
-          border-radius: 10px;
-          background-color: black;
-          text-align: center;
-          cursor: pointer;
-        }
-      `)}}></style>
-
       <button
         id={id}
-        style={{}}
         data-testid={testid}
         role={role}
         className={isActive ? "preset-button-active" : "preset-button-inactive"}
