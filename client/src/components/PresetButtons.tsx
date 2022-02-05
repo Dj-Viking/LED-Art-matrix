@@ -79,7 +79,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
               dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
             }, presets
           ).getList() as IPresetButton[];
-    
           dispatch(setPresetButtonsList(buttons));
         })();
       }

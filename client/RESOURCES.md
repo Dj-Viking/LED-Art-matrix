@@ -53,3 +53,6 @@
 
 * <a href="https://medium.com/@rickhanlonii/understanding-jest-mocks-f0046c68e53c" rel="noopener noreferrer">Good article on jest mocks</a>
        
+
+* Jest bug with leaky mocks and not properly clearing with use of jest.clearAllMocks() jest.resetMocks() or whatever is supposed to cleanup anything doesn't actually work
+    - <a href="https://github.com/facebook/jest/issues/7136" rel="noopener noreferrer">Issue #7136 linked here</a>

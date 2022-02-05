@@ -104,11 +104,11 @@ describe("testing router because if i log in then i can route back to home and c
     
     render(
       <>
-        <Router history={history}>
-          <Provider store={store}>
+        <Provider store={store}>
+          <Router history={history}>
             <App />
-          </Provider>
-        </Router>
+          </Router>
+        </Provider>
       </>
     );
     const hiddenHistoryRef = screen.getByTestId("location-display");
@@ -304,7 +304,6 @@ describe("test clicking all the preset buttons and that they change the led styl
     ledPostRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPostRef).toBeInTheDocument();
     expect(ledPostRef.classList.length).toBe(1);
-    // expect(ledPostRef.classList[0]).toBe("kdjkfjkdjkcj");
     expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.v2.classListItem);
 
 
@@ -341,7 +340,6 @@ describe("test clicking all the preset buttons and that they change the led styl
     clearLedRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
-    // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
     expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });
@@ -461,22 +459,11 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-    
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).not.toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).not.toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).not.toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).not.toBeDisabled();
-
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).not.toBeDisabled();
-
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
@@ -557,22 +544,11 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-    
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).not.toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).not.toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).not.toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).not.toBeDisabled();
-
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).not.toBeDisabled();
-
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
@@ -653,21 +629,11 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-    
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).not.toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).not.toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).not.toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).not.toBeDisabled();
-
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).not.toBeDisabled();
 
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
@@ -749,22 +715,11 @@ describe("test logging in and checking buttons become un-disabled", () => {
     expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
-    
     expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.waves).not.toBeDisabled();
-
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.spiral).not.toBeDisabled();
-
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).not.toBeDisabled();
-
     expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.dm5).not.toBeDisabled();
-
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).not.toBeDisabled();
-
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;

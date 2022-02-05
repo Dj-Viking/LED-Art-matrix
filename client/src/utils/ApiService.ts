@@ -17,7 +17,7 @@ interface ILoginArgs {
 }
 
 export interface IApiService {
-  alive: () => void;
+  alive: () => any;
   signup: (args: ISignupArgs) => Promise<boolean | void>;
   login: (args: ILoginArgs) => Promise<boolean | void>;
   getDefaultPreset: (token: string) => Promise<string | boolean>;

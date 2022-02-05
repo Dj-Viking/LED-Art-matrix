@@ -309,3 +309,11 @@ export interface MyRootState {
   signupFormState: ISignupFormState;
   artScrollerState: IArtScrollerState;
 }
+
+export interface ISignTestTokenArgs {
+  _id?: string;
+  username: string;
+  email: string;
+  role?: string;
+  uuid?: string;
+}

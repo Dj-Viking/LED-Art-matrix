@@ -5,7 +5,7 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -13,24 +13,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-// import { ApiService } from "../../utils/ApiService";
-
-// const mockGetUserPresets = jest.fn();
-// jest.mock("../../utils/ApiService.ts", () => ({
-//   ...jest.requireActual("../../utils/ApiService.ts"),
-//   getUserPresets: () => {
-//     return Promise.resolve({
-
-//     });
-//   },
-// }));
-
-
-const store = createStore(
-  allReducers,
-  // @ts-expect-error this will exist in the browser
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+const uuid = require("uuid");
 
 //letting these methods be available to silence the jest errors
 window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
@@ -41,6 +24,12 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
+const originalFetch = global.fetch;
+afterEach(() => {
+  global.fetch = originalFetch;
+  jest.resetAllMocks();
+  localStorage.clear();
+});
 
 describe("test the save modal functionality", () => {
 
@@ -49,7 +38,6 @@ describe("test the save modal functionality", () => {
   // the app will try to render buttons if we're logged in but if we don't have presets
   // then no buttons will render and the test will fail
 
-  const originalFetch = global.fetch;
   it("tests the modal can have input changing and rendering, click the save button and close button", async () => {
 
     //@ts-ignore
@@ -76,10 +64,20 @@ describe("test the save modal functionality", () => {
     });
 
     const history = createMemoryHistory();
+    const store = createStore(
+      allReducers,
+      // @ts-expect-error this will exist in the browser
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
 
     expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", "TOKEN HERE YOU GO");
-    expect(localStorage.getItem("id_token")).toBe("TOKEN HERE YOU GO");
+    localStorage.setItem("id_token", TestService.signTestToken({
+      username: "test user",
+      email: "test email",
+      uuid: uuid.v4(),
+      _id: Math.random() * 1293 + "yo what up",
+    }));
+    expect(typeof localStorage.getItem("id_token")).toBe("string");
 
     render(
       <Provider store={store}>
@@ -90,8 +88,9 @@ describe("test the save modal functionality", () => {
     );
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    expect(fetch).toHaveBeenCalledTimes(2);
-    // expect(fetch).toHaveBeenLastCalledWith("kdjfkdjf");
+    //just care about the fetch returning the presets
+    // even though the response is also going to the /user endpoint it's irrelevant to this test
+    expect(fetch).toHaveBeenCalledTimes(2); 
 
     //open modal
     const savePresetBtn = screen.getByTestId("savePreset");
@@ -162,8 +161,6 @@ describe("test the save modal functionality", () => {
     act(() => {
       modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-
-    //TODO: 
     
     //open again
     act(() => {
@@ -183,77 +180,14 @@ describe("test the save modal functionality", () => {
     expect(waves.classList).toHaveLength(1);
     expect(waves.classList[0]).toBe("preset-button-inactive");
 
-    global.fetch = originalFetch;
-    localStorage.clear();
+    const logout = (await screen.findByText(/^Logout$/g));
+    expect(logout).toBeInTheDocument();
 
-    console.log("store state end of test 1", store.getState());
-    jest.clearAllMocks();
-
-  });
-
-  it("tests that the api didn't send an array with items, buttons should not render", async () => {
-
-    console.log("store state test 2", store.getState());
-
-    global.fetch = originalFetch;
-    localStorage.clear();
-
-
-    expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", "TOKEN HERE YOU GO");
-    expect(localStorage.getItem("id_token")).toBe("TOKEN HERE YOU GO");
-
-    //@ts-ignore
-    global.fetch = jest.fn(() => {
-      return Promise.resolve({
-        status: 200,
-        json: () => {
-          return Promise.resolve({
-            presets: []
-          });
-        }
-      });
+    await act(async () => {
+      logout.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-
-    const history = createMemoryHistory();
-
-    render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-
-    // expect(fetch).toHaveBeenCalledTimes(1);
-    // expect(fetch).toHaveLastReturnedWith("kdjdfkjdkjs");
-    // expect(fetch).toHaveBeenLastCalledWith("kdjfkdjf");
-
-    
-    //alright now for SOME REASON the components are persisting throughout these two it() blocks
-    // how annoying, I'm trying to test that when I arrive to the page and don't get
-    // an array of presets from the API that a button should not render in the button list render loop
-    // however, from the previous test into this one, the components are persisting and not "cleaned up"
-
-    //quite a shame that i have to do this and have to manually reset the components to
-    // demonstrate what actually happens in reality when rendering the page for the first time and not
-    // having an array of presets initially...
-
-    // const awaitedButton = await screen.findByText(/v2/);
-    // const awaitedWaves = await screen.findByText(/waves/);
-    // const buttonsParent = screen.getByTestId("buttons-parent");
-    // buttonsParent.removeChild(awaitedButton);
-    // buttonsParent.removeChild(awaitedWaves);
-    // expect(awaitedButton).not.toBeInTheDocument();
-
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-
-    //only style tag should be present since we shouldn't get an array from the fake api fetch
-    const buttonsParent2 = screen.getByTestId("buttons-parent");
-    expect(buttonsParent2.children).toHaveLength(1);
-    
   });
+
 });
