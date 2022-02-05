@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import { AuthService as Auth } from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
@@ -103,7 +104,7 @@ class ApiService implements IApiService {
     }
   }
 
-  public static async getDefaultPreset(token: string): Promise<string | boolean> {
+  public static async getDefaultPreset(token: string): Promise<string | void> {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
@@ -113,11 +114,8 @@ class ApiService implements IApiService {
         headers,
       });
       const data = await res.json();
-      if (data.error) throw new Error(`${data.error}`);
       return data.preset;
-    } catch (error) {
-      return false;
-    }
+    } catch (error) {}
   }
 
   public static async getUserPresets(token: string): Promise<IDBPreset[] | void> {
@@ -130,13 +128,8 @@ class ApiService implements IApiService {
         headers,
       });
       const data = await res.json();
-      if (data.error) throw new Error("could not fetch preset's at this time");
       return data.presets;
-    } catch (error) {
-      console.error(error);
-      const err = error as Error;
-      throw new Error(err.message);
-    }
+    } catch (error) {}
   }
 
   public static async updateDefaultPreset(
@@ -153,7 +146,6 @@ class ApiService implements IApiService {
         headers,
       });
       if (!res.ok) throw new Error("Update could not happen at this time.");
-      return void 0;
     } catch (error) {
       return error as Error;
     }
@@ -169,9 +161,7 @@ class ApiService implements IApiService {
       });
       const data = await res.json();
       return data.gifs;
-    } catch (error) {
-      return void 0;
-    }
+    } catch (error) {}
   }
 
   public static async forgotPassword(email: string): Promise<boolean | void> {

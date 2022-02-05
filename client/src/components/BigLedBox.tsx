@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 import React, { useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
@@ -19,6 +20,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
   const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
   const styleHTMLRef = useRef<string>("");
 
+  // @ts-ignore
   const getDefaultPreset = useCallback(async () => {
     try {
       const preset = await API.getDefaultPreset(Auth.getToken() as string);
@@ -26,9 +28,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
         return preset;
       }
       // console.error(`preset returned was not a string! it's value was ${preset}`);
-    } catch (error) {
-      return void 0;
-    }
+    } catch (error) {}
   }, []);
 
   // function that sets the starting preset name of the user logging on

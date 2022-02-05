@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,9 +46,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     try {
       const presets = await API.getUserPresets(Auth.getToken() as string);
       if (Array.isArray(presets)) return presets;
-    } catch (error) {
-      console.error("error when fetching for user's presets", error);
-    }
+    } catch (error) {}
   }, []);
 
   useEffect(() => {

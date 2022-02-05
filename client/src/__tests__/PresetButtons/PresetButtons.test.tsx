@@ -759,7 +759,7 @@ describe("test logging in and checking buttons become un-disabled", () => {
 
     expect(keyFramesMatches).toHaveLength(1);
 
-    //clear preset before next test... not sure how to useDispatch in a jest test, it's probably break rules of hooks.
+    //clear preset 
     let clearLedRef = screen.getByTestId("led1-1");
     act(() => {
       preset_buttons.clear.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -767,7 +767,6 @@ describe("test logging in and checking buttons become un-disabled", () => {
     clearLedRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(clearLedRef).toBeInTheDocument();
     expect(clearLedRef.classList.length).toBe(1);
-    // expect(clearLedRef.classList[0]).toBe("kdjkdfjkdjkf");
     expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
 
   });

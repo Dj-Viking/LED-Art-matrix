@@ -11,7 +11,7 @@ export const checkPresetButtonsActive: ICheckPresetButtonsActiveAction = (button
   newList = buttons.map((btn: IPresetButton) => {
     switch(true) {
       case btn.id === id && btn.isActive: {
-        btn.isActive = false;
+        btn.isActive = true;
         return btn;
       }
       case btn.isActive && btn.id !== id: {
