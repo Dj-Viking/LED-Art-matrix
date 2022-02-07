@@ -237,6 +237,14 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(parsed.presets[6].presetName).toBe("new preset");
         expect(parsed.presets[6].animVarCoeff).toBe("55");
     }));
+    test("/GET /user/presets get user's preset collection without a token", () => __awaiter(void 0, void 0, void 0, function* () {
+        const presets = yield (0, supertest_1.default)(app).get("/user/presets").set({
+            authorization: `Bearer `,
+        });
+        expect(presets.status).toBe(401);
+        const parsed = JSON.parse(presets.text);
+        expect(parsed.error).toBe("not authenticated");
+    }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });
     }));

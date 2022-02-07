@@ -59,10 +59,7 @@ exports.UserController = {
                 }, { new: true }).select("-password");
                 return res.status(200).json({ presets: updated.presets });
             }
-            catch (error) {
-                console.error(error);
-                return res.status(500).json({ error });
-            }
+            catch (error) { }
         });
     },
     getUserPresets: function (req, res) {
@@ -71,10 +68,7 @@ exports.UserController = {
                 const user = yield models_1.User.findOne({ email: req.user.email });
                 return res.status(200).json({ presets: user.presets });
             }
-            catch (error) {
-                console.error(error);
-                return res.status(500).json({ error });
-            }
+            catch (error) { }
         });
     },
     getUserDefaultPreset: function (req, res) {

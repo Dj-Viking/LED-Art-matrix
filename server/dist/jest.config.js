@@ -22,6 +22,7 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
             "!dist/**/*.js",
             "!coverage/*",
             "!index.ts",
+            "!constants.ts",
             "!./config/*",
             "!jest.config.ts",
             "!./stubs/*"
