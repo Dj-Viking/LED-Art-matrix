@@ -15,7 +15,6 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
         transform: {
             "^.+\\.tsx?$": "ts-jest",
         },
-        collectCoverage: true,
         collectCoverageFrom: [
             "!utils/sendEmail.ts",
             "!dist/*.js",

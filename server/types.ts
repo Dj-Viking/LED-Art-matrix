@@ -1,5 +1,5 @@
 import { Request } from "express";
-import { DocumentType, mongoose } from "@typegoose/typegoose";
+import { DocumentType } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
 import { UserClass } from "./models/User";
 
@@ -126,7 +126,7 @@ export interface ICreateUserResponse {
 
 export interface IPreset {
   presetName: string;
-  _id: mongoose.Types.ObjectId;
+  _id: string;
   animVarCoeff: string;
 }
 
@@ -172,4 +172,8 @@ export interface IExpiredTokenError {
 
 export interface IForgotPasswordResponse {
   message: string;
+}
+
+export interface IDeletePresetResponse {
+  presets: IPreset[];
 }

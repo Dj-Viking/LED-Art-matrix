@@ -31,8 +31,9 @@ afterAll(() => {
     }));
 });
 const app = (0, testServer_1.createTestServer)();
-let newUserId = "";
-let newUserToken = "";
+let newUserId = null;
+let newUserToken = null;
+let presetToDeleteId = null;
 describe("test this runs through CRUD of a user entity", () => {
     test("POST /user try to sign up with out data", () => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield (0, supertest_1.default)(app).post("/user");
@@ -235,15 +236,30 @@ describe("test this runs through CRUD of a user entity", () => {
         const parsed = JSON.parse(presets.text);
         expect(parsed.presets).toHaveLength(7);
         expect(parsed.presets[6].presetName).toBe("new preset");
+        expect(typeof parsed.presets[6]._id).toBe("string");
+        presetToDeleteId = parsed.presets[6]._id;
         expect(parsed.presets[6].animVarCoeff).toBe("55");
     }));
-    test("/GET /user/presets get user's preset collection without a token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("GET /user/presets get user's preset collection without a token", () => __awaiter(void 0, void 0, void 0, function* () {
         const presets = yield (0, supertest_1.default)(app).get("/user/presets").set({
             authorization: `Bearer `,
         });
         expect(presets.status).toBe(401);
         const parsed = JSON.parse(presets.text);
         expect(parsed.error).toBe("not authenticated");
+    }));
+    test("DELETE /user/delete-preset delete a user's preset by preset _id", () => __awaiter(void 0, void 0, void 0, function* () {
+        const deleted = yield (0, supertest_1.default)(app)
+            .delete("/user/delete-preset")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        })
+            .send({
+            _id: presetToDeleteId,
+        });
+        expect(deleted.status).toBe(200);
+        const parsed = JSON.parse(deleted.text);
+        expect(parsed.presets.length).toBe(6);
     }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });

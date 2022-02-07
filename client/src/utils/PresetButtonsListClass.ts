@@ -3,6 +3,7 @@ import { IPresetButton } from "../types";
 export interface IDBPreset {
   _id: string;
   presetName: string;
+  animVarCoeff?: string;
 }
 
 class PresetButtonsList {

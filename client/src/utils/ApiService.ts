@@ -132,7 +132,7 @@ class ApiService implements IApiService {
     } catch (error) {}
   }
   
-  public static async saveUserPreset(args: ISaveUserPresetArgs, token: string): Promise<IDBPreset | void> {
+  public static async addNewPreset(args: ISaveUserPresetArgs, token: string): Promise<IDBPreset[] | unknown> {
     const { presetName, animVarCoeff } = args;
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
@@ -144,10 +144,10 @@ class ApiService implements IApiService {
         headers,
       });
       const data = await res.json();
-      return data.preset;
+      return data.presets;
     } catch (error) {
       console.error(error);
-      
+      return void 0;
     }
   }
 

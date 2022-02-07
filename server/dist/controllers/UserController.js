@@ -48,6 +48,24 @@ exports.UserController = {
             catch (error) { }
         });
     },
+    deleteUserPreset: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { _id } = req.body;
+                const user = yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                    $pull: {
+                        presets: { _id },
+                    },
+                }, { new: true });
+                console.log("updated user presets", user.presets);
+                res.status(200).json({ presets: user.presets });
+            }
+            catch (error) {
+                console.error(error);
+                res.status(500).json({ error });
+            }
+        });
+    },
     addNewPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

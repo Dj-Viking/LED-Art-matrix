@@ -6,7 +6,6 @@ export default async (): Promise<Config.InitialOptions> => {
     transform: {
       "^.+\\.tsx?$": "ts-jest",
     },
-    collectCoverage: true,
     collectCoverageFrom: [
       "!utils/sendEmail.ts",
       "!dist/*.js",

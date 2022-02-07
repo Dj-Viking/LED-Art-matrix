@@ -2,6 +2,7 @@ const router = require("express").Router();
 import { UserController } from "../controllers";
 import { authMiddleware } from "../middleware";
 const {
+  deleteUserPreset,
   getUserDefaultPreset,
   login,
   addNewPreset,
@@ -18,6 +19,7 @@ router.route("/login").post(login);
 router.route("/forgot").post(forgotPassword);
 
 // need auth
+router.route("/delete-preset").delete(authMiddleware, deleteUserPreset);
 router.route("/update-preset").put(authMiddleware, updateDefaultPreset);
 router.route("/").get(authMiddleware, getUserDefaultPreset);
 router.route("/add-preset").post(authMiddleware, addNewPreset);

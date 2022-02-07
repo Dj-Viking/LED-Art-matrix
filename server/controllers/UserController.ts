@@ -41,6 +41,29 @@ export const UserController = {
       return res.status(201).json({ token, _id: newUser._id });
     } catch (error) {}
   },
+  deleteUserPreset: async function (
+    req: Express.MyRequest,
+    res: Response
+  ): Promise<Response | void> {
+    try {
+      const { _id } = req.body;
+      const user = await User.findOneAndUpdate(
+        { email: req!.user!.email },
+        {
+          $pull: {
+            presets: { _id },
+          },
+        },
+        { new: true }
+      );
+      console.log("updated user presets", user!.presets);
+
+      res.status(200).json({ presets: user!.presets });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error });
+    }
+  },
   addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
       const { presetName, animVarCoeff } = req.body;

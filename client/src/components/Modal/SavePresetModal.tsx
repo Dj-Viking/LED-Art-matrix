@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { escape } from "he";
+import API from "../../utils/ApiService";
+import { AuthService as Auth } from "../../utils/AuthService";
+import { useDispatch, useSelector } from "react-redux";
+import { checkPresetButtonsActive, setPresetButtonsList } from "../../actions/preset-button-actions";
+import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
+import { MyRootState } from "../../types";
 interface SavePresetModalProps {
   onClose: React.MouseEventHandler<HTMLElement>;
   context: { animVarCoeff: string }
@@ -9,15 +15,41 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
   onClose,
   context: { animVarCoeff }
 }) => {
-
+  const [ error, setError ] = useState<string>("");
   const [ input, setInput ] = useState<string>("");
+  const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
+  const dispatch = useDispatch();
+
   function handleChange(event: any): void {
     event.preventDefault();
     setInput(event.target.value);
   }
-  function handleSubmit(event: any): void {
-    onClose(event);
-    setInput("");
+  async function handleSubmit(event: any): Promise<void | unknown> {
+    event.preventDefault();
+    try {
+      const dbPresets = await API.addNewPreset({
+        presetName: input,
+        animVarCoeff
+      }, Auth.getToken() as string) as IDBPreset[];
+      
+      if (Array.isArray(dbPresets)) {
+        const presets = new PresetButtonsList((event: any) => {
+          event.preventDefault();
+          dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+        }, dbPresets).getList();
+
+        dispatch(setPresetButtonsList(presets));
+        
+        onClose(event);
+        setInput("");
+      }
+      return void 0;
+    } catch (error) {
+      const err = error as Error;
+      setError(`Oops! there was a problem saving this preset: ${err.message}`);
+      console.error(error);
+      return void 0;
+    }
   }
   return (
     <>
@@ -129,6 +161,15 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           >
             SAVE
           </button>
+          {
+            error.length
+            ?
+              <span style={{ color: "red" }}>
+                {error}
+              </span>
+            : 
+              null
+          }
         </form>
 
       </div>

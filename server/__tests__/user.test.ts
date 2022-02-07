@@ -14,6 +14,7 @@ import {
   IGetUserPresetResponse,
   IAddPresetResponse,
   IGetUserDefaultPresetResponse,
+  IDeletePresetResponse,
 } from "../types";
 import { User } from "../models";
 import { signToken } from "../utils";
@@ -33,8 +34,9 @@ afterAll(() => {
   // mongoose.connection.close(() => done());
 });
 const app = createTestServer();
-let newUserId: null | string = "";
-let newUserToken: null | string = "";
+let newUserId: null | string = null;
+let newUserToken: null | string = null;
+let presetToDeleteId: null | string = null;
 
 describe("test this runs through CRUD of a user entity", () => {
   test("POST /user try to sign up with out data", async () => {
@@ -259,15 +261,31 @@ describe("test this runs through CRUD of a user entity", () => {
     const parsed = JSON.parse(presets.text) as IGetUserPresetResponse;
     expect(parsed.presets).toHaveLength(7);
     expect(parsed.presets[6].presetName).toBe("new preset");
+    expect(typeof parsed.presets[6]._id).toBe("string");
+    presetToDeleteId = parsed.presets[6]._id as string;
     expect(parsed.presets[6].animVarCoeff).toBe("55");
   });
-  test("/GET /user/presets get user's preset collection without a token", async () => {
+  test("GET /user/presets get user's preset collection without a token", async () => {
     const presets = await request(app).get("/user/presets").set({
       authorization: `Bearer `,
     });
     expect(presets.status).toBe(401);
     const parsed = JSON.parse(presets.text) as { error: string };
     expect(parsed.error).toBe("not authenticated");
+  });
+
+  test("DELETE /user/delete-preset delete a user's preset by preset _id", async () => {
+    const deleted = await request(app)
+      .delete("/user/delete-preset")
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      })
+      .send({
+        _id: presetToDeleteId as string,
+      });
+    expect(deleted.status).toBe(200);
+    const parsed = JSON.parse(deleted.text) as IDeletePresetResponse;
+    expect(parsed.presets.length).toBe(6);
   });
 
   test("deletes the user we just made", async () => {
