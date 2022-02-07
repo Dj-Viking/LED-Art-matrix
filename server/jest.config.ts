@@ -13,6 +13,7 @@ export default async (): Promise<Config.InitialOptions> => {
       "!dist/**/*.js",
       "!coverage/*",
       "!index.ts",
+      "!constants.ts",
       "!./config/*",
       "!jest.config.ts",
       "!./stubs/*"

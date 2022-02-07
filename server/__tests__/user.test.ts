@@ -261,8 +261,14 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(parsed.presets[6].presetName).toBe("new preset");
     expect(parsed.presets[6].animVarCoeff).toBe("55");
   });
-
-  // TODO: TEST USER EMAIL RESET STUB
+  test("/GET /user/presets get user's preset collection without a token", async () => {
+    const presets = await request(app).get("/user/presets").set({
+      authorization: `Bearer `,
+    });
+    expect(presets.status).toBe(401);
+    const parsed = JSON.parse(presets.text) as { error: string };
+    expect(parsed.error).toBe("not authenticated");
+  });
 
   test("deletes the user we just made", async () => {
     await User.deleteOne({ _id: newUserId as string });
