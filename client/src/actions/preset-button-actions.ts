@@ -1,4 +1,10 @@
-import { ICheckPresetButtonsActiveAction, ISetPresetButtonsListAction, IPresetButton, ISetAllInactiveAction } from "../types";
+import { 
+  ICheckPresetButtonsActiveAction, 
+  ISetPresetButtonsListAction, 
+  IPresetButton, 
+  ISetAllInactiveAction, 
+  IToggleDeleteModeAction
+} from "../types";
 
 export const setPresetButtonsList = (buttons: IPresetButton[] | []): ISetPresetButtonsListAction => ({
   type: "SET_BUTTONS_LIST",
@@ -30,6 +36,22 @@ export const checkPresetButtonsActive: ICheckPresetButtonsActiveAction = (button
     type: "CHECK_BUTTONS_ACTIVE",
     payload: newList
   };
+};
+
+export const toggleDeleteMode: IToggleDeleteModeAction = (buttons: IPresetButton[]) => {
+  let newList = [];
+
+  newList = buttons.map(btn => {
+    btn.deleteMode = !btn.deleteMode;
+    btn.isActive = false;
+    return btn;
+  });
+
+  return {
+    type: "TOGGLE_DELETE_MODE",
+    payload: newList,
+  };
+
 };
 
 export const setAllInactive: ISetAllInactiveAction = (buttons: IPresetButton[]) => {

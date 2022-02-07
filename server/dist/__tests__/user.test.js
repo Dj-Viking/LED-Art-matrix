@@ -63,7 +63,8 @@ describe("test this runs through CRUD of a user entity", () => {
         });
         expect(user.status).toBe(200);
         const parsed = JSON.parse(user.text);
-        expect(parsed.preset).toBe("waves");
+        expect(parsed.preset.presetName).toBe("waves");
+        expect(parsed.preset.animVarCoeff).toBe("64");
     }));
     test("POST /user/login with just email", () => __awaiter(void 0, void 0, void 0, function* () {
         const login = yield (0, supertest_1.default)(app)
@@ -178,6 +179,7 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(JSON.parse(update.text).error).toBe("missing preset name in request");
     }));
     test("PUT /update-preset a user's default preset", () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a;
         const update = yield (0, supertest_1.default)(app)
             .put("/user/update-preset")
             .set({
@@ -185,12 +187,13 @@ describe("test this runs through CRUD of a user entity", () => {
         })
             .send({
             defaultPreset: "waves",
-            animVarCoeff: "64",
+            animVarCoeff: "23",
         });
         const parsed = JSON.parse(update.text);
         expect(update.status).toBe(200);
-        expect(typeof parsed.updated).toBe("string");
-        expect(parsed.updated).toBe("waves");
+        expect(typeof ((_a = parsed.preset) === null || _a === void 0 ? void 0 : _a.presetName)).toBe("string");
+        expect(parsed.preset.presetName).toBe("waves");
+        expect(parsed.preset.animVarCoeff).toBe("23");
     }));
     test("/PUT try to update preset with invalid token", () => __awaiter(void 0, void 0, void 0, function* () {
         const invalidSig = yield (0, supertest_1.default)(app)

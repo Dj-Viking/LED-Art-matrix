@@ -18,6 +18,7 @@ class PresetButtonsList {
         key: Math.random() * 1000 + "kdjfkdjfkdj",
         role: "button",
         isActive: false,
+        deleteMode: false,
         presetName: preset.presetName,
         testid: preset.presetName,
         clickHandler

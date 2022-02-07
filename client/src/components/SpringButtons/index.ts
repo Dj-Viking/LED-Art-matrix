@@ -122,4 +122,13 @@ export const _clear = {
     opacity: 1,
   }
 };
+export const _deletePresetButtonSpring = {
+  delay: 0,
+  from: {
+    opacity: 0,
+  },
+  to: {
+    opacity: 1,
+  }
+};
 

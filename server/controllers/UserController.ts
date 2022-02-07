@@ -91,7 +91,12 @@ export const UserController = {
   ): Promise<Response | void> {
     try {
       const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
-      return res.status(200).json({ preset: foundUser!.defaultPreset!.presetName });
+      return res.status(200).json({
+        preset: {
+          presetName: foundUser!.defaultPreset!.presetName,
+          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+        },
+      });
     } catch (error) {}
   },
   //TODO: when updating, push this preset into the user's preset collection
@@ -108,16 +113,23 @@ export const UserController = {
       if (typeof defaultPreset !== "string")
         return res.status(400).json({ error: "missing preset name in request" });
       const foundUser = await User.findOneAndUpdate(
-        { _id: req.user!._id },
+        { _id: req!.user!._id },
         {
-          defaultPreset: {
-            presetName: defaultPreset,
-            animVarCoeff,
+          $set: {
+            defaultPreset: {
+              presetName: defaultPreset,
+              animVarCoeff,
+            },
           },
         },
         { new: true }
       ).select("-password");
-      return res.status(200).json({ updated: foundUser!.defaultPreset!.presetName });
+      return res.status(200).json({
+        preset: {
+          presetName: foundUser!.defaultPreset!.presetName,
+          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+        },
+      });
     } catch (error) {}
   },
   login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {

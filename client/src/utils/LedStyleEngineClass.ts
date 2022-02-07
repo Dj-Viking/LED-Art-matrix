@@ -20,7 +20,7 @@ export class LedStyleEngine {
    * @param coeff optional coefficient argument set default 1 will change on react state changes on sliders
    * @returns just a css string to add as "HTML" to a style tag
    */
-  public createStyleSheet(coeff = "1"): string {
+  public createStyleSheet(coeff: string): string {
     return this.generateStyle(coeff);
   }
   private generateStyle(coeff: string): string {

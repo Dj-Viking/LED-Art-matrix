@@ -93,7 +93,12 @@ exports.UserController = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const foundUser = yield models_1.User.findOne({ email: req.user.email }).select("-password");
-                return res.status(200).json({ preset: foundUser.defaultPreset.presetName });
+                return res.status(200).json({
+                    preset: {
+                        presetName: foundUser.defaultPreset.presetName,
+                        animVarCoeff: foundUser.defaultPreset.animVarCoeff,
+                    },
+                });
             }
             catch (error) { }
         });
@@ -105,12 +110,19 @@ exports.UserController = {
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
                 const foundUser = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
-                    defaultPreset: {
-                        presetName: defaultPreset,
-                        animVarCoeff,
+                    $set: {
+                        defaultPreset: {
+                            presetName: defaultPreset,
+                            animVarCoeff,
+                        },
                     },
                 }, { new: true }).select("-password");
-                return res.status(200).json({ updated: foundUser.defaultPreset.presetName });
+                return res.status(200).json({
+                    preset: {
+                        presetName: foundUser.defaultPreset.presetName,
+                        animVarCoeff: foundUser.defaultPreset.animVarCoeff,
+                    },
+                });
             }
             catch (error) { }
         });

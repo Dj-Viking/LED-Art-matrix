@@ -260,7 +260,8 @@ export interface IPresetButtonsAction {
 export type IPresetButtonListActionTypes = 
 | ISetPresetButtonsListAction["type"]
 | "CHECK_BUTTONS_ACTIVE"
-| "SET_ALL_INACTIVE";
+| "SET_ALL_INACTIVE"
+| "TOGGLE_DELETE_MODE";
 
 export type IPresetButtonListActionPayloads =
 | ISetPresetButtonsListAction["payload"]
@@ -270,6 +271,7 @@ export interface IPresetButton {
   id: string;
   role: string;
   key: string;
+  deleteMode: boolean;
   isActive: boolean;
   presetName: string;
   testid: string;
@@ -289,6 +291,10 @@ export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
   type: "SET_ALL_INACTIVE";
   payload: IPresetButton[];
 }
+export type IToggleDeleteModeAction = (buttons: IPresetButton[]) => {
+  type: "TOGGLE_DELETE_MODE";
+  payload: IPresetButton[];
+}
 
 export type ILoggedInActionPayloads =
 | ILoginAction["payload"]
@@ -302,6 +308,7 @@ export interface ILogoutAction {
   payload: false;
 }
 export interface MyRootState {
+  deleteModalState: IDeleteModalState;
   ledState: ILedState;
   presetButtonsListState: IPresetButtonsListState;
   loggedInState: ILoggedInState;
@@ -356,4 +363,22 @@ export interface ISearchTerm {
   termText?: string;
   termCategory?: string;
   limit?: string;
+}
+export interface ISetDeleteModalOpenAction {
+  type: "SET_DELETE_MODAL_OPEN",
+  payload: boolean;
+}
+export interface IDeleteModalState {
+  deleteModalIsOpen: boolean;
+}
+
+export type IDeleteModalActionTypes = 
+| ISetDeleteModalOpenAction["type"];
+
+export type IDeleteModalActionPayloads = 
+| ISetDeleteModalOpenAction["payload"];
+
+export interface IDeleteModalAction {
+  type: IDeleteModalActionTypes,
+  payload: IDeleteModalActionPayloads
 }

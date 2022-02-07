@@ -72,7 +72,8 @@ describe("test this runs through CRUD of a user entity", () => {
       });
     expect(user.status).toBe(200);
     const parsed = JSON.parse(user.text) as IGetUserDefaultPresetResponse;
-    expect(parsed.preset).toBe("waves");
+    expect(parsed.preset.presetName).toBe("waves");
+    expect(parsed.preset.animVarCoeff).toBe("64");
   });
 
   test("POST /user/login with just email", async () => {
@@ -207,13 +208,14 @@ describe("test this runs through CRUD of a user entity", () => {
       })
       .send({
         defaultPreset: "waves",
-        animVarCoeff: "64",
+        animVarCoeff: "23",
       } as IUpdateUserPresetPayload);
     const parsed = JSON.parse(update.text) as IUpdateUserPresetResponse;
 
     expect(update.status).toBe(200);
-    expect(typeof parsed.updated).toBe("string");
-    expect(parsed.updated).toBe("waves");
+    expect(typeof parsed.preset?.presetName).toBe("string");
+    expect(parsed.preset.presetName).toBe("waves");
+    expect(parsed.preset.animVarCoeff).toBe("23");
   });
 
   test("/PUT try to update preset with invalid token", async () => {

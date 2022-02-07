@@ -83,7 +83,7 @@ export interface IGetUserPresetResponse {
   presets: IPreset[];
 }
 export interface IGetUserDefaultPresetResponse {
-  preset: string;
+  preset: IPreset;
 }
 
 export interface IUser {
@@ -154,7 +154,7 @@ export interface IUpdateUserPresetPayload {
 }
 
 export interface IUpdateUserPresetResponse {
-  updated?: string | void;
+  preset: IPreset;
 }
 
 export interface IInvalidSigError {

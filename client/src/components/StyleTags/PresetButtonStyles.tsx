@@ -4,6 +4,19 @@ import { escape } from "he";
 const PresetButtonStyles: React.FC = (): JSX.Element => {
   return (
     <style dangerouslySetInnerHTML={{ __html: escape(`
+        
+        .preset-delete-mode {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: red;
+          cursor: pointer;
+        }
         .preset-button {
           margin-left: 5px;
           margin-right: 5px;
