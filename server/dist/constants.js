@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TEST_PASSWORD = exports.TEST_EMAIL = exports.TEST_USERNAME = exports.APP_DOMAIN_PREFIX = exports.IS_PROD = exports.TEST_DB_URL = void 0;
+exports.INITIAL_PRESETS = exports.TEST_PASSWORD = exports.TEST_EMAIL = exports.TEST_USERNAME = exports.APP_DOMAIN_PREFIX = exports.IS_PROD = exports.TEST_DB_URL = void 0;
 require("dotenv").config();
 exports.TEST_DB_URL = "mongodb://localhost/led-matrix-test";
 exports.IS_PROD = process.env.NODE_ENV === "production";
@@ -10,4 +10,24 @@ exports.APP_DOMAIN_PREFIX = exports.IS_PROD
 exports.TEST_USERNAME = "test-user";
 exports.TEST_EMAIL = "test@email.com";
 exports.TEST_PASSWORD = "test password";
+exports.INITIAL_PRESETS = [
+    {
+        presetName: "rainbowTest",
+    },
+    {
+        presetName: "v2",
+    },
+    {
+        presetName: "waves",
+    },
+    {
+        presetName: "spiral",
+    },
+    {
+        presetName: "fourSpirals",
+    },
+    {
+        presetName: "dm5",
+    },
+];
 //# sourceMappingURL=constants.js.map

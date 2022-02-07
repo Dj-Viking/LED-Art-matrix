@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { IDBPreset } from "./utils/PresetButtonsListClass";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
@@ -316,4 +317,43 @@ export interface ISignTestTokenArgs {
   email: string;
   role?: string;
   uuid?: string;
+}
+export interface ISaveUserPresetArgs {
+  presetName: string;
+  animVarCoeff: string;
+}
+
+export interface IUserResponse {
+  user: {
+    username: string;
+    email: string;
+    token?: string;
+    orders?: Array<IOrder>;
+    presets?: Array<IDBPreset>;
+    defaultPreset?: IDBPreset;
+    userSearchTerm?: ISearchTerm;
+  };
+}
+
+export interface IOrder {
+  purchaseDate?: Date;
+  products: Array<IProduct>;
+}
+
+export interface IProduct {
+  name: string;
+  description?: string;
+  image?: string;
+  price: number;
+  quantity?: number;
+  category: ICategory;
+}
+
+export interface ICategory {
+  name: string;
+}
+export interface ISearchTerm {
+  termText?: string;
+  termCategory?: string;
+  limit?: string;
 }

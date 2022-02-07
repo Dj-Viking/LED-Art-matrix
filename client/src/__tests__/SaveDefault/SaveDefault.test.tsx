@@ -13,7 +13,7 @@ import "@jest/types";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
+import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, MOCK_PRESETS, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
 
 const store = createStore(
   allReducers,
@@ -40,13 +40,19 @@ describe("test the save default button is making the request, mock the response"
   });
   
   it("logs in so the next test can have buttons enabled", async () => {
-    // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() => {
-      return Promise.resolve({
-        status: 200,
-        json: () => Promise.resolve(LOGIN_MOCK_TOKEN)
-      });
-    });
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+    // @ts-ignore
+    global.fetch = mockFetch;
     const history = createMemoryHistory();
 
     render(
@@ -91,7 +97,7 @@ describe("test the save default button is making the request, mock the response"
 
     //once for logging in and then twice for going to "/" and fetching the user's preset
     // since we're logged in then the get user preset fetch happens
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(3);
 
   });
 

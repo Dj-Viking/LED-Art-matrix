@@ -57,7 +57,7 @@ __decorate([
     __metadata("design:type", Array)
 ], UserClass.prototype, "orders", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ type: () => PresetClass_1.PresetClass }),
+    (0, typegoose_1.prop)({ type: () => PresetClass_1.PresetClass, default: [] }),
     __metadata("design:type", Array)
 ], UserClass.prototype, "presets", void 0);
 __decorate([

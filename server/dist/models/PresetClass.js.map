@@ -1,1 +1,1 @@
-{"version":3,"file":"PresetClass.js","sourceRoot":"","sources":["../../models/PresetClass.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,oDAA4C;AAE5C,MAAM,WAAW;CAGhB;AADC;IADC,IAAA,gBAAI,EAAC,EAAE,IAAI,EAAE,IAAI,EAAE,CAAC;;+CACF;AAUZ,kCAAW"}
+{"version":3,"file":"PresetClass.js","sourceRoot":"","sources":["../../models/PresetClass.ts"],"names":[],"mappings":";;;;;;;;;;;;AAAA,oDAA4C;AAE5C,MAAM,WAAW;CAMhB;AAJC;IADC,IAAA,gBAAI,EAAC,EAAE,IAAI,EAAE,IAAI,EAAE,CAAC;;+CACK;AAG1B;IADC,IAAA,gBAAI,EAAC,EAAE,OAAO,EAAE,IAAI,EAAE,CAAC;;iDACI;AAUrB,kCAAW"}

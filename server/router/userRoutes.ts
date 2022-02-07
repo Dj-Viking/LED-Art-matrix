@@ -12,13 +12,12 @@ const {
   changePassword,
 } = UserController;
 
+// /user
 router.route("/").post(signup);
 router.route("/login").post(login);
 router.route("/forgot").post(forgotPassword);
 
-// router.route("/all")
-//   .get(getAllUsers);
-
+// need auth
 router.route("/update-preset").put(authMiddleware, updateDefaultPreset);
 router.route("/").get(authMiddleware, getUserDefaultPreset);
 router.route("/add-preset").post(authMiddleware, addNewPreset);

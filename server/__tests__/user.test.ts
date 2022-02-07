@@ -205,6 +205,7 @@ describe("test this runs through CRUD of a user entity", () => {
       })
       .send({
         defaultPreset: "waves",
+        animVarCoeff: "64",
       } as IUpdateUserPresetPayload);
     const parsed = JSON.parse(update.text) as IUpdateUserPresetResponse;
 
@@ -231,7 +232,7 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(parsed.error.message).toBe("invalid token");
   });
 
-  test("/GET /user/add-preset add a new preset to the user's preset collection", async () => {
+  test("/POST /user/add-preset add a new preset to the user's preset collection", async () => {
     const add = await request(app)
       .post("/user/add-preset")
       .send({
@@ -243,9 +244,10 @@ describe("test this runs through CRUD of a user entity", () => {
       });
     expect(add.status).toBe(200);
     const parsed = JSON.parse(add.text) as IAddPresetResponse;
-    expect(parsed.presets).toHaveLength(1);
-    expect(parsed.presets[0].animVarCoeff).toBe("55");
-    expect(parsed.presets[0].presetName).toBe("new preset");
+    expect(parsed.presets).toHaveLength(7);
+    expect(typeof parsed.presets[6]._id).toBe("string");
+    expect(parsed.presets[6].animVarCoeff).toBe("55");
+    expect(parsed.presets[6].presetName).toBe("new preset");
   });
   test("/GET /user/presets get user's preset collection", async () => {
     const presets = await request(app)
@@ -255,12 +257,10 @@ describe("test this runs through CRUD of a user entity", () => {
       });
     expect(presets.status).toBe(200);
     const parsed = JSON.parse(presets.text) as IGetUserPresetResponse;
-    expect(parsed.presets).toHaveLength(1);
-    expect(parsed.presets[0].presetName).toBe("new preset");
-    expect(parsed.presets[0].animVarCoeff).toBe("55");
+    expect(parsed.presets).toHaveLength(7);
+    expect(parsed.presets[6].presetName).toBe("new preset");
+    expect(parsed.presets[6].animVarCoeff).toBe("55");
   });
-
-  // TODO: make test for issue # 92
 
   // TODO: TEST USER EMAIL RESET STUB
 

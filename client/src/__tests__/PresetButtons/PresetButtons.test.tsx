@@ -14,7 +14,7 @@ import "@jest/types";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN } from "../../utils/mocks";
+import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
@@ -34,20 +34,27 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 describe("testing router because if i log in then i can route back to home and click the previously disabled buttons", () => {
+  const originalFetch = global.fetch;
 
   beforeEach(() => {
-    // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() => 
-      Promise.resolve({
-        status: 200,
-        json: () => Promise.resolve(LOGIN_MOCK_TOKEN)
-      })
-    );
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+    // @ts-ignore
+    global.fetch = mockFetch;
   });
   
   afterEach(() => {
+    global.fetch = originalFetch;
     cleanup();
-    localStorage.clear();
   });
   
   it("full app rendering/navigating", async () => {
@@ -94,6 +101,18 @@ describe("testing router because if i log in then i can route back to home and c
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenNthCalledWith(1, 
+      "http://localhost:3001/user/login", 
+      {
+        "body": "{\"usernameOrEmail\":{\"username\":\"i existi exist\"},\"password\":\"believe itbelieve it\"}", "headers": {
+          "Content-Type": "application/json"
+        }, 
+        "method": "POST"
+      }
+    );
+    // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdj");
+
     //should be routed home after logging in
     expect(hiddenHistoryRef2).toHaveTextContent("/");
 
@@ -116,6 +135,7 @@ describe("testing router because if i log in then i can route back to home and c
 
 
     const preset_buttons = {
+      clear: screen.getByTestId("clear"),
       rainbowTest: screen.getByTestId("rainbowTest"),
       v2: screen.getByTestId("v2"),
       waves: screen.getByTestId("waves"),
@@ -133,28 +153,46 @@ describe("testing router because if i log in then i can route back to home and c
     expect(preset_buttons.dm5).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
 
+    act(() => {
+      preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+
+    expect(screen.getByTestId("led1-1").classList.length).toBe(1);
+    expect(screen.getByTestId("led1-1").classList[0]).toBe("led1-1");
+
   });
 
 });
 describe("test clicking all the preset buttons and that they change the led style state", () => {
 
+  const originalFetch = global.fetch;
   beforeEach(() => {
-    // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() => 
-      Promise.resolve({
-        status: 200,
-        json: () => Promise.resolve(LOGIN_MOCK_TOKEN)
-      })
-    );
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes({ preset: "" }))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+    // @ts-ignore
+    global.fetch = mockFetch;
   });
   
   afterEach(() => {
+    global.fetch = originalFetch;
     cleanup();
     localStorage.clear();
   });
-
+  
   //RAINBOW TEST
   it("tests the led styles change to rainbowTest when rainbow button is clicked", async () => {
+    localStorage.clear();
+    //set test token in storage
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+
     const history = createMemoryHistory();
 
     const { container } = render(
@@ -168,10 +206,13 @@ describe("test clicking all the preset buttons and that they change the led styl
     );
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
+    expect(fetch).toHaveBeenCalledTimes(1);
+
     const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPreRef).toBeInTheDocument();
 
-    expect(ledPreRef.classList.contains("led1-1")).toBe(true);
+    expect(ledPreRef.classList.length).toBe(1);
+    expect(ledPreRef.classList[0]).toBe("led1-1");
 
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
@@ -346,18 +387,24 @@ describe("test clicking all the preset buttons and that they change the led styl
 
 });
 
-describe("test logging in and checking buttons become un-disabled", () => {
+describe("test logging in and checking buttons are there", () => {
   
   //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
   beforeEach(() => {
-    // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        status: 200,
-        json: () => Promise.resolve(LOGIN_MOCK_TOKEN),
-      })
-    );
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+    // @ts-ignore
+    global.fetch = mockFetch;
   });
   
   afterEach(() => {

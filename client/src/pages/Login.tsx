@@ -9,6 +9,7 @@ import {
 import { Spinner } from "../components/Spinner";
 import { MyRootState } from "../types";
 import { login } from "../actions/logged-in-actions";
+import { setPresetButtonsList } from "../actions/preset-button-actions";
 
 const Login: React.FC = (): JSX.Element => {
   
@@ -39,6 +40,7 @@ const Login: React.FC = (): JSX.Element => {
         if (!(booleanOrError instanceof Error)) {
           setLoading(false);
           setError("");
+          dispatch(setPresetButtonsList([]));
           dispatch(login());
           history.push("/");
         }

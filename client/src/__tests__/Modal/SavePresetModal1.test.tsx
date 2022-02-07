@@ -13,7 +13,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-const uuid = require("uuid");
+import { MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 
 //letting these methods be available to silence the jest errors
 window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
@@ -71,12 +71,7 @@ describe("test the save modal functionality", () => {
     );
 
     expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", TestService.signTestToken({
-      username: "test user",
-      email: "test email",
-      uuid: uuid.v4(),
-      _id: Math.random() * 1293 + "yo what up",
-    }));
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
     expect(typeof localStorage.getItem("id_token")).toBe("string");
 
     render(

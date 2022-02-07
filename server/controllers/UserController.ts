@@ -2,7 +2,7 @@
 import { User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
 import bcrypt from "bcrypt";
-import { APP_DOMAIN_PREFIX } from "../constants";
+import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
 import { Express } from "../types";
 import { Response } from "express";
 const uuid = require("uuid");
@@ -29,7 +29,13 @@ export const UserController = {
 
       await User.findOneAndUpdate(
         { _id: newUser._id },
-        { token, defaultPreset: { presetName: "waves" } },
+        {
+          $set: {
+            presets: INITIAL_PRESETS,
+          },
+          token,
+          defaultPreset: { presetName: "waves", animVarCoeff: "64" },
+        },
         { new: true }
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
@@ -79,7 +85,7 @@ export const UserController = {
     res: Response
   ): Promise<Response | void> {
     try {
-      const { defaultPreset } = req.body;
+      const { defaultPreset, animVarCoeff } = req.body;
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if (typeof defaultPreset !== "string")
@@ -89,6 +95,7 @@ export const UserController = {
         {
           defaultPreset: {
             presetName: defaultPreset,
+            animVarCoeff,
           },
         },
         { new: true }

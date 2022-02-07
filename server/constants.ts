@@ -7,3 +7,23 @@ export const APP_DOMAIN_PREFIX = IS_PROD
 export const TEST_USERNAME = "test-user";
 export const TEST_EMAIL = "test@email.com";
 export const TEST_PASSWORD = "test password";
+export const INITIAL_PRESETS = [
+  {
+    presetName: "rainbowTest",
+  },
+  {
+    presetName: "v2",
+  },
+  {
+    presetName: "waves",
+  },
+  {
+    presetName: "spiral",
+  },
+  {
+    presetName: "fourSpirals",
+  },
+  {
+    presetName: "dm5",
+  },
+];

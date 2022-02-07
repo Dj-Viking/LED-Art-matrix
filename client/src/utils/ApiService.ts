@@ -2,7 +2,7 @@
 import { AuthService as Auth } from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
-import { IGif } from "../types";
+import { IGif, ISaveUserPresetArgs } from "../types";
 
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 
@@ -130,6 +130,25 @@ class ApiService implements IApiService {
       const data = await res.json();
       return data.presets;
     } catch (error) {}
+  }
+  
+  public static async saveUserPreset(args: ISaveUserPresetArgs, token: string): Promise<IDBPreset | void> {
+    const { presetName, animVarCoeff } = args;
+    headers = clearHeaders(headers);
+    headers = setInitialHeaders(headers);
+    headers = setAuthHeader(headers, token);
+    try {
+      const res = await fetch(`${API_URL}/user/add-preset`, {
+        method: "POST",
+        body: JSON.stringify({ presetName, animVarCoeff }),
+        headers,
+      });
+      const data = await res.json();
+      return data.preset;
+    } catch (error) {
+      console.error(error);
+      
+    }
   }
 
   public static async updateDefaultPreset(

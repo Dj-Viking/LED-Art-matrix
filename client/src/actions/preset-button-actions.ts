@@ -1,6 +1,6 @@
 import { ICheckPresetButtonsActiveAction, ISetPresetButtonsListAction, IPresetButton, ISetAllInactiveAction } from "../types";
 
-export const setPresetButtonsList = (buttons: IPresetButton[]): ISetPresetButtonsListAction => ({
+export const setPresetButtonsList = (buttons: IPresetButton[] | []): ISetPresetButtonsListAction => ({
   type: "SET_BUTTONS_LIST",
   payload: buttons
 }); 

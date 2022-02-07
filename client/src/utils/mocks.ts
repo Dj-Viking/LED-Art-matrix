@@ -1,7 +1,7 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
-
+const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
   updated: "presetName goes here hahahah"
@@ -9,6 +9,18 @@ export const SAVE_DEFAULT_MOCK_SUCCESS = {
 export const SAVE_DEFAULT_MOCK_ERROR = {
   error: "ERROR"
 };
+export const MOCK_SIGN_TOKEN_ARGS = {
+  username: "test user",
+  email: "test email",
+  uuid: uuid.v4(),
+  _id: Math.random() * 1293 + "yo what up",
+};
+export const MOCK_PRESETS = [{presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+{presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+{presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+{presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+{presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+{presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"}];
 
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",

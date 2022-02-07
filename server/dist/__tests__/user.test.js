@@ -184,6 +184,7 @@ describe("test this runs through CRUD of a user entity", () => {
         })
             .send({
             defaultPreset: "waves",
+            animVarCoeff: "64",
         });
         const parsed = JSON.parse(update.text);
         expect(update.status).toBe(200);
@@ -206,6 +207,35 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(invalidSig.status).toBe(403);
         const parsed = JSON.parse(invalidSig.text);
         expect(parsed.error.message).toBe("invalid token");
+    }));
+    test("/POST /user/add-preset add a new preset to the user's preset collection", () => __awaiter(void 0, void 0, void 0, function* () {
+        const add = yield (0, supertest_1.default)(app)
+            .post("/user/add-preset")
+            .send({
+            presetName: "new preset",
+            animVarCoeff: "55",
+        })
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        });
+        expect(add.status).toBe(200);
+        const parsed = JSON.parse(add.text);
+        expect(parsed.presets).toHaveLength(7);
+        expect(typeof parsed.presets[6]._id).toBe("string");
+        expect(parsed.presets[6].animVarCoeff).toBe("55");
+        expect(parsed.presets[6].presetName).toBe("new preset");
+    }));
+    test("/GET /user/presets get user's preset collection", () => __awaiter(void 0, void 0, void 0, function* () {
+        const presets = yield (0, supertest_1.default)(app)
+            .get("/user/presets")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        });
+        expect(presets.status).toBe(200);
+        const parsed = JSON.parse(presets.text);
+        expect(parsed.presets).toHaveLength(7);
+        expect(parsed.presets[6].presetName).toBe("new preset");
+        expect(parsed.presets[6].animVarCoeff).toBe("55");
     }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });
