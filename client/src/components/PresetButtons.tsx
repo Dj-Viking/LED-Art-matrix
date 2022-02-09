@@ -33,11 +33,16 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const dispatch = useDispatch();
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
-  const { deleteModalIsOpen } = useSelector((state: MyRootState) => state.deleteModalState);
+  const { deleteModalIsOpen, deleteModalContext } = useSelector((state: MyRootState) => state.deleteModalState);
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
+    try {
+      await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
+      
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);
@@ -103,6 +108,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
       <Modal isOpen={deleteModalIsOpen}>
         <DeletePresetConfirmModal
+          context={deleteModalContext}
           onCancel={(event: any) => {
             event.preventDefault();
             dispatch(setDeleteModalOpen(false));
@@ -164,7 +170,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
               );
             })
           }
-          {/* save as new login preset */}
+
           <animated.button
             role="button"
             data-testid="saveDefault"
@@ -192,7 +198,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
           <animated.button
             role="button"
-            data-testid="savePreset"
+            data-testid="deletePreset"
             style={deletePresetButtonSpring}
             className={Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
             disabled={!Auth.loggedIn()}// enable if logged in

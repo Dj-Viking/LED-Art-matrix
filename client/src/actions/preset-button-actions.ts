@@ -3,7 +3,8 @@ import {
   ISetPresetButtonsListAction, 
   IPresetButton, 
   ISetAllInactiveAction, 
-  IToggleDeleteModeAction
+  IToggleDeleteModeAction,
+  IDeletePresetAction
 } from "../types";
 
 export const setPresetButtonsList = (buttons: IPresetButton[] | []): ISetPresetButtonsListAction => ({
@@ -63,6 +64,17 @@ export const setAllInactive: ISetAllInactiveAction = (buttons: IPresetButton[]) 
   });
   return {
     type: "SET_ALL_INACTIVE",
+    payload: newList
+  };
+};
+
+export const deletePreset = (buttons: IPresetButton[], id: string): IDeletePresetAction => {
+  let newList = [];
+
+  newList = buttons.filter(btn => btn.id !== id);
+
+  return {
+    type: "DELETE_PRESET",
     payload: newList
   };
 };

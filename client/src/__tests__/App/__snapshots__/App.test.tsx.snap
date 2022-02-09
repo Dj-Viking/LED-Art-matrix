@@ -456,6 +456,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       
           </style>
           <div
+            data-testid="save-modal"
             style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
           >
             <button
@@ -502,6 +503,81 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           </div>
         </div>
       </div>
+      <div
+        style="position: relative; height: 0px; width: 250px; margin: 0px auto;"
+      >
+        <div
+          data-testid="modal-base"
+          style="display: none; position: absolute; justify-content: center; background-color: white; border-radius: 10px; height: 250px; width: 250px;"
+        >
+          <style>
+            
+        .modal-confirm-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: red;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-confirm-button:hover {
+          transition: .5s;
+          background-color: red;
+          color: white;
+          box-shadow: 5px 4px 9px red; 
+        }
+        .modal-cancel-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: blue;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-cancel-button:hover {
+          transition: .5s;
+          background-color: blue;
+          color: white;
+          box-shadow: 5px 4px 9px blue; 
+        }
+      
+          </style>
+          <div
+            data-testid="delete-modal"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
+          >
+            <button
+              class="modal-cancel-button"
+              data-testid="modal-cancel-button"
+              type="button"
+            >
+              NO
+            </button>
+            <button
+              class="modal-confirm-button"
+              data-testid="modal-confirm-button"
+              type="button"
+            >
+              YES
+            </button>
+            <h1
+              style="color: black;"
+            >
+              DELETE PRESET ?
+            </h1>
+          </div>
+        </div>
+      </div>
       <span
         style="color: white; text-align: center;"
       >
@@ -525,9 +601,23 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         </button>
         <div
           data-testid="buttons-parent"
+          style="margin-bottom: 2em;"
         >
           <style>
             
+        
+        .preset-delete-mode {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: red;
+          cursor: pointer;
+        }
         .preset-button {
           margin-left: 5px;
           margin-right: 5px;
@@ -569,7 +659,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="rainbowTest"
-            id="178.98035394843737kdjfkdjfkjd"
+            id="956.1775985982044kdjfkdjfkjd"
             role="button"
           >
             rainbowTest
@@ -577,7 +667,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="v2"
-            id="302.5492618985921kdjfkdjfkjd"
+            id="167.44577263937165kdjfkdjfkjd"
             role="button"
           >
             v2
@@ -585,7 +675,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="waves"
-            id="459.8864415190191kdjfkdjfkjd"
+            id="883.0672782012989kdjfkdjfkjd"
             role="button"
           >
             waves
@@ -593,7 +683,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="spiral"
-            id="586.961827495524kdjfkdjfkjd"
+            id="114.14847800502348kdjfkdjfkjd"
             role="button"
           >
             spiral
@@ -601,7 +691,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="fourSpirals"
-            id="778.8756064186009kdjfkdjfkjd"
+            id="901.8975616397315kdjfkdjfkjd"
             role="button"
           >
             fourSpirals
@@ -609,30 +699,39 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="dm5"
-            id="855.3864415115884kdjfkdjfkjd"
+            id="426.406930643533kdjfkdjfkjd"
             role="button"
           >
             dm5
           </button>
+          <button
+            class="preset-button-disabled"
+            data-testid="saveDefault"
+            disabled=""
+            role="button"
+            style="opacity: 0;"
+          >
+            Save as Default
+          </button>
+          <button
+            class="preset-button-disabled"
+            data-testid="savePreset"
+            disabled=""
+            role="button"
+            style="opacity: 0;"
+          >
+            Save as new Preset
+          </button>
+          <button
+            class="preset-button-disabled"
+            data-testid="deletePreset"
+            disabled=""
+            role="button"
+            style="opacity: 0;"
+          >
+            Delete A Preset
+          </button>
         </div>
-        <button
-          class="preset-button-disabled"
-          data-testid="saveDefault"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          Save as Default
-        </button>
-        <button
-          class="preset-button-disabled"
-          data-testid="savePreset"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          Save as new Preset
-        </button>
       </div>
     </section>
     <section

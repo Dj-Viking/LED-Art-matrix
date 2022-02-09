@@ -33,365 +33,19 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
-describe("testing router because if i log in then i can route back to home and click the previously disabled buttons", () => {
-  const originalFetch = global.fetch;
-
-  beforeEach(() => {
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
-    const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
-    // @ts-ignore
-    global.fetch = mockFetch;
-  });
-  
-  afterEach(() => {
-    global.fetch = originalFetch;
-    cleanup();
-  });
-  
-  it("full app rendering/navigating", async () => {
-    const history = createMemoryHistory();
-    
-    render(
-      <Provider store={store}>
-        <Router history={history}>s
-          <App />
-        </Router>,
-      </Provider>
-    );
-
-    const hiddenHistoryRef = screen.getByTestId("location-display");
-    expect(hiddenHistoryRef).toHaveTextContent("/");
-    
-    const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
-      return el.classList.contains("nav-button");
-    }) as HTMLElement;
-    expect(page).toBeInTheDocument();
-    fireEvent.click(page);
-    //should be on login page
-    const hiddenHistoryRef2 = screen.getByTestId("location-display");
-    expect(hiddenHistoryRef2).toHaveTextContent("/login");
-
-    const inputEls = {
-      emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-      password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
-      btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
-        return btn.classList.contains("form-btn");
-      }) as HTMLElement
-    };
-    expect(inputEls.emailOrUsername).toBeInTheDocument();
-    expect(inputEls.password).toBeInTheDocument();
-    expect(inputEls.btn).toBeInTheDocument();
-
-    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
-    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
-    
-    user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
-    user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
-
-    await act(async () => {
-      inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(fetch).toHaveBeenNthCalledWith(1, 
-      "http://localhost:3001/user/login", 
-      {
-        "body": "{\"usernameOrEmail\":{\"username\":\"i existi exist\"},\"password\":\"believe itbelieve it\"}", "headers": {
-          "Content-Type": "application/json"
-        }, 
-        "method": "POST"
-      }
-    );
-    // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdj");
-
-    //should be routed home after logging in
-    expect(hiddenHistoryRef2).toHaveTextContent("/");
-
-  });
-
-  it("tests the preset buttons render", async () => {
-    const history = createMemoryHistory();
-    
-    render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-    const hiddenHistoryRef = screen.getByTestId("location-display");
-    expect(hiddenHistoryRef).toHaveTextContent("/");
-
-
-    const preset_buttons = {
-      clear: screen.getByTestId("clear"),
-      rainbowTest: screen.getByTestId("rainbowTest"),
-      v2: screen.getByTestId("v2"),
-      waves: screen.getByTestId("waves"),
-      spiral: screen.getByTestId("spiral"),
-      fourSpirals: screen.getByTestId("fourSpirals"),
-      dm5: screen.getByTestId("dm5"),
-      saveDefault: screen.getByTestId("saveDefault")
-    };
-
-    expect(preset_buttons.rainbowTest).toBeInTheDocument();
-    expect(preset_buttons.v2).toBeInTheDocument();
-    expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).toBeInTheDocument();
-
-    act(() => {
-      preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
-    });
-
-    expect(screen.getByTestId("led1-1").classList.length).toBe(1);
-    expect(screen.getByTestId("led1-1").classList[0]).toBe("led1-1");
-
-  });
-
-});
-describe("test clicking all the preset buttons and that they change the led style state", () => {
-
-  const originalFetch = global.fetch;
-  beforeEach(() => {
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
-    const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "" }))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
-    // @ts-ignore
-    global.fetch = mockFetch;
-  });
-  
-  afterEach(() => {
-    global.fetch = originalFetch;
-    cleanup();
-    localStorage.clear();
-  });
-  
-  //RAINBOW TEST
-  it("tests the led styles change to rainbowTest when rainbow button is clicked", async () => {
-    localStorage.clear();
-    //set test token in storage
-    expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
-
-    const history = createMemoryHistory();
-
-    const { container } = render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-    expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-
-    expect(fetch).toHaveBeenCalledTimes(1);
-
-    const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPreRef).toBeInTheDocument();
-
-    expect(ledPreRef.classList.length).toBe(1);
-    expect(ledPreRef.classList[0]).toBe("led1-1");
-
-    const preset_buttons = {
-      clear: screen.getByTestId("clear"),
-      rainbowTest: screen.getByTestId("rainbowTest"),
-      v2: screen.getByTestId("v2"),
-      waves: screen.getByTestId("waves"),
-      spiral: screen.getByTestId("spiral"),
-      fourSpirals: screen.getByTestId("fourSpirals"),
-      dm5: screen.getByTestId("dm5"),
-      saveDefault: screen.getByTestId("saveDefault")
-    };
-
-    expect(preset_buttons.rainbowTest).toBeInTheDocument();
-    expect(preset_buttons.v2).toBeInTheDocument();
-    expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).toBeInTheDocument();
-
-    let ledPost: HTMLElement | null = null;
-    let styleTagRef: HTMLStyleElement | null = null;
-
-    act(() => {
-      preset_buttons.rainbowTest.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-
-    expect(preset_buttons.rainbowTest.classList.length).toBe(1);
-    expect(preset_buttons.rainbowTest.classList[0]).toBe("preset-button-active");
-
-    ledPost = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPost).toBeInTheDocument();
-    expect(ledPost.classList.contains("led1-1rainbowTest")).toBe(true);
-
-    styleTagRef = container.querySelector("#led-style");
-    expect(typeof styleTagRef).toBe("object");
-    expect(!!styleTagRef?.textContent).toBe(true);
-
-    const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
-    const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (ASSERT_ANIMATION.rainbowTest.regex.test(str)) {
-        return str;
-      }
-      return void 0;
-    }).filter(item => typeof item === "string") as string[] | [];
-
-    const keyFramesMatches = animationNameMatches.map(str => {
-      if (ASSERT_ANIMATION.keyframes.test(str)) {
-        return str;
-      }
-      return void 0;
-    }).filter(item => typeof item === "string");
-    // console.log("key frames arr", keyFramesMatches);
-
-    expect(keyFramesMatches).toHaveLength(1);
-
-    
-    //clear preset before next test... not sure how to useDispatch in a jest test, it's probably break rules of hooks.
-    let clearLedRef = screen.getByTestId("led1-1");
-    act(() => {
-      preset_buttons.clear.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-    clearLedRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(clearLedRef).toBeInTheDocument();
-    expect(clearLedRef.classList.length).toBe(1);
-    // clearLedRef.classList.forEach((value: string, key: number, parent: DOMTokenList) => {
-      // console.log("value", value, "key", key, "parent", parent);
-    // });
-    expect(clearLedRef.classList.contains("led1-1")).toBe(true);
-
-  });
-  
-  //V2
-  it("tests the led styles change to v2 when v2 button is clicked", async () => {
-    const history = createMemoryHistory();
-    
-    const { container } = render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-    const hiddenHistoryRef = screen.getByTestId("location-display");
-    expect(hiddenHistoryRef).toHaveTextContent("/");
-
-    const preset_buttons = {
-      clear: screen.getByTestId("clear"),
-      rainbowTest: screen.getByTestId("rainbowTest"),
-      v2: screen.getByTestId("v2"),
-      waves: screen.getByTestId("waves"),
-      spiral: screen.getByTestId("spiral"),
-      fourSpirals: screen.getByTestId("fourSpirals"),
-      dm5: screen.getByTestId("dm5"),
-      saveDefault: screen.getByTestId("saveDefault")
-    };
-
-    //get ref to led element and check it's there
-    const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPreRef).toBeInTheDocument();
-
-    act(() => {
-      fireEvent.click(preset_buttons.clear);
-      preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
-    });
-    
-    const ledPost = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPost.classList.length).toBe(1);
-    expect(ledPost.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
-
-    expect(preset_buttons.clear).toBeInTheDocument();
-    expect(preset_buttons.rainbowTest).toBeInTheDocument();
-    expect(preset_buttons.v2).toBeInTheDocument();
-    expect(preset_buttons.waves).toBeInTheDocument();
-    expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeInTheDocument();
-    expect(preset_buttons.dm5).toBeInTheDocument();
-    expect(preset_buttons.saveDefault).toBeInTheDocument();
-
-    // get led ref and style tag ref for after the click event and state updates
-    let ledPostRef: HTMLElement | null = null;
-    let styleTagRef: HTMLStyleElement | null = null;
-   
-    act(() => {
-      preset_buttons.v2.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-
-    ledPostRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(ledPostRef).toBeInTheDocument();
-    expect(ledPostRef.classList.length).toBe(1);
-    expect(ledPostRef.classList[0]).toBe(ASSERT_ANIMATION.v2.classListItem);
-
-
-    styleTagRef = container.querySelector("#led-style");
-    expect(typeof styleTagRef).toBe("object");
-    expect(!!styleTagRef?.textContent).toBe(true);
-
-    // parse the styleTagRef content to get the animation name and confirm it matches the
-    // style in the classlist so therefore the @keyframes animation name should appear
-    // in the keyframe matching array
-    const splitTagText = styleTagRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
-    const animationNameMatches: string[] | [] = splitTagText.map(str => {
-      if (ASSERT_ANIMATION.v2.regex.test(str)) {
-        return str;
-      }
-      return void 0;
-    }).filter(item => typeof item === "string") as string[] | [];
-
-    const keyFramesMatches = animationNameMatches.map(str => {
-      if (ASSERT_ANIMATION.keyframes.test(str)) {
-        return str;
-      }
-      return void 0;
-    }).filter(item => typeof item === "string");
-    // console.log("key frames arr", keyFramesMatches);
-
-    expect(keyFramesMatches).toHaveLength(1);
-
-    //clear preset before next test... not sure how to useDispatch in a jest test, it's probably break rules of hooks.
-    let clearLedRef = screen.getByTestId("led1-1");
-    act(() => {
-      preset_buttons.clear.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    });
-    clearLedRef = screen.getByTestId("led1-1") as HTMLElement;
-    expect(clearLedRef).toBeInTheDocument();
-    expect(clearLedRef.classList.length).toBe(1);
-    expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
-
-  });
-
-});
-
 describe("test logging in and checking buttons are there", () => {
   
   //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
-  beforeEach(() => {
+
+  afterEach(() => {
+    cleanup();
+    global.fetch = originalFetch;
+    localStorage.clear();
+  });
+
+  it("Checks the input fields are available and can submit with a stubbed api", async () => {
+
     const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
@@ -402,18 +56,10 @@ describe("test logging in and checking buttons are there", () => {
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
-  });
-  
-  afterEach(() => {
-    cleanup();
-    global.fetch = originalFetch;
-    //keep local storage token from the login
-  });
 
-  it("Checks the input fields are available and can submit with a stubbed api", async () => {
     const history = createMemoryHistory();
     render(
       <Provider store={store}>
@@ -456,6 +102,13 @@ describe("test logging in and checking buttons are there", () => {
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     expect(localStorage.getItem("id_token")).toBeTruthy();
 
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenNthCalledWith(1, 
+      "http://localhost:3001/user/login",
+      {"body": expect.any(String),
+      "headers": {"Content-Type": "application/json"},
+      "method": "POST"});
+
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
       rainbowTest: screen.getByTestId("rainbowTest"),
@@ -480,7 +133,20 @@ describe("test logging in and checking buttons are there", () => {
 
   //WAVES
   it("checks token and test undisabled waves button", async () => {
-    expect(localStorage.getItem("id_token")).toBeTruthy();
+
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                      // .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+    // @ts-ignore
+    global.fetch = mockFetch;
+
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+    expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
     const history = createMemoryHistory();
     const { container } = render(
@@ -492,15 +158,18 @@ describe("test logging in and checking buttons are there", () => {
     );
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
+    expect(fetch).toHaveBeenCalledTimes(1);
+    // expect(fetch).toHaveBeenNthCalledWith(1, "dkjfdkj");
+
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
-      rainbowTest: screen.getByTestId("rainbowTest"),
-      v2: screen.getByTestId("v2"),
-      waves: screen.getByTestId("waves"),
-      spiral: screen.getByTestId("spiral"),
-      fourSpirals: screen.getByTestId("fourSpirals"),
-      dm5: screen.getByTestId("dm5"),
-      saveDefault: screen.getByTestId("saveDefault")
+      rainbowTest: await screen.findByTestId("rainbowTest"),
+      v2: await screen.findByTestId("v2"),
+      waves: await screen.findByTestId("waves"),
+      spiral: await screen.findByTestId("spiral"),
+      fourSpirals: await screen.findByTestId("fourSpirals"),
+      dm5: await screen.findByTestId("dm5"),
+      saveDefault: await screen.findByTestId("saveDefault")
     };
 
     expect(preset_buttons.clear).toBeInTheDocument();
@@ -565,7 +234,9 @@ describe("test logging in and checking buttons are there", () => {
 
   //SPIRAL
   it("checks token and test undisabled spiral button", async () => {
-    expect(localStorage.getItem("id_token")).toBeTruthy();
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+    expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
     const history = createMemoryHistory();
     const { container } = render(
@@ -650,7 +321,9 @@ describe("test logging in and checking buttons are there", () => {
 
   //FOURSPIRALS
   it("checks token and test undisabled fourSpirals button", async () => {
-    expect(localStorage.getItem("id_token")).toBeTruthy();
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+    expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
     const history = createMemoryHistory();
     const { container } = render(
@@ -736,7 +409,11 @@ describe("test logging in and checking buttons are there", () => {
 
   //DM5
   it("checks token and test undisabled DM5 button", async () => {
-    expect(localStorage.getItem("id_token")).toBeTruthy();
+
+
+    expect(localStorage.getItem("id_token")).toBe(null);
+    localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+    expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
     const history = createMemoryHistory();
     const { container } = render(

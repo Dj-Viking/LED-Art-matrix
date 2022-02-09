@@ -39,7 +39,7 @@ const Slider: React.FC<SliderProps> = ({
           type="range"
           min="0"
           max="200"
-          value={inputValueState}
+          value={inputValueState || "64"}
           onChange={handleChange}
         />
         

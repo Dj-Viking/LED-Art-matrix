@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-unnecessary-act */
 // @ts-ignore
 import React from "react";
@@ -40,9 +41,11 @@ describe("test deleting a preset from the user's preset button list", () => {
                       //default
                       // .mockReturnValue("kdfjkdj")
                       // first
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "" }))
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ message: "deleted" }));
     // @ts-ignore
     global.fetch = mockFetch;
     render(
@@ -54,7 +57,68 @@ describe("test deleting a preset from the user's preset button list", () => {
         </Provider>
       </>
     );
-    expect(screen.getByTestId("location-display").textContent).toBe("/asdfas");
-    expect(fetch).toHaveBeenCalledTimes(0);
+    expect(screen.getByTestId("location-display").textContent).toBe("/");
+    expect(fetch).toHaveBeenCalledTimes(2); // /user/presets first /user second
+
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(11);
+
+    const deleteBtn = await screen.findByTestId("deletePreset");
+    
+    expect(deleteBtn.textContent).toBe("Delete A Preset");
+    act(() => {
+      deleteBtn.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+    expect(deleteBtn.textContent).toBe("Don't Delete A Preset");
+
+    const bogus = screen.getByTestId("bogus");
+
+    expect(bogus.classList.length).toBe(1);
+    expect(bogus.classList[0]).toBe("preset-delete-mode");
+
+    act(() => {
+      bogus.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+
+    const deleteModal = screen.getByTestId("delete-modal");
+
+    expect(deleteModal.parentElement!.style.display).toBe("flex");
+
+    const cancel = screen.getByTestId("modal-cancel-button");
+    const confirm = screen.getByTestId("modal-confirm-button");
+
+    act(() => {
+      cancel.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+
+    expect(deleteModal.parentElement!.style.display).toBe("none");
+
+    // TODO: finish the front and back portion of the button actually being deleted from the list.
+
+    expect(deleteBtn.textContent).toBe("Delete A Preset");
+    act(() => {
+      deleteBtn.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+    expect(deleteBtn.textContent).toBe("Don't Delete A Preset");
+
+    expect(bogus.classList.length).toBe(1);
+    expect(bogus.classList[0]).toBe("preset-delete-mode");
+
+    act(() => {
+      bogus.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+
+    expect(deleteModal.parentElement!.style.display).toBe("flex");
+
+    act(() => {
+      confirm.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
+
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenNthCalledWith(3, 
+      "http://localhost:3001/user/delete-preset", 
+      {"body": expect.any(String), 
+      "headers": {"Content-Type": "application/json", "authorization": expect.any(String)},
+      "method": "DELETE"});
+  
   });
 });

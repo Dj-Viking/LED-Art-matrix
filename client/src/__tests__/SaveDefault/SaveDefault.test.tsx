@@ -50,7 +50,7 @@ describe("test the save default button is making the request, mock the response"
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -149,7 +149,7 @@ describe("test the save default button is making the request, mock the response"
       Promise.resolve({
         ok: void 0,
         json: () => Promise.resolve({
-          preset: "waves"
+          preset: { presetName: "waves" }
         })
       })
     );

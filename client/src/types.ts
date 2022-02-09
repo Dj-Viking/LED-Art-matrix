@@ -261,6 +261,7 @@ export type IPresetButtonListActionTypes =
 | ISetPresetButtonsListAction["type"]
 | "CHECK_BUTTONS_ACTIVE"
 | "SET_ALL_INACTIVE"
+| "DELETE_PRESET"
 | "TOGGLE_DELETE_MODE";
 
 export type IPresetButtonListActionPayloads =
@@ -368,17 +369,28 @@ export interface ISetDeleteModalOpenAction {
   type: "SET_DELETE_MODAL_OPEN",
   payload: boolean;
 }
+export interface ISetDeleteModalContextAction {
+  type: "SET_DELETE_MODAL_CONTEXT",
+  payload: { btnId: string; };
+}
 export interface IDeleteModalState {
   deleteModalIsOpen: boolean;
+  deleteModalContext: { btnId: string; };
 }
 
 export type IDeleteModalActionTypes = 
-| ISetDeleteModalOpenAction["type"];
+| ISetDeleteModalOpenAction["type"]
+| ISetDeleteModalContextAction["type"];
 
 export type IDeleteModalActionPayloads = 
-| ISetDeleteModalOpenAction["payload"];
+| ISetDeleteModalOpenAction["payload"]
+| ISetDeleteModalContextAction["payload"];
 
 export interface IDeleteModalAction {
   type: IDeleteModalActionTypes,
   payload: IDeleteModalActionPayloads
+}
+export interface IDeletePresetAction {
+  type: "DELETE_PRESET";
+  payload: IPresetButton[];
 }

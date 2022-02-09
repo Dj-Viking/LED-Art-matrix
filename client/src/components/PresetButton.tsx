@@ -6,7 +6,7 @@ import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { setLedStyle } from "../actions/style-actions";
 import { checkPresetButtonsActive } from "../actions/preset-button-actions";
 import { MyRootState } from "../types";
-import { setDeleteModalOpen } from "../actions/modal-actions";
+import { setDeleteModalOpen, setDeleteModalContext } from "../actions/modal-actions";
 
 interface PresetButtonProps {
   button: {
@@ -70,6 +70,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
             setStyle(presetName);
           } else 
             dispatch(setDeleteModalOpen(true));
+            dispatch(setDeleteModalContext({ btnId: event.target.id }));
         }}
       >
         {presetName}

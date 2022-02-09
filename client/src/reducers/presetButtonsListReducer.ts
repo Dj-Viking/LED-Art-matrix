@@ -27,6 +27,11 @@ const presetButtonsListReducer = (
         ...state,
         presetButtons: action.payload as IPresetButton[]
       };
+    case "DELETE_PRESET": 
+      return {
+        ...state,
+        presetButtons: action.payload as IPresetButton[]
+      };
     default: return state;
   }
 };

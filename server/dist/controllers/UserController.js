@@ -52,12 +52,12 @@ exports.UserController = {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const { _id } = req.body;
-                const user = yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
                     $pull: {
                         presets: { _id },
                     },
-                }, { new: true });
-                res.status(200).json({ presets: user.presets });
+                });
+                res.status(200).json({ message: "deleted the preset" });
             }
             catch (error) {
                 console.error(error);

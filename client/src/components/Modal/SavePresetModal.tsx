@@ -104,7 +104,8 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
       `)}}>
 
       </style>
-      <div 
+      <div
+        data-testid="save-modal"
         style={{ 
           display: "flex", 
           flexDirection: "column", 

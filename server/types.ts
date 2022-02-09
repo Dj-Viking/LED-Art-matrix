@@ -175,5 +175,5 @@ export interface IForgotPasswordResponse {
 }
 
 export interface IDeletePresetResponse {
-  presets: IPreset[];
+  message: string;
 }

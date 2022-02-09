@@ -137,13 +137,11 @@ class ApiService implements IApiService {
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
     try {
-      const res = await fetch(`${API_URL}/user/delete-preset`, {
+      await fetch(`${API_URL}/user/delete-preset`, {
         method: "DELETE",
         body: JSON.stringify({ _id }),
         headers,
       });
-      const data = await res.json();
-      return data.presets;
     } catch (error) {
       console.error(error);
       return void 0;
@@ -164,7 +162,7 @@ class ApiService implements IApiService {
       const data = await res.json();
       return data.presets;
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       return void 0;
     }
   }

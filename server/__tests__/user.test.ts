@@ -287,7 +287,7 @@ describe("test this runs through CRUD of a user entity", () => {
       });
     expect(deleted.status).toBe(200);
     const parsed = JSON.parse(deleted.text) as IDeletePresetResponse;
-    expect(parsed.presets.length).toBe(6);
+    expect(parsed.message).toBe("deleted the preset");
   });
 
   test("deletes the user we just made", async () => {

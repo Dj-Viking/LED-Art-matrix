@@ -23,7 +23,6 @@ const Modal: React.FC<ModalProps> = ({
         <div
           data-testid="modal-base" 
           style={{
-            
             display: isOpen ? "flex" : "none", 
             position: "absolute",
             justifyContent: "center",

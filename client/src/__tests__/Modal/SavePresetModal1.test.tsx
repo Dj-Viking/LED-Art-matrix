@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-unnecessary-act */
 //@ts-ignore
 import React from "react";
@@ -13,7 +14,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 
 //letting these methods be available to silence the jest errors
 window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
@@ -40,30 +41,15 @@ describe("test the save modal functionality", () => {
 
   it("tests the modal can have input changing and rendering, click the save button and close button", async () => {
 
-    //@ts-ignore
-    global.fetch = jest.fn(() => {
-      return Promise.resolve({
-        status: 200,
-        json: () => {
-          return Promise.resolve({
-            presets: [
-              {
-                _id: Math.random() * 1000 + "kdjfkjdlskfj",
-                presetName: "v2",
-                animVarCoeff: "64",
-              },
-              {
-                _id: Math.random() * 1000 + "kdjfkjdlskfj",
-                presetName: "waves",
-                animVarCoeff: "64",
-              }
-            ]
-          });
-        }
-      });
-    });
-
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+    // @ts-ignore
+    global.fetch = mockFetch;
     const history = createMemoryHistory();
+
     const store = createStore(
       allReducers,
       // @ts-expect-error this will exist in the browser
@@ -95,7 +81,7 @@ describe("test the save modal functionality", () => {
     });
 
     //if style display is flex the modal is open
-    const styleValues = TestService.getStyles(screen.getByTestId("modal-base").style);
+    const styleValues = TestService.getStyles(screen.getByTestId("save-modal").parentElement!.style);
     expect(styleValues.values.display).toBe("flex");
 
     
@@ -131,7 +117,7 @@ describe("test the save modal functionality", () => {
     expect(awaitedButton.classList).toHaveLength(1);
     expect(awaitedButton.classList[0]).toBe("preset-button-inactive");
     const buttonsParent = screen.getByTestId("buttons-parent");
-    expect(buttonsParent.children).toHaveLength(3);
+    expect(buttonsParent.children).toHaveLength(12);
 
     //start a preset to make the slider appear
     const v2 = await screen.findByText(/v2/);
