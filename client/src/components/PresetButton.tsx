@@ -30,8 +30,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
 
 
-  // TODO: FIX THE PRESET NOT LOADING IN WITH THE COEFFICIENT THAT WAS SAVED!!!!!
-
   function setStyle(preset: string): void {
     const LedEngine = new LedStyleEngine(preset);
     const styleHTML = LedEngine.createStyleSheet("64");

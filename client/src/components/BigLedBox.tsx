@@ -37,10 +37,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
     (async (): Promise<void> => {
       if (Auth.loggedIn()) {
         const preset = await getDefaultPreset() as IDBPreset;
-        // TODO: FIX THE PRESET NOT LOADING IN WITH THE COEFFICIENT THAT WAS SAVED!!!!!
         if (typeof preset.presetName === "string") {
-          console.log("preset", preset);
-          // TODO: load preset with saved coefficient parameters
           dispatch(animVarCoeffChange(preset.animVarCoeff as string));
           dispatch(presetSwitch(preset.presetName));
           LedEngineRef.current = new LedStyleEngine(preset.presetName);

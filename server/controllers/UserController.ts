@@ -56,7 +56,6 @@ export const UserController = {
         },
         { new: true }
       );
-      console.log("updated user presets", user!.presets);
 
       res.status(200).json({ presets: user!.presets });
     } catch (error) {
