@@ -27,6 +27,16 @@ export const MOCK_PRESETS = [
   {presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
   {presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
 ];
+export const MOCK_ADD_PRESET_RES = [
+  {presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+  {presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+  {presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+  {presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+  {presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+  {presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
+  {presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+  {presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e52"},
+];
 
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",

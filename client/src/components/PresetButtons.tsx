@@ -40,9 +40,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     try {
       await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
       
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);

@@ -43,6 +43,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
         data-testid={testid}
         role={role}
         className={
+          // @ts-ignore
           ((isActive: boolean, deleteMode: boolean) => {
             
             switch(true) {
@@ -55,7 +56,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({
               case !isActive && deleteMode: {
                 return "preset-delete-mode";
               }
-              default: return "preset-button-inactive";
             }
 
           })(isActive, deleteMode)
@@ -68,9 +68,10 @@ const PresetButton: React.FC<PresetButtonProps> = ({
             dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
             dispatch(presetSwitch(presetName));
             setStyle(presetName);
-          } else 
+          } else {
             dispatch(setDeleteModalOpen(true));
             dispatch(setDeleteModalContext({ btnId: event.target.id }));
+          }
         }}
       >
         {presetName}

@@ -659,7 +659,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="rainbowTest"
-            id="956.1775985982044kdjfkdjfkjd"
+            id="650.7432046579466kdjfkdjfkjd"
             role="button"
           >
             rainbowTest
@@ -667,7 +667,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="v2"
-            id="167.44577263937165kdjfkdjfkjd"
+            id="979.702484981066kdjfkdjfkjd"
             role="button"
           >
             v2
@@ -675,7 +675,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="waves"
-            id="883.0672782012989kdjfkdjfkjd"
+            id="368.2719478928178kdjfkdjfkjd"
             role="button"
           >
             waves
@@ -683,7 +683,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="spiral"
-            id="114.14847800502348kdjfkdjfkjd"
+            id="109.63830007637698kdjfkdjfkjd"
             role="button"
           >
             spiral
@@ -691,7 +691,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="fourSpirals"
-            id="901.8975616397315kdjfkdjfkjd"
+            id="378.4281177046871kdjfkdjfkjd"
             role="button"
           >
             fourSpirals
@@ -699,7 +699,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <button
             class="preset-button-inactive"
             data-testid="dm5"
-            id="426.406930643533kdjfkdjfkjd"
+            id="391.89554407961236kdjfkdjfkjd"
             role="button"
           >
             dm5
