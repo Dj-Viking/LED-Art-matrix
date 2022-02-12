@@ -46,7 +46,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
       return void 0;
     } catch (error) {
       const err = error as Error;
-      setError(`Oops! there was a problem saving this preset: ${err.message}`);
+      setError(`Oops! ${err.message}`);
       console.error(error);
       return void 0;
     }
@@ -165,7 +165,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           {
             error.length
             ?
-              <span style={{ color: "red" }}>
+              <span data-testid="add-error" style={{ color: "red" }}>
                 {error}
               </span>
             : 

@@ -14,7 +14,7 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { TestService } from "../../utils/TestServiceClass";
-import { MOCK_ADD_PRESET_RES, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 
 const store = createStore(
   allReducers,
@@ -31,18 +31,22 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 
-describe("Adding a preset", () => {
-  it("tests the add preset function runs", async () => {
+describe("Adding a preset error", () => {
+  it("checks the error message appears with a failed response", async () => {
     expect(localStorage.getItem("id_token")).toBe(null);
     localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
     expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
     const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+
+    const fakeMockAddFail = (value: any): Promise<{ status: 500, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 500, json: () => Promise.resolve(value)});
+    
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }))
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_ADD_PRESET_RES }));
+                      .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -118,16 +122,9 @@ describe("Adding a preset", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(13);
-    const newPresetBtn = await screen.findByText(/new preset/);
-    expect(newPresetBtn).toBeInTheDocument();
-
-    //click the new button for coverage
-    act(() => {
-      newPresetBtn.dispatchEvent(TestService.createBubbledEvent("click"));
-    });
-
-    
+    expect(btnContainer.children).toHaveLength(12);
+    const error = await screen.findByTestId("add-error");
+    expect(error).toBeInTheDocument();
 
   });
 });

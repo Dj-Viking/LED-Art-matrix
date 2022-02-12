@@ -163,11 +163,14 @@ class ApiService implements IApiService {
         body: JSON.stringify({ presetName, animVarCoeff }),
         headers,
       });
+      if (res.status !== 200) {
+        throw new Error("There was a problem with adding a Preset!");
+      }
       const data = await res.json();
       return data.presets;
     } catch (error) {
-      // console.error(error);
-      return void 0;
+      const err = error as Error;
+      throw err.message;
     }
   }
 
