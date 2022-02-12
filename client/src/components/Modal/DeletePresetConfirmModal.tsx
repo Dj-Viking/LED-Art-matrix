@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { escape } from "he";
 import API from "../../utils/ApiService";
 import { AuthService as Auth } from "../../utils/AuthService";
@@ -16,7 +16,7 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
   onCancel,
   context: { btnId }
 }) => {
-  // const [ error, setError ] = useState<string>("");
+  const [ error, setError ] = useState<string>("");
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const dispatch = useDispatch();
 
@@ -24,7 +24,13 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
   // to delete the preset we confirm on the modal for a particular preset
   // that we clicked while delete mode was on
   async function deleteThePreset(): Promise<void> {
-    await API.deletePreset(btnId, Auth.getToken() as string);
+    try {
+      await API.deletePreset(btnId, Auth.getToken() as string);
+      dispatch(deletePreset(presetButtons, btnId));
+    } catch (error) {
+      const err = error as Error;
+      setError(err.message);
+    }
   };
 
   
@@ -97,7 +103,6 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
           className="modal-confirm-button"
           onClick={(event) => {
             onConfirm(event); //closes modal and deletes preset from user's collection
-            dispatch(deletePreset(presetButtons, btnId));
             void deleteThePreset();
           }}
         >
@@ -105,7 +110,14 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
         </button>
         <h1 style={{ color: "black" }}>DELETE PRESET ?</h1>
 
-        
+        {
+          error.length
+          ? 
+          <span data-testid="delete-error" style={{ color: "red" }}>
+            { error }
+          </span>
+          : null
+        }
 
       </div>
     </>

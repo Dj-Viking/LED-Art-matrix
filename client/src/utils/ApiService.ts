@@ -140,15 +140,13 @@ class ApiService implements IApiService {
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
-    try {
-      await fetch(`${API_URL}/user/delete-preset`, {
-        method: "DELETE",
-        body: JSON.stringify({ _id }),
-        headers,
-      });
-    } catch (error) {
-      console.error(error);
-      return void 0;
+    const res = await fetch(`${API_URL}/user/delete-preset`, {
+      method: "DELETE",
+      body: JSON.stringify({ _id }),
+      headers,
+    });
+    if (res.status !== 200) {
+      throw new Error("Error during the deleting of a preset!");
     }
   }
 

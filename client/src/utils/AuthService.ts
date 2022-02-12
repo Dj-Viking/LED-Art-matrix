@@ -23,14 +23,10 @@ class AuthService {
   }
 
   public static isTokenExpired(token: string): boolean {
-    try {
-      const decoded = decode(token) as MyJwtData;
-      if (decoded.exp as number < Date.now() / 1000) {
-        return true;
-      } return false;
-    } catch (err) {
-      return false;
-    }
+    const decoded = decode(token) as MyJwtData;
+    if (decoded.exp as number < Date.now() / 1000) {
+      return true;
+    } return false;
   }
 
   public static login(token: string): boolean | void {
