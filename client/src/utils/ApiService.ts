@@ -18,27 +18,31 @@ interface ILoginArgs {
 }
 
 export interface IApiService {
-  alive: () => any;
-  signup: (args: ISignupArgs) => Promise<boolean | void>;
-  login: (args: ILoginArgs) => Promise<boolean | void>;
-  getDefaultPreset: (token: string) => Promise<string | boolean>;
-  updateDefaultPreset: (token: string) => Promise<string | void>;
-  getUserPresets: (token: string) => Promise<IDBPreset[] | void>;
-  getGifs: () => Promise<Array<IGif>>;
-  forgotPassword: (email: string) => Promise<boolean | void>;
-  changePassword: (password: string) => Promise<{done: boolean, token: string } | void>;
+  alive:               ()                           => any;
+  signup:              (args: ISignupArgs)          => Promise<boolean | void>;
+  login:               (args: ILoginArgs)           => Promise<boolean | void>;
+  getDefaultPreset:    (token: string)              => Promise<string | boolean>;
+  updateDefaultPreset: (token: string)              => Promise<string | void>;
+  deletePreset:        (_id: string, token: string) => Promise<IDBPreset[] | void>;
+  addNewPreset:        (args: ISaveUserPresetArgs)  => Promise<IDBPreset[] | unknown>;
+  getUserPresets:      (token: string)              => Promise<IDBPreset[] | void>;
+  getGifs:             ()                           => Promise<Array<IGif>>;
+  forgotPassword:      (email: string)              => Promise<boolean | void>;
+  changePassword:      (password: string)           => Promise<{done: boolean, token: string } | void>;
 }
 
 class ApiService implements IApiService {
-  protected isAlive: any;
-  public signup!: (args: ISignupArgs) => Promise<boolean | void>;
-  public login!: (args: ILoginArgs) => Promise<boolean | void>;
-  public getDefaultPreset!: (token: string) => Promise<string | boolean>;
-  public getUserPresets!: (token: string) => Promise<IDBPreset[] | void>;
-  public updateDefaultPreset!: (token: string) => Promise<string | void>;
-  public getGifs!: () => Promise<IGif[]>;
-  public forgotPassword!: (email: string) => Promise<boolean | void>;
-  public changePassword!: (password: string) => Promise<void | { done: boolean; token: string; }>;
+  protected isAlive:                                           any;
+  public signup!:              (args: ISignupArgs)          => Promise<boolean | void>;
+  public login!:               (args: ILoginArgs)           => Promise<boolean | void>;
+  public getDefaultPreset!:    (token: string)              => Promise<string | boolean>;
+  public updateDefaultPreset!: (token: string)              => Promise<string | void>;
+  public deletePreset!:        (_id: string, token: string) => Promise<IDBPreset[] | void>;
+  public addNewPreset!:        (args: ISaveUserPresetArgs)  => Promise<IDBPreset[] | unknown>;
+  public getUserPresets!:      (token: string)              => Promise<IDBPreset[] | void>;
+  public getGifs!:             ()                           => Promise<Array<IGif>>;
+  public forgotPassword!:      (email: string)              => Promise<boolean | void>;
+  public changePassword!:      (password: string)           => Promise<{done: boolean, token: string } | void>;
   constructor(isAlive: any) {
     this.isAlive = isAlive;
   }

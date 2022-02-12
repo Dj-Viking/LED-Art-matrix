@@ -45,21 +45,21 @@ export const UserController = {
     req: Express.MyRequest,
     res: Response
   ): Promise<Response | void> {
-    try {
-      const { _id } = req.body;
-      await User.findOneAndUpdate(
-        { email: req!.user!.email },
-        {
-          $pull: {
-            presets: { _id },
-          },
-        }
-      );
-      res.status(200).json({ message: "deleted the preset" });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error });
-    }
+    const { _id } = req.body;
+    await User.findOneAndUpdate(
+      { email: req!.user!.email },
+      {
+        $pull: {
+          presets: { _id },
+        },
+      }
+    );
+    res.status(200).json({ message: "deleted the preset" });
+    // try {
+    // } catch (error) {
+    //   console.error(error);
+    //   res.status(500).json({ error });
+    // }
   },
   addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
