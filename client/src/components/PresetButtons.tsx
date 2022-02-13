@@ -68,6 +68,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           return {
             _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
             presetName: name,
+            displayName: name
           } as IDBPreset;
         });
     
