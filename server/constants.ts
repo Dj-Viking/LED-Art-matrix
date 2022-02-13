@@ -10,21 +10,27 @@ export const TEST_PASSWORD = "test password";
 export const INITIAL_PRESETS = [
   {
     presetName: "rainbowTest",
+    displayName: "rainbowTest",
   },
   {
     presetName: "v2",
+    displayName: "v2",
   },
   {
     presetName: "waves",
+    displayName: "waves",
   },
   {
     presetName: "spiral",
+    displayName: "spiral",
   },
   {
     presetName: "fourSpirals",
+    displayName: "fourSpirals",
   },
   {
     presetName: "dm5",
+    displayName: "dm5",
   },
 ];
 

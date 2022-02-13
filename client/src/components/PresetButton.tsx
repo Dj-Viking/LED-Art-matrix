@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { presetSwitch } from "../actions/led-actions";
+import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { setLedStyle } from "../actions/style-actions";
 import { checkPresetButtonsActive } from "../actions/preset-button-actions";
@@ -13,6 +13,8 @@ interface PresetButtonProps {
     id: string;
     role: string;
     presetName: string;
+    displayName: string;
+    animVarCoeff: string;
     isActive: boolean;
     testid: string;
     classList?: string;
@@ -24,7 +26,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
   button
 }) => {
   
-  const { id, role, presetName, testid, isActive, clickHandler } = button;
+  const { id, role, presetName, displayName, animVarCoeff, testid, isActive, clickHandler } = button;
   const dispatch = useDispatch();
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
@@ -32,7 +34,8 @@ const PresetButton: React.FC<PresetButtonProps> = ({
 
   function setStyle(preset: string): void {
     const LedEngine = new LedStyleEngine(preset);
-    const styleHTML = LedEngine.createStyleSheet("64");
+    const styleHTML = LedEngine.createStyleSheet(animVarCoeff);
+    dispatch(animVarCoeffChange(animVarCoeff));
     dispatch(setLedStyle(styleHTML));
   }
 
@@ -76,7 +79,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
           }
         }}
       >
-        {presetName}
+        {displayName}
       </button>
     </>
   );

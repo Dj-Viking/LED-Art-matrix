@@ -7,12 +7,12 @@ import { setPresetButtonsList } from "../../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
 interface SavePresetModalProps {
   onClose: React.MouseEventHandler<HTMLElement>;
-  context: { animVarCoeff: string }
+  context: { animVarCoeff: string, presetName: string; }
 }
 
 const SavePresetModal: React.FC<SavePresetModalProps> = ({ 
   onClose,
-  context: { animVarCoeff }
+  context: { animVarCoeff, presetName }
 }) => {
   const [ error, setError ] = useState<string>("");
   const [ input, setInput ] = useState<string>("");
@@ -26,8 +26,9 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
     event.preventDefault();
     try {
       const dbPresets = await API.addNewPreset({
-        presetName: input,
-        animVarCoeff
+        presetName,
+        animVarCoeff,
+        displayName: input
       }, Auth.getToken() as string) as IDBPreset[];
       
       if (Array.isArray(dbPresets)) {

@@ -274,6 +274,8 @@ export interface IPresetButton {
   key: string;
   isActive: boolean;
   presetName: string;
+  animVarCoeff: string;
+  displayName: string;
   testid: string;
   classList?: string;
   clickHandler: React.MouseEventHandler<HTMLElement>
@@ -328,6 +330,7 @@ export interface ISignTestTokenArgs {
 export interface ISaveUserPresetArgs {
   presetName: string;
   animVarCoeff: string;
+  displayName: string;
 }
 
 export interface IUserResponse {

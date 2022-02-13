@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty */
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
@@ -16,6 +17,7 @@ import { IDBPreset } from "../utils/PresetButtonsListClass";
 
 
 const BigLedBox: React.FC = (): JSX.Element => {
+  const [defaultId, setDefaultId] = useState<string>("");
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const dispatch = useDispatch();
   const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
@@ -43,6 +45,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
           LedEngineRef.current = new LedStyleEngine(preset.presetName);
           styleHTMLRef.current = LedEngineRef.current.createStyleSheet(preset.animVarCoeff as string);
           dispatch(setLedStyle(styleHTMLRef.current));
+          setDefaultId(preset._id);
         }
       }
     })();
@@ -75,7 +78,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
         <section className="controls-container">
           <ArtScroller />
           <div className="border-top-led" />
-          <PresetButtons />
+          <PresetButtons onRenderActive={defaultId} />
         </section>
         <section
           id="led-box"

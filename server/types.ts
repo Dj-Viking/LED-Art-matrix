@@ -125,8 +125,9 @@ export interface ICreateUserResponse {
 }
 
 export interface IPreset {
-  presetName: string;
   _id: string;
+  presetName: string;
+  displayName: string;
   animVarCoeff: string;
 }
 

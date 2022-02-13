@@ -23,7 +23,10 @@ import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import { setDeleteModalOpen, toggleDeleteMode } from "../actions/modal-actions";
+
+
 const PresetButtons: React.FC<any> = (): JSX.Element => {
+
   
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
@@ -37,7 +40,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
+    const activeId = presetButtons.filter(btn => btn.isActive)[0].id;
+    await API.updateDefaultPreset({ _id: activeId, name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
 
   const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);
@@ -47,6 +51,11 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
       const presets = await API.getUserPresets(Auth.getToken() as string);
       if (Array.isArray(presets)) return presets;
     } catch (error) {}
+  }, []);
+
+  const getDefaultForActiveStatus = useCallback(async (): Promise<IDBPreset | void> => {
+    const preset = await API.getDefaultPreset(Auth.getToken() as string) as IDBPreset;
+    if (typeof preset.presetName === "string") return preset;
   }, []);
 
   useEffect(() => {
@@ -72,11 +81,14 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
       } else {
         (async (): Promise<void> => {
           const presets = await getPresets() as IDBPreset[];
+          const preset = await getDefaultForActiveStatus() as IDBPreset;
+          console.log("presets", presets);
+          console.log("preset", preset);
           
           const buttons = new PresetButtonsList(
             (event: any) => {//click handler
               event.preventDefault();
-            }, presets
+            }, presets, preset._id
           ).getList() as IPresetButton[];
           dispatch(setPresetButtonsList(buttons));
         })();
@@ -92,7 +104,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
       <Modal isOpen={saveModalOpen}>
         <SavePresetModalContent
           context={{
-            animVarCoeff
+            animVarCoeff,
+            presetName: presetName
           }} 
           onClose={(event) => {
             event.preventDefault();

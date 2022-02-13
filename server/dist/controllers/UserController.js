@@ -41,7 +41,7 @@ exports.UserController = {
                         presets: constants_1.INITIAL_PRESETS,
                     },
                     token,
-                    defaultPreset: { presetName: "waves", animVarCoeff: "64" },
+                    defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
                 }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
@@ -62,10 +62,10 @@ exports.UserController = {
     addNewPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { presetName, animVarCoeff } = req.body;
+                const { presetName, animVarCoeff, displayName } = req.body;
                 const updated = yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
                     $push: {
-                        presets: { presetName, animVarCoeff },
+                        presets: { presetName, animVarCoeff, displayName },
                     },
                 }, { new: true }).select("-password");
                 return res.status(200).json({ presets: updated.presets });
@@ -88,8 +88,10 @@ exports.UserController = {
                 const foundUser = yield models_1.User.findOne({ email: req.user.email }).select("-password");
                 return res.status(200).json({
                     preset: {
+                        displayName: foundUser.defaultPreset.displayName,
                         presetName: foundUser.defaultPreset.presetName,
                         animVarCoeff: foundUser.defaultPreset.animVarCoeff,
+                        _id: foundUser.defaultPreset._id,
                     },
                 });
             }
@@ -99,19 +101,23 @@ exports.UserController = {
     updateDefaultPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { defaultPreset, animVarCoeff } = req.body;
+                const { defaultPreset, animVarCoeff, displayName, _id } = req.body;
                 if (typeof defaultPreset !== "string")
                     return res.status(400).json({ error: "missing preset name in request" });
                 const foundUser = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
                     $set: {
                         defaultPreset: {
+                            _id,
                             presetName: defaultPreset,
+                            displayName,
                             animVarCoeff,
                         },
                     },
                 }, { new: true }).select("-password");
                 return res.status(200).json({
                     preset: {
+                        _id: foundUser.defaultPreset._id,
+                        displayName: foundUser.defaultPreset.displayName,
                         presetName: foundUser.defaultPreset.presetName,
                         animVarCoeff: foundUser.defaultPreset.animVarCoeff,
                     },
@@ -152,7 +158,7 @@ exports.UserController = {
                 }
                 const returnUser = {
                     _id: foundUser._id,
-                    defaultPreset: foundUser.defaultPreset.presetName,
+                    defaultPreset: foundUser.defaultPreset,
                     token: foundUser.token,
                 };
                 return res.status(200).json({ user: returnUser });

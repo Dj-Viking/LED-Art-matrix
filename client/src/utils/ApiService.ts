@@ -151,14 +151,14 @@ class ApiService implements IApiService {
   }
 
   public static async addNewPreset(args: ISaveUserPresetArgs, token: string): Promise<IDBPreset[] | unknown> {
-    const { presetName, animVarCoeff } = args;
+    const { presetName, animVarCoeff, displayName } = args;
     headers = clearHeaders(headers);
     headers = setInitialHeaders(headers);
     headers = setAuthHeader(headers, token);
     try {
       const res = await fetch(`${API_URL}/user/add-preset`, {
         method: "POST",
-        body: JSON.stringify({ presetName, animVarCoeff }),
+        body: JSON.stringify({ presetName, animVarCoeff, displayName }),
         headers,
       });
       if (res.status !== 200) {
@@ -173,16 +173,16 @@ class ApiService implements IApiService {
   }
 
   public static async updateDefaultPreset(
-    args: { name: string, animVarCoeff: string, token: string }
+    args: { name: string, animVarCoeff: string, _id: string, token: string }
   ): Promise<void | Error> {
     try {
-      const { name, animVarCoeff, token } = args;
+      const { name, animVarCoeff, token, _id } = args;
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
       headers = setAuthHeader(headers, token);
       const res = await fetch(`${API_URL}/user/update-preset`, {
         method: "PUT",
-        body: JSON.stringify({ defaultPreset: name, animVarCoeff }),
+        body: JSON.stringify({ defaultPreset: name, animVarCoeff, _id }),
         headers,
       });
       if (!res.ok) throw new Error("Update could not happen at this time.");

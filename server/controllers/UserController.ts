@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
 import { Express } from "../types";
 import { Response } from "express";
+import { PresetClass } from "../models/PresetClass";
 const uuid = require("uuid");
 readEnv();
 const { RESET_EXPIRATION, SALT } = process.env;
@@ -34,7 +35,7 @@ export const UserController = {
             presets: INITIAL_PRESETS,
           },
           token,
-          defaultPreset: { presetName: "waves", animVarCoeff: "64" },
+          defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
         },
         { new: true }
       ).select("-password");
@@ -63,12 +64,12 @@ export const UserController = {
   },
   addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
-      const { presetName, animVarCoeff } = req.body;
+      const { presetName, animVarCoeff, displayName } = req.body;
       const updated = await User.findOneAndUpdate(
         { email: req.user!.email },
         {
           $push: {
-            presets: { presetName, animVarCoeff },
+            presets: { presetName, animVarCoeff, displayName },
           },
         },
         { new: true }
@@ -90,8 +91,10 @@ export const UserController = {
       const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
       return res.status(200).json({
         preset: {
+          displayName: foundUser!.defaultPreset!.displayName,
           presetName: foundUser!.defaultPreset!.presetName,
           animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+          _id: foundUser!.defaultPreset!._id,
         },
       });
     } catch (error) {}
@@ -104,7 +107,7 @@ export const UserController = {
     res: Response
   ): Promise<Response | void> {
     try {
-      const { defaultPreset, animVarCoeff } = req.body;
+      const { defaultPreset, animVarCoeff, displayName, _id } = req.body;
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if (typeof defaultPreset !== "string")
@@ -114,7 +117,9 @@ export const UserController = {
         {
           $set: {
             defaultPreset: {
+              _id,
               presetName: defaultPreset,
+              displayName,
               animVarCoeff,
             },
           },
@@ -123,6 +128,8 @@ export const UserController = {
       ).select("-password");
       return res.status(200).json({
         preset: {
+          _id: foundUser!.defaultPreset!._id,
+          displayName: foundUser!.defaultPreset!.displayName,
           presetName: foundUser!.defaultPreset!.presetName,
           animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
         },
@@ -173,7 +180,7 @@ export const UserController = {
 
       const returnUser = {
         _id: foundUser!._id as string,
-        defaultPreset: foundUser!.defaultPreset!.presetName as string,
+        defaultPreset: foundUser!.defaultPreset as PresetClass,
         token: foundUser!.token as string,
       };
       return res.status(200).json({ user: returnUser });
