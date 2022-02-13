@@ -117,7 +117,7 @@ describe("test the save modal functionality", () => {
     expect(awaitedButton.classList).toHaveLength(1);
     expect(awaitedButton.classList[0]).toBe("preset-button-inactive");
     const buttonsParent = screen.getByTestId("buttons-parent");
-    expect(buttonsParent.children).toHaveLength(12);
+    expect(buttonsParent.children).toHaveLength(9);
 
     //start a preset to make the slider appear
     const v2 = await screen.findByText(/v2/);

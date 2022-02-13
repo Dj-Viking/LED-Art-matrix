@@ -63,7 +63,7 @@ describe("Adding a preset error", () => {
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2);
     const btnContainer = await screen.findByTestId("buttons-parent");
-    expect(btnContainer.children).toHaveLength(12);
+    expect(btnContainer.children).toHaveLength(9);
 
     // activate and change one of the constant/always provided presets and 
     // attempt to save it with some new parameter values
@@ -122,7 +122,7 @@ describe("Adding a preset error", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(12);
+    expect(btnContainer.children).toHaveLength(9);
     const error = await screen.findByTestId("add-error");
     expect(error).toBeInTheDocument();
 

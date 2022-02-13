@@ -105,6 +105,7 @@ describe("test the save default button is making the request, mock the response"
     // @ts-ignore trying to mock fetch
     global.fetch = jest.fn(() => 
       Promise.resolve({
+        ok: true,
         status: 200,
         json: () => Promise.resolve(SAVE_DEFAULT_MOCK_SUCCESS)
       })

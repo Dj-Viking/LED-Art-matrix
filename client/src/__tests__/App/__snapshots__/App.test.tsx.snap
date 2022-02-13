@@ -671,6 +671,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           cursor: pointer;
         }
 
+        .preset-button-disabled {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          height: 50px;
+          width: 100px;
+          border-radius: 10px;
+          text-align: center;
+          cursor: default;
+        }
+
         .preset-button-inactive {
           margin-left: 5px;
           margin-right: 5px;
@@ -687,7 +698,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="587.5992997526284kdjfkdjfkjd"
+          id="704.0834238897679kdjfkdjfkjd"
           role="button"
         >
           rainbowTest
@@ -695,7 +706,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="482.40666680111kdjfkdjfkjd"
+          id="531.0257728909227kdjfkdjfkjd"
           role="button"
         >
           v2
@@ -703,7 +714,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="0.10692192267769407kdjfkdjfkjd"
+          id="264.4515561341947kdjfkdjfkjd"
           role="button"
         >
           waves
@@ -711,7 +722,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="848.2371132671316kdjfkdjfkjd"
+          id="109.49717103032297kdjfkdjfkjd"
           role="button"
         >
           spiral
@@ -719,7 +730,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="769.8708904049312kdjfkdjfkjd"
+          id="669.0274425752092kdjfkdjfkjd"
           role="button"
         >
           fourSpirals
@@ -727,7 +738,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="873.7575726678331kdjfkdjfkjd"
+          id="927.5589409403109kdjfkdjfkjd"
           role="button"
         >
           dm5
