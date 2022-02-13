@@ -14,7 +14,6 @@ class PresetButtonsList {
     dbPresets: IDBPreset[] | [],
     propsId?: string
   ) {
-    console.log("props id passed? ", propsId);
     this.list = dbPresets.map(preset => {
       return {
         id: preset._id,
@@ -31,7 +30,6 @@ class PresetButtonsList {
   }
 
   public getList(): IPresetButton[] { 
-    console.log("list length", this.list.length);
     return this.list; 
   }
 
@@ -46,7 +44,6 @@ class PresetButtonsList {
 
   private determineActiveOnRender(presetId: string, propsId?: string): boolean {
     if (propsId) {
-      console.log("am i here", "preset id", presetId, "props id", propsId);
       if (presetId === propsId) {
         return true;
       }
