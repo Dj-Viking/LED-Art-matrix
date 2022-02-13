@@ -82,8 +82,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         (async (): Promise<void> => {
           const presets = await getPresets() as IDBPreset[];
           const preset = await getDefaultForActiveStatus() as IDBPreset;
-          console.log("presets", presets);
-          console.log("preset", preset);
           
           const buttons = new PresetButtonsList(
             (event: any) => {//click handler
