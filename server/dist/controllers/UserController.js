@@ -50,19 +50,13 @@ exports.UserController = {
     },
     deleteUserPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { _id } = req.body;
-                yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
-                    $pull: {
-                        presets: { _id },
-                    },
-                });
-                res.status(200).json({ message: "deleted the preset" });
-            }
-            catch (error) {
-                console.error(error);
-                res.status(500).json({ error });
-            }
+            const { _id } = req.body;
+            yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                $pull: {
+                    presets: { _id },
+                },
+            });
+            res.status(200).json({ message: "deleted the preset" });
         });
     },
     addNewPreset: function (req, res) {

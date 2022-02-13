@@ -22,11 +22,6 @@ const presetButtonsListReducer = (
         ...state,
         presetButtons: action.payload as IPresetButton[]
       };
-    case "TOGGLE_DELETE_MODE": 
-      return {
-        ...state,
-        presetButtons: action.payload as IPresetButton[]
-      };
     case "DELETE_PRESET": 
       return {
         ...state,

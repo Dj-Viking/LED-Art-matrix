@@ -272,7 +272,6 @@ export interface IPresetButton {
   id: string;
   role: string;
   key: string;
-  deleteMode: boolean;
   isActive: boolean;
   presetName: string;
   testid: string;
@@ -292,9 +291,9 @@ export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
   type: "SET_ALL_INACTIVE";
   payload: IPresetButton[];
 }
-export type IToggleDeleteModeAction = (buttons: IPresetButton[]) => {
+export type IToggleDeleteModeAction = (on: boolean) => {
   type: "TOGGLE_DELETE_MODE";
-  payload: IPresetButton[];
+  payload: boolean;
 }
 
 export type ILoggedInActionPayloads =
@@ -375,15 +374,18 @@ export interface ISetDeleteModalContextAction {
 }
 export interface IDeleteModalState {
   deleteModalIsOpen: boolean;
+  deleteModeActive: boolean;
   deleteModalContext: { btnId: string; };
 }
 
 export type IDeleteModalActionTypes = 
 | ISetDeleteModalOpenAction["type"]
+| "TOGGLE_DELETE_MODE"
 | ISetDeleteModalContextAction["type"];
 
 export type IDeleteModalActionPayloads = 
 | ISetDeleteModalOpenAction["payload"]
+| boolean
 | ISetDeleteModalContextAction["payload"];
 
 export interface IDeleteModalAction {

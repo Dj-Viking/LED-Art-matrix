@@ -13,7 +13,6 @@ interface PresetButtonProps {
     id: string;
     role: string;
     presetName: string;
-    deleteMode: boolean;
     isActive: boolean;
     testid: string;
     classList?: string;
@@ -25,9 +24,10 @@ const PresetButton: React.FC<PresetButtonProps> = ({
   button
 }) => {
   
-  const { id, role, presetName, testid, isActive, deleteMode, clickHandler } = button;
+  const { id, role, presetName, testid, isActive, clickHandler } = button;
   const dispatch = useDispatch();
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
+  const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
 
 
   function setStyle(preset: string): void {
@@ -44,27 +44,29 @@ const PresetButton: React.FC<PresetButtonProps> = ({
         role={role}
         className={
           // @ts-ignore
-          ((isActive: boolean, deleteMode: boolean) => {
+          ((isActive: boolean, deleteModeActive: boolean) => {
             
             switch(true) {
-              case isActive && !deleteMode: {
+              case isActive && !deleteModeActive: {
                 return "preset-button-active";
               }
-              case !isActive && !deleteMode: {
+              case !isActive && !deleteModeActive: {
                 return "preset-button-inactive";
               }
-              case !isActive && deleteMode: {
+              case !isActive && deleteModeActive: {
+                return "preset-delete-mode";
+              }
+              case isActive && deleteModeActive: {
                 return "preset-delete-mode";
               }
             }
 
-          })(isActive, deleteMode)
+          })(isActive, deleteModeActive)
         }
 
-        onClick={(event: any) =>{
+        onClick={(event: any) => {
           clickHandler(event);
-          // TODO: handler for deleting the preset if it was in delete mode
-          if (!deleteMode) {
+          if (!deleteModeActive) {
             dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
             dispatch(presetSwitch(presetName));
             setStyle(presetName);

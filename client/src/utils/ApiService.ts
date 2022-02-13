@@ -161,7 +161,6 @@ class ApiService implements IApiService {
         body: JSON.stringify({ presetName, animVarCoeff }),
         headers,
       });
-      console.log("mock res", res);
       if (res.status !== 200) {
         throw new Error("There was a problem with adding a Preset!");
       }
@@ -176,20 +175,16 @@ class ApiService implements IApiService {
   public static async updateDefaultPreset(
     args: { name: string, animVarCoeff: string, token: string }
   ): Promise<void | Error> {
-    try {
-      const { name, animVarCoeff, token } = args;
-      headers = clearHeaders(headers);
-      headers = setInitialHeaders(headers);
-      headers = setAuthHeader(headers, token);
-      const res = await fetch(`${API_URL}/user/update-preset`, {
-        method: "PUT",
-        body: JSON.stringify({ defaultPreset: name, animVarCoeff }),
-        headers,
-      });
-      if (!res.ok) throw new Error("Update could not happen at this time.");
-    } catch (error) {
-      return error as Error;
-    }
+    const { name, animVarCoeff, token } = args;
+    headers = clearHeaders(headers);
+    headers = setInitialHeaders(headers);
+    headers = setAuthHeader(headers, token);
+    const res = await fetch(`${API_URL}/user/update-preset`, {
+      method: "PUT",
+      body: JSON.stringify({ defaultPreset: name, animVarCoeff }),
+      headers,
+    });
+    if (!res.ok) throw new Error("Update could not happen at this time.");
   }
 
   public static async getGifs(): Promise<Array<IGif> | void> {

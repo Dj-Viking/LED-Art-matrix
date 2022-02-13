@@ -586,7 +586,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       <span
         style="color: white;"
       >
-        To see the Disabled Presets, Log in or Sign up to use those and also save your own Default login Preset!
+        To save your own Preset, Log in or Sign up!
       </span>
       <div
         class="preset-button-container"
@@ -599,12 +599,40 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         >
           clear
         </button>
-        <div
-          data-testid="buttons-parent"
-          style="margin-bottom: 2em;"
+        <button
+          class="preset-button-disabled"
+          data-testid="saveDefault"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
         >
-          <style>
-            
+          Save as Default
+        </button>
+        <button
+          class="preset-button-disabled"
+          data-testid="savePreset"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
+        >
+          Save as new Preset
+        </button>
+        <button
+          class="preset-button-disabled"
+          data-testid="deletePreset"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
+        >
+          Delete A Preset
+        </button>
+      </div>
+      <div
+        data-testid="buttons-parent"
+        style="margin-bottom: 2em;"
+      >
+        <style>
+          
         
         .preset-delete-mode {
           margin-left: 5px;
@@ -655,83 +683,55 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           cursor: pointer;
         }
       
-          </style>
-          <button
-            class="preset-button-inactive"
-            data-testid="rainbowTest"
-            id="949.0005379994733kdjfkdjfkjd"
-            role="button"
-          >
-            rainbowTest
-          </button>
-          <button
-            class="preset-button-inactive"
-            data-testid="v2"
-            id="155.23551346969856kdjfkdjfkjd"
-            role="button"
-          >
-            v2
-          </button>
-          <button
-            class="preset-button-inactive"
-            data-testid="waves"
-            id="15.700914563493651kdjfkdjfkjd"
-            role="button"
-          >
-            waves
-          </button>
-          <button
-            class="preset-button-inactive"
-            data-testid="spiral"
-            id="367.6450837603455kdjfkdjfkjd"
-            role="button"
-          >
-            spiral
-          </button>
-          <button
-            class="preset-button-inactive"
-            data-testid="fourSpirals"
-            id="658.1604417371781kdjfkdjfkjd"
-            role="button"
-          >
-            fourSpirals
-          </button>
-          <button
-            class="preset-button-inactive"
-            data-testid="dm5"
-            id="240.98012401449554kdjfkdjfkjd"
-            role="button"
-          >
-            dm5
-          </button>
-          <button
-            class="preset-button-disabled"
-            data-testid="saveDefault"
-            disabled=""
-            role="button"
-            style="opacity: 0;"
-          >
-            Save as Default
-          </button>
-          <button
-            class="preset-button-disabled"
-            data-testid="savePreset"
-            disabled=""
-            role="button"
-            style="opacity: 0;"
-          >
-            Save as new Preset
-          </button>
-          <button
-            class="preset-button-disabled"
-            data-testid="deletePreset"
-            disabled=""
-            role="button"
-            style="opacity: 0;"
-          >
-            Delete A Preset
-          </button>
-        </div>
+        </style>
+        <button
+          class="preset-button-inactive"
+          data-testid="rainbowTest"
+          id="587.5992997526284kdjfkdjfkjd"
+          role="button"
+        >
+          rainbowTest
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="v2"
+          id="482.40666680111kdjfkdjfkjd"
+          role="button"
+        >
+          v2
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="waves"
+          id="0.10692192267769407kdjfkdjfkjd"
+          role="button"
+        >
+          waves
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="spiral"
+          id="848.2371132671316kdjfkdjfkjd"
+          role="button"
+        >
+          spiral
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="fourSpirals"
+          id="769.8708904049312kdjfkdjfkjd"
+          role="button"
+        >
+          fourSpirals
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="dm5"
+          id="873.7575726678331kdjfkdjfkjd"
+          role="button"
+        >
+          dm5
+        </button>
       </div>
     </section>
     <section

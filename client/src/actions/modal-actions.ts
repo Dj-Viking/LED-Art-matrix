@@ -1,4 +1,4 @@
-import { ISetDeleteModalContextAction, ISetDeleteModalOpenAction } from "../types";
+import { ISetDeleteModalContextAction, ISetDeleteModalOpenAction, IToggleDeleteModeAction } from "../types";
 
 export const setDeleteModalOpen = (open: boolean): ISetDeleteModalOpenAction => {
   return {
@@ -11,4 +11,13 @@ export const setDeleteModalContext = (context: { btnId: string; }): ISetDeleteMo
     type: "SET_DELETE_MODAL_CONTEXT",
     payload: context
   };
+};
+
+export const toggleDeleteMode: IToggleDeleteModeAction = (on: boolean) => {
+  
+  return {
+    type: "TOGGLE_DELETE_MODE",
+    payload: on,
+  };
+
 };

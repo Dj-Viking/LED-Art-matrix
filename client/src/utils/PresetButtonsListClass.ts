@@ -15,10 +15,9 @@ class PresetButtonsList {
     this.list = dbPresets.map(preset => {
       return {
         id: preset._id,
-        key: Math.random() * 1000 + "kdjfkdjfkdj",
+        key: preset._id,
         role: "button",
         isActive: false,
-        deleteMode: false,
         presetName: preset.presetName,
         testid: preset.presetName,
         clickHandler

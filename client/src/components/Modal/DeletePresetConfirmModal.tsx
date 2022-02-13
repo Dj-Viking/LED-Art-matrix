@@ -5,6 +5,7 @@ import { AuthService as Auth } from "../../utils/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { MyRootState } from "../../types";
 import { deletePreset } from "../../actions/preset-button-actions";
+// import { toggleDeleteMode } from "../../actions/modal-actions";
 interface DeletePresetConfirmModalProps {
   context: { btnId: string; };
   onConfirm: React.MouseEventHandler<HTMLElement>;
@@ -27,6 +28,7 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
     try {
       await API.deletePreset(btnId, Auth.getToken() as string);
       dispatch(deletePreset(presetButtons, btnId));
+      // dispatch(toggleDeleteMode(presetButtons));
     } catch (error) {
       const err = error as Error;
       setError(err.message);

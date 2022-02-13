@@ -10,45 +10,8 @@
   justify-content: center;
   flex-wrap: wrap;
   margin-top: 20px;
-  height: 200px;
+  height: 10wh;
   margin-bottom: 10px;
-}
-
-.rainbow-anim {
-  animation-name: rainbowButtonAnim;
-  animation-duration: 4s;
-  animation-delay: 0s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-  animation-direction: alternate;
-}
-@keyframes rainbowButtonAnim {
-  0% {
-    background-color: black;
-  }
-  25% {
-    background-color: red;
-  }
-  50% {
-    background-color: green;
-  }
-  75% {
-    background-color: blue;
-  }
-  100% {
-    background-color: purple;
-  }
-}
-
-.preset-button-disabled {
-  margin-left: 5px;
-  margin-right: 5px;
-  margin-bottom: 10px;
-  height: 50px;
-  width: 100px;
-  border-radius: 10px;
-  text-align: center;
-  cursor: default;
 }
 
 .save-button {

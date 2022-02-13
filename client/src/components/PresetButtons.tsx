@@ -17,12 +17,12 @@ import { clearStyle } from "../actions/style-actions";
 import { IPresetButton, MyRootState } from "../types";
 import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { setAllInactive, setPresetButtonsList, toggleDeleteMode } from "../actions/preset-button-actions";
+import { setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
-import { setDeleteModalOpen } from "../actions/modal-actions";
+import { setDeleteModalOpen, toggleDeleteMode } from "../actions/modal-actions";
 const PresetButtons: React.FC<any> = (): JSX.Element => {
   
   const saveButtonSpring = useSpring(_saveButtonSpring);
@@ -33,14 +33,11 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const dispatch = useDispatch();
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
-  const { deleteModalIsOpen, deleteModalContext } = useSelector((state: MyRootState) => state.deleteModalState);
+  const { deleteModalIsOpen, deleteModalContext, deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    try {
-      await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
-      
-    } catch (error) {}
+    await API.updateDefaultPreset({ name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
 
   const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);
@@ -110,15 +107,16 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           onCancel={(event: any) => {
             event.preventDefault();
             dispatch(setDeleteModalOpen(false));
-            dispatch(toggleDeleteMode(presetButtons));
+            dispatch(toggleDeleteMode(deleteModeActive ? false : true));
           }}
           onConfirm={(event: any) => {
             event.preventDefault();
             dispatch(setDeleteModalOpen(false));
-            dispatch(toggleDeleteMode(presetButtons));
+            dispatch(toggleDeleteMode(deleteModeActive ? false : true));
           }}
         />
       </Modal>
+
       <span 
         style={{
           color: "white",
@@ -136,7 +134,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                 color: "white"
               }}
             >
-              To see the Disabled Presets, Log in or Sign up to use those and also save your own Default login Preset!
+              To save your own Preset, Log in or Sign up!
             </span>
           </>
         )
@@ -155,21 +153,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         >
           clear
         </animated.button>
-
-        <div data-testid="buttons-parent" style={{ marginBottom: "2em"}}>
-          <PresetButtonStyles />
-          {
-            Array.isArray(presetButtons) && presetButtons.map(button => {
-              return (
-                <PresetButton
-                  key={button.key} 
-                  button={{ ...button }}
-                />
-              );
-            })
-          }
-
-          <animated.button
+        
+        <animated.button
             role="button"
             data-testid="saveDefault"
             style={saveButtonSpring}
@@ -202,37 +187,52 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             disabled={!Auth.loggedIn()}// enable if logged in
             onClick={(event: any) => {
               event.preventDefault();
-              dispatch(toggleDeleteMode(presetButtons));
+              dispatch(toggleDeleteMode(deleteModeActive ? false : true));
             }}
           >
             { 
               Array.isArray(presetButtons) && presetButtons.length > 0 
               ? 
-                presetButtons[0].deleteMode ? "Don't Delete A Preset" : "Delete A Preset"
+                deleteModeActive ? "Don't Delete A Preset" : "Delete A Preset"
               : 
                 null
             } 
           </animated.button>
 
-          {
-            (
-              ["dm5", "waves", "v2", "rainbowTest"].includes(presetName)
-            ) && (
-              <>
-                <Slider
-                  name="led-anim-var"
-                  testid="led-anim-variation"
-                  label="LED Animation Variation: " 
-                  inputValueState={animVarCoeff} 
-                  handleChange={(event) => {
-                    event.preventDefault();
-                    dispatch(animVarCoeffChange(event.target.value));
-                  }}
-                />
-              </>
-            )
-          }
-        </div>
+
+      </div>
+
+      <div data-testid="buttons-parent" style={{ marginBottom: "2em"}}>
+        <PresetButtonStyles />
+        {
+          Array.isArray(presetButtons) && presetButtons.map(button => {
+            return (
+              <PresetButton
+                key={button.key} 
+                button={{ ...button }}
+              />
+            );
+          })
+        }
+
+        {
+          (
+            ["dm5", "waves", "v2", "rainbowTest"].includes(presetName)
+          ) && (
+            <>
+              <Slider
+                name="led-anim-var"
+                testid="led-anim-variation"
+                label="LED Animation Variation: " 
+                inputValueState={animVarCoeff} 
+                handleChange={(event) => {
+                  event.preventDefault();
+                  dispatch(animVarCoeffChange(event.target.value));
+                }}
+              />
+            </>
+          )
+        }
 
       </div>
     </>
