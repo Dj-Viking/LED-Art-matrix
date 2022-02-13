@@ -161,6 +161,7 @@ class ApiService implements IApiService {
         body: JSON.stringify({ presetName, animVarCoeff }),
         headers,
       });
+      console.log("mock res", res);
       if (res.status !== 200) {
         throw new Error("There was a problem with adding a Preset!");
       }
