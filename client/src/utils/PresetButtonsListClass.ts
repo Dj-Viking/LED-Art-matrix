@@ -12,14 +12,14 @@ class PresetButtonsList {
   constructor(
     clickHandler: IPresetButton["clickHandler"], 
     dbPresets: IDBPreset[] | [],
-    propsId?: string
+    activeId?: string
   ) {
     this.list = dbPresets.map(preset => {
       return {
         id: preset._id,
         key: preset._id,
         role: "button",
-        isActive: this.determineActiveOnRender(preset._id, propsId),
+        isActive: this.determineActiveOnRender(preset._id, activeId),
         animVarCoeff: preset.animVarCoeff,
         presetName: preset.presetName,
         displayName: this.createDisplayName(preset.displayName, preset.presetName),

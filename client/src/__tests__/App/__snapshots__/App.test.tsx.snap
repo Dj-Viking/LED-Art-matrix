@@ -697,34 +697,52 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         </style>
         <button
           class="preset-button-inactive"
-          id="57.119253990203454kdjfkdjfkjd"
+          data-testid="rainbowTest"
+          id="844.3086823600316kdjfkdjfkjd"
           role="button"
-        />
+        >
+          rainbowTest
+        </button>
         <button
           class="preset-button-inactive"
-          id="478.08117942200255kdjfkdjfkjd"
+          data-testid="v2"
+          id="965.0528384399366kdjfkdjfkjd"
           role="button"
-        />
+        >
+          v2
+        </button>
         <button
           class="preset-button-inactive"
-          id="928.0418871944988kdjfkdjfkjd"
+          data-testid="waves"
+          id="537.4472917739877kdjfkdjfkjd"
           role="button"
-        />
+        >
+          waves
+        </button>
         <button
           class="preset-button-inactive"
-          id="493.9532175273773kdjfkdjfkjd"
+          data-testid="spiral"
+          id="418.0485110820475kdjfkdjfkjd"
           role="button"
-        />
+        >
+          spiral
+        </button>
         <button
           class="preset-button-inactive"
-          id="888.6445092974633kdjfkdjfkjd"
+          data-testid="fourSpirals"
+          id="108.4144084350509kdjfkdjfkjd"
           role="button"
-        />
+        >
+          fourSpirals
+        </button>
         <button
           class="preset-button-inactive"
-          id="408.3687018266202kdjfkdjfkjd"
+          data-testid="dm5"
+          id="678.809268870225kdjfkdjfkjd"
           role="button"
-        />
+        >
+          dm5
+        </button>
       </div>
     </section>
     <section
