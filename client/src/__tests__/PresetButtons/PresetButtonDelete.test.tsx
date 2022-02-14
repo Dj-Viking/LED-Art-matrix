@@ -37,13 +37,9 @@ describe("test deleting a preset from the user's preset button list", () => {
     const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }))
-                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))           
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))                      
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))                      
                       .mockReturnValueOnce(fakeFetchRes({ message: "deleted" }));
     // @ts-ignore
     global.fetch = mockFetch;
@@ -58,9 +54,9 @@ describe("test deleting a preset from the user's preset button list", () => {
     );
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2); // /user/presets first /user second
-
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(8);
-
+    
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(9);
+    
     const deleteBtn = await screen.findByTestId("deletePreset");
     
     expect(deleteBtn.textContent).toBe("Delete A Preset");
@@ -68,9 +64,11 @@ describe("test deleting a preset from the user's preset button list", () => {
       deleteBtn.dispatchEvent(TestService.createBubbledEvent("click"));
     });
     expect(deleteBtn.textContent).toBe("Don't Delete A Preset");
-
-    const bogus = screen.getByTestId("bogus");
-
+    
+    expect(fetch).toHaveBeenCalledTimes(3); 
+    // expect(fetch).toHaveBeenNthCalledWith(1, "kdjfdkj"); 
+    const bogus = await screen.findByTestId("bogus");
+    
     expect(bogus.classList.length).toBe(1);
     expect(bogus.classList[0]).toBe("preset-delete-mode");
 
@@ -112,8 +110,8 @@ describe("test deleting a preset from the user's preset button list", () => {
       confirm.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(fetch).toHaveBeenNthCalledWith(3, 
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(4, 
       "http://localhost:3001/user/delete-preset", 
       {"body": expect.any(String), 
       "headers": {"Content-Type": "application/json", "authorization": expect.any(String)},

@@ -41,7 +41,8 @@ describe("Adding a preset", () => {
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_ADD_PRESET_RES }));
     // @ts-ignore
     global.fetch = mockFetch;
@@ -105,8 +106,8 @@ describe("Adding a preset", () => {
       modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(fetch).toHaveBeenNthCalledWith(3, 
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(4, 
       "http://localhost:3001/user/add-preset", 
       {
         "body": expect.any(String), 
@@ -118,7 +119,7 @@ describe("Adding a preset", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(10);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(10);
     const newPresetBtn = await screen.findByText(/new preset/);
     expect(newPresetBtn).toBeInTheDocument();
 

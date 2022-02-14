@@ -42,14 +42,14 @@ describe("Test rendering login correctly", () => {
     const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
                       // first
                       .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }))
+                      // fourth
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }));
     // @ts-ignore
     global.fetch = mockFetch;
   });
@@ -109,7 +109,7 @@ describe("Test rendering login correctly", () => {
     });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
 
-    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(4);
     expect(fetch).toHaveBeenNthCalledWith(1, 
       "http://localhost:3001/user/login", 
       {

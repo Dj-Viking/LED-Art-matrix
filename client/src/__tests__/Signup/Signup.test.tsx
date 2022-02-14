@@ -108,7 +108,7 @@ describe("need to impl window.location.assign()", () => {
                       //default
                       // .mockReturnValue("kdfjkdj")
                       .mockReturnValueOnce(fakeFetchRes(SIGNUP_MOCK_RESULT))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
     // @ts-ignore
     global.fetch = mockFetch;

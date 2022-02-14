@@ -43,7 +43,7 @@ beforeEach(() => {
                     // second
                     .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                     // third
-                    .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
   // @ts-ignore
   global.fetch = mockFetch;
 });

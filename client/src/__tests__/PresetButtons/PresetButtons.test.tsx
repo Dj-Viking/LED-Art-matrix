@@ -55,7 +55,7 @@ describe("test logging in and checking buttons are there", () => {
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -101,7 +101,7 @@ describe("test logging in and checking buttons are there", () => {
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     expect(localStorage.getItem("id_token")).toBeTruthy();
 
-    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(4);
     expect(fetch).toHaveBeenNthCalledWith(1, 
       "http://localhost:3001/user/login",
       {"body": expect.any(String),
@@ -138,7 +138,7 @@ describe("test logging in and checking buttons are there", () => {
     const mockFetch = jest.fn()
                       //default
                       // .mockReturnValue("kdfjkdj")
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
                       // .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
     // @ts-ignore
     global.fetch = mockFetch;

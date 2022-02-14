@@ -40,7 +40,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    const activeId = presetButtons.filter(btn => btn.isActive)[0].id;
+    const activeId = (Array.isArray(presetButtons) && presetButtons.length > 0) ? presetButtons.filter(btn => btn.isActive)[0].id : "";
     await API.updateDefaultPreset({ _id: activeId, name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
 
@@ -55,7 +55,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   const getDefaultForActiveStatus = useCallback(async (): Promise<IDBPreset | void> => {
     const preset = await API.getDefaultPreset(Auth.getToken() as string) as IDBPreset;
-    if (typeof preset.presetName === "string") return preset;
+    return preset;
   }, []);
 
   useEffect(() => {
@@ -68,7 +68,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           return {
             _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
             presetName: name,
-            displayName: name
+            displayName: name,
+            animVarCoeff: "64"
           } as IDBPreset;
         });
     
@@ -87,7 +88,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
           const buttons = new PresetButtonsList(
             (event: any) => {//click handler
               event.preventDefault();
-            }, presets, preset._id
+            }, presets, preset && preset._id ? preset._id : void 0
           ).getList() as IPresetButton[];
           dispatch(setPresetButtonsList(buttons));
         })();

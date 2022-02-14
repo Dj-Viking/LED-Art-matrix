@@ -45,7 +45,7 @@ describe("test the save modal functionality", () => {
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();

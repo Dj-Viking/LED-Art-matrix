@@ -49,7 +49,8 @@ describe("tests the logout works", () => {
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }))
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }));
 
     //@ts-ignore
     global.fetch = mockFetch;
@@ -97,7 +98,7 @@ describe("tests the logout works", () => {
       formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(4);
     expect(fetch).toHaveBeenNthCalledWith(1, 
       "http://localhost:3001/user/login", 
       {

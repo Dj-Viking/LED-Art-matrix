@@ -45,7 +45,8 @@ describe("Adding a preset error", () => {
     
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
                       .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
     // @ts-ignore
     global.fetch = mockFetch;
@@ -109,8 +110,8 @@ describe("Adding a preset error", () => {
       modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(fetch).toHaveBeenNthCalledWith(3, 
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(4, 
       "http://localhost:3001/user/add-preset", 
       {
         "body": expect.any(String), 

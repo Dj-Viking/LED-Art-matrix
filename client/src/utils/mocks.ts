@@ -19,24 +19,25 @@ export const MOCK_SIGN_TOKEN_ARGS = {
   _id: Math.random() * 1293 + "yo what up",
 };
 export const MOCK_PRESETS = [
-  {presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
-  {presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
-  {presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
-  {presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
-  {presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
-  {presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
-  {presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+  {displayName: "rainbowTest", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+  {displayName: "v2", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+  {displayName: "waves", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+  {displayName: "spiral", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+  {displayName: "fourSpirals", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+  {displayName: "dm5", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
+  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
 ];
 export const MOCK_ADD_PRESET_RES = [
-  {presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
-  {presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
-  {presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
-  {presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
-  {presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
-  {presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
-  {presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
-  {presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e52"},
+  {displayName: "rainbowTest", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+  {displayName: "v2", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+  {displayName: "waves", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+  {displayName: "spiral", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+  {displayName: "fourSpirals", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+  {displayName: "dm5", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
+  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+  {displayName: "new preset", presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e53"},
 ];
+
 
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",

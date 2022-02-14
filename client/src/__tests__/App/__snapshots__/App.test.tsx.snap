@@ -698,7 +698,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="844.3086823600316kdjfkdjfkjd"
+          id="550.4956761972475kdjfkdjfkjd"
           role="button"
         >
           rainbowTest
@@ -706,7 +706,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="965.0528384399366kdjfkdjfkjd"
+          id="665.4338540087807kdjfkdjfkjd"
           role="button"
         >
           v2
@@ -714,7 +714,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="537.4472917739877kdjfkdjfkjd"
+          id="837.8511596418845kdjfkdjfkjd"
           role="button"
         >
           waves
@@ -722,7 +722,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="418.0485110820475kdjfkdjfkjd"
+          id="88.99502964942884kdjfkdjfkjd"
           role="button"
         >
           spiral
@@ -730,7 +730,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="108.4144084350509kdjfkdjfkjd"
+          id="743.6024541563282kdjfkdjfkjd"
           role="button"
         >
           fourSpirals
@@ -738,7 +738,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="678.809268870225kdjfkdjfkjd"
+          id="94.29081562847696kdjfkdjfkjd"
           role="button"
         >
           dm5

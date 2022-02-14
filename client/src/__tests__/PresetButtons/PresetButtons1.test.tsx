@@ -44,7 +44,7 @@ beforeEach(() => {
                     // second
                     .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                     // third
-                    .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
   // @ts-ignore
   global.fetch = mockFetch;
 });
@@ -98,7 +98,7 @@ it("full app rendering/navigating", async () => {
     inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });
 
-  expect(fetch).toHaveBeenCalledTimes(3);
+  expect(fetch).toHaveBeenCalledTimes(4);
   expect(fetch).toHaveBeenNthCalledWith(1, 
     "http://localhost:3001/user/login", 
     {

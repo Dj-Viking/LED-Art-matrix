@@ -13,6 +13,7 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, MOCK_PRESETS, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -49,7 +50,7 @@ describe("test the save default button is making the request, mock the response"
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -64,6 +65,8 @@ describe("test the save default button is making the request, mock the response"
       </>
     );
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
+
+    expect(fetch).toHaveBeenCalledTimes(0);
 
     const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");
@@ -90,26 +93,34 @@ describe("test the save default button is making the request, mock the response"
     await act(async () => {
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {"body": expect.any(String), "headers": {"Content-Type": "application/json"}, "method": "POST"});
+    // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdjjk");
+    
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     expect(localStorage.getItem("id_token")).toBeTruthy();
 
     //once for logging in and then twice for going to "/" and fetching the user's preset
     // since we're logged in then the get user preset fetch happens
-    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledTimes(4);
 
   });
 
   it("tests the save default button", async () => {
-    expect(localStorage.getItem("id_token")).toBeTruthy();
-    // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() => 
-      Promise.resolve({
-        ok: true,
-        status: 200,
-        json: () => Promise.resolve(SAVE_DEFAULT_MOCK_SUCCESS)
-      })
-    );
+    expect(typeof localStorage.getItem("id_token")).toBe("string");
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes(SAVE_DEFAULT_MOCK_SUCCESS))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+    // @ts-ignore
+    global.fetch = mockFetch;
     const history = createMemoryHistory();
 
     render(
@@ -125,13 +136,21 @@ describe("test the save default button is making the request, mock the response"
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func
     expect(fetch).toHaveBeenCalledTimes(1);
+    // expect(fetch).toHaveBeenNthCalledWith(1, "kdfkdjfjk");
 
     const preset_buttons = {
-      saveDefault: screen.getByTestId("saveDefault")
+      saveDefault: screen.getByTestId("saveDefault"),
+      waves: await screen.findByTestId("waves")
     };
 
+    expect(preset_buttons.waves).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
     expect(preset_buttons.saveDefault).not.toBeDisabled();
+
+    //make waves active so that we can save it as default
+    act(() => {
+      preset_buttons.waves.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
 
     await act(async () => {
       preset_buttons.saveDefault.dispatchEvent(new MouseEvent("click", { bubbles: true }));
@@ -139,6 +158,7 @@ describe("test the save default button is making the request, mock the response"
 
     expect(fetch).toHaveBeenCalledTimes(2);
   });
+
   it("tests the save default button with error response", async () => {
     
 
@@ -149,7 +169,7 @@ describe("test the save default button is making the request, mock the response"
       Promise.resolve({
         ok: void 0,
         json: () => Promise.resolve({
-          preset: { presetName: "waves" }
+          preset: { displayName: "", presetName: "waves" }
         })
       })
     );
@@ -170,7 +190,7 @@ describe("test the save default button is making the request, mock the response"
     expect(fetch).toHaveBeenCalledTimes(1);
 
     const preset_buttons = {
-      waves: screen.getByTestId("waves"),
+      waves: await screen.findByTestId("waves"),
       saveDefault: screen.getByTestId("saveDefault")
     };
 

@@ -116,8 +116,8 @@ describe("test deleting a preset from the user's preset button list", () => {
       confirm.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(3);
-    expect(fetch).toHaveBeenNthCalledWith(3, 
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(4, 
       "http://localhost:3001/user/delete-preset", 
       {
         "body": expect.any(String), 
