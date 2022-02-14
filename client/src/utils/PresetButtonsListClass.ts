@@ -42,9 +42,9 @@ class PresetButtonsList {
     return displayName;
   }
 
-  private determineActiveOnRender(presetId: string, propsId?: string): boolean {
-    if (propsId) {
-      if (presetId === propsId) {
+  private determineActiveOnRender(presetId: string, activeId?: string): boolean {
+    if (activeId) {
+      if (presetId === activeId) {
         return true;
       }
     }

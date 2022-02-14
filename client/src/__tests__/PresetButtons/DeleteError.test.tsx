@@ -28,7 +28,7 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
 
 describe("test deleting a preset from the user's preset button list", () => {
-  it("enables a delete function to allow clicking a preset that deletes it, checks if user wants to delete the preset first", async () => {
+  it.only("enables a delete function to allow clicking a preset that deletes it, checks if user wants to delete the preset first", async () => {
     expect(localStorage.getItem("id_token")).toBe(null);
     localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
     expect(typeof localStorage.getItem("id_token")).toBe("string");
@@ -46,8 +46,10 @@ describe("test deleting a preset from the user's preset button list", () => {
                       // first
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // second
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
                       // third
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+                      // fourth
                       .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
     // @ts-ignore
     global.fetch = mockFetch;
@@ -62,8 +64,10 @@ describe("test deleting a preset from the user's preset button list", () => {
     );
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2); // /user/presets first /user second
+    // expect(fetch).toHaveBeenNthCalledWith(1, "dkfkdfjkd"); // /user/presets first /user second
+    // expect(fetch).toHaveBeenNthCalledWith(2, "dkfkdfjkd"); // /user/presets first /user second
 
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(8);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(9);
 
     const deleteBtn = await screen.findByTestId("deletePreset");
     
@@ -73,7 +77,7 @@ describe("test deleting a preset from the user's preset button list", () => {
     });
     expect(deleteBtn.textContent).toBe("Don't Delete A Preset");
 
-    const bogus = screen.getByTestId("bogus");
+    const bogus = await screen.findByTestId("bogus");
 
     expect(bogus.classList.length).toBe(1);
     expect(bogus.classList[0]).toBe("preset-delete-mode");
@@ -117,6 +121,7 @@ describe("test deleting a preset from the user's preset button list", () => {
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
+    // expect(fetch).toHaveBeenNthCalledWith(3, "dkjfdkj");
     expect(fetch).toHaveBeenNthCalledWith(4, 
       "http://localhost:3001/user/delete-preset", 
       {
@@ -128,7 +133,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         "method": "DELETE"
       }
     );
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(8);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(9);
 
     expect((await screen.findByTestId("delete-error"))).toBeInTheDocument();
   

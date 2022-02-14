@@ -89,7 +89,11 @@ describe("test deleting a preset from the user's preset button list", () => {
 
     expect(deleteModal.parentElement!.style.display).toBe("none");
 
-    // TODO: finish the front and back portion of the button actually being deleted from the list.
+    //activate a preset to cover the case where it was active and delete a preset button was clicked
+    // should have class preset-delete-mode
+    act(() => {
+      bogus.dispatchEvent(TestService.createBubbledEvent("click"));
+    });
 
     expect(deleteBtn.textContent).toBe("Delete A Preset");
     act(() => {

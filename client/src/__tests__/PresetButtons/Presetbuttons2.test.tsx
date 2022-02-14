@@ -43,7 +43,7 @@ beforeEach(() => {
                     // second
                     .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                     // third
-                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
+                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
   // @ts-ignore
   global.fetch = mockFetch;
 });
@@ -70,14 +70,14 @@ it("tests the preset buttons render", async () => {
 
 
   const preset_buttons = {
-    clear: screen.getByTestId("clear"),
-    rainbowTest: screen.getByTestId("rainbowTest"),
-    v2: screen.getByTestId("v2"),
-    waves: screen.getByTestId("waves"),
-    spiral: screen.getByTestId("spiral"),
-    fourSpirals: screen.getByTestId("fourSpirals"),
-    dm5: screen.getByTestId("dm5"),
-    saveDefault: screen.getByTestId("saveDefault")
+    clear: await screen.findByTestId("clear"),
+    rainbowTest: await screen.findByTestId("rainbowTest"),
+    v2: await screen.findByTestId("v2"),
+    waves: await screen.findByTestId("waves"),
+    spiral: await screen.findByTestId("spiral"),
+    fourSpirals: await screen.findByTestId("fourSpirals"),
+    dm5: await screen.findByTestId("dm5"),
+    saveDefault: await screen.findByTestId("saveDefault")
   };
 
   expect(preset_buttons.rainbowTest).toBeInTheDocument();

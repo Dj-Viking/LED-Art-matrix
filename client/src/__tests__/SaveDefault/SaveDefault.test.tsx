@@ -40,8 +40,8 @@ describe("test the save default button is making the request, mock the response"
   });
   
   it("logs in so the next test can have buttons enabled", async () => {
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{ ok: boolean, status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       //default
                       // .mockReturnValue("kdfjkdj")
@@ -50,7 +50,9 @@ describe("test the save default button is making the request, mock the response"
                       // second
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
                       // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+                      // fourth getting default preset inside PresetButtons component for setting active on page load while logged in
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -102,19 +104,26 @@ describe("test the save default button is making the request, mock the response"
 
     //once for logging in and then twice for going to "/" and fetching the user's preset
     // since we're logged in then the get user preset fetch happens
+
+    // fourth time is getting the default inside presetbuttons component to set it active on page load while logged in
     expect(fetch).toHaveBeenCalledTimes(4);
+    // expect(fetch).toHaveBeenNthCalledWith(4, "kdfjdkkj"); 
+
+    const wavesActive = await screen.findByTestId("waves");
+    expect(wavesActive.classList).toHaveLength(1);
+    expect(wavesActive.classList[0]).toBe("preset-button-active");
 
   });
 
   it("tests the save default button", async () => {
     expect(typeof localStorage.getItem("id_token")).toBe("string");
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{ ok: boolean, status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       //default
                       // .mockReturnValue("kdfjkdj")
                       // first
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
                       // second
                       .mockReturnValueOnce(fakeFetchRes(SAVE_DEFAULT_MOCK_SUCCESS))
                       // third
@@ -136,22 +145,26 @@ describe("test the save default button is making the request, mock the response"
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func
     expect(fetch).toHaveBeenCalledTimes(1);
-    // expect(fetch).toHaveBeenNthCalledWith(1, "kdfkdjfjk");
+    // expect(fetch).toHaveBeenNthCalledWith(1, "dkjfdkj");
 
     const preset_buttons = {
       saveDefault: screen.getByTestId("saveDefault"),
       waves: await screen.findByTestId("waves")
     };
 
+    // default should be active on page load
+
     expect(preset_buttons.waves).toBeInTheDocument();
+    expect(preset_buttons.waves.classList).toHaveLength(1);
+    
     expect(preset_buttons.saveDefault).toBeInTheDocument();
     expect(preset_buttons.saveDefault).not.toBeDisabled();
-
+    
     //make waves active so that we can save it as default
     act(() => {
       preset_buttons.waves.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-
+    
     await act(async () => {
       preset_buttons.saveDefault.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
@@ -169,7 +182,7 @@ describe("test the save default button is making the request, mock the response"
       Promise.resolve({
         ok: void 0,
         json: () => Promise.resolve({
-          preset: { displayName: "", presetName: "waves" }
+          preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" }
         })
       })
     );
