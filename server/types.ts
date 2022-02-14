@@ -75,8 +75,15 @@ export interface IGif {
   limit: string;
   _id: string;
 }
+
+export interface IAddPresetResponse {
+  presets: IPreset[];
+}
 export interface IGetUserPresetResponse {
-  preset: string;
+  presets: IPreset[];
+}
+export interface IGetUserDefaultPresetResponse {
+  preset: IPreset;
 }
 
 export interface IUser {
@@ -118,7 +125,10 @@ export interface ICreateUserResponse {
 }
 
 export interface IPreset {
+  _id: string;
   presetName: string;
+  displayName: string;
+  animVarCoeff: string;
 }
 
 export interface ILoginPayload {
@@ -141,10 +151,11 @@ export interface ILoginResponse {
 
 export interface IUpdateUserPresetPayload {
   defaultPreset: string;
+  animVarCoeff: string;
 }
 
 export interface IUpdateUserPresetResponse {
-  updated?: string | void;
+  preset: IPreset;
 }
 
 export interface IInvalidSigError {
@@ -161,5 +172,9 @@ export interface IExpiredTokenError {
 }
 
 export interface IForgotPasswordResponse {
+  message: string;
+}
+
+export interface IDeletePresetResponse {
   message: string;
 }

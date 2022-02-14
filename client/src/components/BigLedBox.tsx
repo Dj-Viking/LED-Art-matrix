@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-empty */
 import React, { useEffect, useCallback, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
@@ -11,7 +13,8 @@ import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
-import { Slider } from "./Slider";
+import { IDBPreset } from "../utils/PresetButtonsListClass";
+
 
 const BigLedBox: React.FC = (): JSX.Element => {
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
@@ -19,16 +22,13 @@ const BigLedBox: React.FC = (): JSX.Element => {
   const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
   const styleHTMLRef = useRef<string>("");
 
+  // @ts-ignore
   const getDefaultPreset = useCallback(async () => {
     try {
-      const preset = await API.getDefaultPreset(Auth.getToken() as string);
-      if (typeof preset === "string") {
-        return preset;
-      }
-      throw new TypeError(`preset returned was not a string! it's value was ${preset}`);
-    } catch (error) {
-      return void 0;
-    }
+      const preset = await API.getDefaultPreset(Auth.getToken() as string) as IDBPreset;
+      return preset;
+      // console.error(`preset returned was not a string! it's value was ${preset}`);
+    } catch (error) {}
   }, []);
 
   // function that sets the starting preset name of the user logging on
@@ -37,12 +37,12 @@ const BigLedBox: React.FC = (): JSX.Element => {
   useEffect(() => {
     (async (): Promise<void> => {
       if (Auth.loggedIn()) {
-        const preset = await getDefaultPreset();
-        if (typeof preset === "string") {
-          // TODO: load preset with saved coefficient parameters
-          dispatch(presetSwitch(preset));
-          LedEngineRef.current = new LedStyleEngine(preset);
-          styleHTMLRef.current = LedEngineRef.current.createStyleSheet();
+        const preset = await getDefaultPreset() as IDBPreset;
+        if (typeof preset.presetName === "string") {
+          dispatch(animVarCoeffChange(preset.animVarCoeff as string));
+          dispatch(presetSwitch(preset.presetName));
+          LedEngineRef.current = new LedStyleEngine(preset.presetName);
+          styleHTMLRef.current = LedEngineRef.current.createStyleSheet(preset.animVarCoeff as string);
           dispatch(setLedStyle(styleHTMLRef.current));
         }
       }
@@ -50,7 +50,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
     return void 0;
   }, [getDefaultPreset, dispatch]);
   
-  //second use effect to re-render when the preset parameters change and also when the preset switch happens.
+  //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
   useEffect(() => {
     styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
     dispatch(setLedStyle(styleHTMLRef.current));
@@ -77,24 +77,6 @@ const BigLedBox: React.FC = (): JSX.Element => {
           <ArtScroller />
           <div className="border-top-led" />
           <PresetButtons />
-          {
-            (
-              ["dm5", "waves", "V2", "rainbowTestAllAnim"].includes(presetName)
-            ) && (
-              <>
-                <Slider
-                  name="led-anim-var"
-                  testid="led-anim-variation"
-                  label="LED Animation Variation: " 
-                  inputValueState={animVarCoeff} 
-                  handleChange={(event) => {
-                    event.preventDefault();
-                    dispatch(animVarCoeffChange(event.target.value));
-                  }}
-                />
-              </>
-            )
-          }
         </section>
         <section
           id="led-box"

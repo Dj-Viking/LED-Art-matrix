@@ -12,6 +12,9 @@ import {
   IUpdateUserPresetPayload,
   IUpdateUserPresetResponse,
   IGetUserPresetResponse,
+  IAddPresetResponse,
+  IGetUserDefaultPresetResponse,
+  IDeletePresetResponse,
 } from "../types";
 import { User } from "../models";
 import { signToken } from "../utils";
@@ -31,8 +34,9 @@ afterAll(() => {
   // mongoose.connection.close(() => done());
 });
 const app = createTestServer();
-let newUserId: null | string = "";
-let newUserToken: null | string = "";
+let newUserId: null | string = null;
+let newUserToken: null | string = null;
+let presetToDeleteId: null | string = null;
 
 describe("test this runs through CRUD of a user entity", () => {
   test("POST /user try to sign up with out data", async () => {
@@ -67,8 +71,10 @@ describe("test this runs through CRUD of a user entity", () => {
         authorization: `Bearer ${newUserToken}`,
       });
     expect(user.status).toBe(200);
-    const parsed = JSON.parse(user.text) as IGetUserPresetResponse;
-    expect(parsed.preset).toBe("waves");
+    const parsed = JSON.parse(user.text) as IGetUserDefaultPresetResponse;
+    expect(parsed.preset.presetName).toBe("waves");
+    expect(parsed.preset.displayName).toBe("waves");
+    expect(parsed.preset.animVarCoeff).toBe("64");
   });
 
   test("POST /user/login with just email", async () => {
@@ -202,13 +208,17 @@ describe("test this runs through CRUD of a user entity", () => {
         authorization: `Bearer ${newUserToken}`,
       })
       .send({
+        displayName: "waves",
         defaultPreset: "waves",
+        animVarCoeff: "23",
       } as IUpdateUserPresetPayload);
     const parsed = JSON.parse(update.text) as IUpdateUserPresetResponse;
 
     expect(update.status).toBe(200);
-    expect(typeof parsed.updated).toBe("string");
-    expect(parsed.updated).toBe("waves");
+    expect(typeof parsed.preset?.presetName).toBe("string");
+    expect(parsed.preset.presetName).toBe("waves");
+    expect(parsed.preset.displayName).toBe("waves");
+    expect(parsed.preset.animVarCoeff).toBe("23");
   });
 
   test("/PUT try to update preset with invalid token", async () => {
@@ -229,7 +239,62 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(parsed.error.message).toBe("invalid token");
   });
 
-  // TODO: TEST USER EMAIL RESET STUB
+  test("/POST /user/add-preset add a new preset to the user's preset collection", async () => {
+    const add = await request(app)
+      .post("/user/add-preset")
+      .send({
+        displayName: "new preset",
+        presetName: "waves",
+        animVarCoeff: "55",
+      })
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      });
+    expect(add.status).toBe(200);
+    const parsed = JSON.parse(add.text) as IAddPresetResponse;
+    expect(parsed.presets).toHaveLength(7);
+    expect(typeof parsed.presets[6]._id).toBe("string");
+    expect(parsed.presets[6].animVarCoeff).toBe("55");
+    expect(parsed.presets[6].presetName).toBe("waves");
+    expect(parsed.presets[6].displayName).toBe("new preset");
+  });
+  test("/GET /user/presets get user's preset collection", async () => {
+    const presets = await request(app)
+      .get("/user/presets")
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      });
+    expect(presets.status).toBe(200);
+    const parsed = JSON.parse(presets.text) as IGetUserPresetResponse;
+    expect(parsed.presets).toHaveLength(7);
+    expect(parsed.presets[6].presetName).toBe("waves");
+    expect(parsed.presets[6].displayName).toBe("new preset");
+    expect(typeof parsed.presets[6]._id).toBe("string");
+    presetToDeleteId = parsed.presets[6]._id as string;
+    expect(parsed.presets[6].animVarCoeff).toBe("55");
+  });
+  test("GET /user/presets get user's preset collection without a token", async () => {
+    const presets = await request(app).get("/user/presets").set({
+      authorization: `Bearer `,
+    });
+    expect(presets.status).toBe(401);
+    const parsed = JSON.parse(presets.text) as { error: string };
+    expect(parsed.error).toBe("not authenticated");
+  });
+
+  test("DELETE /user/delete-preset delete a user's preset by preset _id", async () => {
+    const deleted = await request(app)
+      .delete("/user/delete-preset")
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      })
+      .send({
+        _id: presetToDeleteId as string,
+      });
+    expect(deleted.status).toBe(200);
+    const parsed = JSON.parse(deleted.text) as IDeletePresetResponse;
+    expect(parsed.message).toBe("deleted the preset");
+  });
 
   test("deletes the user we just made", async () => {
     await User.deleteOne({ _id: newUserId as string });

@@ -2,9 +2,10 @@
 import { User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
 import bcrypt from "bcrypt";
-import { APP_DOMAIN_PREFIX } from "../constants";
+import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
 import { Express } from "../types";
 import { Response } from "express";
+import { PresetClass } from "../models/PresetClass";
 const uuid = require("uuid");
 readEnv();
 const { RESET_EXPIRATION, SALT } = process.env;
@@ -29,10 +30,57 @@ export const UserController = {
 
       await User.findOneAndUpdate(
         { _id: newUser._id },
-        { token, defaultPreset: { presetName: "waves" } },
+        {
+          $set: {
+            presets: INITIAL_PRESETS,
+          },
+          token,
+          defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
+        },
         { new: true }
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
+    } catch (error) {}
+  },
+  deleteUserPreset: async function (
+    req: Express.MyRequest,
+    res: Response
+  ): Promise<Response | void> {
+    const { _id } = req.body;
+    await User.findOneAndUpdate(
+      { email: req!.user!.email },
+      {
+        $pull: {
+          presets: { _id },
+        },
+      }
+    );
+    res.status(200).json({ message: "deleted the preset" });
+    // try {
+    // } catch (error) {
+    //   console.error(error);
+    //   res.status(500).json({ error });
+    // }
+  },
+  addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+    try {
+      const { presetName, animVarCoeff, displayName } = req.body;
+      const updated = await User.findOneAndUpdate(
+        { email: req.user!.email },
+        {
+          $push: {
+            presets: { presetName, animVarCoeff, displayName },
+          },
+        },
+        { new: true }
+      ).select("-password");
+      return res.status(200).json({ presets: updated!.presets });
+    } catch (error) {}
+  },
+  getUserPresets: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+    try {
+      const user = await User.findOne({ email: req!.user!.email });
+      return res.status(200).json({ presets: user!.presets });
     } catch (error) {}
   },
   getUserDefaultPreset: async function (
@@ -40,30 +88,52 @@ export const UserController = {
     res: Response
   ): Promise<Response | void> {
     try {
-      const foundUser = await User.findOne({ _id: req.user!._id }).select("-password");
-      return res.status(200).json({ preset: foundUser!.defaultPreset!.presetName });
+      const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
+      return res.status(200).json({
+        preset: {
+          displayName: foundUser!.defaultPreset!.displayName,
+          presetName: foundUser!.defaultPreset!.presetName,
+          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+          _id: foundUser!.defaultPreset!._id,
+        },
+      });
     } catch (error) {}
   },
+  //TODO: when updating, push this preset into the user's preset collection
+  // make sure to gather the animVarCoeff or whatever parameters on the preset
+  // as part of the default preset prop and include it in the update, (change both default and the preset in the collection)
   updateDefaultPreset: async function (
     req: Express.MyRequest,
     res: Response
   ): Promise<Response | void> {
     try {
-      const { defaultPreset } = req.body;
+      const { defaultPreset, animVarCoeff, displayName, _id } = req.body;
       //have to check if type of string because an empty string preset name is the rainbow test....
       // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
       if (typeof defaultPreset !== "string")
         return res.status(400).json({ error: "missing preset name in request" });
       const foundUser = await User.findOneAndUpdate(
-        { _id: req.user!._id },
+        { _id: req!.user!._id },
         {
-          defaultPreset: {
-            presetName: defaultPreset,
+          $set: {
+            defaultPreset: {
+              _id,
+              presetName: defaultPreset,
+              displayName,
+              animVarCoeff,
+            },
           },
         },
         { new: true }
       ).select("-password");
-      return res.status(200).json({ updated: foundUser!.defaultPreset!.presetName });
+      return res.status(200).json({
+        preset: {
+          _id: foundUser!.defaultPreset!._id,
+          displayName: foundUser!.defaultPreset!.displayName,
+          presetName: foundUser!.defaultPreset!.presetName,
+          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+        },
+      });
     } catch (error) {}
   },
   login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
@@ -110,7 +180,7 @@ export const UserController = {
 
       const returnUser = {
         _id: foundUser!._id as string,
-        defaultPreset: foundUser!.defaultPreset!.presetName as string,
+        defaultPreset: foundUser!.defaultPreset as PresetClass,
         token: foundUser!.token as string,
       };
       return res.status(200).json({ user: returnUser });

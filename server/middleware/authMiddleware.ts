@@ -12,15 +12,13 @@ export async function authMiddleware(
 
   if (req.headers && req.headers.authorization) {
     if (typeof req.headers.authorization === "string") {
+      if (req.headers.authorization.trim() === "Bearer")
+        return res.status(401).json({ error: "not authenticated" });
       token = req.headers.authorization.split(" ")[1].trim();
     }
   }
 
-  if (!token) {
-    return res.status(401).json({ error: "not authenticated" });
-  }
-
-  const decoded = await verifyTokenAsync(token);
+  const decoded = await verifyTokenAsync(token as string);
   if (decoded instanceof Error) {
     return res.status(403).json({ error: decoded });
   } else {

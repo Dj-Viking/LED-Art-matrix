@@ -17,11 +17,10 @@ function authMiddleware(req, res, next) {
         let token = null;
         if (req.headers && req.headers.authorization) {
             if (typeof req.headers.authorization === "string") {
+                if (req.headers.authorization.trim() === "Bearer")
+                    return res.status(401).json({ error: "not authenticated" });
                 token = req.headers.authorization.split(" ")[1].trim();
             }
-        }
-        if (!token) {
-            return res.status(401).json({ error: "not authenticated" });
         }
         const decoded = yield (0, utils_1.verifyTokenAsync)(token);
         if (decoded instanceof Error) {

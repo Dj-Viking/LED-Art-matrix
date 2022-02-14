@@ -17,5 +17,13 @@ __decorate([
     (0, typegoose_1.prop)({ trim: true }),
     __metadata("design:type", String)
 ], PresetClass.prototype, "presetName", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ trim: true, default: "" }),
+    __metadata("design:type", String)
+], PresetClass.prototype, "displayName", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ default: "64" }),
+    __metadata("design:type", String)
+], PresetClass.prototype, "animVarCoeff", void 0);
 exports.PresetClass = PresetClass;
 //# sourceMappingURL=PresetClass.js.map

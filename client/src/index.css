@@ -2,6 +2,19 @@ html {
   height: -webkit-fill-available
 }
 
+
+/* TODO: rectify this problem, the audio player buttons turn white too.
+
+  make like a theme state or something
+*/
+* {
+  color: white;
+}
+
+input {
+  color: black;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

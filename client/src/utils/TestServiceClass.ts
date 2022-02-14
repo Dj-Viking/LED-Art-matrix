@@ -1,4 +1,6 @@
 import { ApiService, IApiService } from "./ApiService";
+import { ISignTestTokenArgs } from "../types";
+import jwt from "jsonwebtoken";
 
 /**
  * helper class for the testing environment
@@ -40,4 +42,25 @@ export class TestService extends ApiService implements IApiService {
     Object.assign(event, props);
     return event;
   };
+
+  public static signTestToken(args: ISignTestTokenArgs): string {
+    const { 
+      uuid: someUuid,
+      username,
+      email,
+      _id,
+    } = args;
+    const token = jwt.sign(
+      {
+        someUuid,
+        username,
+        email,
+        _id,
+        role: void 0,
+      },
+      "BLAHBLAHBLAH" as string,
+      { expiresIn: "24h" }
+    );
+    return token;
+  }
 }

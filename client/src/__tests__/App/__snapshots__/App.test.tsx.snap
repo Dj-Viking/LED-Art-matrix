@@ -270,7 +270,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       id="led-style"
     />
     <section
-      style="position: relative; display: flex; text-align: center; flex-direction: column;"
+      class="controls-container"
     >
       <main
         style="display: flex; flex-direction: column;"
@@ -285,7 +285,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             Art Scroller Controls
           </span>
           <div
-            class="preset-button-container"
+            class="gif-button-container"
           >
             <button
               class="scroller-fetch-button"
@@ -397,6 +397,187 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       <div
         class="border-top-led"
       />
+      <div
+        style="position: relative; height: 0px; width: 250px; margin: 0px auto;"
+      >
+        <div
+          data-testid="modal-base"
+          style="display: none; position: absolute; justify-content: center; background-color: white; border-radius: 10px; height: 250px; width: 250px;"
+        >
+          <style>
+            
+        .modal-close-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: red;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-close-button:hover {
+          transition: .5s;
+          background-color: red;
+          color: white;
+          box-shadow: 5px 4px 9px red; 
+        }
+        .modal-save-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: green;
+          color: white;
+          height: 40px;
+          width: 100px;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-save-button-disabled {
+          height: 40px;
+          width: 100px;
+          border: 1px solid grey;
+          margin: .5em;
+          pointer-events: none;
+          background-color: grey;
+          color: white;
+          border-radius: 10px;
+        }
+        .modal-save-button:hover {
+          transition: .5s;
+          background-color: green;
+          color: white;
+          box-shadow: 5px 4px 9px green; 
+        }
+      
+          </style>
+          <div
+            data-testid="save-modal"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
+          >
+            <button
+              class="modal-close-button"
+              data-testid="modal-close-button"
+              type="button"
+            >
+              CLOSE
+            </button>
+            <h1
+              style="color: black;"
+            >
+              SAVE PRESET
+            </h1>
+            <span
+              data-testid="modal-anim-var-coeff"
+              style="color: black; margin-bottom: 1em;"
+            >
+              Animation Variation: 64
+            </span>
+            <form>
+              <label
+                for="preset-name"
+                style="color: black;"
+              >
+                Preset Name:
+              </label>
+              <input
+                data-testid="modal-preset-name-input"
+                name="preset-name"
+                style="color: black;"
+                type="text"
+                value=""
+              />
+              <button
+                class="modal-save-button-disabled"
+                data-testid="modal-save-button"
+                disabled=""
+                type="submit"
+              >
+                SAVE
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div
+        style="position: relative; height: 0px; width: 250px; margin: 0px auto;"
+      >
+        <div
+          data-testid="modal-base"
+          style="display: none; position: absolute; justify-content: center; background-color: white; border-radius: 10px; height: 250px; width: 250px;"
+        >
+          <style>
+            
+        .modal-confirm-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: red;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-confirm-button:hover {
+          transition: .5s;
+          background-color: red;
+          color: white;
+          box-shadow: 5px 4px 9px red; 
+        }
+        .modal-cancel-button {
+          border: 1px solid grey;
+          cursor: pointer;
+          background-color: white;
+          color: blue;
+          width: 100px;
+          height: 40px;
+          margin: 0 auto;
+          border-radius: 10px;
+          margin: .5em;
+          transition: .1s;
+          box-shadow: 4px 3px 8px black; 
+        }
+        .modal-cancel-button:hover {
+          transition: .5s;
+          background-color: blue;
+          color: white;
+          box-shadow: 5px 4px 9px blue; 
+        }
+      
+          </style>
+          <div
+            data-testid="delete-modal"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center;"
+          >
+            <button
+              class="modal-cancel-button"
+              data-testid="modal-cancel-button"
+              type="button"
+            >
+              NO
+            </button>
+            <button
+              class="modal-confirm-button"
+              data-testid="modal-confirm-button"
+              type="button"
+            >
+              YES
+            </button>
+            <h1
+              style="color: black;"
+            >
+              DELETE PRESET ?
+            </h1>
+          </div>
+        </div>
+      </div>
       <span
         style="color: white; text-align: center;"
       >
@@ -405,7 +586,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       <span
         style="color: white;"
       >
-        To see the Disabled Presets, Log in or Sign up to use those and also save your own Default login Preset!
+        To save your own Preset, Log in or Sign up!
       </span>
       <div
         class="preset-button-container"
@@ -419,58 +600,6 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           clear
         </button>
         <button
-          class="preset-button rainbow-anim"
-          data-testid="rainbowTest"
-          role="button"
-          style="opacity: 0;"
-        >
-          rainbowTest
-        </button>
-        <button
-          class="preset-button"
-          data-testid="v2"
-          role="button"
-          style="opacity: 0;"
-        >
-          V2
-        </button>
-        <button
-          class="preset-button-disabled"
-          data-testid="waves"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          waves
-        </button>
-        <button
-          class="preset-button-disabled"
-          data-testid="spiral"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          spiral
-        </button>
-        <button
-          class="preset-button-disabled"
-          data-testid="fourSpirals"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          fourSpirals
-        </button>
-        <button
-          class="preset-button-disabled"
-          data-testid="dm5"
-          disabled=""
-          role="button"
-          style="opacity: 0;"
-        >
-          DM5
-        </button>
-        <button
           class="preset-button-disabled"
           data-testid="saveDefault"
           disabled=""
@@ -478,6 +607,141 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           style="opacity: 0;"
         >
           Save as Default
+        </button>
+        <button
+          class="preset-button-disabled"
+          data-testid="savePreset"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
+        >
+          Save as new Preset
+        </button>
+        <button
+          class="preset-button-disabled"
+          data-testid="deletePreset"
+          disabled=""
+          role="button"
+          style="opacity: 0;"
+        >
+          Delete A Preset
+        </button>
+      </div>
+      <div
+        data-testid="buttons-parent"
+        style="margin-bottom: 2em;"
+      >
+        <style>
+          
+        
+        .preset-delete-mode {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: red;
+          cursor: pointer;
+        }
+        .preset-button {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: black;
+          cursor: pointer;
+        }
+        .preset-button-active {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          border-radius: 10px;
+          height: 50px;
+          width: 100px;
+          text-align: center;
+          color: white;
+          background-color: green;
+          cursor: pointer;
+        }
+
+        .preset-button-disabled {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          height: 50px;
+          width: 100px;
+          border-radius: 10px;
+          text-align: center;
+          cursor: default;
+        }
+
+        .preset-button-inactive {
+          margin-left: 5px;
+          margin-right: 5px;
+          margin-bottom: 10px;
+          height: 50px;
+          width: 100px;
+          border-radius: 10px;
+          background-color: black;
+          text-align: center;
+          cursor: pointer;
+        }
+      
+        </style>
+        <button
+          class="preset-button-inactive"
+          data-testid="rainbowTest"
+          id="281.809599421226kdjfkdjfkjd"
+          role="button"
+        >
+          rainbowTest
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="v2"
+          id="829.4107440367013kdjfkdjfkjd"
+          role="button"
+        >
+          v2
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="waves"
+          id="311.04824869631kdjfkdjfkjd"
+          role="button"
+        >
+          waves
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="spiral"
+          id="372.81343551222034kdjfkdjfkjd"
+          role="button"
+        >
+          spiral
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="fourSpirals"
+          id="359.7716450633384kdjfkdjfkjd"
+          role="button"
+        >
+          fourSpirals
+        </button>
+        <button
+          class="preset-button-inactive"
+          data-testid="dm5"
+          id="787.6419773304741kdjfkdjfkjd"
+          role="button"
+        >
+          dm5
         </button>
       </div>
     </section>
@@ -5737,7 +6001,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
   </main>
   <div
     data-testid="location-display"
-    style="display: hidden; height: 0px; width: 0px;"
+    style="visibility: hidden; height: 0px; width: 0px; color: black;"
   >
     /
   </div>

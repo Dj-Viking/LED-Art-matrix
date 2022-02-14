@@ -22,14 +22,28 @@ const { API_KEY } = process.env;
 exports.GifsController = {
     getGifsAndOrUpdate: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
-                const gifInfo = yield (0, node_fetch_1.default)(gifLink);
-                const gifJson = yield gifInfo.json();
-                const gifDB = yield models_1.Gif.find();
-                let newGif = {};
-                let gifsArr = [];
-                if (gifDB[0] === undefined) {
+            const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
+            const gifInfo = yield (0, node_fetch_1.default)(gifLink);
+            const gifJson = yield gifInfo.json();
+            const gifDB = yield models_1.Gif.find();
+            let newGif = {};
+            let gifsArr = [];
+            if (gifDB[0] === undefined) {
+                for (let i = 0; i < gifJson.data.length; i++) {
+                    newGif = {
+                        gifSrc: gifJson.data[i].images.original.url,
+                        gifCategory: "trippy",
+                        limit: "10",
+                    };
+                    gifsArr.push(newGif);
+                }
+                const newGifs = yield models_1.Gif.insertMany(gifsArr);
+                return res.status(200).json({ gifs: newGifs });
+            }
+            if (typeof gifDB[0] === "object") {
+                if (!!gifDB[0]._id) {
+                    gifsArr = [];
+                    yield models_1.Gif.deleteMany();
                     for (let i = 0; i < gifJson.data.length; i++) {
                         newGif = {
                             gifSrc: gifJson.data[i].images.original.url,
@@ -41,24 +55,7 @@ exports.GifsController = {
                     const newGifs = yield models_1.Gif.insertMany(gifsArr);
                     return res.status(200).json({ gifs: newGifs });
                 }
-                if (typeof gifDB[0] === "object") {
-                    if (!!gifDB[0]._id) {
-                        gifsArr = [];
-                        yield models_1.Gif.deleteMany();
-                        for (let i = 0; i < gifJson.data.length; i++) {
-                            newGif = {
-                                gifSrc: gifJson.data[i].images.original.url,
-                                gifCategory: "trippy",
-                                limit: "10",
-                            };
-                            gifsArr.push(newGif);
-                        }
-                        const newGifs = yield models_1.Gif.insertMany(gifsArr);
-                        return res.status(200).json({ gifs: newGifs });
-                    }
-                }
             }
-            catch (error) { }
         });
     },
 };

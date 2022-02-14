@@ -38,11 +38,11 @@ const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
 const models_1 = require("../models");
 (0, readEnv_1.readEnv)();
-const foo_bar_baz_1 = __importStar(require("../stubs/foo-bar-baz"));
+const foo_bar_baz_1 = __importStar(require("../__mocks__/stubs/foo-bar-baz"));
 const sendEmail_1 = require("../utils/sendEmail");
 jest.mock("../utils/sendEmail.ts");
-jest.mock("../stubs/foo-bar-baz", () => {
-    const originalModule = jest.requireActual("../stubs/foo-bar-baz");
+jest.mock("../__mocks__/stubs/foo-bar-baz", () => {
+    const originalModule = jest.requireActual("../__mocks__/stubs/foo-bar-baz");
     return Object.assign(Object.assign({ __esModule: true }, originalModule), { default: jest.fn(() => "mocked baz"), foo: "mocked foo" });
 });
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {

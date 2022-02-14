@@ -30,29 +30,31 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
-//TODO IMPLEMENT WINDOW NAVIGATION window.location.assign() for login test
-
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 describe("tests the logout works", () => {
-
-  beforeEach(() => {
-    //@ts-ignore
-    global.fetch = jest.fn(() => {
-      return Promise.resolve({
-        status: 200,
-        json: () => {
-          return Promise.resolve(LOGIN_MOCK_TOKEN);
-        }
-      });
-    });
-  });
 
   afterEach(() => {
     cleanup();
   });
 
-  it("logs in first", async () => {
+  it("logs in first and then logs out", async () => {
+    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
+      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const mockFetch = jest.fn()
+                      //default
+                      // .mockReturnValue("kdfjkdj")
+                      // first
+                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+                      // second
+                      .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
+                      // third
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }))
+                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }));
+
+    //@ts-ignore
+    global.fetch = mockFetch;
+
     const history = createMemoryHistory();
 
     render(
@@ -96,7 +98,19 @@ describe("tests the logout works", () => {
       formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
 
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(4);
+    expect(fetch).toHaveBeenNthCalledWith(1, 
+      "http://localhost:3001/user/login", 
+      {
+        "body": "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
+        "headers": {
+          "Content-Type": "application/json"
+        }, 
+        "method": "POST"
+      }
+    );
+    // next two fetchs are the /user and /user/presets. which the mock should match each defined mock response
+    // to each fetch in the order they happen in the application
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(localStorage.getItem("id_token")).toBe(LOGIN_MOCK_TOKEN.user.token);
 

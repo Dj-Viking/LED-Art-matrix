@@ -7,13 +7,13 @@ import { ICreateUserPayload, ICreateUserResponse, IForgotPasswordResponse } from
 import { User } from "../models";
 readEnv();
 
-import defaultExport, { bar, foo } from "../stubs/foo-bar-baz";
+import defaultExport, { bar, foo } from "../__mocks__/stubs/foo-bar-baz";
 //mock the sendEmail function so it doesn't send an email during a test
 import { sendEmail } from "../utils/sendEmail";
 jest.mock("../utils/sendEmail.ts");
 
-jest.mock("../stubs/foo-bar-baz", () => {
-  const originalModule = jest.requireActual("../stubs/foo-bar-baz");
+jest.mock("../__mocks__/stubs/foo-bar-baz", () => {
+  const originalModule = jest.requireActual("../__mocks__/stubs/foo-bar-baz");
 
   //Mock the default export and named export 'foo'
   return {

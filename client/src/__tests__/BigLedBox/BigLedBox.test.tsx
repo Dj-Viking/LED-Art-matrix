@@ -9,7 +9,6 @@ import { render, cleanup, screen, fireEvent } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@types/jest";
-import "@jest/types";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
@@ -39,9 +38,6 @@ describe("Test that the animation variation slider changes the style values", ()
   });
 
   it("tests that slider renders", async () => {
-    expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", "HEYHEY");
-    expect(localStorage.getItem("id_token")).toBe("HEYHEY");
 
     const history = createMemoryHistory();
 
@@ -57,14 +53,14 @@ describe("Test that the animation variation slider changes the style values", ()
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     
     const preset_buttons = {
-      clear: screen.getByTestId("clear"),
-      rainbowTest: screen.getByTestId("rainbowTest"),
-      v2: screen.getByTestId("v2"),
-      waves: screen.getByTestId("waves"),
-      spiral: screen.getByTestId("spiral"),
-      fourSpirals: screen.getByTestId("fourSpirals"),
-      dm5: screen.getByTestId("dm5"),
-      saveDefault: screen.getByTestId("saveDefault")
+      clear: await screen.findByTestId("clear"),
+      rainbowTest: await screen.findByTestId("rainbowTest"),
+      v2: await screen.findByTestId("v2"),
+      waves: await screen.findByTestId("waves"),
+      spiral: await screen.findByTestId("spiral"),
+      fourSpirals: await screen.findByTestId("fourSpirals"),
+      dm5: await screen.findByTestId("dm5"),
+      saveDefault: await screen.findByTestId("saveDefault")
     };
 
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
@@ -86,6 +82,7 @@ describe("Test that the animation variation slider changes the style values", ()
     const ledStyleRef = screen.getByTestId("led-style");
 
     const styleSplit = ledStyleRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
+    
     expect(styleSplit.length > 0).toBe(true);
     const delayMatches: string[] | [] = styleSplit.map(str => {
       if (ASSERT_ANIMATION.delayStyleRegex.test(str)) return str;

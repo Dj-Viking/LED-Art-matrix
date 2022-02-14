@@ -16,6 +16,15 @@ const supertest_1 = __importDefault(require("supertest"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
+jest.mock("node-fetch");
+const node_fetch_1 = __importDefault(require("node-fetch"));
+node_fetch_1.default.mockImplementation(() => {
+    return Promise.resolve({
+        json: () => {
+            return Promise.resolve(constants_1.MOCK_GIPHY_RES);
+        },
+    });
+});
 const app = (0, testServer_1.createTestServer)();
 beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
     yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
@@ -30,6 +39,7 @@ describe("test the CRUD on gifs", () => {
     test("gifs can be fetched", () => __awaiter(void 0, void 0, void 0, function* () {
         const gifs = yield (0, supertest_1.default)(app).get("/gifs/get");
         expect(gifs.status).toBe(200);
+        expect(node_fetch_1.default).toHaveBeenCalledTimes(1);
         const parsed = JSON.parse(gifs.text);
         expect(parsed.gifs.length > 0).toBe(true);
         _gifs = parsed.gifs;
@@ -37,6 +47,7 @@ describe("test the CRUD on gifs", () => {
     test("get gifs again to replace the previous gifs", () => __awaiter(void 0, void 0, void 0, function* () {
         const gifs = yield (0, supertest_1.default)(app).get("/gifs/get");
         expect(gifs.status).toBe(200);
+        expect(node_fetch_1.default).toHaveBeenCalledTimes(2);
         const parsed = JSON.parse(gifs.text);
         expect(parsed.gifs.length > 0).toBe(true);
         expect(_gifs).not.toStrictEqual(parsed.gifs);

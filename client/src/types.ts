@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { IDBPreset } from "./utils/PresetButtonsListClass";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
@@ -240,6 +241,45 @@ export interface ILedStyleAction {
 export interface ILoggedInState {
   loggedIn: boolean;
 }
+
+export interface IPresetButtonsListState {
+  presetButtons: IPresetButton[];
+}
+export interface ISetPresetButtonsListAction {
+  type: "SET_BUTTONS_LIST";
+  payload: IPresetButton[];
+}
+export type ICheckPresetButtonsActiveAction = (buttons: IPresetButton[], id: string) => {
+  type: "CHECK_BUTTONS_ACTIVE",
+  payload: IPresetButton[]
+}
+export interface IPresetButtonsAction {
+  type: IPresetButtonListActionTypes;
+  payload: IPresetButtonListActionPayloads;
+}
+export type IPresetButtonListActionTypes = 
+| ISetPresetButtonsListAction["type"]
+| "CHECK_BUTTONS_ACTIVE"
+| "SET_ALL_INACTIVE"
+| "DELETE_PRESET"
+| "TOGGLE_DELETE_MODE";
+
+export type IPresetButtonListActionPayloads =
+| ISetPresetButtonsListAction["payload"]
+| IPresetButton[];
+
+export interface IPresetButton {
+  id: string;
+  role: string;
+  key: string;
+  isActive: boolean;
+  presetName: string;
+  animVarCoeff: string;
+  displayName: string;
+  testid: string;
+  classList?: string;
+  clickHandler: React.MouseEventHandler<HTMLElement>
+}
 export interface ILoggedinAction {
   type: ILoggedInActionTypes,
   payload: ILoggedInActionPayloads
@@ -248,6 +288,15 @@ export interface ILoggedinAction {
 export type ILoggedInActionTypes = 
 | "LOG_IN"
 | "LOG_OUT";
+
+export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
+  type: "SET_ALL_INACTIVE";
+  payload: IPresetButton[];
+}
+export type IToggleDeleteModeAction = (on: boolean) => {
+  type: "TOGGLE_DELETE_MODE";
+  payload: boolean;
+}
 
 export type ILoggedInActionPayloads =
 | ILoginAction["payload"]
@@ -261,10 +310,92 @@ export interface ILogoutAction {
   payload: false;
 }
 export interface MyRootState {
+  deleteModalState: IDeleteModalState;
   ledState: ILedState;
+  presetButtonsListState: IPresetButtonsListState;
   loggedInState: ILoggedInState;
   ledStyleTagState: ILedStyleTagState;
   loginFormState: ILoginFormState;
   signupFormState: ISignupFormState;
   artScrollerState: IArtScrollerState;
+}
+
+export interface ISignTestTokenArgs {
+  _id?: string;
+  username: string;
+  email: string;
+  role?: string;
+  uuid?: string;
+}
+export interface ISaveUserPresetArgs {
+  presetName: string;
+  animVarCoeff: string;
+  displayName: string;
+}
+
+export interface IUserResponse {
+  user: {
+    username: string;
+    email: string;
+    token?: string;
+    orders?: Array<IOrder>;
+    presets?: Array<IDBPreset>;
+    defaultPreset?: IDBPreset;
+    userSearchTerm?: ISearchTerm;
+  };
+}
+
+export interface IOrder {
+  purchaseDate?: Date;
+  products: Array<IProduct>;
+}
+
+export interface IProduct {
+  name: string;
+  description?: string;
+  image?: string;
+  price: number;
+  quantity?: number;
+  category: ICategory;
+}
+
+export interface ICategory {
+  name: string;
+}
+export interface ISearchTerm {
+  termText?: string;
+  termCategory?: string;
+  limit?: string;
+}
+export interface ISetDeleteModalOpenAction {
+  type: "SET_DELETE_MODAL_OPEN",
+  payload: boolean;
+}
+export interface ISetDeleteModalContextAction {
+  type: "SET_DELETE_MODAL_CONTEXT",
+  payload: { btnId: string; };
+}
+export interface IDeleteModalState {
+  deleteModalIsOpen: boolean;
+  deleteModeActive: boolean;
+  deleteModalContext: { btnId: string; };
+}
+
+export type IDeleteModalActionTypes = 
+| ISetDeleteModalOpenAction["type"]
+| "TOGGLE_DELETE_MODE"
+| ISetDeleteModalContextAction["type"];
+
+export type IDeleteModalActionPayloads = 
+| ISetDeleteModalOpenAction["payload"]
+| boolean
+| ISetDeleteModalContextAction["payload"];
+
+export interface IDeleteModalAction {
+  type: IDeleteModalActionTypes,
+  payload: IDeleteModalActionPayloads
+}
+export interface IDeletePresetAction {
+  type: "DELETE_PRESET";
+  payload: IPresetButton[];
 }

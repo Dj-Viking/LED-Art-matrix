@@ -1,21 +1,31 @@
 const router = require("express").Router();
 import { UserController } from "../controllers";
-import { authMiddleware, accessControl } from "../middleware";
-const { getUserDefaultPreset, login, updateDefaultPreset, signup, forgotPassword, changePassword } =
-  UserController;
+import { authMiddleware } from "../middleware";
+const {
+  deleteUserPreset,
+  getUserDefaultPreset,
+  login,
+  addNewPreset,
+  getUserPresets,
+  updateDefaultPreset,
+  signup,
+  forgotPassword,
+  changePassword,
+} = UserController;
 
-router.route("/").get(accessControl, authMiddleware, getUserDefaultPreset);
+// /user
 router.route("/").post(signup);
+router.route("/login").post(login);
+router.route("/forgot").post(forgotPassword);
 
-// router.route("/all")
-//   .get(getAllUsers);
+// need auth
+router.route("/delete-preset").delete(authMiddleware, deleteUserPreset);
+router.route("/update-preset").put(authMiddleware, updateDefaultPreset);
+router.route("/").get(authMiddleware, getUserDefaultPreset);
+router.route("/add-preset").post(authMiddleware, addNewPreset);
+router.route("/presets").get(authMiddleware, getUserPresets);
 
-router.route("/update-preset").put(accessControl, authMiddleware, updateDefaultPreset);
-
-router.route("/login").post(accessControl, login);
-
-router.route("/forgot").post(accessControl, forgotPassword);
-
+// reset token is handled in the endpoint, maybe use middleware??
 router.route("/change-pass").put(changePassword);
 
 export default router;

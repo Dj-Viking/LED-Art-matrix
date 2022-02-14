@@ -1,7 +1,7 @@
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.herokuapp.com" : "http://localhost:3001";
 export const RAINBOW_TEST_ANIMATION = `
-@keyframes rainbowTestAllAnim {
+@keyframes rainbowTest {
   0.001% {
     background-color: red;
   }
@@ -31,7 +31,7 @@ export const RAINBOW_TEST_ANIMATION = `
   }
 }`;
 export const RAINBOW_V2_ANIMATION = `
-@keyframes V2 {
+@keyframes v2 {
   0.001% {
     background-color: red;
     /* left: 0px; top: 0px; */

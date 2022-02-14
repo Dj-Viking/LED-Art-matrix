@@ -10,7 +10,6 @@ export function setAuthHeader(
   headers: Record<string, string>,
   token: string
 ): Record<string, string> {
-  if (!token) throw new TypeError("token passed must be a string!");
   headers = {
     ...headers,
     authorization: `Bearer ${token}`

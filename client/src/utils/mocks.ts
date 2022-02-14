@@ -1,14 +1,43 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
-
+const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
-  updated: "presetName goes here hahahah"
+  preset: {
+    presetName: "new preset yo",
+    animVarCoeff: "74",
+  },
 };
 export const SAVE_DEFAULT_MOCK_ERROR = {
   error: "ERROR"
 };
+export const MOCK_SIGN_TOKEN_ARGS = {
+  username: "test user",
+  email: "test email",
+  uuid: uuid.v4(),
+  _id: Math.random() * 1293 + "yo what up",
+};
+export const MOCK_PRESETS = [
+  {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+  {displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+  {displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+  {displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+  {displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+  {displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
+  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+];
+export const MOCK_ADD_PRESET_RES = [
+  {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
+  {displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
+  {displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
+  {displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
+  {displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
+  {displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
+  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+  {displayName: "new preset", presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e53"},
+];
+
 
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",
@@ -16,12 +45,12 @@ export const ASSERT_ANIMATION = {
   durationStyleRegex: /animation-duration: ([0-9.s])+/,
   delayStyleRegex: /animation-delay: ([0-9.s])+/,
   rainbowTest: {
-    regex: /rainbowTestAllAnim/g,
-    classListItem: "led1-1rainbowTestAllAnim",
+    regex: /rainbowTest/g,
+    classListItem: "led1-1rainbowTest",
   },
   v2: {
-    regex: /V2/g,
-    classListItem: "led1-1V2",
+    regex: /v2/g,
+    classListItem: "led1-1v2",
   },
   waves: {
     regex: /waves/g,
@@ -125,7 +154,10 @@ export const SIGNUP_MOCK_PAYLOAD = {
 };
 
 export const SIGNUP_MOCK_RESULT = {
-  token: "heres a token",
+  token: jwt.sign({
+    username: "weeeee",
+    _id: "weeeeeee",
+  }, "SECRET!!!!", { expiresIn: "1h" }),
   _id: "heres an id"
 };
 
