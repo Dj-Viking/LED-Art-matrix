@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import request from "supertest";
 import mongoose from "mongoose";
 import { readEnv } from "../utils/readEnv";
@@ -36,7 +37,7 @@ afterAll(() => {
 const app = createTestServer();
 let newUserId: null | string = null;
 let newUserToken: null | string = null;
-let presetToDeleteId: null | string = null;
+let defaultPresetId: null | string = null;
 
 describe("test this runs through CRUD of a user entity", () => {
   test("POST /user try to sign up with out data", async () => {
@@ -73,6 +74,8 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(user.status).toBe(200);
     const parsed = JSON.parse(user.text) as IGetUserDefaultPresetResponse;
     expect(parsed.preset.presetName).toBe("waves");
+    //@ts-ignore
+    defaultPresetId = parsed.preset._id;
     expect(parsed.preset.displayName).toBe("waves");
     expect(parsed.preset.animVarCoeff).toBe("64");
   });
@@ -208,6 +211,7 @@ describe("test this runs through CRUD of a user entity", () => {
         authorization: `Bearer ${newUserToken}`,
       })
       .send({
+        _id: defaultPresetId,
         displayName: "waves",
         defaultPreset: "waves",
         animVarCoeff: "23",
@@ -216,24 +220,19 @@ describe("test this runs through CRUD of a user entity", () => {
 
     expect(update.status).toBe(200);
     expect(typeof parsed.preset?.presetName).toBe("string");
+    expect(parsed.preset._id).toBe(defaultPresetId);
     expect(parsed.preset.presetName).toBe("waves");
     expect(parsed.preset.displayName).toBe("waves");
     expect(parsed.preset.animVarCoeff).toBe("23");
   });
 
-  test("/PUT try to update preset with invalid token", async () => {
+  test("/PUT try to update user preset without a valid token", async () => {
     const invalidSig = await request(app)
       .put("/user/update-preset")
       .set({
         authorization: `Bearer ${INVALID_SIGNATURE}`,
       })
-      .send({
-        usernameOrEmail: {
-          username: TEST_USERNAME,
-          email: "",
-        },
-        password: TEST_PASSWORD,
-      } as ILoginPayload);
+      .send({});
     expect(invalidSig.status).toBe(403);
     const parsed = JSON.parse(invalidSig.text) as IInvalidSigError;
     expect(parsed.error.message).toBe("invalid token");
@@ -270,7 +269,6 @@ describe("test this runs through CRUD of a user entity", () => {
     expect(parsed.presets[6].presetName).toBe("waves");
     expect(parsed.presets[6].displayName).toBe("new preset");
     expect(typeof parsed.presets[6]._id).toBe("string");
-    presetToDeleteId = parsed.presets[6]._id as string;
     expect(parsed.presets[6].animVarCoeff).toBe("55");
   });
   test("GET /user/presets get user's preset collection without a token", async () => {
@@ -289,11 +287,24 @@ describe("test this runs through CRUD of a user entity", () => {
         authorization: `Bearer ${newUserToken}`,
       })
       .send({
-        _id: presetToDeleteId as string,
+        _id: defaultPresetId as string,
       });
     expect(deleted.status).toBe(200);
     const parsed = JSON.parse(deleted.text) as IDeletePresetResponse;
     expect(parsed.message).toBe("deleted the preset");
+  });
+
+  test("test that the user's default preset is reinitialized blank, since the deleted preset was the set default", async () => {
+    const user = await request(app)
+      .get("/user")
+      .set({
+        authorization: `Bearer ${newUserToken}`,
+      });
+    expect(user.status).toBe(200);
+    const parsed = JSON.parse(user.text) as IGetUserDefaultPresetResponse;
+    expect(parsed.preset.animVarCoeff).toBe("64");
+    expect(parsed.preset.presetName).toBe("");
+    expect(parsed.preset.displayName).toBe("");
   });
 
   test("deletes the user we just made", async () => {

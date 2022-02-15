@@ -51,11 +51,30 @@ exports.UserController = {
     deleteUserPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             const { _id } = req.body;
-            yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
-                $pull: {
-                    presets: { _id },
-                },
-            });
+            const user = (yield models_1.User.findOne({ email: req.user.email }));
+            const defId = user.defaultPreset._id.toHexString();
+            const updateOptions = ((bodyId, defId) => {
+                if (bodyId === defId) {
+                    return {
+                        $set: {
+                            defaultPreset: {
+                                presetName: "",
+                                animVarCoeff: "64",
+                                displayName: "",
+                            },
+                        },
+                        $pull: {
+                            presets: { _id: bodyId },
+                        },
+                    };
+                }
+                return {
+                    $pull: {
+                        presets: { _id: bodyId },
+                    },
+                };
+            })(_id, defId);
+            yield models_1.User.findOneAndUpdate({ email: req.user.email }, updateOptions);
             res.status(200).json({ message: "deleted the preset" });
         });
     },
@@ -163,7 +182,10 @@ exports.UserController = {
                 };
                 return res.status(200).json({ user: returnUser });
             }
-            catch (error) { }
+            catch (error) {
+                console.error(error);
+                res.status(500).json({ error: error.message });
+            }
         });
     },
     forgotPassword: function (req, res) {

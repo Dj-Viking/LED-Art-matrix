@@ -13,9 +13,6 @@ export class LedStyleEngine {
   constructor(preset: string) {
     this.preset = preset;
   }
-  // TODO: make this function to determine a delay coefficient to constantly render an input coefficient for an type of
-  // animation delay which can change per render cycle of react, so on a useeffect I guess we just generate different
-  // coeffecients on each render trigger and the LED style should update during a slider on change event
   /**
    * @param coeff optional coefficient argument set default 1 will change on react state changes on sliders
    * @returns just a css string to add as "HTML" to a style tag

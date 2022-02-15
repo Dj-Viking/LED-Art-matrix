@@ -150,6 +150,8 @@ export interface ILoginResponse {
 }
 
 export interface IUpdateUserPresetPayload {
+  _id: string;
+  displayName: string;
   defaultPreset: string;
   animVarCoeff: string;
 }

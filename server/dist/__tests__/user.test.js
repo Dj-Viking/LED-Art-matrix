@@ -33,7 +33,7 @@ afterAll(() => {
 const app = (0, testServer_1.createTestServer)();
 let newUserId = null;
 let newUserToken = null;
-let presetToDeleteId = null;
+let defaultPresetId = null;
 describe("test this runs through CRUD of a user entity", () => {
     test("POST /user try to sign up with out data", () => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield (0, supertest_1.default)(app).post("/user");
@@ -64,6 +64,7 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(user.status).toBe(200);
         const parsed = JSON.parse(user.text);
         expect(parsed.preset.presetName).toBe("waves");
+        defaultPresetId = parsed.preset._id;
         expect(parsed.preset.displayName).toBe("waves");
         expect(parsed.preset.animVarCoeff).toBe("64");
     }));
@@ -187,6 +188,7 @@ describe("test this runs through CRUD of a user entity", () => {
             authorization: `Bearer ${newUserToken}`,
         })
             .send({
+            _id: defaultPresetId,
             displayName: "waves",
             defaultPreset: "waves",
             animVarCoeff: "23",
@@ -194,23 +196,18 @@ describe("test this runs through CRUD of a user entity", () => {
         const parsed = JSON.parse(update.text);
         expect(update.status).toBe(200);
         expect(typeof ((_a = parsed.preset) === null || _a === void 0 ? void 0 : _a.presetName)).toBe("string");
+        expect(parsed.preset._id).toBe(defaultPresetId);
         expect(parsed.preset.presetName).toBe("waves");
         expect(parsed.preset.displayName).toBe("waves");
         expect(parsed.preset.animVarCoeff).toBe("23");
     }));
-    test("/PUT try to update preset with invalid token", () => __awaiter(void 0, void 0, void 0, function* () {
+    test("/PUT try to update user preset without a valid token", () => __awaiter(void 0, void 0, void 0, function* () {
         const invalidSig = yield (0, supertest_1.default)(app)
             .put("/user/update-preset")
             .set({
             authorization: `Bearer ${INVALID_SIGNATURE}`,
         })
-            .send({
-            usernameOrEmail: {
-                username: constants_1.TEST_USERNAME,
-                email: "",
-            },
-            password: constants_1.TEST_PASSWORD,
-        });
+            .send({});
         expect(invalidSig.status).toBe(403);
         const parsed = JSON.parse(invalidSig.text);
         expect(parsed.error.message).toBe("invalid token");
@@ -246,7 +243,6 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(parsed.presets[6].presetName).toBe("waves");
         expect(parsed.presets[6].displayName).toBe("new preset");
         expect(typeof parsed.presets[6]._id).toBe("string");
-        presetToDeleteId = parsed.presets[6]._id;
         expect(parsed.presets[6].animVarCoeff).toBe("55");
     }));
     test("GET /user/presets get user's preset collection without a token", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -264,11 +260,23 @@ describe("test this runs through CRUD of a user entity", () => {
             authorization: `Bearer ${newUserToken}`,
         })
             .send({
-            _id: presetToDeleteId,
+            _id: defaultPresetId,
         });
         expect(deleted.status).toBe(200);
         const parsed = JSON.parse(deleted.text);
         expect(parsed.message).toBe("deleted the preset");
+    }));
+    test("test that the user's default preset is reinitialized blank, since the deleted preset was the set default", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield (0, supertest_1.default)(app)
+            .get("/user")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        });
+        expect(user.status).toBe(200);
+        const parsed = JSON.parse(user.text);
+        expect(parsed.preset.animVarCoeff).toBe("64");
+        expect(parsed.preset.presetName).toBe("");
+        expect(parsed.preset.displayName).toBe("");
     }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });
