@@ -19,7 +19,7 @@
     "start:prod": "sh server.sh",
     "clear:jest": "cd server; npm run clear:jest",
     "client:dev": "cd client; npm start",
-    "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev\" \"cd client && npm start\"",
+    "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev:tsc\" \"cd client && npm start\"",
     "install": "cd server && npm i; cd ../client && npm i",
     "server:dev": "sh server.sh",
     "seed": "cd server && npm run seed",

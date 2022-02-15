@@ -40,8 +40,13 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
-    const activeId = (Array.isArray(presetButtons) && presetButtons.length > 0) ? presetButtons.filter(btn => btn.isActive)[0].id : "";
-    await API.updateDefaultPreset({ _id: activeId, name: presetName, animVarCoeff, token: Auth.getToken() as string });
+    const preset: IPresetButton | void = (Array.isArray(presetButtons) && presetButtons.length > 0) 
+    ? 
+      presetButtons.filter(btn => btn.isActive)[0] 
+    : 
+      void 0;
+    // @ts-ignore
+    await API.updateDefaultPreset({ displayName: preset.displayName, _id: preset.id, name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
 
   const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);

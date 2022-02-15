@@ -173,16 +173,16 @@ class ApiService implements IApiService {
   }
 
   public static async updateDefaultPreset(
-    args: { name: string, animVarCoeff: string, _id: string, token: string }
+    args: { name: string, animVarCoeff: string, _id: string, token: string, displayName: string; }
   ): Promise<void | Error> {
     try {
-      const { name, animVarCoeff, token, _id } = args;
+      const { name, animVarCoeff, token, _id, displayName } = args;
       headers = clearHeaders(headers);
       headers = setInitialHeaders(headers);
       headers = setAuthHeader(headers, token);
       const res = await fetch(`${API_URL}/user/update-preset`, {
         method: "PUT",
-        body: JSON.stringify({ defaultPreset: name, animVarCoeff, _id }),
+        body: JSON.stringify({ defaultPreset: name, animVarCoeff, _id, displayName }),
         headers,
       });
       if (!res.ok) throw new Error("Update could not happen at this time.");

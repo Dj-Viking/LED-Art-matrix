@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ENV_TXT=$(cat env.txt) cd dist; node index.js",
     "tsc": "tsc",
-    "dev": "ENV_TXT=$(cat env.txt) echo 'transpiling TS and then starting server' && npm run tsc; cd dist; nodemon -L index.js",
+    "dev:tsc": "echo 'transpiling TS and then starting server' && npm run tsc; cd dist; ENV_TXT=$(cat ../env.txt)  nodemon -L index.js",
+    "dev": "cd dist; ENV_TXT=$(cat ../env.txt) nodemon -L index.js",
     "tsw": "tsc -w",
     "clear:jest": "jest --clearCache",
     "server:ci": "npm run clear:jest; jest --verbose --detectOpenHandles --watchAll=false --coverage",

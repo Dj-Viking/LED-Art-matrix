@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
@@ -6,6 +7,7 @@ import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
 import { Express } from "../types";
 import { Response } from "express";
 import { PresetClass } from "../models/PresetClass";
+import { UserClass } from "../models/User";
 const uuid = require("uuid");
 readEnv();
 const { RESET_EXPIRATION, SALT } = process.env;
@@ -47,20 +49,40 @@ export const UserController = {
     res: Response
   ): Promise<Response | void> {
     const { _id } = req.body;
-    await User.findOneAndUpdate(
-      { email: req!.user!.email },
-      {
-        $pull: {
-          presets: { _id },
-        },
+
+    //get the default and check if the id matches the one in the req.body
+    const user: UserClass = (await User.findOne({ email: req!.user!.email })) as UserClass;
+
+    // @ts-ignore have to use toHexString in the endpoint
+    // somehow in the test it comes back as a string but straight from the database
+    // it is still a type of object as ObjectId("_id")
+    const defId = user!.defaultPreset!._id.toHexString();
+
+    const updateOptions = ((bodyId: string, defId: string) => {
+      if (bodyId === defId) {
+        return {
+          //initialize the default preset to something blank if the preset being deleted is the default one
+          $set: {
+            defaultPreset: {
+              presetName: "",
+              animVarCoeff: "64",
+              displayName: "",
+            },
+          },
+          $pull: {
+            presets: { _id: bodyId },
+          },
+        };
       }
-    );
+      return {
+        $pull: {
+          presets: { _id: bodyId },
+        },
+      };
+    })(_id, defId);
+
+    await User.findOneAndUpdate({ email: req!.user!.email }, updateOptions);
     res.status(200).json({ message: "deleted the preset" });
-    // try {
-    // } catch (error) {
-    //   console.error(error);
-    //   res.status(500).json({ error });
-    // }
   },
   addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -184,7 +206,10 @@ export const UserController = {
         token: foundUser!.token as string,
       };
       return res.status(200).json({ user: returnUser });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
   },
   forgotPassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
     try {
@@ -193,7 +218,6 @@ export const UserController = {
       //silently dont send the email if the email wasn't the right format
       if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
       const user = await User.findOne({ email }).select("-password");
-      // console.log("got a user", user);
 
       //dont return anything else just a 204 status code which will not carry a response body
       if (user === null) return res.status(200).json({ message: "success" });
