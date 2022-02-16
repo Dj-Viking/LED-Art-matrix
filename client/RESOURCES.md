@@ -56,3 +56,15 @@
 
 * Jest bug with leaky mocks and not properly clearing with use of jest.clearAllMocks() jest.resetMocks() or whatever is supposed to cleanup anything doesn't actually work
     - <a href="https://github.com/facebook/jest/issues/7136" rel="noopener noreferrer">Issue #7136 linked here</a>
+
+
+* have to stub the window.addEventListener function for jest tests after adding in the keybindings feature
+    - <a href="https://medium.com/@DavideRama/testing-global-event-listener-within-a-react-component-b9d661e59953" rel="noopener noreferrer">here</a>
+
+    ```ts
+    const map = {} as Record<any, any>;
+        window.addEventListener = jest.fn((event, cb) => {
+        map[event as any] = cb;
+    });
+
+    ```

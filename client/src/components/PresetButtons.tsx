@@ -249,6 +249,9 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                 handleChange={(event) => {
                   event.preventDefault();
                   dispatch(animVarCoeffChange(event.target.value));
+                  dispatch(setSaveModalContext({
+                    animVarCoeff: event.target.value
+                  }));
                 }}
               />
             </>

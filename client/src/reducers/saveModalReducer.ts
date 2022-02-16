@@ -4,7 +4,7 @@ import { ISaveModalState, ISaveModalAction, ISetSaveModalIsOpenAction, ISetSaveM
 const saveModalReducer = (
   state: ISaveModalState = {
     saveModalIsOpen: false,
-    saveModalContext: { animVarCoeff: "", presetName: "" }
+    saveModalContext: { animVarCoeff: "64", presetName: "" }
   }, 
   action: ISaveModalAction
 ): ISaveModalState => {
