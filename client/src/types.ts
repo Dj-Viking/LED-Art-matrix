@@ -271,6 +271,7 @@ export type IPresetButtonListActionPayloads =
 export interface IPresetButton {
   id: string;
   role: string;
+  keyBinding: string;
   key: string;
   isActive: boolean;
   presetName: string;
@@ -310,6 +311,7 @@ export interface ILogoutAction {
   payload: false;
 }
 export interface MyRootState {
+  saveModalState: ISaveModalState;
   deleteModalState: IDeleteModalState;
   ledState: ILedState;
   presetButtonsListState: IPresetButtonsListState;
@@ -368,12 +370,36 @@ export interface ISearchTerm {
   limit?: string;
 }
 export interface ISetDeleteModalOpenAction {
-  type: "SET_DELETE_MODAL_OPEN",
+  type: "SET_DELETE_MODAL_OPEN";
   payload: boolean;
 }
 export interface ISetDeleteModalContextAction {
-  type: "SET_DELETE_MODAL_CONTEXT",
+  type: "SET_DELETE_MODAL_CONTEXT";
   payload: { btnId: string; };
+}
+
+export interface ISetSaveModalContextAction {
+  type: "SET_SAVE_MODAL_CONTEXT";
+  payload: { animVarCoeff: string, presetName: string; };
+}
+export interface ISetSaveModalIsOpenAction {
+  type: "SET_SAVE_MODAL_OPEN";
+  payload: boolean;
+}
+export interface ISaveModalState {
+  saveModalIsOpen: boolean;
+  saveModalContext: { animVarCoeff: string, presetName: string };
+}
+export type ISaveModalActionTypes =
+| ISetSaveModalIsOpenAction["type"]
+| ISetSaveModalContextAction["type"];
+
+export type ISaveModalActionPayloads =
+| ISetSaveModalIsOpenAction["payload"]
+| ISetSaveModalContextAction["payload"];
+export interface ISaveModalAction {
+  type: ISaveModalActionTypes,
+  payload: ISaveModalActionPayloads
 }
 export interface IDeleteModalState {
   deleteModalIsOpen: boolean;

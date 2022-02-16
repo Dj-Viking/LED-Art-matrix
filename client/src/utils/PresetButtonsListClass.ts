@@ -1,5 +1,5 @@
 import { IPresetButton } from "../types";
-
+import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 export interface IDBPreset {
   _id: string;
   presetName: string;
@@ -14,11 +14,12 @@ class PresetButtonsList {
     dbPresets: IDBPreset[] | [],
     activeId?: string
   ) {
-    this.list = dbPresets.map(preset => {
+    this.list = dbPresets.map((preset, index: number) => {
       return {
         id: preset._id,
         key: preset._id,
         role: "button",
+        keyBinding: this.createKeyBinding(index),
         isActive: this.determineActiveOnRender(preset._id, activeId),
         animVarCoeff: preset.animVarCoeff,
         presetName: preset.presetName,
@@ -49,6 +50,10 @@ class PresetButtonsList {
       }
     }
     return false;
+  }
+
+  private createKeyBinding(index: number): string {
+    return MY_INDEX_TO_KEY_MAP[(index + 1) as keyof MyIndexToKeyMap];
   }
 
 }

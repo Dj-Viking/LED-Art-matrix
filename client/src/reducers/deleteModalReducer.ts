@@ -1,7 +1,7 @@
 import { IDeleteModalState, IDeleteModalAction } from "../types";
 
 
-const modalReducer = (
+const deleteModalReducer = (
   state: IDeleteModalState = {
     deleteModalIsOpen: false,
     deleteModeActive: false,
@@ -29,4 +29,4 @@ const modalReducer = (
   }
 };
 
-export default modalReducer;
+export default deleteModalReducer;

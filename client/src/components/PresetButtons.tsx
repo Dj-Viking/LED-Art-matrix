@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import PresetButton from "./PresetButton";
@@ -22,12 +22,12 @@ import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
-import { setDeleteModalOpen, toggleDeleteMode } from "../actions/modal-actions";
+import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
+import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
 
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
 
-  
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
   const deletePresetButtonSpring = useSpring(_deletePresetButtonSpring);
@@ -37,6 +37,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const { deleteModalIsOpen, deleteModalContext, deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
+  const { saveModalIsOpen, saveModalContext } = useSelector((state: MyRootState) => state.saveModalState);
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
@@ -49,8 +50,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     await API.updateDefaultPreset({ displayName: preset.displayName, _id: preset.id, name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
 
-  const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);
-
   const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
     try {
       const presets = await API.getUserPresets(Auth.getToken() as string);
@@ -62,6 +61,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     const preset = await API.getDefaultPreset(Auth.getToken() as string) as IDBPreset;
     return preset;
   }, []);
+
+  
 
   useEffect(() => {
     if (presetButtons.length === 0) {
@@ -104,17 +105,15 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   }, [dispatch, getPresets, presetButtons.length]);
 
+
   return (
     <>
-      <Modal isOpen={saveModalOpen}>
+      <Modal isOpen={saveModalIsOpen}>
         <SavePresetModalContent
-          context={{
-            animVarCoeff,
-            presetName: presetName
-          }} 
+          context={saveModalContext}
           onClose={(event) => {
             event.preventDefault();
-            setSaveModalOpen(false);
+            dispatch(setSaveModalIsOpen(false));
           }}
         />
       </Modal>
@@ -191,7 +190,11 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             disabled={!Auth.loggedIn()}// enable if logged in
             onClick={(event: any) => {
               event.preventDefault();
-              setSaveModalOpen(true);
+              dispatch(setSaveModalIsOpen(true));
+              dispatch(setSaveModalContext({
+                animVarCoeff,
+                presetName
+              }));
             }}
           >
             Save as new Preset
