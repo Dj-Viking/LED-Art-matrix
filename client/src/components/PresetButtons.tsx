@@ -157,6 +157,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         )
       }
       <div className="preset-button-container">
+
         <animated.button
           style={clear}
           role="button"
@@ -172,54 +173,53 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         </animated.button>
         
         <animated.button
-            role="button"
-            data-testid="saveDefault"
-            style={saveButtonSpring}
-            className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={handleSaveDefault}
-          >
-            Save as Default
-          </animated.button>
+          role="button"
+          data-testid="saveDefault"
+          style={saveButtonSpring}
+          className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={handleSaveDefault}
+        >
+          Save as Default
+        </animated.button>
 
-          <animated.button
-            role="button"
-            data-testid="savePreset"
-            style={saveNewPresetButtonSpring}
-            className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={(event: any) => {
-              event.preventDefault();
-              dispatch(setSaveModalIsOpen(true));
-              dispatch(setSaveModalContext({
-                animVarCoeff,
-                presetName
-              }));
-            }}
-          >
-            Save as new Preset
-          </animated.button>
+        <animated.button
+          role="button"
+          data-testid="savePreset"
+          style={saveNewPresetButtonSpring}
+          className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={(event: any) => {
+            event.preventDefault();
+            dispatch(setSaveModalIsOpen(true));
+            dispatch(setSaveModalContext({
+              animVarCoeff,
+              presetName
+            }));
+          }}
+        >
+          Save as new Preset
+        </animated.button>
 
-          <animated.button
-            role="button"
-            data-testid="deletePreset"
-            style={deletePresetButtonSpring}
-            className={Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={(event: any) => {
-              event.preventDefault();
-              dispatch(toggleDeleteMode(deleteModeActive ? false : true));
-            }}
-          >
-            { 
-              Array.isArray(presetButtons) && presetButtons.length > 0 
-              ? 
-                deleteModeActive ? "Don't Delete A Preset" : "Delete A Preset"
-              : 
-                null
-            } 
-          </animated.button>
-
+        <animated.button
+          role="button"
+          data-testid="deletePreset"
+          style={deletePresetButtonSpring}
+          className={Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={(event: any) => {
+            event.preventDefault();
+            dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+          }}
+        >
+          { 
+            Array.isArray(presetButtons) && presetButtons.length > 0 
+            ? 
+              deleteModeActive ? "Don't Delete A Preset" : "Delete A Preset"
+            : 
+              null
+          } 
+        </animated.button>
 
       </div>
 

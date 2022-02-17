@@ -30,6 +30,12 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
+// stub the keydown event because jest test will not work properly with the react app containing window.eventListener("keyup") listener callbacks
+const map = {} as Record<any, any>;
+window.addEventListener = jest.fn((event, cb) => {
+  map[event as any] = cb;
+});
+
 
 describe("Adding a preset error", () => {
   it("checks the error message appears with a failed response", async () => {
