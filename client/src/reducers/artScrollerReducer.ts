@@ -4,8 +4,8 @@ const artScrollerReducer = (
   state: IArtScrollerState = {
     gifs: [],
     animDuration: "30",
-    vertPos: "50",
-    hPos: "40",
+    vertPos: "111",
+    hPos: "33",
     circleWidth: "30",
     invert: "0",
     figureOn: false,

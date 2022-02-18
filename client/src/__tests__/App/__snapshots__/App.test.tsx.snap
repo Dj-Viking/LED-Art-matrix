@@ -698,7 +698,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="766.513621847784kdjfkdjfkjd"
+          id="903.4325232694272kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >
@@ -707,7 +707,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="38.12383029702282kdjfkdjfkjd"
+          id="956.2150642702196kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >
@@ -716,7 +716,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="390.07600310313603kdjfkdjfkjd"
+          id="885.2802445988468kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >
@@ -725,7 +725,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="613.8099391190373kdjfkdjfkjd"
+          id="415.35430971925337kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >
@@ -734,7 +734,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="346.88921561499785kdjfkdjfkjd"
+          id="706.7898791383059kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >
@@ -743,7 +743,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="489.4343282302116kdjfkdjfkjd"
+          id="991.7593166594096kdjfkdjfkjd"
           role="button"
           tabindex="-1"
         >

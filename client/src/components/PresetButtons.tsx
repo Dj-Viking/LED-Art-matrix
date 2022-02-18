@@ -24,6 +24,7 @@ import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
 import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
+import { keyGen } from "../utils/keyGen";
 
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
@@ -72,7 +73,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     
         const tempPresets = presetNames.map(name => {
           return {
-            _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
+            _id: keyGen(),
             presetName: name,
             displayName: name,
             animVarCoeff: "64"
@@ -228,10 +229,14 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         {
           Array.isArray(presetButtons) && presetButtons.map(button => {
             return (
-              <PresetButton
-                key={button.key} 
-                button={{ ...button }}
-              />
+              // <div style={{display: "flex"}} key={keyGen()}>
+              //   { /* TODO: render a key icon with the key binding of the preset button*/}
+              //   {/* <p key={keyGen()}> { button.displayName } </p> */}
+              // </div>
+                <PresetButton
+                  key={button.key} 
+                  button={{ ...button }}
+                />
             );
           })
         }

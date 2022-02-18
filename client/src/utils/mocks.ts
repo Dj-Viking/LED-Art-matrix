@@ -1,6 +1,7 @@
 // import { rest } from "msw";
 // import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
+import { keyGen } from "./keyGen";
 const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
@@ -16,7 +17,7 @@ export const MOCK_SIGN_TOKEN_ARGS = {
   username: "test user",
   email: "test email",
   uuid: uuid.v4(),
-  _id: Math.random() * 1293 + "yo what up",
+  _id: keyGen(),
 };
 export const MOCK_PRESETS = [
   {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
