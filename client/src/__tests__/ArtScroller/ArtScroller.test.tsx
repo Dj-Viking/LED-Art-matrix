@@ -146,13 +146,13 @@ describe("test art scroller turning on with gifs", () => {
     expect(styleValues.values["filter"]).toBe("invert(0)");
 
     expect(styleValues.values).toHaveProperty("top");
-    expect(styleValues.values["top"]).toBe("50vh");
+    expect(styleValues.values["top"]).toBe("111vh");
 
     expect(styleValues.values).toHaveProperty("width");
     expect(styleValues.values["width"]).toBe("30vw");
 
     expect(styleValues.values).toHaveProperty("left");
-    expect(styleValues.values["left"]).toBe("40vw");
+    expect(styleValues.values["left"]).toBe("33vw");
 
     //INTERACT WITH SLIDERS
     const sliders = {
@@ -167,10 +167,10 @@ describe("test art scroller turning on with gifs", () => {
     expect(sliders.circleWidth.value).toBe("30");
 
     expect(sliders.vertPos).toBeInTheDocument();
-    expect(sliders.vertPos.value).toBe("50");
+    expect(sliders.vertPos.value).toBe("111");
 
     expect(sliders.left).toBeInTheDocument();
-    expect(sliders.left.value).toBe("40");
+    expect(sliders.left.value).toBe("33");
 
     expect(sliders.invert).toBeInTheDocument();
     expect(sliders.invert.value).toBe("0");
