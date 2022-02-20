@@ -6,13 +6,14 @@ import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { setLedStyle } from "../actions/style-actions";
 import { checkPresetButtonsActive } from "../actions/preset-button-actions";
 import { MyRootState } from "../types";
-import { setDeleteModalOpen, setDeleteModalContext } from "../actions/modal-actions";
+import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
 
 interface PresetButtonProps {
   button: {
     id: string;
     role: string;
     presetName: string;
+    keyBinding: string;
     displayName: string;
     animVarCoeff: string;
     isActive: boolean;
@@ -42,6 +43,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
   return (
     <>
       <button
+        tabIndex={-1}
         id={id}
         data-testid={testid}
         role={role}

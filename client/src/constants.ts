@@ -189,3 +189,20 @@ export const DM5_ANIMATION = `
     /* border-radius: 50% 50% 50% 50% */
   }
 }`;
+
+// temp solution for now
+// if i need more than 15 keys for > 15 presets will
+// come up with a different solution
+export type MyIndexToKeyMap = Record<number, string>
+export const MY_INDEX_TO_KEY_MAP = {
+  1: "1",
+  2: "2",
+  3: "3",
+  4: "4",
+  5: "q",
+  6: "w",
+  7: "e",
+  8: "r",
+  9: "a",
+  10: "s",
+} as MyIndexToKeyMap;

@@ -14,6 +14,7 @@ import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
+import { keyGen } from "../utils/keyGen";
 
 
 const BigLedBox: React.FC = (): JSX.Element => {
@@ -95,7 +96,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
                     <div
                       data-testid={`led${led.ledNumber}-${row.rowNumber}`}
                       id={`led${led.ledNumber}-${row.rowNumber}`}
-                      key={`led${led.ledNumber}-${Math.random() * 1000}`} 
+                      key={`led${led.ledNumber}-${keyGen()}`} 
                       className={`led${led.ledNumber}-${row.rowNumber}${presetName}`}
                     />
                   ))

@@ -330,7 +330,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               for="vertical-positioning"
               style="color: white;"
             >
-              Scroller Vert Positioning: 50
+              Scroller Vert Positioning: 111
             </label>
             <input
               class="slider-style"
@@ -339,13 +339,13 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               min="0"
               name="vertical-positioning"
               type="range"
-              value="50"
+              value="111"
             />
             <label
               for="horizontal-positioning"
               style="color: white;"
             >
-              Scroller Horizontal Positioning: 0.04
+              Scroller Horizontal Positioning: 0.033
             </label>
             <input
               class="slider-style"
@@ -354,7 +354,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               min="0"
               name="horizontal-positioning"
               type="range"
-              value="40"
+              value="33"
             />
             <label
               for="invert"
@@ -698,48 +698,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="281.809599421226kdjfkdjfkjd"
+          id="4981.474746876773something unique lol"
           role="button"
+          tabindex="-1"
         >
           rainbowTest
         </button>
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="829.4107440367013kdjfkdjfkjd"
+          id="8407.564765038265something unique lol"
           role="button"
+          tabindex="-1"
         >
           v2
         </button>
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="311.04824869631kdjfkdjfkjd"
+          id="7007.995973590977something unique lol"
           role="button"
+          tabindex="-1"
         >
           waves
         </button>
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="372.81343551222034kdjfkdjfkjd"
+          id="68.85099048772992something unique lol"
           role="button"
+          tabindex="-1"
         >
           spiral
         </button>
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="359.7716450633384kdjfkdjfkjd"
+          id="5503.577283830467something unique lol"
           role="button"
+          tabindex="-1"
         >
           fourSpirals
         </button>
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="787.6419773304741kdjfkdjfkjd"
+          id="6043.359150981058something unique lol"
           role="button"
+          tabindex="-1"
         >
           dm5
         </button>

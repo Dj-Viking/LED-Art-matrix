@@ -30,6 +30,12 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
+// stub the keydown event because jest test will not work properly with the react app containing window.eventListener("keyup") listener callbacks
+const map = {} as Record<any, any>;
+window.addEventListener = jest.fn((event, cb) => {
+  map[event as any] = cb;
+});
+
 
 describe("Adding a preset", () => {
   it("tests the add preset function runs", async () => {
@@ -41,8 +47,12 @@ describe("Adding a preset", () => {
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ 
+                        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } 
+                      }))
+                      .mockReturnValueOnce(fakeFetchRes({ 
+                        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } 
+                      }))
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_ADD_PRESET_RES }));
     // @ts-ignore
     global.fetch = mockFetch;

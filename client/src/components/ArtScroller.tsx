@@ -214,7 +214,6 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     position: "absolute",
                     // @ts-expect-error whatever
                     zIndex: "1",
-                    // opacity: `${opacityState/100}`,
                     filter: `invert(${Number(invert) / 100})`,
                     borderRadius: "50%",
                     animationName: "scrollAnim",

@@ -1,6 +1,6 @@
 /* eslint-disable no-empty */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSpring, animated } from "react-spring";
 import PresetButton from "./PresetButton";
@@ -22,12 +22,13 @@ import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
-import { setDeleteModalOpen, toggleDeleteMode } from "../actions/modal-actions";
+import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
+import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
+import { keyGen } from "../utils/keyGen";
 
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
 
-  
   const saveButtonSpring = useSpring(_saveButtonSpring);
   const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
   const deletePresetButtonSpring = useSpring(_deletePresetButtonSpring);
@@ -37,6 +38,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const { deleteModalIsOpen, deleteModalContext, deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
+  const { saveModalIsOpen, saveModalContext } = useSelector((state: MyRootState) => state.saveModalState);
 
   async function handleSaveDefault(event: any): Promise<void> {
     event.preventDefault();
@@ -48,8 +50,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     // @ts-ignore
     await API.updateDefaultPreset({ displayName: preset.displayName, _id: preset.id, name: presetName, animVarCoeff, token: Auth.getToken() as string });
   }
-
-  const [saveModalOpen, setSaveModalOpen ] = useState<boolean>(false);
 
   const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
     try {
@@ -63,6 +63,8 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     return preset;
   }, []);
 
+  
+
   useEffect(() => {
     if (presetButtons.length === 0) {
 
@@ -71,7 +73,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     
         const tempPresets = presetNames.map(name => {
           return {
-            _id: (Math.random() * 1000).toString() + "kdjfkdjfkjd",
+            _id: keyGen(),
             presetName: name,
             displayName: name,
             animVarCoeff: "64"
@@ -104,17 +106,15 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
 
   }, [dispatch, getPresets, presetButtons.length]);
 
+
   return (
     <>
-      <Modal isOpen={saveModalOpen}>
+      <Modal isOpen={saveModalIsOpen}>
         <SavePresetModalContent
-          context={{
-            animVarCoeff,
-            presetName: presetName
-          }} 
+          context={saveModalContext}
           onClose={(event) => {
             event.preventDefault();
-            setSaveModalOpen(false);
+            dispatch(setSaveModalIsOpen(false));
           }}
         />
       </Modal>
@@ -158,6 +158,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         )
       }
       <div className="preset-button-container">
+
         <animated.button
           style={clear}
           role="button"
@@ -173,50 +174,53 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         </animated.button>
         
         <animated.button
-            role="button"
-            data-testid="saveDefault"
-            style={saveButtonSpring}
-            className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={handleSaveDefault}
-          >
-            Save as Default
-          </animated.button>
+          role="button"
+          data-testid="saveDefault"
+          style={saveButtonSpring}
+          className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={handleSaveDefault}
+        >
+          Save as Default
+        </animated.button>
 
-          <animated.button
-            role="button"
-            data-testid="savePreset"
-            style={saveNewPresetButtonSpring}
-            className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={(event: any) => {
-              event.preventDefault();
-              setSaveModalOpen(true);
-            }}
-          >
-            Save as new Preset
-          </animated.button>
+        <animated.button
+          role="button"
+          data-testid="savePreset"
+          style={saveNewPresetButtonSpring}
+          className={Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={(event: any) => {
+            event.preventDefault();
+            dispatch(setSaveModalIsOpen(true));
+            dispatch(setSaveModalContext({
+              animVarCoeff,
+              presetName
+            }));
+          }}
+        >
+          Save as new Preset
+        </animated.button>
 
-          <animated.button
-            role="button"
-            data-testid="deletePreset"
-            style={deletePresetButtonSpring}
-            className={Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
-            disabled={!Auth.loggedIn()}// enable if logged in
-            onClick={(event: any) => {
-              event.preventDefault();
-              dispatch(toggleDeleteMode(deleteModeActive ? false : true));
-            }}
-          >
-            { 
-              Array.isArray(presetButtons) && presetButtons.length > 0 
-              ? 
-                deleteModeActive ? "Don't Delete A Preset" : "Delete A Preset"
-              : 
-                null
-            } 
-          </animated.button>
-
+        <animated.button
+          role="button"
+          data-testid="deletePreset"
+          style={deletePresetButtonSpring}
+          className={Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
+          disabled={!Auth.loggedIn()}// enable if logged in
+          onClick={(event: any) => {
+            event.preventDefault();
+            dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+          }}
+        >
+          { 
+            Array.isArray(presetButtons) && presetButtons.length > 0 
+            ? 
+              deleteModeActive ? "Don't Delete A Preset" : "Delete A Preset"
+            : 
+              null
+          } 
+        </animated.button>
 
       </div>
 
@@ -225,10 +229,14 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         {
           Array.isArray(presetButtons) && presetButtons.map(button => {
             return (
-              <PresetButton
-                key={button.key} 
-                button={{ ...button }}
-              />
+              // <div style={{display: "flex"}} key={keyGen()}>
+              //   { /* TODO: render a key icon with the key binding of the preset button*/}
+              //   {/* <p key={keyGen()}> { button.displayName } </p> */}
+              // </div>
+                <PresetButton
+                  key={button.key} 
+                  button={{ ...button }}
+                />
             );
           })
         }
@@ -246,6 +254,9 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                 handleChange={(event) => {
                   event.preventDefault();
                   dispatch(animVarCoeffChange(event.target.value));
+                  dispatch(setSaveModalContext({
+                    animVarCoeff: event.target.value
+                  }));
                 }}
               />
             </>

@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import ledReducer from "./ledReducer";
-import deleteModalReducer from "./deleteModalReducer";
+import deleteModalReducer from "./deleteModalReducer"; 
+import saveModalReducer from "./saveModalReducer"; 
 import styleTagReducer from "./styleTagReducer";
 import loggedInReducer from "./loggedInReducer";
 import loginFormReducer from "./loginFormReducer";
@@ -17,7 +18,8 @@ const allReducers = combineReducers(
     loginFormState: loginFormReducer,
     signupFormState: signupFormReducer,
     artScrollerState: artScrollerReducer,
-    deleteModalState: deleteModalReducer 
+    deleteModalState: deleteModalReducer,
+    saveModalState: saveModalReducer 
   }
 );
 

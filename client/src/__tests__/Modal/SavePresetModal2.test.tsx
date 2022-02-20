@@ -16,6 +16,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { keyGen } from "../../utils/keyGen";
 const uuid = require("uuid");
 
 //letting these methods be available to silence the jest errors
@@ -45,7 +46,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
       username: "test user",
       email: "test email",
       uuid: uuid.v4(),
-      _id: Math.random() * 1293 + "yo what up",
+      _id: keyGen(),
     }));
     expect(typeof localStorage.getItem("id_token")).toBe("string");
     
