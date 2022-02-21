@@ -5,7 +5,7 @@ const deleteModalReducer = (
   state: IDeleteModalState = {
     deleteModalIsOpen: false,
     deleteModeActive: false,
-    deleteModalContext: { btnId: "" }
+    deleteModalContext: { btnId: "", displayName: "" }
   }, 
   action: IDeleteModalAction
 ): IDeleteModalState => {
@@ -23,7 +23,7 @@ const deleteModalReducer = (
     case "SET_DELETE_MODAL_CONTEXT":
       return {
         ...state,
-        deleteModalContext: action.payload as { btnId: string; }
+        deleteModalContext: action.payload as { btnId: string; displayName: string; }
       };
     default: return state;
   }

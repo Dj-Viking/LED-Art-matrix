@@ -45,7 +45,6 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
     } catch (error) {
       const err = error as Error;
       setError(`Oops! ${err.message}`);
-      // console.error(error);
       return void 0;
     }
   }
@@ -143,6 +142,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
           </label>
           
           <input
+            autoComplete="off"
             name="preset-name"
             data-testid="modal-preset-name-input"
             style= {{ color: "black" }} 
