@@ -229,10 +229,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         {
           Array.isArray(presetButtons) && presetButtons.map(button => {
             return (
-              // <div style={{display: "flex"}} key={keyGen()}>
-              //   { /* TODO: render a key icon with the key binding of the preset button*/}
-              //   {/* <p key={keyGen()}> { button.displayName } </p> */}
-              // </div>
                 <PresetButton
                   key={button.key} 
                   button={{ ...button }}
