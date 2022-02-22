@@ -68,3 +68,9 @@
     });
 
     ```
+
+
+* think about using svg.js to create svg's dynamically to create any key binding and also create the icon for a dynamically created keybinding
+    - <a href="https://svgjs.dev/docs/3.0/" rel="noopener noreferrer">SVG.JS DOCS</a>
+    - <a href="https://github.com/svgdotjs/svg.js" rel="noopener noreferrer">SVG.JS GITHUB</a>
+    

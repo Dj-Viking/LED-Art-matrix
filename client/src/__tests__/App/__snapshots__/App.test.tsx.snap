@@ -702,17 +702,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="1636.8403585814794something unique lol"
+          id="3051.4331630194747something unique lol"
           role="button"
           tabindex="-1"
         >
-          <img
-            alt=""
-            height="20"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAAB3UlEQVRoge2ZP04CQRhHnwQULWys0cbEzmsghMILiCSIMcRSY+dpvAHKJdQrgIIWVhY2hr8W3xhw3RWG3dkddV4yxQIz3++xy7CzAw6HIwpWgRrQBJ6APjA21PqqRlPVzEYlUQI6BoPPao9AMazEKTBMUOKzDYD6ohIlSySmZQq6ElnklCYd3tu6yO91bo4tCB3UjvwCpwJE9nWsY8Y3W5DIrsEgYfHNthTw4R6QMZclFH1g2ftikMjYbJbQfMsddGn9OuISuQS2Y6r1hSinyxdgA7kcohozVpFX4ArYUWMaFUnr2GmwDrwZGtsXUyJ7nuNr4N1QLSC+6TcHPAOjiMZz06/1OBHbcCK24URs48+ImLpF8bIJrJgs4FaItuFEbOPfiNj0o/8xyyyRGtEthsIwQrJo00O+gTSybG2R3EPrFpBHnnyOVba56apOOXW8BpSRtXd7StRE66kaDeCAyTbClnq/oyNyozqVdToZpoJkauh0qqlOtwT/+8dJCrhHMlV1Ok7vWJ1Fn0ubCyRLmwXu2YrIvt0QOCeZM5NCJIYqS37RgepqgDFwBxwid7Im904yqkaFyeU0AE7CDlwAHkhu+m0T4kx4ySKbkA1kajY9/XZVrSqG1zEOxww+ANwzxOpGRVB4AAAAAElFTkSuQmCC"
-            style="margin: 0px; background-color: white; border-radius: 5px;"
-            width="20"
-          />
+          <div>
+            
+          
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+          
+          
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+            
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+            
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+            
+              <path
+                d="M64.7812 28.25V74H59V35.4688L47.3438 39.7188V34.5L63.875 28.25H64.7812Z"
+                fill="white"
+              />
+              
+          
+            </svg>
+            
+      
+          </div>
           <p
             style="margin: 0px;"
           >
@@ -722,17 +759,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="8039.048391775507something unique lol"
+          id="6427.447053429274something unique lol"
           role="button"
           tabindex="-1"
         >
-          <img
-            alt=""
-            height="20"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACg0lEQVRoge2Zu2sUURSHP5esruIDiWCjRlQQLCwsxMrGIiYsaKGNYAzEFQmWSv4FC20FIUVqC5vVYGVn4QvExkLJmqyolWKl7NPinDDL7s6ud+aemQHnB5dhHvec3zdz7525dyBXrlw+tB2oAKvAF6AJdI1KU3Osas6SL4gysGFofFxZB2bjQtwC2ilCbJYWsBgVopwRiF6YGVeIEvJI0zbfX+pIf/1n3ciA6bByfZjhQgjIRRfqhDXUWxjISUMjcTXU25aQixtA0c5LLDWBrf0Hw0C6tl5ia8B3WNPyrZZ1AkuQZ8A5YBfSTCeBS8A7w5wDijtELhM8/uPANHBY97cBz2PGTwTkB7BT49wHOnq8A9zV40eR5pZpkBWNcSbk/Ck9/8oniEUf+aTbCyHnz+p23WdSC5BjwGUCw/3aBNhvkHtAVt9Jb5GX2QHgT4w4qYJ8BI5o/EcxY6UG8hjYiwzJ9zzESxzkJ3BFY04qkI+4iYK8BKY0Xhn46vEGJQbyAtgN7AEeegRIFOQ7sA9pSu8NIBIDWdIYK0YQQ0Es5iMngA+6HbVQ8AA4HTHHgO+JiIFG6Rcy1H4bc91vn0nzGWLWlINkTf8NSJY6/Ugv40AqyFw7bXUQL85qIHdgAjgPrGH3lh5X1pBVmKLuN1xA6lrpoO7vAOaAJ0CtB9SiNDRHFbhK8HUwpec3XECeaqU5l0rGmkc8VV0qVbTSa8Lf/kmqgMz3u8CCS8XeP1a3/fty1hLipYasVDppFlkNbAN3SOfJFBCItnqZjhpokWBp8w1wDTiE7b+TouaYJ2hOLeBm3MAzwGfSG35rxHgS/SohPyGryNBsPfzWNdcCEfpErlwe9Rd5cxPAy9F5lQAAAABJRU5ErkJggg=="
-            style="margin: 0px; background-color: white; border-radius: 5px;"
-            width="20"
-          />
+          <div>
+            
+          
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+          
+          
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+            
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+            
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+            
+              <path
+                d="M75.5938 69.25V74H45.8125V69.8438L60.7188 53.25C62.5521 51.2083 63.9688 49.4792 64.9688 48.0625C65.9896 46.625 66.6979 45.3438 67.0938 44.2188C67.5104 43.0729 67.7188 41.9062 67.7188 40.7188C67.7188 39.2188 67.4062 37.8646 66.7812 36.6562C66.1771 35.4271 65.2812 34.4479 64.0938 33.7188C62.9062 32.9896 61.4688 32.625 59.7812 32.625C57.7604 32.625 56.0729 33.0208 54.7188 33.8125C53.3854 34.5833 52.3854 35.6667 51.7188 37.0625C51.0521 38.4583 50.7188 40.0625 50.7188 41.875H44.9375C44.9375 39.3125 45.5 36.9688 46.625 34.8438C47.75 32.7188 49.4167 31.0312 51.625 29.7812C53.8333 28.5104 56.5521 27.875 59.7812 27.875C62.6562 27.875 65.1146 28.3854 67.1562 29.4062C69.1979 30.4062 70.7604 31.8229 71.8438 33.6562C72.9479 35.4688 73.5 37.5938 73.5 40.0312C73.5 41.3646 73.2708 42.7188 72.8125 44.0938C72.375 45.4479 71.7604 46.8021 70.9688 48.1562C70.1979 49.5104 69.2917 50.8438 68.25 52.1562C67.2292 53.4688 66.1354 54.7604 64.9688 56.0312L52.7812 69.25H75.5938Z"
+                fill="white"
+              />
+              
+          
+            </svg>
+            
+      
+          </div>
           <p
             style="margin: 0px;"
           >
@@ -742,17 +816,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="8048.303323497039something unique lol"
+          id="4545.201802615095something unique lol"
           role="button"
           tabindex="-1"
         >
-          <img
-            alt=""
-            height="20"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACoElEQVRoge2ZP2sUQRjGf15yeokiioRUmiIWgmgliAqCNjHxChsLC2MgnkgUK/8U2oqdfggJfoDTgKC2FmojBiwkq4kfQBAk5HI5i/c9brnbvbvZmbndg33gZdmZnfd9HubfOzuQI0cOFxgDKsAK8BuoAQ1PVtMYKxqz5EpEGVj3SLyX/QLmbEXcBeopimjaNrCUVEQ5IyLCYmZNRZSQLk2bfLttIPO1b9zKAOk4uxlFuBAj5IqJ6gEjkluckJMeidgiktuumI+3gKI/LlaoAbvbC+OENPxysUYH77ih5QLLwFngILAXOA48Af56jNkB25XlofoZBc4AF4D9WnYCEWPjfyBCPiNdPwmshsr/AOfU/7NhEHJPfbyIqHurdRddC/ExR1b1eTmibsJDPEDGsGu861K3rE/rbLZfuEwpvgLvgTvICCgj+1Tm50i7HQn5PQS8duAzFSGvgJfI2eaA+n88jELC9kPFjADfXArxubNHYRq4hhzYPrh07FpIHUk2p7p8M6nPTZeBXQsZAY4iPyu+x3zzUZ/TjmNHwmYePFUfp5GjabO8FqqbAP5ZxBiIkE3gvPoZB2aAq7R29X3IvjIUq9YW8Bw4haTxY8AxJA8LHPjvQH6wyhpyIVlDLiRr6CUkS6tXVy69hFSAHXdcEmMH4WKM5gluFLgErOEmjU9ia0h2UKS12faNZo50WN/HgXnkdBdgf1TtlRUEQBW4TusaYUrr102EvNFG8yaNPGMB4VQ1aVTRRp+IT2MGiQLwBeG0aNIwfGN13z0vYzxCuATAHtPGc8i9XR14QDo9U0BE1JXLTFJHS+qggfzTvYH83vF5d1LUGAu0htM2cNvW8Szwk/SW3wCLnmhHCbmErCJLs+/ld0NjLZJgTuTI4RD/AVKG4fc4njY8AAAAAElFTkSuQmCC"
-            style="margin: 0px; background-color: white; border-radius: 5px;"
-            width="20"
-          />
+          <div>
+            
+          
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+          
+          
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+            
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+            
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+            
+              <path
+                d="M54.2188 48.4062H58.3438C60.3646 48.4062 62.0312 48.0729 63.3438 47.4062C64.6771 46.7188 65.6667 45.7917 66.3125 44.625C66.9792 43.4375 67.3125 42.1042 67.3125 40.625C67.3125 38.875 67.0208 37.4062 66.4375 36.2188C65.8542 35.0312 64.9792 34.1354 63.8125 33.5312C62.6458 32.9271 61.1667 32.625 59.375 32.625C57.75 32.625 56.3125 32.9479 55.0625 33.5938C53.8333 34.2188 52.8646 35.1146 52.1562 36.2812C51.4688 37.4479 51.125 38.8229 51.125 40.4062H45.3438C45.3438 38.0938 45.9271 35.9896 47.0938 34.0938C48.2604 32.1979 49.8958 30.6875 52 29.5625C54.125 28.4375 56.5833 27.875 59.375 27.875C62.125 27.875 64.5312 28.3646 66.5938 29.3438C68.6562 30.3021 70.2604 31.7396 71.4062 33.6562C72.5521 35.5521 73.125 37.9167 73.125 40.75C73.125 41.8958 72.8542 43.125 72.3125 44.4375C71.7917 45.7292 70.9688 46.9375 69.8438 48.0625C68.7396 49.1875 67.3021 50.1146 65.5312 50.8438C63.7604 51.5521 61.6354 51.9062 59.1562 51.9062H54.2188V48.4062ZM54.2188 53.1562V49.6875H59.1562C62.0521 49.6875 64.4479 50.0312 66.3438 50.7188C68.2396 51.4062 69.7292 52.3229 70.8125 53.4688C71.9167 54.6146 72.6875 55.875 73.125 57.25C73.5833 58.6042 73.8125 59.9583 73.8125 61.3125C73.8125 63.4375 73.4479 65.3229 72.7188 66.9688C72.0104 68.6146 71 70.0104 69.6875 71.1562C68.3958 72.3021 66.875 73.1667 65.125 73.75C63.375 74.3333 61.4688 74.625 59.4062 74.625C57.4271 74.625 55.5625 74.3438 53.8125 73.7812C52.0833 73.2188 50.5521 72.4062 49.2188 71.3438C47.8854 70.2604 46.8438 68.9375 46.0938 67.375C45.3438 65.7917 44.9688 63.9896 44.9688 61.9688H50.75C50.75 63.5521 51.0938 64.9375 51.7812 66.125C52.4896 67.3125 53.4896 68.2396 54.7812 68.9062C56.0938 69.5521 57.6354 69.875 59.4062 69.875C61.1771 69.875 62.6979 69.5729 63.9688 68.9688C65.2604 68.3438 66.25 67.4062 66.9375 66.1562C67.6458 64.9062 68 63.3333 68 61.4375C68 59.5417 67.6042 57.9896 66.8125 56.7812C66.0208 55.5521 64.8958 54.6458 63.4375 54.0625C62 53.4583 60.3021 53.1562 58.3438 53.1562H54.2188Z"
+                fill="white"
+              />
+              
+          
+            </svg>
+            
+      
+          </div>
           <p
             style="margin: 0px;"
           >
@@ -762,17 +873,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="7146.423706856651something unique lol"
+          id="3432.6249696073673something unique lol"
           role="button"
           tabindex="-1"
         >
-          <img
-            alt=""
-            height="20"
-            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAABmJLR0QA/wD/AP+gvaeTAAACPklEQVRoge2Zu04bQRSGPyxDnAiBlLQkkEi0vAASLRdRRKIlBIk4ilDKAAUtTwIdDYUJLRUNkCeIggmmDQ1UvlKcseyYXZvZnbO7xXzSFN71mfP/O7OzcwGPx+OCl0AROAFugRrQUio1k+PE5Cy4MrEM3CgKH1T+AktxTXwHGimaaJc6sBnVxHJGTHSbWbQ1UUCaNG3xvaWCvK/P5msGRIeVL0GCcyFGPtq4TphAbWFGZhSFxCVQ21DIn6vAsJ6WWNSAkd6LYUZaulpi80R3WNdyzS3wBviglSAJI01gDbjTTJKEkT3gNIE8gbga88+RQWMWeAe8d1RvokbugWlgHCgbE2pG8jbuLPkG/AYOgCnFPH2J+8T2TT0rXddUW0TDyB9gDJgA/iVlxHXXqgOrwANwBLx2XL81UZ/UronfDrin2iKupyh5ZDE2x9P50Bny3WovWw8j5oAA3a6NhNXnMkdgHtdf9n7dYZT/u5ZTkpo0quONZA2/sMoa3kjW8EayxiAjWRq9+moZZKSI7IKkTRPRYk0VeQJ5YAG4ws30O0q5AuaRTYyW0fZsKiborfn9CtmbOkY2EtpGNUrV5CgBn+gcI0ya+zc2Rn6aoDWbIGXWEU0lm6CiCbrAbo2hRQ74hWjasAnsPrH64V6XNTuIljLwwjZ4CdlMaABbpNMyOcREw2iZj1rRpqmgBVwCn5GtT82zk2GTY51Od6ojG36xWASuSW/4LROjJXopIIeQJWRo1h5+KybXBhHeCY/HIY+8S0Elww0GQAAAAABJRU5ErkJggg=="
-            style="margin: 0px; background-color: white; border-radius: 5px;"
-            width="20"
-          />
+          <div>
+            
+          
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+          
+          
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+            
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+            
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+            
+              <path
+                d="M76.5312 58.6875V63.4375H43.6562V60.0312L64.0312 28.5H68.75L63.6875 37.625L50.2188 58.6875H76.5312ZM70.1875 28.5V74H64.4062V28.5H70.1875Z"
+                fill="white"
+              />
+              
+          
+            </svg>
+            
+      
+          </div>
           <p
             style="margin: 0px;"
           >
@@ -782,10 +930,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="6636.831542065152something unique lol"
+          id="8721.125111800347something unique lol"
           role="button"
           tabindex="-1"
         >
+          <div>
+            
+        
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+        
+        
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+          
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+          
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+          
+              <path
+                d="M66.625 67.7812L78.1875 76.9375L74.125 80.6875L62.75 71.6562L66.625 67.7812ZM78.0312 48.8125V51.6875C78.0312 55.1042 77.6042 58.1667 76.75 60.875C75.8958 63.5833 74.6667 65.8854 73.0625 67.7812C71.4583 69.6771 69.5312 71.125 67.2812 72.125C65.0521 73.125 62.5521 73.625 59.7812 73.625C57.0938 73.625 54.625 73.125 52.375 72.125C50.1458 71.125 48.2083 69.6771 46.5625 67.7812C44.9375 65.8854 43.6771 63.5833 42.7812 60.875C41.8854 58.1667 41.4375 55.1042 41.4375 51.6875V48.8125C41.4375 45.3958 41.875 42.3438 42.75 39.6562C43.6458 36.9479 44.9062 34.6458 46.5312 32.75C48.1562 30.8333 50.0833 29.375 52.3125 28.375C54.5625 27.375 57.0312 26.875 59.7188 26.875C62.4896 26.875 65 27.375 67.25 28.375C69.5 29.375 71.4271 30.8333 73.0312 32.75C74.6354 34.6458 75.8646 36.9479 76.7188 39.6562C77.5938 42.3438 78.0312 45.3958 78.0312 48.8125ZM72.0625 51.6875V48.75C72.0625 46.0417 71.7812 43.6458 71.2188 41.5625C70.6771 39.4792 69.875 37.7292 68.8125 36.3125C67.75 34.8958 66.4583 33.8229 64.9375 33.0938C63.4167 32.3646 61.6771 32 59.7188 32C57.8646 32 56.1771 32.3646 54.6562 33.0938C53.1562 33.8229 51.8646 34.8958 50.7812 36.3125C49.6979 37.7292 48.8646 39.4792 48.2812 41.5625C47.6979 43.6458 47.4062 46.0417 47.4062 48.75V51.6875C47.4062 54.4167 47.6979 56.8333 48.2812 58.9375C48.8646 61.0208 49.6979 62.7812 50.7812 64.2188C51.8854 65.6354 53.1979 66.7083 54.7188 67.4375C56.2396 68.1667 57.9271 68.5312 59.7812 68.5312C61.7396 68.5312 63.4792 68.1667 65 67.4375C66.5208 66.7083 67.8021 65.6354 68.8438 64.2188C69.9062 62.7812 70.7083 61.0208 71.25 58.9375C71.7917 56.8333 72.0625 54.4167 72.0625 51.6875Z"
+                fill="white"
+              />
+              
+        
+            </svg>
+                    
+      
+          </div>
           <p
             style="margin: 0px;"
           >
@@ -795,10 +987,54 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="454.1326533550638something unique lol"
+          id="6159.271099894335something unique lol"
           role="button"
           tabindex="-1"
         >
+          <div>
+            
+        
+            <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+            
+        
+        
+            <svg
+              fill="none"
+              height="20"
+              viewBox="0 0 120 103"
+              width="20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              
+          
+              <rect
+                fill="white"
+                height="103"
+                rx="29"
+                width="120"
+              />
+              
+          
+              <rect
+                fill="black"
+                height="90"
+                rx="29"
+                width="108"
+                x="6"
+                y="7"
+              />
+              
+          
+              <path
+                d="M48.25 59.25L57.2812 27.5H61.6562L59.125 39.8438L49.4062 73H45.0625L48.25 59.25ZM38.9062 27.5L46.0938 58.625L48.25 73H43.9375L32.9062 27.5H38.9062ZM73.3438 58.5938L80.375 27.5H86.4062L75.4062 73H71.0938L73.3438 58.5938ZM62.3125 27.5L71.0938 59.25L74.2812 73H69.9375L60.5625 39.8438L58 27.5H62.3125Z"
+                fill="white"
+              />
+              
+        
+            </svg>
+                   
+      
+          </div>
           <p
             style="margin: 0px;"
           >

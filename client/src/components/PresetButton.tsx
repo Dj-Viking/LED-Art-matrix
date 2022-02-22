@@ -27,8 +27,17 @@ interface PresetButtonProps {
 const PresetButton: React.FC<PresetButtonProps> = ({
   button
 }) => {
-  
-  const { id, role, presetName, displayName, animVarCoeff, testid, isActive, clickHandler, keyBinding } = button;
+  const { 
+    id, 
+    role, 
+    presetName, 
+    displayName, 
+    animVarCoeff, 
+    testid, 
+    isActive, 
+    clickHandler, 
+    keyBinding 
+  } = button;
   const dispatch = useDispatch();
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
@@ -70,12 +79,13 @@ const PresetButton: React.FC<PresetButtonProps> = ({
         onClick={(event: any) => {
           clickHandler(event);
           if (!deleteModeActive) {
-            dispatch(checkPresetButtonsActive(presetButtons, event.target.id));
+            dispatch(checkPresetButtonsActive(presetButtons, id));
             dispatch(presetSwitch(presetName));
             setStyle(presetName);
           } else {
+            console.log("event target", event);
             dispatch(setDeleteModalOpen(true));
-            dispatch(setDeleteModalContext({ btnId: event.target.id, displayName }));
+            dispatch(setDeleteModalContext({ btnId: id, displayName }));
           }
         }}
       > 
