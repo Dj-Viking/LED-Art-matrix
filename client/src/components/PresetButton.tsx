@@ -83,7 +83,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({
             dispatch(presetSwitch(presetName));
             setStyle(presetName);
           } else {
-            console.log("event target", event);
             dispatch(setDeleteModalOpen(true));
             dispatch(setDeleteModalContext({ btnId: id, displayName }));
           }
