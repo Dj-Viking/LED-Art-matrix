@@ -702,17 +702,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="3051.4331630194747something unique lol"
+          id="2616.4229803521644something unique lol"
           role="button"
           tabindex="-1"
         >
           <div>
             
-          
+        
             <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
             
-          
-          
+        
+        
             <svg
               fill="none"
               height="20"
@@ -721,7 +721,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               xmlns="http://www.w3.org/2000/svg"
             >
               
-            
+          
               <rect
                 fill="white"
                 height="103"
@@ -729,7 +729,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 width="120"
               />
               
-            
+          
               <rect
                 fill="black"
                 height="90"
@@ -739,13 +739,13 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 y="7"
               />
               
-            
+          
               <path
                 d="M64.7812 28.25V74H59V35.4688L47.3438 39.7188V34.5L63.875 28.25H64.7812Z"
                 fill="white"
               />
               
-          
+        
             </svg>
             
       
@@ -759,17 +759,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="6427.447053429274something unique lol"
+          id="223.77686155063526something unique lol"
           role="button"
           tabindex="-1"
         >
           <div>
             
-          
+        
             <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
             
-          
-          
+        
+        
             <svg
               fill="none"
               height="20"
@@ -778,7 +778,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               xmlns="http://www.w3.org/2000/svg"
             >
               
-            
+          
               <rect
                 fill="white"
                 height="103"
@@ -786,7 +786,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 width="120"
               />
               
-            
+          
               <rect
                 fill="black"
                 height="90"
@@ -796,13 +796,13 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 y="7"
               />
               
-            
+          
               <path
                 d="M75.5938 69.25V74H45.8125V69.8438L60.7188 53.25C62.5521 51.2083 63.9688 49.4792 64.9688 48.0625C65.9896 46.625 66.6979 45.3438 67.0938 44.2188C67.5104 43.0729 67.7188 41.9062 67.7188 40.7188C67.7188 39.2188 67.4062 37.8646 66.7812 36.6562C66.1771 35.4271 65.2812 34.4479 64.0938 33.7188C62.9062 32.9896 61.4688 32.625 59.7812 32.625C57.7604 32.625 56.0729 33.0208 54.7188 33.8125C53.3854 34.5833 52.3854 35.6667 51.7188 37.0625C51.0521 38.4583 50.7188 40.0625 50.7188 41.875H44.9375C44.9375 39.3125 45.5 36.9688 46.625 34.8438C47.75 32.7188 49.4167 31.0312 51.625 29.7812C53.8333 28.5104 56.5521 27.875 59.7812 27.875C62.6562 27.875 65.1146 28.3854 67.1562 29.4062C69.1979 30.4062 70.7604 31.8229 71.8438 33.6562C72.9479 35.4688 73.5 37.5938 73.5 40.0312C73.5 41.3646 73.2708 42.7188 72.8125 44.0938C72.375 45.4479 71.7604 46.8021 70.9688 48.1562C70.1979 49.5104 69.2917 50.8438 68.25 52.1562C67.2292 53.4688 66.1354 54.7604 64.9688 56.0312L52.7812 69.25H75.5938Z"
                 fill="white"
               />
               
-          
+        
             </svg>
             
       
@@ -816,17 +816,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="4545.201802615095something unique lol"
+          id="875.2159083000133something unique lol"
           role="button"
           tabindex="-1"
         >
           <div>
             
-          
+        
             <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
             
-          
-          
+        
+        
             <svg
               fill="none"
               height="20"
@@ -835,7 +835,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               xmlns="http://www.w3.org/2000/svg"
             >
               
-            
+          
               <rect
                 fill="white"
                 height="103"
@@ -843,7 +843,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 width="120"
               />
               
-            
+          
               <rect
                 fill="black"
                 height="90"
@@ -853,13 +853,13 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 y="7"
               />
               
-            
+          
               <path
                 d="M54.2188 48.4062H58.3438C60.3646 48.4062 62.0312 48.0729 63.3438 47.4062C64.6771 46.7188 65.6667 45.7917 66.3125 44.625C66.9792 43.4375 67.3125 42.1042 67.3125 40.625C67.3125 38.875 67.0208 37.4062 66.4375 36.2188C65.8542 35.0312 64.9792 34.1354 63.8125 33.5312C62.6458 32.9271 61.1667 32.625 59.375 32.625C57.75 32.625 56.3125 32.9479 55.0625 33.5938C53.8333 34.2188 52.8646 35.1146 52.1562 36.2812C51.4688 37.4479 51.125 38.8229 51.125 40.4062H45.3438C45.3438 38.0938 45.9271 35.9896 47.0938 34.0938C48.2604 32.1979 49.8958 30.6875 52 29.5625C54.125 28.4375 56.5833 27.875 59.375 27.875C62.125 27.875 64.5312 28.3646 66.5938 29.3438C68.6562 30.3021 70.2604 31.7396 71.4062 33.6562C72.5521 35.5521 73.125 37.9167 73.125 40.75C73.125 41.8958 72.8542 43.125 72.3125 44.4375C71.7917 45.7292 70.9688 46.9375 69.8438 48.0625C68.7396 49.1875 67.3021 50.1146 65.5312 50.8438C63.7604 51.5521 61.6354 51.9062 59.1562 51.9062H54.2188V48.4062ZM54.2188 53.1562V49.6875H59.1562C62.0521 49.6875 64.4479 50.0312 66.3438 50.7188C68.2396 51.4062 69.7292 52.3229 70.8125 53.4688C71.9167 54.6146 72.6875 55.875 73.125 57.25C73.5833 58.6042 73.8125 59.9583 73.8125 61.3125C73.8125 63.4375 73.4479 65.3229 72.7188 66.9688C72.0104 68.6146 71 70.0104 69.6875 71.1562C68.3958 72.3021 66.875 73.1667 65.125 73.75C63.375 74.3333 61.4688 74.625 59.4062 74.625C57.4271 74.625 55.5625 74.3438 53.8125 73.7812C52.0833 73.2188 50.5521 72.4062 49.2188 71.3438C47.8854 70.2604 46.8438 68.9375 46.0938 67.375C45.3438 65.7917 44.9688 63.9896 44.9688 61.9688H50.75C50.75 63.5521 51.0938 64.9375 51.7812 66.125C52.4896 67.3125 53.4896 68.2396 54.7812 68.9062C56.0938 69.5521 57.6354 69.875 59.4062 69.875C61.1771 69.875 62.6979 69.5729 63.9688 68.9688C65.2604 68.3438 66.25 67.4062 66.9375 66.1562C67.6458 64.9062 68 63.3333 68 61.4375C68 59.5417 67.6042 57.9896 66.8125 56.7812C66.0208 55.5521 64.8958 54.6458 63.4375 54.0625C62 53.4583 60.3021 53.1562 58.3438 53.1562H54.2188Z"
                 fill="white"
               />
               
-          
+        
             </svg>
             
       
@@ -873,17 +873,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="3432.6249696073673something unique lol"
+          id="7523.45421942491something unique lol"
           role="button"
           tabindex="-1"
         >
           <div>
             
-          
+        
             <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
             
-          
-          
+        
+        
             <svg
               fill="none"
               height="20"
@@ -892,7 +892,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               xmlns="http://www.w3.org/2000/svg"
             >
               
-            
+          
               <rect
                 fill="white"
                 height="103"
@@ -900,7 +900,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 width="120"
               />
               
-            
+          
               <rect
                 fill="black"
                 height="90"
@@ -910,13 +910,13 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 y="7"
               />
               
-            
+          
               <path
                 d="M76.5312 58.6875V63.4375H43.6562V60.0312L64.0312 28.5H68.75L63.6875 37.625L50.2188 58.6875H76.5312ZM70.1875 28.5V74H64.4062V28.5H70.1875Z"
                 fill="white"
               />
               
-          
+        
             </svg>
             
       
@@ -930,7 +930,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="8721.125111800347something unique lol"
+          id="5597.768247599146something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -987,7 +987,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="6159.271099894335something unique lol"
+          id="5166.281217637396something unique lol"
           role="button"
           tabindex="-1"
         >
