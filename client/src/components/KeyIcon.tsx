@@ -21,7 +21,8 @@ interface KeyIconProps {
 
 const KeyIcon: React.FC<KeyIconProps> = ({ type }): JSX.Element => {
 
-  function renderIcon(T: KeyIconProps["type"]): JSX.Element {
+  // @ts-ignore 
+  function renderIcon(T: KeyIconProps["type"]): JSX.Element | void {
     switch(T) {
       case "1": return <OneKeySvg />;
       case "2": return <TwoKeySvg />;
@@ -35,7 +36,6 @@ const KeyIcon: React.FC<KeyIconProps> = ({ type }): JSX.Element => {
       case "s": return <SKeySvg />;
       case "d": return <DKeySvg />;
       case "f": return <FKeySvg />;
-      default: return (<></>);
     }
   }
   return (

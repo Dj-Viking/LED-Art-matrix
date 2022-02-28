@@ -86,7 +86,7 @@ describe("Adding a preset error", () => {
     const slider = await screen.findByTestId("led-anim-variation");
     
     act(() => {
-      waves.dispatchEvent(TestService.createBubbledEvent("click"));
+      waves.dispatchEvent(TestService.createBubbledEvent("click", {}));
     });
 
     expect(slider).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe("Adding a preset error", () => {
 
     act(() => {
       fireEvent.change(slider, { target: { value: "10" }});
-      slider.dispatchEvent(TestService.createBubbledEvent("change"));
+      slider.dispatchEvent(TestService.createBubbledEvent("change", {}));
     });
 
     expect(modal_els.sliderVal.textContent).toBe("Animation Variation: 10");
@@ -107,13 +107,13 @@ describe("Adding a preset error", () => {
     //type in the name of the preset
     act(() => {
       user.type(modal_els.input, "new preset");
-      modal_els.input.dispatchEvent(TestService.createBubbledEvent("change"));
+      modal_els.input.dispatchEvent(TestService.createBubbledEvent("change", {}));
     });
 
     expect(modal_els.save).not.toBeDisabled();
 
     await act(async () => {
-      modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
+      modal_els.save.dispatchEvent(TestService.createBubbledEvent("click", {}));
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
