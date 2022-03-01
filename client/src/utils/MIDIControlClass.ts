@@ -88,10 +88,10 @@ class MIDIController implements IMIDIController {
   constructor(access: MIDIAccessRecord) {
     if (access) 
       this.access = access;
-      if (!!this.access && !!this.access.inputs.size) {
-        this.online = true;
-        this.setInputs(this.access.inputs);
-        this.setOutputs(this.access.outputs);
+    if (!!this.access && !!this.access.inputs.size) {
+      this.online = true;
+      this.setInputs(this.access.inputs);
+      this.setOutputs(this.access.outputs);
     }
   }
 
