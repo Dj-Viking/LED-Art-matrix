@@ -104,8 +104,8 @@ class MIDIController implements IMIDIController {
   private setOutputs(outputs: Map<string, MIDIOutput>): void {
 
     if (outputs.size > 0) {
-    const MIDI_OUTPUT_LIST_SIZE = outputs.size;
-    const entries = outputs.entries();
+      const MIDI_OUTPUT_LIST_SIZE = outputs.size;
+      const entries = outputs.entries();
 
       for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
         this.outputs.push(entries.next().value[1]);
@@ -116,8 +116,8 @@ class MIDIController implements IMIDIController {
   private setInputs(inputs: Map<string, MIDIInput>): void {
 
     if (inputs.size > 0) {
-    const MIDI_INPUT_LIST_SIZE = inputs.size;
-    const entries = inputs.entries();
+      const MIDI_INPUT_LIST_SIZE = inputs.size;
+      const entries = inputs.entries();
 
       for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
         this.inputs.push(entries.next().value[1]);
