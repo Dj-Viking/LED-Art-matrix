@@ -1,12 +1,7 @@
-interface MIDIPort {
-  IODevice: MIDIInput | MIDIOutput;
-  open: () => Promise<MIDIPort>
-  close: () => Promise<MIDIPort>
-} 
-interface MIDIConnectionEvent {
-  readonly port: MIDIPort
-}
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 /**
+ * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
     readonly    attribute DOMString               id;
     readonly    attribute DOMString?              manufacturer;
@@ -20,6 +15,29 @@ interface MIDIConnectionEvent {
     Promise<MIDIPort> close ();
 };
  */
+interface MIDIPort {
+  IODevice: MIDIInput | MIDIOutput;
+  open: () => Promise<MIDIPort>
+  close: () => Promise<MIDIPort>
+} 
+interface MIDIConnectionEvent {
+  isTrusted: boolean;
+  bubbles: boolean;
+  cancelBubble: boolean;
+  cancelable: boolean;
+  composed: boolean;
+  currentTarget: MIDIAccessRecord;
+  defaultPrevented: boolean;
+  eventPhase: number;
+  path: Array<any>;
+  readonly port: MIDIPort;
+  returnValue: boolean;
+  srcElement: MIDIAccessRecord;
+  target: MIDIAccessRecord;
+  timeStamp: number;
+  type: string | "statechange"
+}
+
 enum MIDIPortConnectionState {
   "open",
   "closed",
@@ -35,7 +53,7 @@ interface MIDIInput {
   state: "connected" | string;
   connection: MIDIPortConnectionState
   onmidimessage: () => unknown | null;
-  onstatechange: (event: MIDIConnectionEvent) => unknown | null;
+  onstatechange: onstatechangeHandler
 }
 interface MIDIOutput {
   connection: "closed" | "open" | string;
@@ -45,14 +63,14 @@ interface MIDIOutput {
   type: "output" | string;
   state: "connected" | string;
   version: string;
-  onstatechange: (event: MIDIConnectionEvent) => unknown | null;
+  onstatechange: onstatechangeHandler
   onmidimessage: () => unknown | null;
 }
-
-interface AccessRecord {
+type onstatechangeHandler = (event: MIDIConnectionEvent) => unknown | null;
+interface MIDIAccessRecord {
   readonly inputs: Map<string, MIDIInput>;
-  readonly outputs: Map<string, MIDIOutput>
-  onstatechange: null | unknown;
+  readonly outputs: Map<string, MIDIOutput>;
+  onstatechange: onstatechangeHandler;
   readonly sysexEnabled: boolean;
 }
 
@@ -63,11 +81,11 @@ interface IMIDIController {
 }
 
 class MIDIController implements IMIDIController {
-  private access = null as AccessRecord | null;
+  private access = null as MIDIAccessRecord | null;
   public inputs = [] as Array<MIDIInput>;
   public outputs = [] as Array<MIDIOutput>;
   public online = false;
-  constructor(access: AccessRecord) {
+  constructor(access: MIDIAccessRecord) {
     if (access) 
       this.access = access;
       if (!!this.access && !!this.access.inputs) {
@@ -77,12 +95,18 @@ class MIDIController implements IMIDIController {
     }
   }
 
+  public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
+    // @ts-ignore because for some reason in vscode
+    // this method doesn't exist on the navigator I guess..
+    return await window.navigator.requestMIDIAccess();
+  }
+
   private getOutputs(outputs: Map<string, MIDIOutput>): void {
 
+    if (outputs.size > 0) {
     const MIDI_OUTPUT_LIST_SIZE = outputs.size;
     const entries = outputs.entries();
 
-    if (MIDI_OUTPUT_LIST_SIZE > 0) {
       for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
         this.outputs.push(entries.next().value[1]);
       }
@@ -91,10 +115,10 @@ class MIDIController implements IMIDIController {
   }
   private getInputs(inputs: Map<string, MIDIInput>): void {
 
+    if (inputs.size > 0) {
     const MIDI_INPUT_LIST_SIZE = inputs.size;
     const entries = inputs.entries();
 
-    if (MIDI_INPUT_LIST_SIZE > 0) {
       for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
         this.inputs.push(entries.next().value[1]);
       }
@@ -104,4 +128,11 @@ class MIDIController implements IMIDIController {
 }
 
 
-export { MIDIController };
+export type {
+  MIDIConnectionEvent, 
+  MIDIInput, 
+  MIDIOutput, 
+  MIDIPort, 
+  MIDIAccessRecord
+};
+export { MIDIController, MIDIPortConnectionState };
