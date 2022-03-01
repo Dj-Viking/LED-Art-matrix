@@ -113,14 +113,14 @@ describe("test the save modal functionality", () => {
     // since they will appear asynchronously because of an API fetch that
     // gets data to then set the state of the presetbuttons array which then renders buttons
 
-    const awaitedButton = await screen.findByText(/v2/);
+    const awaitedButton = await screen.findByTestId("v2");
     expect(awaitedButton.classList).toHaveLength(1);
     expect(awaitedButton.classList[0]).toBe("preset-button-inactive");
     const buttonsParent = screen.getByTestId("buttons-parent");
-    expect(buttonsParent.children).toHaveLength(9);
+    expect(buttonsParent.children).toHaveLength(14);
 
     //start a preset to make the slider appear
-    const v2 = await screen.findByText(/v2/);
+    const v2 = await screen.findByTestId("v2");
     act(() => {
       v2.dispatchEvent(TestService.createBubbledEvent("click"));
     });
@@ -157,7 +157,7 @@ describe("test the save modal functionality", () => {
     });
 
     //test the active/inactive class changing when clicking different preset buttons
-    const waves = await screen.findByText(/waves/);
+    const waves = await screen.findByTestId("waves");
     expect(waves.classList).toHaveLength(1);
     expect(waves.classList[0]).toBe("preset-button-inactive");
 

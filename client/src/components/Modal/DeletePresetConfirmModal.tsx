@@ -5,9 +5,8 @@ import { AuthService as Auth } from "../../utils/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { MyRootState } from "../../types";
 import { deletePreset } from "../../actions/preset-button-actions";
-// import { toggleDeleteMode } from "../../actions/modal-actions";
 interface DeletePresetConfirmModalProps {
-  context: { btnId: string; };
+  context: { btnId: string; displayName: string; };
   onConfirm: React.MouseEventHandler<HTMLElement>;
   onCancel: React.MouseEventHandler<HTMLElement>;
 }
@@ -15,20 +14,16 @@ interface DeletePresetConfirmModalProps {
 const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({ 
   onConfirm,
   onCancel,
-  context: { btnId }
+  context: { btnId, displayName }
 }) => {
   const [ error, setError ] = useState<string>("");
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const dispatch = useDispatch();
 
-  // TODO: implement the api service for calling the api 
-  // to delete the preset we confirm on the modal for a particular preset
-  // that we clicked while delete mode was on
   async function deleteThePreset(): Promise<void> {
     try {
       await API.deletePreset(btnId, Auth.getToken() as string);
       dispatch(deletePreset(presetButtons, btnId));
-      // dispatch(toggleDeleteMode(presetButtons));
     } catch (error) {
       const err = error as Error;
       setError(err.message);
@@ -110,7 +105,7 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
         >
           YES
         </button>
-        <h1 style={{ color: "black" }}>DELETE PRESET ?</h1>
+        <h1 style={{ color: "black" }}>DELETE PRESET ? <p style={{ color: "black" }}>{displayName}</p></h1>
 
         {
           error.length

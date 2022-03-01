@@ -375,7 +375,7 @@ export interface ISetDeleteModalOpenAction {
 }
 export interface ISetDeleteModalContextAction {
   type: "SET_DELETE_MODAL_CONTEXT";
-  payload: { btnId: string; };
+  payload: { btnId: string; displayName: string; };
 }
 
 export interface ISetSaveModalContextAction {
@@ -404,7 +404,7 @@ export interface ISaveModalAction {
 export interface IDeleteModalState {
   deleteModalIsOpen: boolean;
   deleteModeActive: boolean;
-  deleteModalContext: { btnId: string; };
+  deleteModalContext: { btnId: string; displayName: string; };
 }
 
 export type IDeleteModalActionTypes = 

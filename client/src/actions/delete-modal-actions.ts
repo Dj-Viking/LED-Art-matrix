@@ -6,7 +6,7 @@ export const setDeleteModalOpen = (open: boolean): ISetDeleteModalOpenAction => 
     payload: open
   };
 };
-export const setDeleteModalContext = (context: { btnId: string; }): ISetDeleteModalContextAction => {
+export const setDeleteModalContext = (context: { btnId: string; displayName: string; }): ISetDeleteModalContextAction => {
   return {
     type: "SET_DELETE_MODAL_CONTEXT",
     payload: context

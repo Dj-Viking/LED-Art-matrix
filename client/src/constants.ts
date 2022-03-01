@@ -205,4 +205,6 @@ export const MY_INDEX_TO_KEY_MAP = {
   8: "r",
   9: "a",
   10: "s",
+  11: "d",
+  12: "f"
 } as MyIndexToKeyMap;

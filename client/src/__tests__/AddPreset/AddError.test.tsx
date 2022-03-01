@@ -70,7 +70,7 @@ describe("Adding a preset error", () => {
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2);
     const btnContainer = await screen.findByTestId("buttons-parent");
-    expect(btnContainer.children).toHaveLength(9);
+    expect(btnContainer.children).toHaveLength(14);
 
     // activate and change one of the constant/always provided presets and 
     // attempt to save it with some new parameter values
@@ -86,7 +86,7 @@ describe("Adding a preset error", () => {
     const slider = await screen.findByTestId("led-anim-variation");
     
     act(() => {
-      waves.dispatchEvent(TestService.createBubbledEvent("click"));
+      waves.dispatchEvent(TestService.createBubbledEvent("click", {}));
     });
 
     expect(slider).toBeInTheDocument();
@@ -95,7 +95,7 @@ describe("Adding a preset error", () => {
 
     act(() => {
       fireEvent.change(slider, { target: { value: "10" }});
-      slider.dispatchEvent(TestService.createBubbledEvent("change"));
+      slider.dispatchEvent(TestService.createBubbledEvent("change", {}));
     });
 
     expect(modal_els.sliderVal.textContent).toBe("Animation Variation: 10");
@@ -107,13 +107,13 @@ describe("Adding a preset error", () => {
     //type in the name of the preset
     act(() => {
       user.type(modal_els.input, "new preset");
-      modal_els.input.dispatchEvent(TestService.createBubbledEvent("change"));
+      modal_els.input.dispatchEvent(TestService.createBubbledEvent("change", {}));
     });
 
     expect(modal_els.save).not.toBeDisabled();
 
     await act(async () => {
-      modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
+      modal_els.save.dispatchEvent(TestService.createBubbledEvent("click", {}));
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
@@ -129,7 +129,7 @@ describe("Adding a preset error", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(9);
+    expect(btnContainer.children).toHaveLength(14);
     const error = await screen.findByTestId("add-error");
     expect(error).toBeInTheDocument();
 

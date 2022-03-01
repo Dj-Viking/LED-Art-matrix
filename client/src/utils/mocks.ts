@@ -27,6 +27,11 @@ export const MOCK_PRESETS = [
   {displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
   {displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
   {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
+  {displayName: "bogus1", presetName: "bogus1", animVarCoeff: "64", _id: "6200149468fe291e26584eaf"},
+  {displayName: "bogus2", presetName: "bogus2", animVarCoeff: "64", _id: "6200149468fe291e26584e14"},
+  {displayName: "bogus3", presetName: "bogus3", animVarCoeff: "64", _id: "6200149468fe291e26584e15"},
+  {displayName: "bogus4", presetName: "bogus4", animVarCoeff: "64", _id: "6200149468fe291e26584e16"},
+  {displayName: "bogus5", presetName: "bogus5", animVarCoeff: "64", _id: "6200149468fe291e26584e17"},
 ];
 export const MOCK_ADD_PRESET_RES = [
   {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
