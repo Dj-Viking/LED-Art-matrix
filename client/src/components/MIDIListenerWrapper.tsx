@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
 import { MIDIAccessRecord, MIDIConnectionEvent, MIDIController } from "../utils/MIDIControlClass";
 interface MIDIListenerWrapperProps {
@@ -10,10 +10,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
   const MyMIDIController = useRef<MIDIController>();
   const [midiAccess, setMidiAccess] = useState<MIDIAccessRecord>();
 
-  const useMIDIStateChange = useCallback((event: MIDIConnectionEvent): void => {
-    console.log(Date.now(), "event midi access onstatechange", event);
-  }, []);
-
 
   useEffect(() => {
     (async (): Promise<void> => {
@@ -21,7 +17,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         console.log("navigator in window");
         // define onstatechange callback to not be null
         const access = await MIDIController.requestMIDIAccess();
-        access.onstatechange = useMIDIStateChange;
+        access.onstatechange = function (event: MIDIConnectionEvent): void {
+          console.log(Date.now(), "event midi access onstatechange", event);
+        };
         setMidiAccess(access);// set state to watch for onstatechange event
         console.log("access onstatechange func", access.onstatechange);
         MyMIDIController.current = new MIDIController(access);
@@ -34,7 +32,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
       }
     })();
-  }, [midiAccess?.inputs.size, useMIDIStateChange]);
+  }, [midiAccess?.inputs.size]);
 
   return (
     <>

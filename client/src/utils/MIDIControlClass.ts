@@ -88,10 +88,10 @@ class MIDIController implements IMIDIController {
   constructor(access: MIDIAccessRecord) {
     if (access) 
       this.access = access;
-      if (!!this.access && !!this.access.inputs) {
+      if (!!this.access && !!this.access.inputs.size) {
         this.online = true;
-        this.getInputs(this.access.inputs);
-        this.getOutputs(this.access.outputs);
+        this.setInputs(this.access.inputs);
+        this.setOutputs(this.access.outputs);
     }
   }
 
@@ -101,7 +101,7 @@ class MIDIController implements IMIDIController {
     return await window.navigator.requestMIDIAccess();
   }
 
-  private getOutputs(outputs: Map<string, MIDIOutput>): void {
+  private setOutputs(outputs: Map<string, MIDIOutput>): void {
 
     if (outputs.size > 0) {
     const MIDI_OUTPUT_LIST_SIZE = outputs.size;
@@ -113,7 +113,7 @@ class MIDIController implements IMIDIController {
     }
 
   }
-  private getInputs(inputs: Map<string, MIDIInput>): void {
+  private setInputs(inputs: Map<string, MIDIInput>): void {
 
     if (inputs.size > 0) {
     const MIDI_INPUT_LIST_SIZE = inputs.size;
