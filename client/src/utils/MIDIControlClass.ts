@@ -68,8 +68,8 @@ interface MIDIOutput {
 }
 type onstatechangeHandler = (event: MIDIConnectionEvent) => unknown | null;
 interface MIDIAccessRecord {
-    readonly inputs: Map<string, MIDIInput>;
-    readonly outputs: Map<string, MIDIOutput>;
+    readonly inputs: Map<MIDIInput["id"], MIDIInput>;
+    readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
     onstatechange: onstatechangeHandler | null;
     readonly sysexEnabled: boolean;
 }

@@ -1,6 +1,8 @@
 import { ApiService, IApiService } from "./ApiService";
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
+import { MIDIAccessRecord, MIDIInput, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
+import { keyGen } from "./keyGen";
 
 /**
  * helper class for the testing environment
@@ -42,6 +44,46 @@ export class TestService extends ApiService implements IApiService {
     Object.assign(event, props);
     return event;
   };
+
+  public static makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput>{
+    let newMap = new Map<MIDIInput["id"], MIDIInput>();
+
+    for (let i = 0; i < 3; i++) {
+
+      newMap?.set(i.toString(), {
+        id: keyGen(),
+        manufacturer: "holy bajeebus",
+        name: "holy jeebus MIDI power thing",
+        type: "input",
+        version: "over 9000",
+        state: "connected",
+        connection: MIDIPortConnectionState.closed,
+        onmidimessage: () => "IM A MIDI MESSAGE",
+        onstatechange: function () {
+          return "STATE CHANGED!!!!";
+        }
+      } as MIDIInput);
+    }
+    return newMap;
+  }
+
+  public static makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput>{
+    const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
+    for (let i = 0; i < 3; i++) {
+
+      newMap?.set(i.toString(), {
+        id: keyGen(),
+        state: "kdfkdjf",
+        connection: "closed",
+        name: "kdjfkjdj",
+        type: "output",
+        version: "kdfkjdj",
+        onstatechange: (_event: any) => { return "somehting!! from state change event output";},
+        onmidimessage: () => { return "somehting!! from output midi message";},
+      } as MIDIOutput);
+    }
+    return newMap;
+  }
 
   public static signTestToken(args: ISignTestTokenArgs): string {
     const { 

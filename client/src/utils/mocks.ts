@@ -2,6 +2,8 @@
 // import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
 import { keyGen } from "./keyGen";
+import { MIDIInput, MIDIOutput } from "./MIDIControlClass";
+import { TestService } from "./TestServiceClass";
 const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
@@ -173,3 +175,5 @@ export const SIGNUP_MOCK_RESULT = {
 //     return res(ctx.json(SIGNUP_MOCK_RESULT));
 //   })
 // );
+export const MOCK_ACCESS_INPUTS: Map<MIDIInput["id"], MIDIInput> = TestService.makeFakeMIDIInputs();
+export const MOCK_ACCESS_OUTPUTS: Map<MIDIOutput["id"], MIDIOutput> = TestService.makeFakeMIDIOutputs();

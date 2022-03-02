@@ -208,3 +208,4 @@ export const MY_INDEX_TO_KEY_MAP = {
   11: "d",
   12: "f"
 } as MyIndexToKeyMap;
+export const LOCATION_DISPLAY_ID = "location-display";
