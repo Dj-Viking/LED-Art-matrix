@@ -91,13 +91,10 @@ class MIDIController implements IMIDIController {
             this.access = access;
         if (!!this.access && !!this.access.inputs.size) {
             this.online = true;
-            this.setInputs(access.inputs);
-            this.setOutputs(access.outputs);
+            this._setInputs(access.inputs);
+            this._setOutputs(access.outputs);
+            this._setInputOnMidiMessageFunc("MESSAGE");
         }
-    }
-
-    public getInstance(): this {
-        return this;
     }
 
     public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
@@ -105,12 +102,27 @@ class MIDIController implements IMIDIController {
         // this method doesn't exist on the navigator I guess..
         return window.navigator.requestMIDIAccess();
     }
+    
+    public getInstance(): this {
+        return this;
+    }
+
 
     public getAccess(): MIDIAccessRecord {
         return this.access as MIDIAccessRecord;
     }
+    private _setInputOnMidiMessageFunc(message: string): void {
+        const MIDI_DEVICE_LIST_SIZE = this.access?.inputs.size as number;
 
-    private setOutputs(outputs: Map<string, MIDIOutput>): void {
+        for (let i = 0; i < MIDI_DEVICE_LIST_SIZE; i++) {
+            this.access!.inputs.values().next().value.onmidimessage = function (_event: any) {
+                console.log("message from CLASS MIDI MESSAGE LISTENER", message, _event);
+                // DO SOMETHING
+            };
+        }
+    }
+
+    private _setOutputs(outputs: Map<string, MIDIOutput>): void {
 
         if (outputs.size > 0) {
             const MIDI_OUTPUT_LIST_SIZE = outputs.size;
@@ -122,7 +134,7 @@ class MIDIController implements IMIDIController {
         }
 
     }
-    private setInputs(inputs: Map<string, MIDIInput>): void {
+    private _setInputs(inputs: Map<string, MIDIInput>): void {
 
         if (inputs.size > 0) {
             const MIDI_INPUT_LIST_SIZE = inputs.size;
