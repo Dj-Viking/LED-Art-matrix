@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { MIDIAccessRecord, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 
 export type MyJwtData = IJwtData;
@@ -311,6 +312,7 @@ export interface ILogoutAction {
   payload: false;
 }
 export interface MyRootState {
+  accessRecordState: IAccessRecordState;
   saveModalState: ISaveModalState;
   deleteModalState: IDeleteModalState;
   ledState: ILedState;
@@ -407,21 +409,46 @@ export interface IDeleteModalState {
   deleteModalContext: { btnId: string; displayName: string; };
 }
 
-export type IDeleteModalActionTypes = 
+export type UDeleteModalActionTypes = 
 | ISetDeleteModalOpenAction["type"]
 | "TOGGLE_DELETE_MODE"
 | ISetDeleteModalContextAction["type"];
 
-export type IDeleteModalActionPayloads = 
+export type UDeleteModalActionPayloads = 
 | ISetDeleteModalOpenAction["payload"]
 | boolean
 | ISetDeleteModalContextAction["payload"];
 
 export interface IDeleteModalAction {
-  type: IDeleteModalActionTypes,
-  payload: IDeleteModalActionPayloads
+  type: UDeleteModalActionTypes,
+  payload: UDeleteModalActionPayloads
 }
 export interface IDeletePresetAction {
   type: "DELETE_PRESET";
   payload: IPresetButton[];
+}
+
+export interface IAccessRecordState {
+  inputs: Array<MIDIInput>;
+  outputs: Array<MIDIOutput>;
+  online: boolean;
+  onstatechange: onstatechangeHandler | null;
+  sysexEnabled: boolean;
+}
+
+export type UAccessRecordActionTypes = 
+| "SET_ACCESS";
+
+export interface ISetAccessRecordActionObj {
+  type: "SET_ACCESS",
+  payload: IAccessRecordState
+}
+
+export type ISetAccessRecordAction = (access: MIDIAccessRecord) => ISetAccessRecordActionObj 
+
+export type UAccessRecordActionPayloads = 
+| ISetAccessRecordActionObj["payload"];
+export interface IAccessRecordAction {
+  type: UAccessRecordActionTypes;
+  payload: UAccessRecordActionPayloads;
 }

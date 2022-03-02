@@ -8,6 +8,7 @@ import loginFormReducer from "./loginFormReducer";
 import signupFormReducer from "./signupFormReducer";
 import artScrollerReducer from "./artScrollerReducer";
 import presetButtonsListReducer from "./presetButtonsListReducer";
+import accessRecordReducer from "./accessRecordReducer";
 
 const allReducers = combineReducers(
   {
@@ -19,7 +20,8 @@ const allReducers = combineReducers(
     signupFormState: signupFormReducer,
     artScrollerState: artScrollerReducer,
     deleteModalState: deleteModalReducer,
-    saveModalState: saveModalReducer 
+    saveModalState: saveModalReducer,
+    accessRecordState: accessRecordReducer
   }
 );
 
