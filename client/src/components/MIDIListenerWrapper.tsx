@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIConnectionEvent, MIDIController } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
+import { animVarCoeffChange } from "../actions/led-actions";
 
 interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[]
@@ -52,8 +53,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             };
                             
                             // iterate through the input map's device list by the value iterator returned from new Map().values()
-                            access.inputs.values().next().value.onmidimessage = function (_event: any) {
-                                // console.log("on midi message!!", event);
+                            access.inputs.values().next().value.onmidimessage = function (_event: MIDIMessageEvent) {
+                                console.log("on midi message!!", _event.data);
+                                // @ts-ignore
+                                dispatch(animVarCoeffChange(_event.data[2]));
                                 dispatch(setAccess(new MIDIController(access).getAccess()));
                             };
 

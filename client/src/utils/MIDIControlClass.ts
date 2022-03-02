@@ -135,9 +135,9 @@ class MIDIController implements IMIDIController {
         const MIDI_DEVICE_LIST_SIZE = this.access?.inputs.size as number;
 
         for (let i = 0; i < MIDI_DEVICE_LIST_SIZE; i++) {
-            this.access!.inputs.values().next().value.onmidimessage = function (_event: any) {
+            this.access!.inputs.values().next().value.onmidimessage = function (_event: MIDIMessageEvent) {
                 // DO SOMETHING
-                console.log("message from CLASS MIDI MESSAGE LISTENER", _message, _event);
+                console.log("event data", _event.data);
             };
         }
     }
