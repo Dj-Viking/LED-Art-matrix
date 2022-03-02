@@ -5,7 +5,7 @@ import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { FORGOT_MOCK_INPUT, FORGOT_MOCK_RES, FORGOT_MOCK_RES_ERROR, } from "../../utils/mocks";
+import { FORGOT_MOCK_INPUT, FORGOT_MOCK_RES, FORGOT_MOCK_RES_ERROR, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, } from "../../utils/mocks";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import "@types/jest";
@@ -14,6 +14,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 const tapi = new TestService("alive");
 
 const store = createStore(
@@ -29,6 +30,18 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // eslint-disable-next-line
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 //TODO IMPLEMENT WINDOW NAVIGATION window.location.assign() for signup test
 

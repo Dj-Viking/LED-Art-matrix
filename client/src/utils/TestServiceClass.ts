@@ -1,7 +1,7 @@
 import { ApiService, IApiService } from "./ApiService";
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
-import { MIDIInput, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
+import { MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
 import { keyGen } from "./keyGen";
 
 /**
@@ -49,16 +49,18 @@ export class TestService extends ApiService implements IApiService {
     let newMap = new Map<MIDIInput["id"], MIDIInput>();
 
     for (let i = 0; i < 3; i++) {
-
+      const id = keyGen();
       newMap?.set(i.toString(), {
-        id: keyGen(),
+        id,
         manufacturer: "holy bajeebus",
         name: "holy jeebus MIDI power thing",
         type: "input",
         version: "over 9000",
         state: "connected",
         connection: MIDIPortConnectionState.closed,
-        onmidimessage: () => "IM A MIDI MESSAGE",
+        onmidimessage: (event: MIDIMessageEvent) => {
+          console.log("event data", event.data);
+        },
         onstatechange: function () {
           return "STATE CHANGED!!!!";
         }
@@ -70,16 +72,18 @@ export class TestService extends ApiService implements IApiService {
   public static makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput>{
     const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
     for (let i = 0; i < 3; i++) {
-
+      const id = keyGen();
       newMap?.set(i.toString(), {
-        id: keyGen(),
-        state: "kdfkdjf",
+        id: id,
+        state: "connected",
         connection: "closed",
         name: "kdjfkjdj",
         type: "output",
         version: "kdfkjdj",
         onstatechange: (_event: any) => { return "somehting!! from state change event output";},
-        onmidimessage: () => { return "somehting!! from output midi message";},
+        onmidimessage: (_event: MIDIMessageEvent) => {
+          // console.log("event data", event.data);
+        },
       } as MIDIOutput);
     }
     return newMap;

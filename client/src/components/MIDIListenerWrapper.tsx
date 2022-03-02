@@ -28,9 +28,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 // console.log("navigator in window");
                 // define onstatechange callback to not be null
                 const access = await MIDIController.requestMIDIAccess();
-                console.log("before dispatch");
+                // console.log("before dispatch");
                 dispatch(setAccess(access));
-                console.log("after dispatch");
+                // console.log("after dispatch");
                 setSize(access.inputs.size);
                 if (size > 0) {
                     setSize(access.inputs.size);
@@ -52,8 +52,8 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             };
                             
                             // iterate through the input map's device list by the value iterator returned from new Map().values()
-                            access.inputs.values().next().value.onmidimessage = function (event: any) {
-                                console.log("on midi message!!", event);
+                            access.inputs.values().next().value.onmidimessage = function (_event: any) {
+                                // console.log("on midi message!!", event);
                                 dispatch(setAccess(new MIDIController(access).getAccess()));
                             };
 

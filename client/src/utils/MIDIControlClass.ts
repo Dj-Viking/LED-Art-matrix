@@ -43,6 +43,22 @@ enum MIDIPortConnectionState {
     "closed",
     "pending"
 };
+interface MIDIMessageEvent {
+    isTrusted: boolean;
+    bubbles: boolean;
+    cancelBubble: boolean;
+    composed: boolean;
+    currentTarget: MIDIInput;
+    data: Uint8Array;
+    defaultPrevented: boolean;
+    eventPhase: number;
+    path: Array<any>;
+    returnValue: boolean;
+    srcElement: MIDIInput;
+    target: MIDIInput;
+    timeStamp: number;
+    type: "midimessage"
+}
 
 interface MIDIInput {
     id: string;
@@ -52,7 +68,7 @@ interface MIDIInput {
     version: string;
     state: "connected" | string;
     connection: MIDIPortConnectionState
-    onmidimessage: () => unknown | null;
+    onmidimessage: (event: MIDIMessageEvent) => unknown | null;
     onstatechange: onstatechangeHandler
 }
 interface MIDIOutput {
@@ -64,7 +80,7 @@ interface MIDIOutput {
     state: "connected" | string;
     version: string;
     onstatechange: onstatechangeHandler
-    onmidimessage: () => unknown | null;
+    onmidimessage: (event: MIDIMessageEvent) => unknown | null;
 }
 type onstatechangeHandler = (event: MIDIConnectionEvent) => unknown | null;
 interface MIDIAccessRecord {
@@ -93,7 +109,10 @@ class MIDIController implements IMIDIController {
             this.online = true;
             this._setInputs(access.inputs);
             this._setOutputs(access.outputs);
-            this._setInputOnMidiMessageFunc("MESSAGE");
+
+            if (typeof this.inputs![0].onmidimessage !== "function") {
+                this._setInputOnMidiMessageFunc("MESSAGE");
+            }
         }
     }
 
@@ -111,12 +130,12 @@ class MIDIController implements IMIDIController {
     public getAccess(): MIDIAccessRecord {
         return this.access as MIDIAccessRecord;
     }
-    private _setInputOnMidiMessageFunc(message: string): void {
+    private _setInputOnMidiMessageFunc(_message: string): void {
         const MIDI_DEVICE_LIST_SIZE = this.access?.inputs.size as number;
 
         for (let i = 0; i < MIDI_DEVICE_LIST_SIZE; i++) {
             this.access!.inputs.values().next().value.onmidimessage = function (_event: any) {
-                console.log("message from CLASS MIDI MESSAGE LISTENER", message, _event);
+                // console.log("message from CLASS MIDI MESSAGE LISTENER", message, _event);
                 // DO SOMETHING
             };
         }
@@ -155,6 +174,7 @@ export type {
     MIDIOutput,
     MIDIPort,
     MIDIAccessRecord,
-    onstatechangeHandler
+    onstatechangeHandler,
+    MIDIMessageEvent
 };
 export { MIDIController, MIDIPortConnectionState };
