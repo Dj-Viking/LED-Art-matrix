@@ -33,29 +33,38 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 // console.log("after dispatch");
                 setSize(access.inputs.size);
                 if (size > 0) {
-                    access.onstatechange = function (event: MIDIConnectionEvent): void {
+                    access.onstatechange = function (_event: MIDIConnectionEvent): void {
                         // console.log(Date.now(), "event midi access onstatechange", event);
                         //set up the onstatechange for the inputs of the access object whose onstatechange function event listener was ran
                         for (let i = 0; i < access.inputs.size; i++) {
                             // console.log("iterating through the inputs to set their onstatechange functions", access.inputs.values().next().value);
 
+                            // iterate through the input map's device list by the value iterator returned from new Map().values()
+                            // and define each input's on message functions
                             access.inputs.values().next().value.onstatechange = function (event: any) {
-                                // console.log(Date.now(), "onstatechange event fired on MIDIInput", event);
-
+                                console.log(Date.now(), "onstatechange event fired on MIDIInput", event);
+                                
                                 dispatch(setAccess(new MIDIController(access).getAccess()));
-
+                                
                                 // console.log("my midi controller access state", accessState);
+                            };
+                            
+                            // iterate through the input map's device list by the value iterator returned from new Map().values()
+                            access.inputs.values().next().value.onmidimessage = function (event: any) {
+                                console.log("on midi message!!", event);
+                                dispatch(setAccess(new MIDIController(access).getAccess()));
                             };
 
                         }
-                        dispatch(setAccess(access));
+                        dispatch(setAccess(new MIDIController(access).getAccess()));
                         MyMIDIController.current = new MIDIController(access).getInstance();
-                        // console.log("get instance ref", MyMIDIController.current.getInstance());
-                        // console.log("my midi controller in for loop", MyMIDIController);
-                        // console.log("my midi controller inputs forlooop after access onstatechange", MyMIDIController.current.inputs);
-                        dispatch(setAccess(access));
+                        console.log("get instance ref", MyMIDIController.current.getInstance());
+                        console.log("my midi controller in for loop", MyMIDIController, "access state", accessState);
+                        console.log("my midi controller inputs forlooop after access onstatechange", MyMIDIController.current.inputs);
+                        dispatch(setAccess(MyMIDIController.current.getAccess()));
                     };
-                    MyMIDIController.current = new MIDIController(access);
+                    MyMIDIController.current = new MIDIController(access).getInstance();
+                    dispatch(setAccess(MyMIDIController.current.getAccess()));
 
                     // if state change event happened update the MIDI controller state
                     // if () {

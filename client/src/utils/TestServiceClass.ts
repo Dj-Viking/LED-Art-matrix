@@ -1,7 +1,7 @@
 import { ApiService, IApiService } from "./ApiService";
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
-import { MIDIAccessRecord, MIDIInput, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
+import { MIDIInput, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
 import { keyGen } from "./keyGen";
 
 /**
