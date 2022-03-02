@@ -29,7 +29,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
       const preset = await API.getDefaultPreset(Auth.getToken() as string) as IDBPreset;
       return preset;
       // console.error(`preset returned was not a string! it's value was ${preset}`);
-    } catch (error) {}
+    } catch (error) { }
   }, []);
 
   // function that sets the starting preset name of the user logging on
@@ -50,7 +50,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
     })();
     return void 0;
   }, [getDefaultPreset, dispatch]);
-  
+
   //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
   useEffect(() => {
     styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
@@ -69,7 +69,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
 
   createLedObjectsArray(33);
   createLedRowsArray(33);
-  
+
   return (
     <>
       <main className="box-style">
@@ -85,7 +85,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
         >
           {
             rows.map((row, index) => (
-              <div 
+              <div
                 key={`row${index + 1}`}
                 // eslint-disable-next-line
                 // @ts-ignore
@@ -96,7 +96,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
                     <div
                       data-testid={`led${led.ledNumber}-${row.rowNumber}`}
                       id={`led${led.ledNumber}-${row.rowNumber}`}
-                      key={`led${led.ledNumber}-${keyGen()}`} 
+                      key={`led${led.ledNumber}-${keyGen()}`}
                       className={`led${led.ledNumber}-${row.rowNumber}${presetName}`}
                     />
                   ))

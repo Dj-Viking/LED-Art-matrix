@@ -98,7 +98,7 @@ class MIDIController implements IMIDIController {
   public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
     // @ts-ignore because for some reason in vscode
     // this method doesn't exist on the navigator I guess..
-    return await window.navigator.requestMIDIAccess();
+    return window.navigator.requestMIDIAccess();
   }
 
   private setOutputs(outputs: Map<string, MIDIOutput>): void {

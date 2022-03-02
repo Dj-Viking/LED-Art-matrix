@@ -18,10 +18,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         // define onstatechange callback to not be null
         const access = await MIDIController.requestMIDIAccess();
         access.onstatechange = function (event: MIDIConnectionEvent): void {
+          setMidiAccess(access);  
           console.log(Date.now(), "event midi access onstatechange", event);
+          MyMIDIController.current = new MIDIController(access);
         };
-        setMidiAccess(access);// set state to watch for onstatechange event
-        console.log("access onstatechange func", access.onstatechange);
+        setMidiAccess(access);  
         MyMIDIController.current = new MIDIController(access);
 
         console.log("my midi controller", MyMIDIController);
