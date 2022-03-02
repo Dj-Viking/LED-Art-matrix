@@ -109,9 +109,10 @@ class MIDIController implements IMIDIController {
             this.online = true;
             this._setInputs(access.inputs);
             this._setOutputs(access.outputs);
-
+            // console.log("this.access", this.access, this.inputs, this.outputs);
             if (typeof this.inputs![0].onmidimessage !== "function") {
                 this._setInputOnMidiMessageFunc("MESSAGE");
+                // console.log("this.access asdf", this.access, this.inputs, this.outputs);
             }
         }
     }
@@ -135,8 +136,8 @@ class MIDIController implements IMIDIController {
 
         for (let i = 0; i < MIDI_DEVICE_LIST_SIZE; i++) {
             this.access!.inputs.values().next().value.onmidimessage = function (_event: any) {
-                // console.log("message from CLASS MIDI MESSAGE LISTENER", message, _event);
                 // DO SOMETHING
+                console.log("message from CLASS MIDI MESSAGE LISTENER", _message, _event);
             };
         }
     }

@@ -36,7 +36,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     setSize(access.inputs.size);
                     dispatch(setAccess(new MIDIController(access).getAccess()));
                     access.onstatechange = function (_event: MIDIConnectionEvent): void {
-                        // console.log(Date.now(), "event midi access onstatechange", event);
+                        console.log(Date.now(), "event midi access onstatechange", _event);
                         //set up the onstatechange for the inputs of the access object whose onstatechange function event listener was ran
                         for (let i = 0; i < access.inputs.size; i++) {
                             // console.log("iterating through the inputs to set their onstatechange functions", access.inputs.values().next().value);
