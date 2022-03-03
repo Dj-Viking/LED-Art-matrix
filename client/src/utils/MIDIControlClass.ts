@@ -60,6 +60,11 @@ interface MIDIMessageEvent {
     type: "midimessage"
 }
 
+// type MIDIEventHandlers  = 
+//     null | ((event: MIDIMessageEvent) => unknown) |
+//     null | ((event: MIDIConnectionEvent) => unknown) | undefined | unknown;
+
+
 interface MIDIInput {
     id: string;
     manufacturer: string;
@@ -68,8 +73,8 @@ interface MIDIInput {
     version: string;
     state: "connected" | string;
     connection: MIDIPortConnectionState
-    onmidimessage: (event: MIDIMessageEvent) => unknown | null;
-    onstatechange: onstatechangeHandler
+    onmidimessage: (event: MIDIMessageEvent) => unknown | null | undefined;
+    onstatechange: onstatechangeHandler | undefined;
 }
 interface MIDIOutput {
     connection: "closed" | "open" | string;
@@ -80,9 +85,9 @@ interface MIDIOutput {
     state: "connected" | string;
     version: string;
     onstatechange: onstatechangeHandler
-    onmidimessage: (event: MIDIMessageEvent) => unknown | null;
+    onmidimessage: null | ((event: MIDIMessageEvent) => unknown);
 }
-type onstatechangeHandler = (event: MIDIConnectionEvent) => unknown | null;
+type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
 interface MIDIAccessRecord {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
@@ -95,6 +100,7 @@ interface IMIDIController {
     outputs?: Array<MIDIOutput>;
     online?: boolean;
     getInstance: () => this;
+    getAccess: () => MIDIAccessRecord;
 }
 
 class MIDIController implements IMIDIController {
@@ -102,18 +108,15 @@ class MIDIController implements IMIDIController {
     public inputs = [] as Array<MIDIInput> | undefined;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
-    constructor(access: MIDIAccessRecord) {
+    constructor(
+        access: MIDIAccessRecord, 
+    ) {
         if (access)
             this.access = access;
         if (!!this.access && !!this.access.inputs.size) {
             this.online = true;
             this._setInputs(access.inputs);
             this._setOutputs(access.outputs);
-            // console.log("this.access", this.access, this.inputs, this.outputs);
-            if (typeof this.inputs![0].onmidimessage !== "function") {
-                this._setInputOnMidiMessageFunc("MESSAGE");
-                // console.log("this.access asdf", this.access, this.inputs, this.outputs);
-            }
         }
     }
 
@@ -131,16 +134,6 @@ class MIDIController implements IMIDIController {
     public getAccess(): MIDIAccessRecord {
         return this.access as MIDIAccessRecord;
     }
-    private _setInputOnMidiMessageFunc(_message: string): void {
-        const MIDI_DEVICE_LIST_SIZE = this.access?.inputs.size as number;
-
-        for (let i = 0; i < MIDI_DEVICE_LIST_SIZE; i++) {
-            this.access!.inputs.values().next().value.onmidimessage = function (_event: MIDIMessageEvent) {
-                // DO SOMETHING
-                console.log("event data", _event.data);
-            };
-        }
-    }
 
     private _setOutputs(outputs: Map<string, MIDIOutput>): void {
 
@@ -151,10 +144,18 @@ class MIDIController implements IMIDIController {
             for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
                 this.outputs!.push(entries.next().value[1]);
             }
+            // for (let j = 0; j < this.outputs!.length; j++) {
+            //     this.outputs![j].onstatechange = function (event: MIDIConnectionEvent) {
+            //         console.log("output onstatechange event", event);
+            //     };
+            //     this.outputs![j].onmidimessage = function (event: MIDIMessageEvent) {
+            //         console.log("output midimessage event", event);
+            //     };
+            // }
         }
 
     }
-    private _setInputs(inputs: Map<string, MIDIInput>): void {
+    public _setInputs(inputs: Map<string, MIDIInput>): void {
 
         if (inputs.size > 0) {
             const MIDI_INPUT_LIST_SIZE = inputs.size;
@@ -166,6 +167,37 @@ class MIDIController implements IMIDIController {
         }
 
     }
+
+    public setInputCbs(
+        // _onmidicb: (event: MIDIMessageEvent) => unknown, 
+        // _onstatechangecb: (event: MIDIConnectionEvent) => unknown
+    ): this {
+        console.log("SETTING INPUT CBS I THINK");
+        
+        // this following loop sort of is confirming my theory that this class can
+            // have ownership of what's passed to it maybe?? not too sure if things are passed by memory values or references to class constructors
+            // in JS
+        for (let j = 0; j < this.inputs!.length; j++) {
+            
+            //this effectively sets connection "open" somehow?? to send/recieve with hardware
+            // this.inputs![j].onstatechange = _onstatechangecb;
+            // uncomment below and comment out the line above to see midi message in the browser!!!
+            this.inputs![j].onstatechange = function (event: MIDIConnectionEvent) {
+                console.log("input onstatechange event", event);
+            };
+            
+            //this effectively sets connection "open" somehow?? to send/recieve with hardware
+            // this.inputs![j].onmidimessage = _onmidicb;
+            // uncomment below and comment out the line above to see midi message in the browser!!!
+            this.inputs![j].onmidimessage = function (event: MIDIMessageEvent) {
+                console.log("input midimessage event hello world!!!", event);
+            };
+        }
+                    
+        console.log("SETTING INPUT CBS I THINK", this);
+        return this;
+    }
+
 }
 
 

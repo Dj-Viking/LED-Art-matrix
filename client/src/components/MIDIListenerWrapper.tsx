@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/MIDIControlClass";
+import { MIDIAccessRecord, MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
@@ -16,79 +16,56 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const dispatch = useDispatch();
     const [size, setSize] = useState(0);
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
-    const MyMIDIController = useRef<MIDIController>();
-    // TODO: extract access state object to redux
-
-    // function checkDepDiff (newDep: any, oldDep: any): boolean {
-    //   return JSON.stringify(newDep) !== JSON.stringify(oldDep);
-    // }
 
     useEffect(() => {
         (async (): Promise<void> => {
             if ("navigator" in window) {
-                // console.log("navigator in window");
-                // define onstatechange callback to not be null
                 const access = await MIDIController.requestMIDIAccess();
-                // console.log("before dispatch");
-                dispatch(setAccess(access));
-                // console.log("after dispatch");
+                dispatch(setAccess(new MIDIController(access).getInstance()));
                 setSize(access.inputs.size);
                 if (size > 0) {
+                    console.log("INPUTS BIGGER THAN ZERO", size);
                     setSize(access.inputs.size);
-                    dispatch(setAccess(new MIDIController(access).getAccess()));
+                    dispatch(setAccess(new MIDIController(access).getInstance()));
+                    // define onstatechange callback to not be null
                     access.onstatechange = function (_event: MIDIConnectionEvent): void {
-                        console.log(Date.now(), "event midi access onstatechange", _event);
+                        console.log(Date.now(), "event midi access onstatechange", _event.target);
                         //set up the onstatechange for the inputs of the access object whose onstatechange function event listener was ran
-                        for (let i = 0; i < access.inputs.size; i++) {
-                            // console.log("iterating through the inputs to set their onstatechange functions", access.inputs.values().next().value);
-
-                            // iterate through the input map's device list by the value iterator returned from new Map().values()
-                            // and define each input's on message functions
-                            access.inputs.values().next().value.onstatechange = function (event: any) {
-                                console.log(Date.now(), "onstatechange event fired on MIDIInput", event);
-                                
-                                dispatch(setAccess(new MIDIController(access).getAccess()));
-                                
-                                // console.log("my midi controller access state", accessState);
-                            };
-                            
-                            // iterate through the input map's device list by the value iterator returned from new Map().values()
-                            access.inputs.values().next().value.onmidimessage = function (_event: MIDIMessageEvent) {
-                                console.log("on midi message!!", _event.data);
-                                // @ts-ignore
-                                dispatch(animVarCoeffChange(_event.data[2]));
-                                dispatch(setAccess(new MIDIController(access).getAccess()));
-                            };
-
-                        }
-                        dispatch(setAccess(new MIDIController(access).getAccess()));
-                        MyMIDIController.current = new MIDIController(access).getInstance();
-                        console.log("get instance ref", MyMIDIController.current.getInstance());
-                        console.log("my midi controller in for loop", MyMIDIController, "access state", accessState);
-                        console.log("my midi controller inputs forlooop after access onstatechange", MyMIDIController.current.inputs);
-                        dispatch(setAccess(MyMIDIController.current.getAccess()));
+                        const onstatechangeAccess = new MIDIController(_event.target).getInstance();
+                        // TODO: NEED TO PASS DISPATCH INSIDE A CALLBACK
+                        onstatechangeAccess.setInputCbs(
+                            // function (midi_event: MIDIMessageEvent) {
+                            //     dispatch(animVarCoeffChange((midi_event.data[2]).toString()));
+                            //     console.log("MIDI EVENT SET INPUT CB CALLBACK", midi_event);
+                            // }, 
+                            // function(connection_event: MIDIConnectionEvent) {
+                            //     console.log("CONNECTION EVENT SET INPUT CB CALLBACK", connection_event);
+                            // }
+                        );
+                        console.log("my midi controller in for loop", "access state line 44", onstatechangeAccess);
+                        dispatch(setAccess(onstatechangeAccess));
+                        console.log("my midi controller in for loop", "access state line 46", accessState);
                     };
-                    MyMIDIController.current = new MIDIController(access).getInstance();
-                    dispatch(setAccess(MyMIDIController.current.getAccess()));
-
-                    // if state change event happened update the MIDI controller state
-                    // if () {
-
-                    // }
-                } // endif size > 0
-
+                    // dispatch(setAccess(new MIDIController(access).getInstance()));
+                    // console.log("my midi controller in for loop", "access state", accessState);
+                    // console.log("get instance ref", MyMIDIControllerRef!.current!.getInstance());
+                } // endif size > 0 
+                //accessState dead zone
             }
         })();
+        // @ts-ignore
     }, [dispatch, accessState.inputs.length, size]);
 
     return (
         <>
             {
-                accessState.online ? accessState.inputs!.map((input, i) => {
+                // @ts-ignore
+                accessState.online ? accessState.inputs!.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
+                    // TODO: // MAKE AS OWN COMPONENT
                     return (
                         <div key={keyGen()} style={{ display: "flex", flexDirection: "column" }}>
                             <h2 key={keyGen()}>MIDI Device {i + 1}</h2>
-                            <div key={keyGen()} style={{ border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}>
+                            <div key={keyGen()} style={{ border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> <span key={keyGen()}>Connection: { input.connection } <div style={{ width: "40px", marginTop: "1em", height: "40px", backgroundColor: input.connection === MIDIPortConnectionState.closed ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> </span>
                                 <p key={keyGen()}>{input.name}</p>
                             </div>
                         </div>
