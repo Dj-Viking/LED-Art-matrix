@@ -32,6 +32,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         console.log(Date.now(), "event midi access onstatechange", _event.target);
                         const onstatechangeAccess = new MIDIController(_event.target).getInstance();
                         // TODO: NEED TO PASS DISPATCH INSIDE A CALLBACK
+                        // OR SET THE CBS IN THE ACTION ITSELF BY PASSING THE CBS TO ACTION
                         onstatechangeAccess.setInputCbs(
                             // function (midi_event: MIDIMessageEvent) {
                             //     dispatch(animVarCoeffChange((midi_event.data[2]).toString()));
