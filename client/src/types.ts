@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { MIDIAccessRecord, MIDIController, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
+import { MIDIController, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 
 export type MyJwtData = IJwtData;

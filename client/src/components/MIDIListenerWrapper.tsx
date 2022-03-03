@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIAccessRecord, MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIPortConnectionState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
