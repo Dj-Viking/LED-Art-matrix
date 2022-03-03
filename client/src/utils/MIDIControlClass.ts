@@ -104,16 +104,14 @@ interface IMIDIController {
 }
 
 class MIDIController implements IMIDIController {
-    private access = null as MIDIAccessRecord | null;
+    private _access = null as MIDIAccessRecord | null;
     public inputs = [] as Array<MIDIInput> | undefined;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
-    constructor(
-        access: MIDIAccessRecord, 
-    ) {
+    constructor(access: MIDIAccessRecord) {
         if (access)
-            this.access = access;
-        if (!!this.access && !!this.access.inputs.size) {
+            this._access = access;
+        if (!!this._access && !!this._access.inputs.size) {
             this.online = true;
             this._setInputs(access.inputs);
             this._setOutputs(access.outputs);
@@ -132,40 +130,20 @@ class MIDIController implements IMIDIController {
 
 
     public getAccess(): MIDIAccessRecord {
-        return this.access as MIDIAccessRecord;
+        return this._access as MIDIAccessRecord;
     }
 
-    private _setOutputs(outputs: Map<string, MIDIOutput>): void {
-
-        if (outputs.size > 0) {
-            const MIDI_OUTPUT_LIST_SIZE = outputs.size;
-            const entries = outputs.entries();
-
-            for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
-                this.outputs!.push(entries.next().value[1]);
-            }
-            // for (let j = 0; j < this.outputs!.length; j++) {
-            //     this.outputs![j].onstatechange = function (event: MIDIConnectionEvent) {
-            //         console.log("output onstatechange event", event);
-            //     };
-            //     this.outputs![j].onmidimessage = function (event: MIDIMessageEvent) {
-            //         console.log("output midimessage event", event);
-            //     };
-            // }
+    public setOutputCbs(): this {
+        // OUTPUT CBS SETTING HERE
+        for (let j = 0; j < this.outputs!.length; j++) {
+            this.outputs![j].onstatechange = function (event: MIDIConnectionEvent) {
+                console.log("output onstatechange event", event);
+            };
+            this.outputs![j].onmidimessage = function (event: MIDIMessageEvent) {
+                console.log("output midimessage event", event);
+            };
         }
-
-    }
-    public _setInputs(inputs: Map<string, MIDIInput>): void {
-
-        if (inputs.size > 0) {
-            const MIDI_INPUT_LIST_SIZE = inputs.size;
-            const entries = inputs.entries();
-
-            for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
-                this.inputs!.push(entries.next().value[1]);
-            }
-        }
-
+        return this;
     }
 
     public setInputCbs(
@@ -196,6 +174,32 @@ class MIDIController implements IMIDIController {
                     
         console.log("SETTING INPUT CBS I THINK", this);
         return this;
+    }
+
+    private _setOutputs(outputs: Map<string, MIDIOutput>): void {
+
+        if (outputs.size > 0) {
+            const MIDI_OUTPUT_LIST_SIZE = outputs.size;
+            const entries = outputs.entries();
+
+            for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
+                this.outputs!.push(entries.next().value[1]);
+            }
+        }
+
+    }
+
+    private _setInputs(inputs: Map<string, MIDIInput>): void {
+
+        if (inputs.size > 0) {
+            const MIDI_INPUT_LIST_SIZE = inputs.size;
+            const entries = inputs.entries();
+
+            for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
+                this.inputs!.push(entries.next().value[1]);
+            }
+        }
+
     }
 
 }

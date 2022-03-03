@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { keyGen } from "../utils/keyGen";
 import { MIDIAccessRecord, MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
-import { animVarCoeffChange } from "../actions/led-actions";
+// import { animVarCoeffChange } from "../actions/led-actions";
 
 interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[]
@@ -30,7 +30,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     // define onstatechange callback to not be null
                     access.onstatechange = function (_event: MIDIConnectionEvent): void {
                         console.log(Date.now(), "event midi access onstatechange", _event.target);
-                        //set up the onstatechange for the inputs of the access object whose onstatechange function event listener was ran
                         const onstatechangeAccess = new MIDIController(_event.target).getInstance();
                         // TODO: NEED TO PASS DISPATCH INSIDE A CALLBACK
                         onstatechangeAccess.setInputCbs(
@@ -46,9 +45,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         dispatch(setAccess(onstatechangeAccess));
                         console.log("my midi controller in for loop", "access state line 46", accessState);
                     };
-                    // dispatch(setAccess(new MIDIController(access).getInstance()));
-                    // console.log("my midi controller in for loop", "access state", accessState);
-                    // console.log("get instance ref", MyMIDIControllerRef!.current!.getInstance());
                 } // endif size > 0 
                 //accessState dead zone
             }
