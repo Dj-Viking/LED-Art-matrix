@@ -30,7 +30,7 @@ interface MIDIConnectionEvent {
     defaultPrevented: boolean;
     eventPhase: number;
     path: Array<any>;
-    readonly port: MIDIPort;
+    readonly PORT: MIDIPort;
     returnValue: boolean;
     srcElement: MIDIAccessRecord;
     target: MIDIAccessRecord;
@@ -64,7 +64,7 @@ interface MIDIMessageEvent {
 //     null | ((event: MIDIMessageEvent) => unknown) |
 //     null | ((event: MIDIConnectionEvent) => unknown) | undefined | unknown;
 
-
+type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
 interface MIDIInput {
     id: string;
     manufacturer: string;
@@ -73,26 +73,26 @@ interface MIDIInput {
     version: string;
     state: "connected" | string;
     connection: MIDIPortConnectionState
-    onmidimessage: (event: MIDIMessageEvent) => unknown | null | undefined;
-    onstatechange: onstatechangeHandler | undefined;
+    onstatechange: undefined | onstatechangeHandler;
+    onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
 interface MIDIOutput {
-    connection: "closed" | "open" | string;
+    connection: MIDIPortConnectionState;
     id: string;
     manufacturer: string;
     name: string;
     type: "output" | string;
     state: "connected" | string;
     version: string;
-    onstatechange: onstatechangeHandler
-    onmidimessage: null | ((event: MIDIMessageEvent) => unknown);
+    onstatechange: undefined | onstatechangeHandler
+    onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
-type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
+
 interface MIDIAccessRecord {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
-    onstatechange: onstatechangeHandler | null;
-    readonly sysexEnabled: boolean;
+    onstatechange: onstatechangeHandler;
+    readonly sysex_enabled: boolean;
 }
 
 interface IMIDIController {
@@ -147,8 +147,8 @@ class MIDIController implements IMIDIController {
     }
 
     public setInputCbs(
-        // _onmidicb: (event: MIDIMessageEvent) => unknown, 
-        // _onstatechangecb: (event: MIDIConnectionEvent) => unknown
+        _onmidicb?: (event: MIDIMessageEvent) => unknown, 
+        _onstatechangecb?: (event: MIDIConnectionEvent) => unknown
     ): this {
         console.log("SETTING INPUT CBS I THINK");
         
@@ -158,18 +158,25 @@ class MIDIController implements IMIDIController {
         for (let j = 0; j < this.inputs!.length; j++) {
             
             //this effectively sets connection "open" somehow?? to send/recieve with hardware
-            // this.inputs![j].onstatechange = _onstatechangecb;
-            // uncomment below and comment out the line above to see midi message in the browser!!!
-            this.inputs![j].onstatechange = function (event: MIDIConnectionEvent) {
-                console.log("input onstatechange event", event);
-            };
+
+            this.inputs![j].onstatechange = _onstatechangecb || null;
+
+            // testing that the callbacks are handed off to the class
+            // if (typeof _onstatechangecb !== "function") {
+            //     this.inputs![j].onstatechange = function (event: MIDIConnectionEvent) {
+            //         console.log("input onstatechange event", event);
+            //     };
+            // }
             
             //this effectively sets connection "open" somehow?? to send/recieve with hardware
-            // this.inputs![j].onmidimessage = _onmidicb;
-            // uncomment below and comment out the line above to see midi message in the browser!!!
-            this.inputs![j].onmidimessage = function (event: MIDIMessageEvent) {
-                console.log("input midimessage event hello world!!!", event);
-            };
+            this.inputs![j].onmidimessage = _onmidicb || null;
+            
+            // testing that the callbacks are handed off to the class
+            // if (typeof _onmidicb !== "function") {
+            //     this.inputs![j].onmidimessage = function (event: MIDIMessageEvent) {
+            //         console.log("input midimessage event hello world!!!", event);
+            //     };
+            // }
         }
                     
         console.log("SETTING INPUT CBS I THINK", this);

@@ -1,8 +1,12 @@
 import { ISetAccessRecordAction } from "../types";
-import { MIDIController } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/MIDIControlClass";
 
 // @ts-ignore
-export const setAccess: ISetAccessRecordAction = (access: MIDIController) => {
+export const setAccess: ISetAccessRecordAction = (
+  access: MIDIController, 
+  onmidicb: (event: MIDIMessageEvent) => unknown, 
+  onstatechangecb: (event: MIDIConnectionEvent) => unknown
+) => {
 
   if (!access.inputs?.length) {
     return {
@@ -12,7 +16,7 @@ export const setAccess: ISetAccessRecordAction = (access: MIDIController) => {
   }
 
   const a = access;
-  a.setInputCbs();
+  a.setInputCbs(onmidicb, onstatechangecb);
   a.setOutputCbs();
 
   return {

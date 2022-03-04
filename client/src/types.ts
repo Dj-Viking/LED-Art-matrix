@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { MIDIController, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 
 export type MyJwtData = IJwtData;
@@ -444,7 +444,7 @@ export interface ISetAccessRecordActionObj {
   payload: IAccessRecordState
 }
 
-export type ISetAccessRecordAction = (access: MIDIController) => MIDIController 
+export type ISetAccessRecordAction = (access: MIDIController, onmidicb?: (event: MIDIMessageEvent) => void, onstatechangecb?: (event: MIDIConnectionEvent) => void) => MIDIController 
 
 export type UAccessRecordActionPayloads = 
 | ISetAccessRecordActionObj["payload"];

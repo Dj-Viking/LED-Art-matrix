@@ -27,7 +27,6 @@ export class TestService extends ApiService implements IApiService {
       }
     });
     return styleValues;
-
   }
 
   /**
@@ -76,10 +75,10 @@ export class TestService extends ApiService implements IApiService {
       newMap?.set(i.toString(), {
         id: id,
         state: "connected",
-        connection: "closed",
         name: "kdjfkjdj",
         type: "output",
         version: "kdfkjdj",
+        connection: MIDIPortConnectionState.closed,
         onstatechange: (_event: any) => { return "somehting!! from state change event output";},
         onmidimessage: (_event: MIDIMessageEvent) => {
           // console.log("event data", event.data);

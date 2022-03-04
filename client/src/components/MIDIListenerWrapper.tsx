@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIPortConnectionState } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
+import { animVarCoeffChange } from "../actions/led-actions";
 // import { animVarCoeffChange } from "../actions/led-actions";
 
 interface MIDIListenerWrapperProps {
@@ -30,21 +31,16 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     // define onstatechange callback to not be null
                     access.onstatechange = function (_event: MIDIConnectionEvent): void {
                         console.log(Date.now(), "event midi access onstatechange", _event.target);
+
                         const onstatechangeAccess = new MIDIController(_event.target).getInstance();
-                        // TODO: NEED TO PASS DISPATCH INSIDE A CALLBACK
-                        // OR SET THE CBS IN THE ACTION ITSELF BY PASSING THE CBS TO ACTION
-                        onstatechangeAccess.setInputCbs(
-                            // function (midi_event: MIDIMessageEvent) {
-                            //     dispatch(animVarCoeffChange((midi_event.data[2]).toString()));
-                            //     console.log("MIDI EVENT SET INPUT CB CALLBACK", midi_event);
-                            // }, 
-                            // function(connection_event: MIDIConnectionEvent) {
-                            //     console.log("CONNECTION EVENT SET INPUT CB CALLBACK", connection_event);
-                            // }
-                        );
-                        console.log("my midi controller in for loop", "access state line 44", onstatechangeAccess);
-                        dispatch(setAccess(onstatechangeAccess));
-                        console.log("my midi controller in for loop", "access state line 46", accessState);
+                        const midicb = function (midi_event: MIDIMessageEvent): void {
+                            dispatch(animVarCoeffChange((midi_event.data[2]).toString()));
+                            console.log("MIDI EVENT SET INPUT CB CALLBACK", midi_event);
+                        };
+                        const onstatechangecb = function(connection_event: MIDIConnectionEvent): void {
+                            console.log("CONNECTION EVENT SET INPUT CB CALLBACK", connection_event);
+                        };
+                        dispatch(setAccess(onstatechangeAccess, midicb, onstatechangecb));
                     };
                 } // endif size > 0 
                 //accessState dead zone
@@ -62,7 +58,14 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     return (
                         <div key={keyGen()} style={{ display: "flex", flexDirection: "column" }}>
                             <h2 key={keyGen()}>MIDI Device {i + 1}</h2>
-                            <div key={keyGen()} style={{ border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> <span key={keyGen()}>Connection: { input.connection } <div style={{ width: "40px", marginTop: "1em", height: "40px", backgroundColor: input.connection === MIDIPortConnectionState.closed ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> </span>
+                            <div key={keyGen()} style={{ border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> 
+                                <span key={keyGen()}>
+                                    
+                                    Connection: { input.connection } 
+                                    
+                                    <div style={{ width: "40px", marginTop: "1em", height: "40px", backgroundColor: input.connection === MIDIPortConnectionState.closed ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> 
+
+                                </span>
                                 <p key={keyGen()}>{input.name}</p>
                             </div>
                         </div>
