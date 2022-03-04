@@ -10,8 +10,11 @@ import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
-import { EXPIRED_TOKEN } from "../../utils/mocks";
+import { EXPIRED_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { Router } from "react-router-dom";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { act } from "react-dom/test-utils";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -27,23 +30,51 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
+
 afterEach(cleanup);
 
 describe("test rendering the app and snapshot", () => {
-  it("tests the app renders (simulating index.tsx I suppose)", () => {
+  it("tests the app renders (simulating index.tsx I suppose)", async () => {
+    const history = createMemoryHistory();
     render(
       <Provider store={store}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     );
+
+    //for the midi access state update no act warning
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
   });
 
-  it("matches snapshot DOM node structure", () => {
+  it("matches snapshot DOM node structure", async () => {
+    const history = createMemoryHistory();
     const { asFragment } = render(
       <Provider store={store}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     );
+    //for the midi access state update no act warning
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -73,6 +104,11 @@ describe("test rendering the app and snapshot", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
+
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     const loginPageLink = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");

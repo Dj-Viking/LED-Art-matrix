@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import allReducers from "./reducers";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
+import MIDIListenerWrapper from "./components/MIDIListenerWrapper";
 
 const store = createStore(
   allReducers,
@@ -39,14 +40,15 @@ const App: React.FC = (): JSX.Element => {
       <Provider store={store}>
         <Router history={history}>
           <BrowserRouter>
-            <KeyListenerWrapper>
-              <SplashHeader />
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/forgotPassword" component={ForgotPassword} />
-              <Route exact path="/changePassword/:token?" component={ChangePassword} />
-            </KeyListenerWrapper>          
+            <MIDIListenerWrapper />
+              <KeyListenerWrapper>
+                <SplashHeader />
+                <Route exact path="/" component={Home} />
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+                <Route exact path="/forgotPassword" component={ForgotPassword} />
+                <Route exact path="/changePassword/:token?" component={ChangePassword} />
+              </KeyListenerWrapper>          
             <HiddenLocationDisplay />
           </BrowserRouter>
         </Router>

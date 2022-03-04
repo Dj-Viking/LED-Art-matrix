@@ -229,10 +229,10 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
         {
           Array.isArray(presetButtons) && presetButtons.map(button => {
             return (
-                <PresetButton
-                  key={button.key} 
-                  button={{ ...button }}
-                />
+              <PresetButton
+                key={button.key} 
+                button={{ ...button }}
+              />
             );
           })
         }

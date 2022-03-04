@@ -14,7 +14,8 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { TestService } from "../../utils/TestServiceClass";
-import { MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 
 const store = createStore(
   allReducers,
@@ -35,6 +36,19 @@ const map = {} as Record<any, any>;
 window.addEventListener = jest.fn((event, cb) => {
   map[event as any] = cb;
 });
+
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 
 describe("Adding a preset error", () => {
@@ -67,8 +81,11 @@ describe("Adding a preset error", () => {
         </Provider>
       </>
     );
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(3);
     const btnContainer = await screen.findByTestId("buttons-parent");
     expect(btnContainer.children).toHaveLength(14);
 

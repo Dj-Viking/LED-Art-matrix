@@ -7,13 +7,25 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { LOGIN_MOCK_PAYLOAD_EMAIL} from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_EMAIL, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS} from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 const store = createStore(
   allReducers,

@@ -7,12 +7,27 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { SIGNUP_MOCK_RESULT } from "../../utils/mocks";
+import { render, cleanup, screen, fireEvent, act } from "@testing-library/react";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { TestService } from "../../utils/TestServiceClass";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
+
+
 const tapi = new TestService("alive");
 
 const store = createStore(
@@ -57,6 +72,9 @@ it("Render the home page and then click sign up button to go to that page", asyn
       </Router>
     </Provider>
   );
+  await act(async() => {
+    return void 0;
+  });
 
   const link = await screen.findByText(/^Sign\sUp$/g);
   expect(link).toBeInTheDocument();

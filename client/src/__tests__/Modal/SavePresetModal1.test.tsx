@@ -14,7 +14,19 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 //letting these methods be available to silence the jest errors
 window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
@@ -45,7 +57,8 @@ describe("test the save modal functionality", () => {
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -67,11 +80,15 @@ describe("test the save modal functionality", () => {
         </Router>
       </Provider>
     );
+    await act(async () => {
+      return void 0;
+    });
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     //just care about the fetch returning the presets
     // even though the response is also going to the /user endpoint it's irrelevant to this test
-    expect(fetch).toHaveBeenCalledTimes(2); 
+    expect(fetch).toHaveBeenCalledTimes(3); 
+    // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkjd"); 
 
     //open modal
     const savePresetBtn = screen.getByTestId("savePreset");

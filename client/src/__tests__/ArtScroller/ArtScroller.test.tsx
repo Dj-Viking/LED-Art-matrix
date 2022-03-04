@@ -14,6 +14,8 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 
 const store = createStore(allReducers);
 
@@ -24,6 +26,19 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // eslint-disable-next-line
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 describe("test art scroller turning on with gifs", () => {
   beforeEach(() => {
@@ -63,6 +78,9 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
@@ -104,6 +122,10 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
@@ -242,6 +264,11 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
+    
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 

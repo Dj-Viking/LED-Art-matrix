@@ -7,13 +7,14 @@ import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { render, cleanup, screen } from "@testing-library/react";
-import { CHANGE_PASS_INPUT_MATCH, CHANGE_PASS_MOCK_RES, } from "../../utils/mocks";
+import { CHANGE_PASS_INPUT_MATCH, CHANGE_PASS_MOCK_RES, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { HiddenLocationDisplay } from "../../App";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 
 
 const store = createStore(
@@ -28,6 +29,19 @@ window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
 window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 const mockHistoryReplace = jest.fn();
 jest.mock("react-router-dom", () => ({
@@ -72,6 +86,9 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
     const formEls = {
@@ -123,6 +140,9 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
     const formEls = {
@@ -174,6 +194,9 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
     const formEls = {

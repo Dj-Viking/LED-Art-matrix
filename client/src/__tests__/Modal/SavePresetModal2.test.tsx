@@ -1,7 +1,3 @@
-
-
-
-
 /* eslint-disable testing-library/no-unnecessary-act */
 //@ts-ignore
 import React from "react";
@@ -9,7 +5,7 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -17,7 +13,20 @@ import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { keyGen } from "../../utils/keyGen";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 const uuid = require("uuid");
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 //letting these methods be available to silence the jest errors
 window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
@@ -26,6 +35,7 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // eslint-disable-next-line
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
+
 
 
 describe("moving this to a separate file to avoid the leaky mocks that dont get cleared from the previous test", () => {
@@ -55,7 +65,8 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
       Promise<any>; }> => Promise.resolve({ json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: [] })) // and this is second 
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));//this is first 
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     //@ts-ignore
     global.fetch = mockFetch;
     render(
@@ -67,15 +78,19 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
   
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(3);
+    // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
   
     expect(screen.getByTestId("location-display").textContent).toBe("/");
   
     //only style tag should be present since we shouldn't get an array from the fake api fetch
     const buttonsParent2 = await screen.findByTestId("buttons-parent");
-    expect(buttonsParent2.children).toHaveLength(1);
+    expect(buttonsParent2.children).toHaveLength(2);
     
   });
 });
