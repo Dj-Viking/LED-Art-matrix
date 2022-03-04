@@ -81,8 +81,11 @@ describe("Adding a preset error", () => {
         </Provider>
       </>
     );
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(3);
     const btnContainer = await screen.findByTestId("buttons-parent");
     expect(btnContainer.children).toHaveLength(14);
 

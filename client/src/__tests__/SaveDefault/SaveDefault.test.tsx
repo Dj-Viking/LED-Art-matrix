@@ -12,8 +12,21 @@ import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, MOCK_PRESETS, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
+import { ASSERT_ANIMATION, LOGIN_MOCK_PAYLOAD_USERNAME, LOGIN_MOCK_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, SAVE_DEFAULT_MOCK_ERROR, SAVE_DEFAULT_MOCK_SUCCESS } from "../../utils/mocks";
 import { TestService } from "../../utils/TestServiceClass";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 const store = createStore(
   allReducers,
@@ -66,6 +79,10 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
+
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
     expect(fetch).toHaveBeenCalledTimes(0);
@@ -100,6 +117,9 @@ describe("test the save default button is making the request, mock the response"
     // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdjjk");
     
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
+    await act(async() => {
+      return void 0;
+    });
     expect(localStorage.getItem("id_token")).toBeTruthy();
 
     //once for logging in and then twice for going to "/" and fetching the user's preset
@@ -141,6 +161,9 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
 
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func
@@ -197,6 +220,9 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
 
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     //since we are logged in here fetch will be called with the get user default preset func

@@ -92,11 +92,13 @@ interface MIDIAccessRecord {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
     onstatechange: onstatechangeHandler;
-    readonly sysex_enabled: boolean;
+    readonly sysexEnabled: boolean;
 }
 
 interface IMIDIController {
     inputs?: Array<MIDIInput>;
+    inputs_size: number;
+    outputs_size: number;
     outputs?: Array<MIDIOutput>;
     online?: boolean;
     getInstance: () => this;
@@ -106,6 +108,8 @@ interface IMIDIController {
 class MIDIController implements IMIDIController {
 
     public inputs = [] as Array<MIDIInput> | undefined;
+    public inputs_size = 0;
+    public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
 
@@ -116,6 +120,8 @@ class MIDIController implements IMIDIController {
             this._access = access;
         if (!!this._access && !!this._access.inputs.size) {
             this.online = true;
+            this.inputs_size = access.inputs.size;
+            this.outputs_size = access.outputs.size;
             this._setInputs(access.inputs);
             this._setOutputs(access.outputs);
         }
@@ -161,8 +167,6 @@ class MIDIController implements IMIDIController {
             this.inputs![j].onstatechange = _onstatechangecb;
             this.inputs![j].onmidimessage = _onmidicb;
         }
-                    
-        console.log("SETTING INPUT CBS I THINK", this);
         return this;
     }
 

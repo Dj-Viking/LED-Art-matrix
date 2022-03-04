@@ -57,7 +57,8 @@ describe("test the save modal functionality", () => {
       Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
     const mockFetch = jest.fn()
                       .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -79,11 +80,15 @@ describe("test the save modal functionality", () => {
         </Router>
       </Provider>
     );
+    await act(async () => {
+      return void 0;
+    });
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     //just care about the fetch returning the presets
     // even though the response is also going to the /user endpoint it's irrelevant to this test
-    expect(fetch).toHaveBeenCalledTimes(2); 
+    expect(fetch).toHaveBeenCalledTimes(3); 
+    // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkjd"); 
 
     //open modal
     const savePresetBtn = screen.getByTestId("savePreset");

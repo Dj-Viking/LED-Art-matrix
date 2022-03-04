@@ -444,7 +444,17 @@ export interface ISetAccessRecordActionObj {
   payload: IAccessRecordState
 }
 
-export type ISetAccessRecordAction = (access: MIDIController, onmidicb?: (event: MIDIMessageEvent) => void, onstatechangecb?: (event: MIDIConnectionEvent) => void) => MIDIController 
+export type ISetAccessRecordAction = (
+  access: MIDIController, 
+  onmidicb?: (event: MIDIMessageEvent) => void, 
+  onstatechangecb?: (event: MIDIConnectionEvent) => void
+) => MIDIController;
+
+
+export type ISetGhostAccessInputSizeAction = (access: MIDIController) => {
+  type: "SET_ACCESS_INPUTS_SIZE",
+  payload: number;
+};
 
 export type UAccessRecordActionPayloads = 
 | ISetAccessRecordActionObj["payload"];

@@ -25,13 +25,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 dispatch(setAccess(new MIDIController(access).getInstance()));
                 setSize(access.inputs.size);
                 if (size > 0) {
-                    console.log("INPUTS BIGGER THAN ZERO", size);
-                    setSize(access.inputs.size);
                     dispatch(setAccess(new MIDIController(access).getInstance()));
                     // define onstatechange callback to not be null
                     access.onstatechange = function (_event: MIDIConnectionEvent): void {
-                        console.log(Date.now(), "event midi access onstatechange", _event.target);
-
                         const onstatechangeAccess = new MIDIController(_event.target).getInstance();
                         const midicb = function (midi_event: MIDIMessageEvent): void {
                             dispatch(animVarCoeffChange((midi_event.data[2]).toString()));

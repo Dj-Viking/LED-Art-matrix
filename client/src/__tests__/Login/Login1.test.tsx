@@ -99,8 +99,14 @@ describe("Test rendering login correctly", () => {
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display").textContent).toBe("/");
+    await act(async() => {
+      return void 0;
+    });
     
     const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");
@@ -108,6 +114,9 @@ describe("Test rendering login correctly", () => {
     expect(page).toBeInTheDocument();
     fireEvent.click(page);
     expect(screen.getByTestId("location-display").textContent).toBe("/login");
+    await act(async() => {
+      return void 0;
+    });
     
     const formEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
@@ -135,7 +144,13 @@ describe("Test rendering login correctly", () => {
     await act(async () => {
       formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
+    await act(async() => {
+      return void 0;
+    });
 
     expect(fetch).toHaveBeenCalledTimes(4);
     expect(fetch).toHaveBeenNthCalledWith(1, 
@@ -182,7 +197,13 @@ describe("test signup functionality with no token", () => {
         </Provider>
       </>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
+    await act(async() => {
+      return void 0;
+    });
     
     const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");

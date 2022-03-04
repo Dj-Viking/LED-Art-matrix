@@ -11,6 +11,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     <div
       style="border: 1px solid green;"
     >
+      <span>
+        Connection: 1
+        <div
+          style="width: 40px; margin-top: 1em; height: 40px; background-color: red; border-radius: 50%; border: 1px solid purple;"
+        />
+      </span>
       <p>
         holy jeebus MIDI power thing
       </p>
@@ -25,6 +31,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     <div
       style="border: 1px solid green;"
     >
+      <span>
+        Connection: 1
+        <div
+          style="width: 40px; margin-top: 1em; height: 40px; background-color: red; border-radius: 50%; border: 1px solid purple;"
+        />
+      </span>
       <p>
         holy jeebus MIDI power thing
       </p>
@@ -39,6 +51,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     <div
       style="border: 1px solid green;"
     >
+      <span>
+        Connection: 1
+        <div
+          style="width: 40px; margin-top: 1em; height: 40px; background-color: red; border-radius: 50%; border: 1px solid purple;"
+        />
+      </span>
       <p>
         holy jeebus MIDI power thing
       </p>
@@ -744,7 +762,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="1829.6317391202588something unique lol"
+          id="536.3786487978883something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -801,7 +819,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="7205.837818403848something unique lol"
+          id="7505.026261712091something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -858,7 +876,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="2089.0255450724226something unique lol"
+          id="2889.794727692512something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -915,7 +933,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="9823.999956649408something unique lol"
+          id="183.64376115160397something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -972,7 +990,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="6693.965668560391something unique lol"
+          id="1090.2218084412207something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1029,7 +1047,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="5570.679748182927something unique lol"
+          id="6818.2381328263something unique lol"
           role="button"
           tabindex="-1"
         >

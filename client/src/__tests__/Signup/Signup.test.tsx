@@ -8,12 +8,25 @@ import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { MOCK_PRESETS, SIGNUP_MOCK_ERROR, SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, SIGNUP_MOCK_ERROR, SIGNUP_MOCK_PAYLOAD, SIGNUP_MOCK_RESULT } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
+import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+// @ts-ignore need to implement a fake version of this for the jest test as expected
+// did not have this method implemented by default during the test
+window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve({
+    inputs: MOCK_ACCESS_INPUTS,
+    outputs: MOCK_ACCESS_OUTPUTS,
+    sysexEnabled: false,
+    onstatechange: function (_event: MIDIConnectionEvent): void {
+      return void 0;
+    }
+  } as MIDIAccessRecord);
+};
 
 const store = createStore(
   allReducers,
@@ -55,6 +68,10 @@ describe("Tests network error message", () => {
         </Router>
       </Provider>
     );
+
+    await act(async () => {
+      return void 0;
+    });
 
     const page = (await screen.findAllByRole("link", { name: "Sign Up" })).find((el) => {
       return el.classList.contains("nav-button");

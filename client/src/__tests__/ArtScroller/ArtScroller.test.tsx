@@ -78,6 +78,9 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
@@ -119,6 +122,10 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
@@ -257,6 +264,11 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
+    
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 

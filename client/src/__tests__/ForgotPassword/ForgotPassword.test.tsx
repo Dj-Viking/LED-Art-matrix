@@ -85,6 +85,10 @@ describe("Test rendering forgot password page", () => {
         </Router>
       </Provider>
     );
+
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     
     const link = await screen.findByText(/^Login$/g);
@@ -135,6 +139,9 @@ describe("Test sending forgot pass request", () => {
         </Router>
       </Provider>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     
     const link = await screen.findByText(/^Login$/g);
@@ -209,6 +216,9 @@ describe("Test request error mock", () => {
         </Router>
       </Provider>
     );
+    await act(async() => {
+      return void 0;
+    });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
     
     const link = await screen.findByText(/^Login$/g);

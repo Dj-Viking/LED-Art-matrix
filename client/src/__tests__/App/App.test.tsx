@@ -13,6 +13,8 @@ import { createMemoryHistory } from "history";
 import { EXPIRED_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { Router } from "react-router-dom";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { act } from "react-dom/test-utils";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -44,20 +46,35 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 afterEach(cleanup);
 
 describe("test rendering the app and snapshot", () => {
-  it("tests the app renders (simulating index.tsx I suppose)", () => {
+  it("tests the app renders (simulating index.tsx I suppose)", async () => {
+    const history = createMemoryHistory();
     render(
       <Provider store={store}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     );
+
+    //for the midi access state update no act warning
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
   });
 
-  it("matches snapshot DOM node structure", () => {
+  it("matches snapshot DOM node structure", async () => {
+    const history = createMemoryHistory();
     const { asFragment } = render(
       <Provider store={store}>
-        <App />
+        <Router history={history}>
+          <App />
+        </Router>
       </Provider>
     );
+    //for the midi access state update no act warning
+    await act(async () => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
     expect(asFragment()).toMatchSnapshot();
   });
 
@@ -87,6 +104,11 @@ describe("test rendering the app and snapshot", () => {
         </Provider>
       </>
     );
+
+    await act(async() => {
+      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    });
+
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     const loginPageLink = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");

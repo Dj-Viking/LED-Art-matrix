@@ -13,6 +13,7 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID } from "../../constants";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { act } from "react-dom/test-utils";
 
 const store = createStore(
   allReducers,
@@ -54,5 +55,8 @@ describe("faking navigator for midiaccess testing", () => {
     );
 
     expect((await screen.findByTestId(LOCATION_DISPLAY_ID)).textContent).toBe("/");
+    act(() => {
+      return void 0;
+    });
   });
 });
