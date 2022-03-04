@@ -63,7 +63,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                     
                                     Connection: { input.connection } 
                                     
-                                    <div style={{ width: "40px", marginTop: "1em", height: "40px", backgroundColor: input.connection === MIDIPortConnectionState.closed ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> 
+                                    <div key={keyGen()} style={{ width: "40px", marginTop: "1em", height: "40px", backgroundColor: input.connection === MIDIPortConnectionState.closed ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> 
 
                                 </span>
                                 <p key={keyGen()}>{input.name}</p>

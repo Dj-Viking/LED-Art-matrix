@@ -104,10 +104,13 @@ interface IMIDIController {
 }
 
 class MIDIController implements IMIDIController {
-    private _access = null as MIDIAccessRecord | null;
+
     public inputs = [] as Array<MIDIInput> | undefined;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
+
+    private _access = null as MIDIAccessRecord | null;
+
     constructor(access: MIDIAccessRecord) {
         if (access)
             this._access = access;
@@ -150,33 +153,13 @@ class MIDIController implements IMIDIController {
         _onmidicb?: (event: MIDIMessageEvent) => unknown, 
         _onstatechangecb?: (event: MIDIConnectionEvent) => unknown
     ): this {
-        console.log("SETTING INPUT CBS I THINK");
-        
         // this following loop sort of is confirming my theory that this class can
-            // have ownership of what's passed to it maybe?? not too sure if things are passed by memory values or references to class constructors
-            // in JS
+        // have ownership callbacks passed to it maybe?? not too sure if things are passed by memory values or references into the class constructors
+        // in JS
+        //this effectively sets connection "open" on the devices somehow?? to send/recieve with hardware
         for (let j = 0; j < this.inputs!.length; j++) {
-            
-            //this effectively sets connection "open" somehow?? to send/recieve with hardware
-
-            this.inputs![j].onstatechange = _onstatechangecb || null;
-
-            // testing that the callbacks are handed off to the class
-            // if (typeof _onstatechangecb !== "function") {
-            //     this.inputs![j].onstatechange = function (event: MIDIConnectionEvent) {
-            //         console.log("input onstatechange event", event);
-            //     };
-            // }
-            
-            //this effectively sets connection "open" somehow?? to send/recieve with hardware
-            this.inputs![j].onmidimessage = _onmidicb || null;
-            
-            // testing that the callbacks are handed off to the class
-            // if (typeof _onmidicb !== "function") {
-            //     this.inputs![j].onmidimessage = function (event: MIDIMessageEvent) {
-            //         console.log("input midimessage event hello world!!!", event);
-            //     };
-            // }
+            this.inputs![j].onstatechange = _onstatechangecb;
+            this.inputs![j].onmidimessage = _onmidicb;
         }
                     
         console.log("SETTING INPUT CBS I THINK", this);
