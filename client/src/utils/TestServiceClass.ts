@@ -1,7 +1,7 @@
 import { ApiService, IApiService } from "./ApiService";
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
-import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState } from "./MIDIControlClass";
+import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType } from "./MIDIControlClass";
 import { keyGen } from "./keyGen";
 
 /**
@@ -59,9 +59,9 @@ export class TestService extends ApiService implements IApiService {
         id,
         manufacturer: "holy bajeebus",
         name: "holy jeebus MIDI power thing",
-        type: "input",
+        type: MIDIPortType.input,
         version: "over 9000",
-        state: "connected",
+        state: MIDIPortDeviceState.connected,
         connection: MIDIPortConnectionState.closed,
         onmidimessage: _onmidicb,
         onstatechange: _onstatechangecb
@@ -83,9 +83,9 @@ export class TestService extends ApiService implements IApiService {
       const id = keyGen();
       newMap?.set(id, {
         id: id,
-        state: "connected",
+        state: MIDIPortDeviceState.connected,
         name: "kdjfkjdj",
-        type: "output",
+        type: MIDIPortType.output,
         version: "kdfkjdj",
         connection: MIDIPortConnectionState.closed,
         onstatechange: _onstatechangecb,

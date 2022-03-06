@@ -37,11 +37,18 @@ interface MIDIConnectionEvent {
     timeStamp: number;
     type: string | "statechange"
 }
-
+enum MIDIPortType {
+    "input",
+    "output"
+};
 enum MIDIPortConnectionState {
     "open",
     "closed",
     "pending"
+};
+enum MIDIPortDeviceState {
+    "disconnected",
+    "connected"
 };
 interface MIDIMessageEvent {
     isTrusted: boolean;
@@ -69,9 +76,9 @@ interface MIDIInput {
     id: string;
     manufacturer: string;
     name: string;
-    type: "input" | string;
+    type: MIDIPortType.input;
     version: string;
-    state: "connected" | string;
+    state: MIDIPortDeviceState | string;
     connection: MIDIPortConnectionState
     onstatechange: undefined | onstatechangeHandler;
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
@@ -81,8 +88,8 @@ interface MIDIOutput {
     id: string;
     manufacturer: string;
     name: string;
-    type: "output" | string;
-    state: "connected" | string;
+    type: MIDIPortType.output;
+    state: MIDIPortDeviceState;
     version: string;
     onstatechange: undefined | onstatechangeHandler
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
@@ -208,4 +215,5 @@ export type {
     onstatechangeHandler,
     MIDIMessageEvent
 };
-export { MIDIController, MIDIPortConnectionState };
+    
+    export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };
