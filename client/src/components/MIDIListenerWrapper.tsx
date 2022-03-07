@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
@@ -37,6 +37,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             if (midi_event.currentTarget.name.includes("XONE:K2")) {
 
                                 setIntensity(midi_event.data[2]);
+                                console.log("dump data", midi_event);
 
                                 //slight debounce to help with limiting dispatch
                                 filterTimeoutRef.current = setTimeout(() => {
@@ -68,12 +69,12 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         return (
                             <div key={keyGen()} style={{ display: "flex", flexDirection: "column" }}>
                                 <h2 key={keyGen()}>MIDI Device {i + 1}</h2>
-                                <div key={keyGen()} style={{ border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> 
+                                <div key={keyGen()} style={{ width: "50%", margin: "0 auto", border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> 
                                     <span key={keyGen()}>
                                         
                                         Connection: { input.connection } 
                                         
-                                        <div key={keyGen()} style={{ margin: "1em auto 1em auto", width: "40px", height: "40px", backgroundColor: input.connection === "connected" ? "red" : "green", borderRadius: "50%", border: "solid purple 1px" }}></div> 
+                                        <div key={keyGen()} style={{ margin: "1em auto 1em auto", width: "40px", height: "0px", backgroundColor: input.connection === "connected" ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div> 
     
                                         <span>
                                             { 

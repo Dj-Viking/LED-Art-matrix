@@ -175,5 +175,10 @@ export const SIGNUP_MOCK_RESULT = {
 //     return res(ctx.json(SIGNUP_MOCK_RESULT));
 //   })
 // );
-export const MOCK_ACCESS_INPUTS: Map<MIDIInput["id"], MIDIInput> = TestService.makeFakeMIDIInputs();
-export const MOCK_ACCESS_OUTPUTS: Map<MIDIOutput["id"], MIDIOutput> = TestService.makeFakeMIDIOutputs();
+
+
+
+export const MOCK_ACCESS_INPUTS: Map<MIDIInput["id"], MIDIInput> = TestService.s_makeFakeMIDIInputs();
+export const MOCK_ACCESS_OUTPUTS: Map<MIDIOutput["id"], MIDIOutput> = TestService.s_makeFakeMIDIOutputs();
+// export const MOCK_MIDI_MESSAGE_EVENT = TestService.createMIDIMessageEvent();
+// export const MOCK_MIDI_CONNECTION_EVENT = TestService.createMIDIConnectionEvent();
