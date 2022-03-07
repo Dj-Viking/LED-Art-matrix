@@ -25,6 +25,7 @@ import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
 import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
 import { keyGen } from "../utils/keyGen";
+import MIDIListenerWrapper from "./MIDIListenerWrapper";
 
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
@@ -236,7 +237,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             );
           })
         }
-
+          <MIDIListenerWrapper />
         {
           (
             ["dm5", "waves", "v2", "rainbowTest"].includes(presetName)

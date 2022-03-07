@@ -79,7 +79,7 @@ interface MIDIInput {
     type: MIDIPortType.input;
     version: string;
     state: MIDIPortDeviceState | string;
-    connection: MIDIPortConnectionState
+    connection: MIDIPortConnectionState | string;
     onstatechange: undefined | onstatechangeHandler;
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
