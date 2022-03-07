@@ -291,7 +291,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-fetch-button"
               data-testid="start-art"
               role="button"
-              style="opacity: 0; margin-right: 1000px;"
+              style="opacity: 0.028638753278901315; margin-right: 971.5044404874932px;"
             >
               Start Art Scroller!
             </button>
@@ -299,7 +299,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-toggle-button-off"
               data-testid="switch-scroller"
               role="button"
-              style="opacity: 0;"
+              style="opacity: 0.028638753278901315;"
             >
               <span
                 style="color: white;"
@@ -599,7 +599,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="preset-button"
           data-testid="clear"
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.025081098595134663;"
         >
           clear
         </button>
@@ -608,7 +608,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="saveDefault"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.025081098595134663;"
         >
           Save as Default
         </button>
@@ -617,7 +617,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="savePreset"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.025081098595134663;"
         >
           Save as new Preset
         </button>
@@ -626,7 +626,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="deletePreset"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.025081098595134663;"
         >
           Delete A Preset
         </button>
@@ -702,7 +702,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="2245.160740384693something unique lol"
+          id="3671.303878240202something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -759,7 +759,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="3157.5021059903283something unique lol"
+          id="3176.06237253536something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -816,7 +816,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="1993.433659172128something unique lol"
+          id="9892.961913435558something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -873,7 +873,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="5321.239139382213something unique lol"
+          id="8586.398920808964something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -930,7 +930,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="6516.236205970705something unique lol"
+          id="846.1978432914985something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -987,7 +987,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="2044.7219661189208something unique lol"
+          id="504.6936988513706something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1048,12 +1048,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             MIDI Device 1
           </h2>
           <div
-            style="border: 1px solid red;"
+            style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 40px; background-color: green; border-radius: 50%; border: 1px solid purple;"
+                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
                 Intensity: 0
@@ -1071,12 +1071,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             MIDI Device 2
           </h2>
           <div
-            style="border: 1px solid red;"
+            style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 40px; background-color: green; border-radius: 50%; border: 1px solid purple;"
+                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
                 Intensity: 0
@@ -1094,12 +1094,12 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             MIDI Device 3
           </h2>
           <div
-            style="border: 1px solid red;"
+            style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 40px; background-color: green; border-radius: 50%; border: 1px solid purple;"
+                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
                 Intensity: 0

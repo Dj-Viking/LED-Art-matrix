@@ -12,7 +12,6 @@ import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, SIGNUP_MOCK_RESULT } from "../
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -26,9 +25,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     }
   } as MIDIAccessRecord);
 };
-
-
-const tapi = new TestService("alive");
 
 const store = createStore(
   allReducers,
@@ -62,7 +58,6 @@ it("Render the home page and then click sign up button to go to that page", asyn
     })
   );
 
-  expect(tapi.alive()).toBe("alive");
   const history = createMemoryHistory();
 
   render(
