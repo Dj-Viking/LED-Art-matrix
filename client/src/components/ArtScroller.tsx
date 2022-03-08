@@ -8,6 +8,7 @@ import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
 import { getGifs, setAnimDuration, setCircleWidth, setFigureOn, setHPos, setInvert, setVertPos} from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
+import { BKeySvg } from "../lib/svgs";
 
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
@@ -77,8 +78,18 @@ const ArtScroller: React.FC = (): JSX.Element => {
             >
               {
                 figureOn
-                ? <span style={{ color: "white" }}>Turn Off Scroller</span>
-                : <span style={{ color: "white" }}>Turn On Scroller</span>
+                ? (
+                  <>
+                    <BKeySvg />
+                    <span style={{ color: "white" }}>Turn Off Scroller</span>
+                  </>
+                )
+                : (
+                  <>
+                    <BKeySvg />
+                    <span style={{ color: "white" }}>Turn On Scroller</span>
+                  </>
+                )
               }
             </animated.button>
           </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setFigureOn } from "../actions/art-scroller-actions";
 import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { checkPresetButtonsActive, setAllInactive } from "../actions/preset-button-actions";
 import { clearStyle, setLedStyle } from "../actions/style-actions";
@@ -12,6 +13,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
   const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
   const { saveModalIsOpen } = useSelector((state: MyRootState) => state.saveModalState);
+  const { figureOn } = useSelector((state: MyRootState) => state.artScrollerState);
 
   const setStyle = useCallback((preset: IPresetButton): void => {
 
@@ -37,11 +39,15 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
       dispatch(setAllInactive(presetButtons));
     }
 
+    if (event.key === "b" || event.key === "B") {
+      dispatch(setFigureOn(figureOn ? false : true));
+    }
+
     const preset = presetButtons.filter(btn => btn.keyBinding === event.key)[0] as IPresetButton;
     if (!preset) return;
     setStyle(preset);
 
-  }, [deleteModeActive, saveModalIsOpen, presetButtons, setStyle, dispatch]);
+  }, [deleteModeActive, saveModalIsOpen, presetButtons, setStyle, dispatch, figureOn]);
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress);

@@ -209,3 +209,35 @@ export const MY_INDEX_TO_KEY_MAP = {
   12: "f"
 } as MyIndexToKeyMap;
 export const LOCATION_DISPLAY_ID = "location-display";
+
+export type TABLE_VALUES = 
+| "1_upper_knob"
+| "1_upper_button"
+| "1_middle_button"
+| "1_lower_button"
+| "1_middle_knob"
+| "1_lower_knob"
+| "2_upper_knob"
+| "2_middle_knob"
+| "2_lower_knob"
+| "1_fader"
+| "2_fader"
+| "3_fader"
+| "4_fader";
+export type XONEK2_MIDIChannelTable = Record<number, TABLE_VALUES>;
+
+export const XONEK2_MIDI_CHANNEL_TABLE = {
+  4: "1_upper_knob",
+  48: "1_upper_button",
+  8: "1_middle_knob",
+  44: "1_middle_button",
+  12: "1_lower_knob",
+  40: "1_lower_button",
+  5: "2_upper_knob",
+  9: "2_middle_knob",
+  13: "2_lower_knob",
+  16: "1_fader",
+  17: "2_fader",
+  18: "3_fader",
+  19: "4_fader",
+} as XONEK2_MIDIChannelTable;

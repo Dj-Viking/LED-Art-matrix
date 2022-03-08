@@ -8,8 +8,10 @@ import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortC
  */
 
 interface ITestService {
-  inputMap: Map<string, MIDIInput>;
-  outputMap: Map<string, MIDIOutput>;
+  inputMap: Map<MIDIInput["id"], MIDIInput>;
+  outputMap: Map<MIDIOutput["id"], MIDIOutput>;
+  makeFakeMIDIInputs: () => Map<MIDIInput["id"], MIDIInput>;
+  makeFakeMIDIOutputs: () => Map<MIDIOutput["id"], MIDIOutput>;
 }
 export class TestService implements ITestService {
 
@@ -115,7 +117,7 @@ export class TestService implements ITestService {
       console.log("midi input connection event test", connection_event);
     };
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       newMap?.set(i.toString(), {
         id: i.toString(),
         manufacturer: "holy bajeebus",
@@ -140,7 +142,7 @@ export class TestService implements ITestService {
       console.log("output midi_event data test", midi_event.data);
     };
 
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 1; i++) {
       newMap?.set(i.toString(), {
         id: i.toString(),
         state: MIDIPortDeviceState.connected,

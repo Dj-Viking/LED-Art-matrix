@@ -88,6 +88,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({
           }
         }}
       > 
+      
       {/* TODO: make display none if the screen is mobile, check user agent? or just media query??*/}
         <KeyIcon type={keyBinding}/>
         <p style={{ margin: 0 }}>
