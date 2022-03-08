@@ -1,7 +1,7 @@
 {
   "homepage": "https://led-matrices.herokuapp.com/",
-  "name": "led-matrix",
-  "version": "1.6.1",
+  "name": "led-art-matrix",
+  "version": "1.7.1",
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
