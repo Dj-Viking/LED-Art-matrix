@@ -11,11 +11,9 @@ import { act } from "react-dom/test-utils";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { TestService } from "../../utils/TestServiceClass";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
-const tapi = new TestService("alive");
 
 const store = createStore(
   allReducers,
@@ -76,7 +74,6 @@ describe("Test rendering forgot password page", () => {
   });
 
   it("Render the home page and then click sign up button to go to that page", async () => {
-    expect(tapi.alive()).toBe("alive");
     const history = createMemoryHistory();
     render(
       <Provider store={store}>
@@ -130,7 +127,6 @@ describe("Test sending forgot pass request", () => {
   });
 
   it("Render the home page and then click sign up button to go to that page", async () => {
-    expect(tapi.alive()).toBe("alive");
     const history = createMemoryHistory();
     render(
       <Provider store={store}>
@@ -207,7 +203,6 @@ describe("Test request error mock", () => {
   });
 
   it("Render the home page and then click sign up button to go to that page", async () => {
-    expect(tapi.alive()).toBe("alive");
     const history = createMemoryHistory();
     render(
       <Provider store={store}>

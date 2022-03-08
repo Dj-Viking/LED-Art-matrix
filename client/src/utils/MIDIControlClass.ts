@@ -20,6 +20,14 @@ interface MIDIPort {
     open: () => Promise<MIDIPort>
     close: () => Promise<MIDIPort>
 }
+interface TestMIDIConnectionEvent {
+    isTrusted: boolean;
+    bubbles: boolean;
+    cancelBubble: boolean;
+    cancelable: boolean;
+    composed: boolean;
+    target: MIDIInput;
+}
 interface MIDIConnectionEvent {
     isTrusted: boolean;
     bubbles: boolean;
@@ -37,12 +45,31 @@ interface MIDIConnectionEvent {
     timeStamp: number;
     type: string | "statechange"
 }
-
+enum MIDIPortType {
+    "input",
+    "output"
+};
 enum MIDIPortConnectionState {
     "open",
     "closed",
     "pending"
 };
+enum MIDIPortDeviceState {
+    "disconnected",
+    "connected"
+};
+
+interface TestMIDIMessageEvent {
+    isTrusted: boolean;
+    bubbles: boolean;
+    cancelBubble: boolean;
+    composed: boolean;
+    target: MIDIInput;
+    data: [number, number, number];
+}
+
+
+
 interface MIDIMessageEvent {
     isTrusted: boolean;
     bubbles: boolean;
@@ -69,10 +96,10 @@ interface MIDIInput {
     id: string;
     manufacturer: string;
     name: string;
-    type: "input" | string;
+    type: MIDIPortType.input;
     version: string;
-    state: "connected" | string;
-    connection: MIDIPortConnectionState
+    state: MIDIPortDeviceState | string;
+    connection: MIDIPortConnectionState | string;
     onstatechange: undefined | onstatechangeHandler;
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
@@ -81,13 +108,20 @@ interface MIDIOutput {
     id: string;
     manufacturer: string;
     name: string;
-    type: "output" | string;
-    state: "connected" | string;
+    type: MIDIPortType.output;
+    state: MIDIPortDeviceState;
     version: string;
     onstatechange: undefined | onstatechangeHandler
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
 
+
+type TestMIDIAccessRecord = null | {    
+    readonly inputs: Map<MIDIInput["id"], MIDIInput>;
+    readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
+    onstatechange: null | ((event: TestMIDIConnectionEvent) => unknown);
+    readonly sysexEnabled: boolean;
+}
 interface MIDIAccessRecord {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
@@ -206,6 +240,10 @@ export type {
     MIDIPort,
     MIDIAccessRecord,
     onstatechangeHandler,
-    MIDIMessageEvent
+    MIDIMessageEvent,
+    TestMIDIAccessRecord,
+    TestMIDIMessageEvent,
+    TestMIDIConnectionEvent
 };
-export { MIDIController, MIDIPortConnectionState };
+    
+    export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };

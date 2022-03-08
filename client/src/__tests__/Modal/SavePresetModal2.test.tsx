@@ -90,7 +90,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
   
     //only style tag should be present since we shouldn't get an array from the fake api fetch
     const buttonsParent2 = await screen.findByTestId("buttons-parent");
-    expect(buttonsParent2.children).toHaveLength(2);
+    expect(buttonsParent2.children).toHaveLength(5);
     
   });
 });

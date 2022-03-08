@@ -79,7 +79,7 @@ describe("test deleting a preset from the user's preset button list", () => {
     // expect(fetch).toHaveBeenNthCalledWith(1, "dkfkdfjkd"); // /user/presets first /user second
     // expect(fetch).toHaveBeenNthCalledWith(2, "dkfkdfjkd"); // /user/presets first /user second
 
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(14);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(17);
 
     const deleteBtn = await screen.findByTestId("deletePreset");
     
@@ -145,7 +145,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         "method": "DELETE"
       }
     );
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(14);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(17);
 
     expect((await screen.findByTestId("delete-error"))).toBeInTheDocument();
   

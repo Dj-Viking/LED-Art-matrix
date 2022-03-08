@@ -25,6 +25,7 @@ import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
 import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
 import { keyGen } from "../utils/keyGen";
+import MIDIListenerWrapper from "./MIDIListenerWrapper";
 
 
 const PresetButtons: React.FC<any> = (): JSX.Element => {
@@ -66,37 +67,48 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
   
 
   useEffect(() => {
+
     if (presetButtons.length === 0) {
 
       if (!Auth.loggedIn()) {
+
         const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
     
         const tempPresets = presetNames.map(name => {
+
           return {
             _id: keyGen(),
             presetName: name,
             displayName: name,
             animVarCoeff: "64"
           } as IDBPreset;
+
         });
     
         const tempButtons = new PresetButtonsList(
           (event: any) => {
             event.preventDefault();
-          }, tempPresets
+          }, 
+          tempPresets
         ).getList() as IPresetButton[];
+
         dispatch(setPresetButtonsList(tempButtons));
 
       } else {
+
         (async (): Promise<void> => {
           const presets = await getPresets() as IDBPreset[];
-          const preset = await getDefaultForActiveStatus() as IDBPreset;
+          const activePreset = await getDefaultForActiveStatus() as IDBPreset;
           
           const buttons = new PresetButtonsList(
             (event: any) => {//click handler
               event.preventDefault();
-            }, presets, preset && preset._id ? preset._id : void 0
+            },
+            presets, 
+            //default active on page load if logged in
+            activePreset && activePreset._id ? activePreset._id : void 0 
           ).getList() as IPresetButton[];
+
           dispatch(setPresetButtonsList(buttons));
         })();
       }
@@ -236,7 +248,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             );
           })
         }
-
+          <MIDIListenerWrapper />
         {
           (
             ["dm5", "waves", "v2", "rainbowTest"].includes(presetName)

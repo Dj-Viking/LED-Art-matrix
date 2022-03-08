@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable testing-library/no-unnecessary-act */
 // @ts-ignore
 import React from "react";
@@ -11,11 +12,12 @@ import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
+import { renderHook } from "@testing-library/react-hooks";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { TestService } from "../../utils/TestServiceClass";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
-import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { MIDIAccessRecord, TestMIDIConnectionEvent } from "../../utils/MIDIControlClass";
 
 const store = createStore(
   allReducers,
@@ -44,9 +46,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     inputs: MOCK_ACCESS_INPUTS,
     outputs: MOCK_ACCESS_OUTPUTS,
     sysexEnabled: false,
-    onstatechange: function (_event: MIDIConnectionEvent): void {
-      return void 0;
-    }
+    onstatechange: null
   } as MIDIAccessRecord);
 };
 
@@ -81,13 +81,35 @@ describe("Adding a preset error", () => {
         </Provider>
       </>
     );
-    await act(async () => {
-      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-    });
+    await act(async() => void 0);
+    
+    /**
+     * TODO: look into renderHook with `@testing-library/react-hooks/dom`
+     * @see https://stackoverflow.com/questions/71351203/testing-with-jest-to-update-a-react-state-inside-a-rejected-promise
+     */
+
+    // await act(async () => {
+    //   // @ts-ignore
+    //   const access = await window.navigator.requestMIDIAccess();
+    //   console.log("access in the test", access);
+    //   // TODO: fake onstatechange with this access object!
+    //   const TestMIDI = new TestService(access);
+    //   TestMIDI!.getAccess()!.onstatechange = function (connection_event: TestMIDIConnectionEvent) {
+    //     console.log("connection event", connection_event);
+    //     window.dispatchEvent(TestService.createBubbledEvent("statechange"));
+    //     act(() => {
+    //       return void 0;
+    //     });
+    //   };
+    //   console.log("testmidi now after onstate definition", TestMIDI);
+    //   console.log("testmidi connection event obj", TestMIDI.createMIDIConnectionEvent());
+    //   TestMIDI.getAccess()?.onstatechange!(TestMIDI.createMIDIConnectionEvent());
+    // });
+    
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(3);
     const btnContainer = await screen.findByTestId("buttons-parent");
-    expect(btnContainer.children).toHaveLength(14);
+    expect(btnContainer.children).toHaveLength(17);
 
     // activate and change one of the constant/always provided presets and 
     // attempt to save it with some new parameter values
@@ -146,7 +168,7 @@ describe("Adding a preset error", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(14);
+    expect(btnContainer.children).toHaveLength(17);
     const error = await screen.findByTestId("add-error");
     expect(error).toBeInTheDocument();
 
