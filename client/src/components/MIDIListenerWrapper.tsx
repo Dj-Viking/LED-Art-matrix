@@ -101,11 +101,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                     break;
                                     default: break;
                                 }
-
-
-                                
-
-
                             }
                         };
 
