@@ -8,6 +8,7 @@ import { MyRootState } from "../types";
 import { animVarCoeffChange } from "../actions/led-actions";
 import { XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
+import IntensityBar from "./IntensityBar";
 
 interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[]
@@ -50,47 +51,40 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                 setIntensity(midi_intensity);
 
                                 // console.log("dump data", midi_event);
-
-                                // if midi channel was a certain number dispatch something else
-                                /**
-                                 * art scroller actions
-                                 * setAnimDuration, setCircleWidth, setFigureOn, setHPos, setInvert, setVertPos
-                                 */
-                                // initial channel 4
-                                switch(true) {
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "1_upper_knob":
+                                switch(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
+                                    case "1_upper_knob":
                                         filterTimeoutRef.current = setTimeout(() => {
                                             dispatch(setCircleWidth(midi_intensity.toString()));
                                         }, 20);
                                     break;
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "1_middle_knob":
+                                    case "1_middle_knob":
                                         filterTimeoutRef.current = setTimeout(() => {
                                             dispatch(setVertPos(midi_intensity.toString()));
                                         }, 20); 
                                     break;
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "1_lower_knob": 
+                                    case "1_lower_knob": 
                                         filterTimeoutRef.current = setTimeout(() => {
                                             dispatch(setHPos(midi_intensity.toString()));
                                         }, 20);
                                     break;
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "2_upper_knob": 
+                                    case "2_upper_knob": 
                                         filterTimeoutRef.current = setTimeout(() => {
                                             dispatch(setInvert(midi_intensity.toString()));
                                         }, 20);
                                     break;
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "2_middle_knob": 
+                                    case "2_middle_knob": 
                                         filterTimeoutRef.current = setTimeout(() => {
                                             dispatch(setAnimDuration(midi_intensity.toString()));
                                         }, 20);
                                     break;
                                     // RATHER USE KEYS INSTEAD OF MIDI CONTROLLER BUTTONS
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "1_upper_button": 
+                                    case "1_upper_button": 
                                         // filterTimeoutRef.current = setTimeout(() => {
                                         //     dispatch(setFigureOn(figureOn ? true : false));
                                         // }, 100);
                                         void 0;
                                     break;
-                                    case XONEK2_MIDI_CHANNEL_TABLE[midi_channel] === "1_fader": 
+                                    case "1_fader": 
                                         // filterTimeoutRef.current = setTimeout(() => {
                                         //     dispatch(setFigureOn(figureOn ? true : false));
                                         // }, 100);
@@ -101,11 +95,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                     break;
                                     default: break;
                                 }
-
-
-                                
-
-
                             }
                         };
 
@@ -114,10 +103,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         };
 
                         dispatch(setAccess(onstatechangeAccess, midicb, onstatechangecb));
-                    };
+                    };// end onstatechange def
                 } // endif size > 0 
-                //accessState dead zone
-            }
+                // accessState dead zone
+            }// endif "navigator" in window
         })();
     }, [dispatch, accessState.inputs.length, size, figureOn]);
 
@@ -131,18 +120,23 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             <div key={keyGen()} style={{ display: "flex", flexDirection: "column" }}>
                                 <h2 key={keyGen()}>MIDI Device {i + 1}</h2>
                                 <div key={keyGen()} style={{ width: "50%", margin: "0 auto", border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> 
+                                    <p key={keyGen()} style={{marginBottom: "1em"}}>
+                                        {input.name}
+                                    </p>
                                     <span key={keyGen()}>
                                         
                                         Connection: { input.connection } 
                                         
-                                        <div key={keyGen()} style={{ margin: "1em auto 1em auto", width: "40px", height: "0px", backgroundColor: input.connection === "connected" ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div> 
+                                        <div key={keyGen()} style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === "connected" ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div> 
     
                                         <span>
                                             { 
                                                 input.name.includes("XONE:K2") && (
                                                     <>
                                                         <p>
-                                                            Intensity: { intensity }
+                                                            Intensity: {intensity} 
+
+                                                            <IntensityBar intensity={intensity} />
                                                         </p>
                                                         <p>
                                                             Channel: { channel }
@@ -160,7 +154,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     } else { //only want to display xone:k2 device
                         return null;
                     }
-                }) : "MIDI OFFLINE"
+                }) : <p>MIDI OFFLINE</p>
             }
         </>
     );
