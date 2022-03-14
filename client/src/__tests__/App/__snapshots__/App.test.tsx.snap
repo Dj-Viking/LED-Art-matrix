@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="5901.675142747036something unique lol"
+          id="3039.515064922589something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="8456.697848883621something unique lol"
+          id="9142.245981307311something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="4433.75974387596something unique lol"
+          id="5208.836955092266something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="5420.934125908195something unique lol"
+          id="956.8303412496459something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="1304.2579318491244something unique lol"
+          id="9434.33216137385something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="7776.483803583356something unique lol"
+          id="828.7978023434329something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1110,27 +1110,23 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                <p>
+                <span>
                   Intensity: 0
-                </p>
-                <div
-                  style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                >
-                  <progress
-                    max="127"
-                    style="width: 50%;"
-                    value="0"
-                  />
-                </div>
-                <p />
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
                 <p>
                   Channel: 4
                 </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
         <div
@@ -1153,27 +1149,23 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                <p>
+                <span>
                   Intensity: 0
-                </p>
-                <div
-                  style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                >
-                  <progress
-                    max="127"
-                    style="width: 50%;"
-                    value="0"
-                  />
-                </div>
-                <p />
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
                 <p>
                   Channel: 4
                 </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
         <div
@@ -1196,27 +1188,23 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                <p>
+                <span>
                   Intensity: 0
-                </p>
-                <div
-                  style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                >
-                  <progress
-                    max="127"
-                    style="width: 50%;"
-                    value="0"
-                  />
-                </div>
-                <p />
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
                 <p>
                   Channel: 4
                 </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
       </div>

@@ -133,11 +133,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                             { 
                                                 input.name.includes("XONE:K2") && (
                                                     <>
-                                                        <p>
+                                                        <span>
                                                             Intensity: {intensity} 
 
                                                             <IntensityBar intensity={intensity} />
-                                                        </p>
+                                                        </span>
                                                         <p>
                                                             Channel: { channel }
                                                         </p>
@@ -147,7 +147,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                         </span>
     
                                     </span>
-                                    <p key={keyGen()}>{input.name}</p>
                                 </div>
                             </div>
                         );

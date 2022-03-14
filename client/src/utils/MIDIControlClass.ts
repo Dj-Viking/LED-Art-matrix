@@ -190,14 +190,18 @@ class MIDIController implements IMIDIController {
         return this;
     }
 
+    /**
+        * this following loop sort of is confirming my theory that this class can
+         have ownership callbacks passed to it maybe?? 
+         
+        * not too sure if things are passed by memory values or references into the class constructors
+         in JS
+        this effectively sets connection "open" on the devices somehow?? to send/recieve with hardware
+     */
     public setInputCbs(
         _onmidicb?: (event: MIDIMessageEvent) => unknown, 
         _onstatechangecb?: (event: MIDIConnectionEvent) => unknown
     ): this {
-        // this following loop sort of is confirming my theory that this class can
-        // have ownership callbacks passed to it maybe?? not too sure if things are passed by memory values or references into the class constructors
-        // in JS
-        //this effectively sets connection "open" on the devices somehow?? to send/recieve with hardware
         for (let j = 0; j < this.inputs!.length; j++) {
             this.inputs![j].onstatechange = _onstatechangecb;
             this.inputs![j].onmidimessage = _onmidicb;
