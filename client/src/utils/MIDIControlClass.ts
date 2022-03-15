@@ -46,17 +46,17 @@ interface MIDIConnectionEvent {
     type: string | "statechange"
 }
 enum MIDIPortType {
-    "input",
-    "output"
+    input = "input",
+    output = "output"
 };
 enum MIDIPortConnectionState {
-    "open",
-    "closed",
-    "pending"
+    open = "open",
+    closed = "closed",
+    pending = "pending"
 };
 enum MIDIPortDeviceState {
-    "disconnected",
-    "connected"
+    disconnected = "disconnected",
+    connected = "connected"
 };
 
 interface TestMIDIMessageEvent {

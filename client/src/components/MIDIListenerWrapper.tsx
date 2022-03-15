@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
-import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent } from "../utils/MIDIControlClass";
+import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortConnectionState, MIDIPortDeviceState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccess } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
@@ -123,7 +123,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         return (
                             <div key={keyGen()} style={{ display: "flex", flexDirection: "column" }}>
                                 <h2 key={keyGen()}>MIDI Device {i + 1}</h2>
-                                <div key={keyGen()} style={{ width: "50%", margin: "0 auto", border: input.state === "connected" ? "solid 1px green" : " solid 1px red" }}> 
+                                <div key={keyGen()} style={{ width: "50%", margin: "0 auto", border: input.state === MIDIPortDeviceState.connected ? "solid 1px green" : " solid 1px red" }}> 
                                     <p key={keyGen()} style={{marginBottom: "1em"}}>
                                         {input.name}
                                     </p>
@@ -131,7 +131,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                         
                                         Connection: { input.connection } 
                                         
-                                        <div key={keyGen()} style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === "connected" ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div> 
+                                        <div key={keyGen()} style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === MIDIPortDeviceState.connected ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div> 
     
                                         <span>
                                             { 
