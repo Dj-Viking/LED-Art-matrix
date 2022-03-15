@@ -1,6 +1,6 @@
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
-import { MIDIAccessRecord, MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType, TestMIDIAccessRecord, TestMIDIConnectionEvent, TestMIDIMessageEvent } from "./MIDIControlClass";
+import { MIDIAccessRecord, MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType, TestMIDIConnectionEvent } from "./MIDIControlClass";
 
 /**
  * helper class for the testing environment
@@ -12,6 +12,10 @@ interface ITestService {
   outputMap: Map<MIDIOutput["id"], MIDIOutput>;
   makeFakeMIDIInputs: () => Map<MIDIInput["id"], MIDIInput>;
   makeFakeMIDIOutputs: () => Map<MIDIOutput["id"], MIDIOutput>;
+  setInputCbs: (
+    _onmidicb: (midi_event: MIDIMessageEvent) => void,
+    _onstatechangecb: (connection_event: MIDIConnectionEvent) => void 
+  ) => this;
 }
 export class TestService implements ITestService {
 
@@ -23,11 +27,9 @@ export class TestService implements ITestService {
 
   constructor(access: MIDIAccessRecord) {
     this._access = access;
-    this.inputMap = this.makeFakeMIDIInputs();
-    this.outputMap = this.makeFakeMIDIOutputs();
-    if (this.inputMap.size > 0) {
-      this._setInputArrs();
-    }
+    if (access.inputs.size > 0) this.inputMap = access.inputs;
+    if (access.outputs.size > 0) this.outputMap = access.outputs;
+    if (this.inputMap.size > 0) this._setInputArrs();
   }
 
   /**
@@ -233,18 +235,19 @@ export class TestService implements ITestService {
 
   /**
    * 
-   * @returns 
+   * @returns returns an instance of the class after setting all the input array's callback functions
    */
   public setInputCbs(
     _onmidicb: (midi_event: MIDIMessageEvent) => unknown, 
     _onstatechangecb: (connection_event: MIDIConnectionEvent) => unknown
-  ): void {
+  ): this {
     const input_size = this.inputMap.size;
 
     for (let i = 0; i < input_size; i++) {
       this.inputs[i].onmidimessage = _onmidicb;
       this.inputs[i].onstatechange = _onstatechangecb;
     }
+    return this;
   }
 
 
