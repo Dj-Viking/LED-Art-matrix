@@ -301,6 +301,55 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               role="button"
               style="opacity: 0;"
             >
+              <div>
+                
+        
+                <!--?xml version="1.0" encoding="UTF-8" standalone="no" ?-->
+                
+        
+        
+                <svg
+                  fill="none"
+                  height="20"
+                  viewBox="0 0 120 103"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  
+
+          
+                  <rect
+                    fill="white"
+                    height="103"
+                    rx="29"
+                    width="120"
+                  />
+                  
+
+          
+                  <rect
+                    fill="black"
+                    height="90"
+                    rx="29"
+                    width="108"
+                    x="6"
+                    y="7"
+                  />
+                  
+
+          
+                  <path
+                    d="M61.5 51.7188H49.9688L49.9062 46.875H60.375C62.1042 46.875 63.6146 46.5833 64.9062 46C66.1979 45.4167 67.1979 44.5833 67.9062 43.5C68.6354 42.3958 69 41.0833 69 39.5625C69 37.8958 68.6771 36.5417 68.0312 35.5C67.4062 34.4375 66.4375 33.6667 65.125 33.1875C63.8333 32.6875 62.1875 32.4375 60.1875 32.4375H51.3125V73H45.2812V27.5H60.1875C62.5208 27.5 64.6042 27.7396 66.4375 28.2188C68.2708 28.6771 69.8229 29.4062 71.0938 30.4062C72.3854 31.3854 73.3646 32.6354 74.0312 34.1562C74.6979 35.6771 75.0312 37.5 75.0312 39.625C75.0312 41.5 74.5521 43.1979 73.5938 44.7188C72.6354 46.2188 71.3021 47.4479 69.5938 48.4062C67.9062 49.3646 65.9271 49.9792 63.6562 50.25L61.5 51.7188ZM61.2188 73H47.5938L51 68.0938H61.2188C63.1354 68.0938 64.7604 67.7604 66.0938 67.0938C67.4479 66.4271 68.4792 65.4896 69.1875 64.2812C69.8958 63.0521 70.25 61.6042 70.25 59.9375C70.25 58.25 69.9479 56.7917 69.3438 55.5625C68.7396 54.3333 67.7917 53.3854 66.5 52.7188C65.2083 52.0521 63.5417 51.7188 61.5 51.7188H52.9062L52.9688 46.875H64.7188L66 48.625C68.1875 48.8125 70.0417 49.4375 71.5625 50.5C73.0833 51.5417 74.2396 52.875 75.0312 54.5C75.8438 56.125 76.25 57.9167 76.25 59.875C76.25 62.7083 75.625 65.1042 74.375 67.0625C73.1458 69 71.4062 70.4792 69.1562 71.5C66.9062 72.5 64.2604 73 61.2188 73Z"
+                    fill="white"
+                  />
+                  
+        
+                </svg>
+                
+
+
+      
+              </div>
               <span
                 style="color: white;"
               >
@@ -702,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="3240.705589770132something unique lol"
+          id="3540.4470675939747something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -759,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="5067.5455019582705something unique lol"
+          id="1508.6022150978672something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -816,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="5475.117412373751something unique lol"
+          id="2042.907813742154something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -873,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="6443.441702880046something unique lol"
+          id="2819.655365243374something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -930,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="8249.334078077933something unique lol"
+          id="3624.133023652281something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -987,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="5816.991195159227something unique lol"
+          id="5857.825880451171something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1050,18 +1099,34 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <div
             style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
+            <p
+              style="margin-bottom: 1em;"
+            >
+              XONE:K2
+            </p>
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
+                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                Intensity: 0
+                <span>
+                  Intensity: 0
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
+                <p>
+                  Channel: 4
+                </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
         <div
@@ -1073,18 +1138,34 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <div
             style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
+            <p
+              style="margin-bottom: 1em;"
+            >
+              XONE:K2
+            </p>
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
+                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                Intensity: 0
+                <span>
+                  Intensity: 0
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
+                <p>
+                  Channel: 4
+                </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
         <div
@@ -1096,18 +1177,34 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           <div
             style="width: 50%; margin: 0px auto; border: 1px solid red;"
           >
+            <p
+              style="margin-bottom: 1em;"
+            >
+              XONE:K2
+            </p>
             <span>
               Connection: 1
               <div
-                style="margin: 1em auto 1em auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
+                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
               <span>
-                Intensity: 0
+                <span>
+                  Intensity: 0
+                  <div
+                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+                  >
+                    <progress
+                      max="127"
+                      style="width: 50%;"
+                      value="0"
+                    />
+                  </div>
+                </span>
+                <p>
+                  Channel: 4
+                </p>
               </span>
             </span>
-            <p>
-              XONE:K2
-            </p>
           </div>
         </div>
       </div>

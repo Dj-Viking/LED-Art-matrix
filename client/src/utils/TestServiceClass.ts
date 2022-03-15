@@ -1,6 +1,6 @@
 import { ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
-import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType, TestMIDIAccessRecord, TestMIDIConnectionEvent, TestMIDIMessageEvent } from "./MIDIControlClass";
+import { MIDIAccessRecord, MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType, TestMIDIConnectionEvent } from "./MIDIControlClass";
 
 /**
  * helper class for the testing environment
@@ -12,17 +12,24 @@ interface ITestService {
   outputMap: Map<MIDIOutput["id"], MIDIOutput>;
   makeFakeMIDIInputs: () => Map<MIDIInput["id"], MIDIInput>;
   makeFakeMIDIOutputs: () => Map<MIDIOutput["id"], MIDIOutput>;
+  setInputCbs: (
+    _onmidicb: (midi_event: MIDIMessageEvent) => void,
+    _onstatechangecb: (connection_event: MIDIConnectionEvent) => void 
+  ) => this;
 }
 export class TestService implements ITestService {
 
-  private _access = null as TestMIDIAccessRecord;
+  private _access: MIDIAccessRecord;
   public inputMap = new Map<string, MIDIInput>();
+  public inputs = [] as MIDIInput[];
+  public outputs = [] as MIDIOutput[];
   public outputMap = new Map<string, MIDIOutput>();
 
-  constructor(access: TestMIDIAccessRecord) {
+  constructor(access: MIDIAccessRecord) {
     this._access = access;
-    this.inputMap = this.makeFakeMIDIInputs();
-    this.outputMap = this.makeFakeMIDIOutputs();
+    if (access.inputs.size > 0) this.inputMap = access.inputs;
+    if (access.outputs.size > 0) this.outputMap = access.outputs;
+    if (this.inputMap.size > 0) this._setInputArrs();
   }
 
   /**
@@ -177,16 +184,72 @@ export class TestService implements ITestService {
 }
  * @returns test midi message event
  */
-  public createMIDIMessageEvent(): TestMIDIMessageEvent {
+  public createMIDIMessageEvent(): MIDIMessageEvent {
     return {
       isTrusted: true,
       bubbles: true,
       cancelBubble: false,
       composed: false,
       target: this.makeFakeMIDIInputs().get("1") as MIDIInput,
+      //@ts-ignore
       data: [190, 16, 113]
     };
   }
+
+  /**
+   *  
+   * @example
+   * return {
+   *  isTrusted: true,
+   *  bubbles: true,
+   *  cancelBubble: false,
+   *  cancelable: true,
+   *  composed: false,
+   *  target: this.inputMap.get("1") as MIDIInput
+    };
+   * @returns test midi connection event
+   */
+  public createAccessStateChangeEvent(): MIDIConnectionEvent {
+    //@ts-ignore
+    return {
+      isTrusted: true,
+      bubbles: true,
+      cancelBubble: false,
+      cancelable: true,
+      composed: true,
+      target: this.getAccess(),
+    };
+  }
+
+  public _setInputArrs(): this {
+    if (this.inputMap.size > 0) {
+      const MIDI_INPUT_LIST_SIZE = this.inputMap.size;
+      const entries = this.inputMap.entries();
+
+      for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
+          this.inputs?.push(entries.next().value[1]);
+      }
+  }
+    return this;
+  }
+
+  /**
+   * 
+   * @returns returns an instance of the class after setting all the input array's callback functions
+   */
+  public setInputCbs(
+    _onmidicb: (midi_event: MIDIMessageEvent) => unknown, 
+    _onstatechangecb: (connection_event: MIDIConnectionEvent) => unknown
+  ): this {
+    const input_size = this.inputMap.size;
+
+    for (let i = 0; i < input_size; i++) {
+      this.inputs[i].onmidimessage = _onmidicb;
+      this.inputs[i].onstatechange = _onstatechangecb;
+    }
+    return this;
+  }
+
 
   /**
    *  
@@ -212,7 +275,7 @@ export class TestService implements ITestService {
     };
   }
 
-  public getAccess(): TestMIDIAccessRecord {
+  public getAccess(): MIDIAccessRecord {
     return this._access;
   }
 

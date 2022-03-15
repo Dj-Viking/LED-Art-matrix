@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 //@ts-ignore
 import React from "react";
 import App from "../../App";
@@ -12,8 +13,9 @@ import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID } from "../../constants";
-import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { MIDIAccessRecord, MIDIConnectionEvent, MIDIMessageEvent } from "../../utils/MIDIControlClass";
 import { act } from "react-dom/test-utils";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -55,8 +57,38 @@ describe("faking navigator for midiaccess testing", () => {
     );
 
     expect((await screen.findByTestId(LOCATION_DISPLAY_ID)).textContent).toBe("/");
-    act(() => {
-      return void 0;
+    await act(async () => {
+
+      // @ts-ignore
+      const access = await window.navigator.requestMIDIAccess();
+      console.log("test access", access);
+      
+      const TestMIDIController = new TestService(access);
+
+      TestMIDIController.setInputCbs(
+        function(midi_event: MIDIMessageEvent) {
+          console.log("heres a test midi message event", midi_event);
+        }, 
+        function(connection_event: MIDIConnectionEvent) {
+          console.log("heres a test connection event", connection_event);
+        }
+      );
+
+      console.log("test controller with cbs", TestMIDIController);
+      TestMIDIController.inputs[0].onmidimessage!(new TestService(access).createMIDIMessageEvent());
+
+      access.onstatechange = function(connection_event: MIDIConnectionEvent) {
+        console.log("access state change event fired OFF", connection_event);
+      };
+
+      // this isn't affecting coverage. the functions called in the component are called by 
+      // the browser itself when it's running
+      // and also by human intervention into the app when adjust controls on the hardware, 
+      // I have no idea how to simulate this with jest... 😫 
+      // maybe i am approaching this all wrong, do i have to do some mocks?
+      access.onstatechange(TestMIDIController.createAccessStateChangeEvent());
+
     });
+
   });
 });

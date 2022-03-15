@@ -131,6 +131,10 @@ class ApiService implements IApiService {
         method: "GET",
         headers,
       });
+      if (res.status === 403) {
+        //silently fail and logout user if 403 possible expired token or invalid token,
+        Auth.logout();
+      }
       const data = await res.json();
       return data.presets;
     } catch (error) {}
