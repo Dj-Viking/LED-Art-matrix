@@ -74,7 +74,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                     break;
                                     case "2_middle_knob": 
                                         filterTimeoutRef.current = setTimeout(() => {
-                                            dispatch(setAnimDuration(midi_intensity.toString()));
+                                            dispatch(setAnimDuration(
+                                                midi_intensity <= 0 ? "1" : midi_intensity.toString()
+                                            ));
                                         }, 20);
                                     break;
                                     // RATHER USE KEYS INSTEAD OF MIDI CONTROLLER BUTTONS
@@ -90,7 +92,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                         // }, 100);
                                         //slight debounce to help with limiting dispatch
                                         filterTimeoutRef.current = setTimeout(() => {
-                                            dispatch(animVarCoeffChange((midi_intensity).toString()));
+                                            dispatch(animVarCoeffChange((
+                                                midi_intensity === 0 ? "1" : midi_intensity * 2
+                                            ).toString()));
                                         }, 10);
                                     break;
                                     default: break;
