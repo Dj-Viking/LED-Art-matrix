@@ -8,7 +8,7 @@ import API from "../utils/ApiService";
 import { getRandomIntLimit } from "../utils/helpers";
 import { getGifs, setAnimDuration, setCircleWidth, setFigureOn, setHPos, setInvert, setVertPos} from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
-import { BKeySvg } from "../lib/svgs";
+import { BKeySvg } from "../lib/keySvgs";
 
 const ArtScroller: React.FC = (): JSX.Element => {
   const leftInitButtonSpring = useSpring(_leftInitButtonSpring);

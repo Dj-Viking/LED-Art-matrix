@@ -10,7 +10,7 @@ import { animVarCoeffChange } from "../actions/led-actions";
 import { XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import IntensityBar from "./IntensityBar";
-import { Fader, Knob } from "../lib/svgs";
+import { Fader, Knob } from "../lib/deviceControlSvgs";
 
 interface MIDIListenerWrapperProps {
   children?: ReactNode | ReactNode[]
@@ -63,7 +63,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                   usingKnob: is_knob
                 }));
             
-
                 // console.log("dump data", midi_event);
                 switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
                   case "1_upper_knob":
@@ -137,8 +136,8 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
                       <div style={{ width: "50%" }}></div>
 
-                      { usingFader ? <Fader /> : null }
-                      { usingKnob ? <Knob /> : null }
+                      { usingFader ? <Fader intensity_prop={intensity}/> : null }
+                      { usingKnob ? <Knob intensity_prop={intensity}/> : null }
                       
                     </div>
 

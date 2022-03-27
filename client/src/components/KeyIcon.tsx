@@ -13,7 +13,7 @@ import {
   ThreeKeySvg, 
   TwoKeySvg, 
   WKeySvg 
-} from "../lib/svgs";
+} from "../lib/keySvgs";
   
 interface KeyIconProps {
   type: string
