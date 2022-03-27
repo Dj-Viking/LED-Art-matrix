@@ -267,3 +267,29 @@ export const Fader: React.FC = (): JSX.Element => {
     </>
   );
 };
+
+export const Knob: React.FC = () => {
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: `
+
+      <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+      <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+      
+      <svg width="91" height="106" viewBox="0 0 91 136" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="45.5" cy="62.5" rx="32.5" ry="31.5" fill="white"/>
+        <rect x="44" y="31" width="4" height="21" fill="black"/>
+        <rect x="44" width="4" height="16" fill="white"/>
+        <rect x="3.75283" y="108.214" width="4" height="16" transform="rotate(-134.99 3.75283 108.214)" fill="white"/>
+        <rect width="4" height="16" transform="matrix(0.731235 -0.682126 -0.682126 -0.731235 85.9912 109.357)" fill="white"/>
+        <path d="M90.5 62C90.5 87.6967 70.3377 108.5 45.5 108.5C20.6623 108.5 0.5 87.6967 0.5 62C0.5 36.3033 20.6623 15.5 45.5 15.5C70.3377 15.5 90.5 36.3033 90.5 62Z" stroke="white"/>
+        <path d="M72 95H23.5H17.5L3.5 110L16 135H74L86.5 111.5L81.5 105.5L72 95Z" fill="black" stroke="black"/>
+      </svg>
+
+
+      `}}>
+
+      </div>
+    </>
+  );
+};

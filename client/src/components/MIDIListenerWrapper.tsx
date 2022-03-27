@@ -4,14 +4,13 @@ import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { keyGen } from "../utils/keyGen";
 import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortDeviceState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
-import { setAccess } from "../actions/midi-access-actions";
+import { setAccess, determineDeviceControl } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
 import { animVarCoeffChange } from "../actions/led-actions";
 import { XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import IntensityBar from "./IntensityBar";
-import { Fader } from "../lib/svgs";
-// import { MySVG } from "../utils/SVGClass";
+import { Fader, Knob } from "../lib/svgs";
 
 interface MIDIListenerWrapperProps {
   children?: ReactNode | ReactNode[]
@@ -22,11 +21,12 @@ interface MIDIListenerWrapperProps {
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
   const dispatch = useDispatch();
   const accessState = useSelector((state: MyRootState) => state.accessRecordState);
+  const { usingFader, usingKnob } = accessState;
   const { figureOn } = useSelector((state: MyRootState) => state.artScrollerState);
   const [size, setSize] = useState<number>(0);
   const [intensity, setIntensity] = useState<number>(0);
   // channel four is xone:k2's upper left most knob above the first fader
-  const [channel, setChannel] = useState<number>(4);
+  const [channel, setChannel] = useState<number>(16);
   const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
   useEffect(() => {
@@ -56,6 +56,12 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 setIntensity(midi_intensity);
 
                 const is_fader = midi_channel >= 16 && midi_channel <= 19;
+                const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
+
+                dispatch(determineDeviceControl({
+                  usingFader: is_fader,
+                  usingKnob: is_knob
+                }));
             
 
                 // console.log("dump data", midi_event);
@@ -87,18 +93,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                       ));
                     }, 20);
                     break;
-                  // RATHER USE KEYS INSTEAD OF MIDI CONTROLLER BUTTONS
-                  case "1_upper_button":
-                    // filterTimeoutRef.current = setTimeout(() => {
-                    //     dispatch(setFigureOn(figureOn ? true : false));
-                    // }, 100);
-                    void 0;
-                    break;
                   case "1_fader":
-                    // filterTimeoutRef.current = setTimeout(() => {
-                    //     dispatch(setFigureOn(figureOn ? true : false));
-                    // }, 100);
-                    //slight debounce to help with limiting dispatch
                     filterTimeoutRef.current = setTimeout(() => {
                       dispatch(animVarCoeffChange((
                         midi_intensity === 0 ? "1" : midi_intensity * 2
@@ -132,15 +127,18 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
               <div key={keyGen()} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <h2>MIDI Device {i + 1}</h2>
                 <div style={{ position: "relative", width: "50%", margin: "0 auto", border: input.state === MIDIPortDeviceState.connected ? "solid 1px green" : " solid 1px red" }}>
-                  <p style={{ marginBottom: "1em" }}>
+                  <p style={{ marginBottom: ".5em", marginTop: ".5em"  }}>
                     {input.name}
                   </p>
                   <div>
                     <span>Connection: {input.connection}</span> 
 
                     <div style={{ display: "flex", justifyContent: "space-around" }}>
+
                       <div style={{ width: "50%" }}></div>
-                      <Fader />
+
+                      { usingFader ? <Fader /> : null }
+                      { usingKnob ? <Knob /> : null }
                       
                     </div>
 
@@ -156,7 +154,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
                               <IntensityBar intensity={intensity} />
                             </span>
-                            <div>
+                            <div style={{ marginBottom: ".5em" }}>
                               Channel: {channel}
                             </div>
                             
