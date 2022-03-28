@@ -64,13 +64,11 @@ export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
 
     // somehow take the percentage and convert this into angle, x, y values for the rotation
     
-    let angle = calcPositionFromRange(rotationPercentage, 0, 360, 0, 100);
+    let angle = calcPositionFromRange(rotationPercentage, -140, 137, 0, 100);
     console.log("intensity input", intensity_input, "rotation percentage", rotationPercentage, "angle", angle);
-    
-    const vec2 = {
-      x: "44",
-      y: "31"
-    };
+
+    //so we can rotate along our own defined axis to follow the circle perimeter
+    const vec2 = { x: 45, y: 62 };
 
     return `rotate(${angle}, ${vec2.x}, ${vec2.y})`;
   }
@@ -84,13 +82,14 @@ export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
         
         <svg width="91" height="106" viewBox="0 0 91 136" fill="none" xmlns="http://www.w3.org/2000/svg">
         
-          <ellipse cx="45.5" cy="62.5" rx="32.5" ry="31.5" fill="white"/>
+          <circle cx="45.5" cy="61.5" r="32.5" fill="white"/>
+
           <rect 
-            x="44" 
-            y="31" 
+            x="45" 
+            y="29" 
             width="4" 
             height="21" 
-            ${ intensity_prop > 0 ? `transform="${translateKnobRect(intensity_prop)}"` : "" } 
+            transform="${translateKnobRect(intensity_prop)}"
             fill="black"
           />
           <rect x="44" width="4" height="16" fill="white"/>
