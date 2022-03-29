@@ -154,11 +154,14 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                               <IntensityBar intensity={intensity} />
                             </span>
                             <div style={{ marginBottom: ".5em" }}>
-                              Channel: {channel}
+                              <span>Channel: {channel}</span>
+                              <p style={{ margin: 0 }}>
+                                {XONEK2_MIDI_CHANNEL_TABLE[channel]}
+                              </p>
                             </div>
                             
                           </>
-                        )
+                        ) 
                       }
                     </span>
 
