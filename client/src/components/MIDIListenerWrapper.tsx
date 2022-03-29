@@ -23,7 +23,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
   const { figureOn } = useSelector((state: MyRootState) => state.artScrollerState);
   const [size, setSize] = useState<number>(0);
   const [intensity, setIntensity] = useState<number>(0);
-  // channel four is xone:k2's upper left most knob above the first fader
+  // channel 16 is xone:k2's left most fader
   const [channel, setChannel] = useState<number>(16);
   const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
@@ -117,8 +117,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
   return (
     <>
       {
-        // @ts-ignore
-        accessState.online ? accessState.inputs!.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
+        accessState.online ? accessState.inputs.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
           if (input.name.includes("XONE:K2")) {
             return (
               <div key={keyGen()} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -128,6 +127,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     {input.name}
                   </p>
                   <div>
+                    
                     <span>Connection: {input.connection}</span> 
 
                     <div style={{ display: "flex", justifyContent: "space-around" }}>

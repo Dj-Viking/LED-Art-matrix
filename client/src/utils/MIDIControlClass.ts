@@ -68,8 +68,6 @@ interface TestMIDIMessageEvent {
     data: [number, number, number];
 }
 
-
-
 interface MIDIMessageEvent {
     isTrusted: boolean;
     bubbles: boolean;
@@ -141,13 +139,13 @@ interface IMIDIController {
 
 class MIDIController implements IMIDIController {
 
+    private _access = null as MIDIAccessRecord | null;
+
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
     public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
-
-    private _access = null as MIDIAccessRecord | null;
 
     constructor(access: MIDIAccessRecord) {
         if (access)
@@ -237,7 +235,6 @@ class MIDIController implements IMIDIController {
 
 }
 
-
 export type {
     MIDIConnectionEvent,
     MIDIInput,
@@ -251,4 +248,4 @@ export type {
     TestMIDIConnectionEvent
 };
     
-    export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };
+export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };
