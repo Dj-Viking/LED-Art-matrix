@@ -6,6 +6,7 @@ interface DeviceControlSvgProps {
 }
 
 export const Fader: React.FC<DeviceControlSvgProps> = ({ intensity_prop }): JSX.Element => {
+
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: `
@@ -16,32 +17,26 @@ export const Fader: React.FC<DeviceControlSvgProps> = ({ intensity_prop }): JSX.
 
           <rect x="11.5" y="0.5" width="5" height="105" stroke="white"/>
 
-          <g filter="url(#filter0_d_101_2)">
-            <rect x="4" y="14" width="20" height="37" rx="5" fill="black"/>
-            <rect x="5" y="15" width="18" height="35" rx="4" stroke="white" stroke-width="2"/>
-          </g>
-
-          <path d="M6 32H22.6008" stroke="white" stroke-width="2" stroke-linecap="square"/>
-          <path d="M4.94945 22.9093H21.9034" stroke="white" stroke-linecap="square"/>
-          <path d="M5.65586 27.1478H22.2566" stroke="white" stroke-linecap="square"/>
-          <path d="M5.65586 19.024H22.6098" stroke="white" stroke-linecap="square"/>
-          <path d="M6 40.8853H22.954" stroke="white" stroke-linecap="square"/>
-          <path d="M6.70642 45.1238H23.3072" stroke="white" stroke-linecap="square"/>
-          <path d="M6.70642 37H23.6604" stroke="white" stroke-linecap="square"/>
-
           <defs>
-            <filter id="filter0_d_101_2" x="0" y="14" width="28" height="45" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <filter id="filter0_d_101_2" x="0" y="0" width="28" height="500" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
               <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-              <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-              <feOffset dy="4"/>
+              <feColorMatrix  in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+              <feOffset       dy="4"/>
               <feGaussianBlur stdDeviation="2"/>
-              <feComposite in2="hardAlpha" operator="out"/>
-              <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
-              <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_101_2"/>
-              <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_101_2" result="shape"/>
+              <feComposite    in2="hardAlpha"  operator="out"/>
+              <feColorMatrix  type="matrix"    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+              <feBlend        mode="normal"    in2="BackgroundImageFix" result="effect1_dropShadow_101_2"/>
+              <feBlend        mode="normal"    in="SourceGraphic" in2="effect1_dropShadow_101_2" result="shape"/>
             </filter>
           </defs>
-          
+
+          <!-- both fader background and border and middle rect of fader -->
+          <g filter="url(#filter0_d_101_2)">
+            <rect x="4" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="20" height="37" rx="5" fill="black"/>
+            <rect x="5" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="18" height="35" rx="4" stroke="white" stroke-width="2"/>
+            <rect x="6" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="16" height="2" fill="white" transform="translate(0, 16)"/>          
+          </g>
+
         </svg>
 
 
