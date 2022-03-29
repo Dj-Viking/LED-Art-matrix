@@ -16,8 +16,6 @@ interface MIDIListenerWrapperProps {
   children?: ReactNode | ReactNode[]
 }
 
-
-
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
   const dispatch = useDispatch();
   const accessState = useSelector((state: MyRootState) => state.accessRecordState);
