@@ -1,5 +1,4 @@
 import React from "react";
-
 export const OneKeySvg: React.FC = (): JSX.Element => {
   return (
     <>

@@ -1,4 +1,4 @@
-import { ISetAccessRecordAction, ISetGhostAccessInputSizeAction } from "../types";
+import { ISetAccessRecordAction, IDetermineDeviceControlAction } from "../types";
 import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/MIDIControlClass";
 
 // @ts-ignore
@@ -25,9 +25,9 @@ export const setAccess: ISetAccessRecordAction = (
   };
 };
 
-export const setGhostInputSize: ISetGhostAccessInputSizeAction = (access) => {
+export const determineDeviceControl = (using: { usingFader: boolean, usingKnob: boolean }): IDetermineDeviceControlAction => {
   return {
-    type: "SET_ACCESS_INPUTS_SIZE",
-    payload: access.inputs_size
+    type: "DETERMINE_DEVICE_CONTROL",
+    payload: using
   };
 };

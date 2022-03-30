@@ -227,14 +227,11 @@ export type TABLE_VALUES =
 export type XONEK2_MIDIChannelTable = Record<number, TABLE_VALUES>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE = {
-  4: "1_upper_knob",
-  48: "1_upper_button",
-  8: "1_middle_knob",
-  44: "1_middle_button",
+  4:  "1_upper_knob",
+  8:  "1_middle_knob",
   12: "1_lower_knob",
-  40: "1_lower_button",
-  5: "2_upper_knob",
-  9: "2_middle_knob",
+  5:  "2_upper_knob",
+  9:  "2_middle_knob",
   13: "2_lower_knob",
   16: "1_fader",
   17: "2_fader",

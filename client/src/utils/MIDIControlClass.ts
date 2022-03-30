@@ -46,17 +46,17 @@ interface MIDIConnectionEvent {
     type: string | "statechange"
 }
 enum MIDIPortType {
-    "input",
-    "output"
+    input = "input",
+    output = "output"
 };
 enum MIDIPortConnectionState {
-    "open",
-    "closed",
-    "pending"
+    open = "open",
+    closed = "closed",
+    pending = "pending"
 };
 enum MIDIPortDeviceState {
-    "disconnected",
-    "connected"
+    disconnected = "disconnected",
+    connected = "connected"
 };
 
 interface TestMIDIMessageEvent {
@@ -67,8 +67,6 @@ interface TestMIDIMessageEvent {
     target: MIDIInput;
     data: [number, number, number];
 }
-
-
 
 interface MIDIMessageEvent {
     isTrusted: boolean;
@@ -141,13 +139,13 @@ interface IMIDIController {
 
 class MIDIController implements IMIDIController {
 
+    private _access = null as MIDIAccessRecord | null;
+
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
     public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
-
-    private _access = null as MIDIAccessRecord | null;
 
     constructor(access: MIDIAccessRecord) {
         if (access)
@@ -237,7 +235,6 @@ class MIDIController implements IMIDIController {
 
 }
 
-
 export type {
     MIDIConnectionEvent,
     MIDIInput,
@@ -251,4 +248,4 @@ export type {
     TestMIDIConnectionEvent
 };
     
-    export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };
+export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };

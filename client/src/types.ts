@@ -429,6 +429,8 @@ export interface IDeletePresetAction {
 }
 
 export type IAccessRecordState  = {
+  usingFader: boolean;
+  usingKnob: boolean;
   inputs: Array<MIDIInput>;
   outputs: Array<MIDIOutput>;
   online: boolean;
@@ -437,7 +439,8 @@ export type IAccessRecordState  = {
 }
 
 export type UAccessRecordActionTypes = 
-| "SET_ACCESS";
+| "SET_ACCESS"
+| "DETERMINE_DEVICE_CONTROL";
 
 export interface ISetAccessRecordActionObj {
   type: "SET_ACCESS",
@@ -450,14 +453,15 @@ export type ISetAccessRecordAction = (
   onstatechangecb?: (event: MIDIConnectionEvent) => void
 ) => MIDIController;
 
-
-export type ISetGhostAccessInputSizeAction = (access: MIDIController) => {
-  type: "SET_ACCESS_INPUTS_SIZE",
-  payload: number;
-};
+export interface IDetermineDeviceControlAction {
+  type: "DETERMINE_DEVICE_CONTROL";
+  payload: { usingFader: boolean, usingKnob: boolean };
+}
 
 export type UAccessRecordActionPayloads = 
-| ISetAccessRecordActionObj["payload"];
+| ISetAccessRecordActionObj["payload"]
+| IDetermineDeviceControlAction["payload"]
+
 export interface IAccessRecordAction {
   type: UAccessRecordActionTypes;
   payload: UAccessRecordActionPayloads;
