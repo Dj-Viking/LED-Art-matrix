@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "sh test.sh",
-    "test:ci": "sh test:ci.sh",
+    "test:ci": "npm run cover:ci",
     "test:jest": "jest --verbose --coverage --watchAll=false --config='./client/src/jest.config.ts'",
     "cover": "npm run cover:all",
     "cover:all": "npm run test:server; npm run test:client; npx codecov",
