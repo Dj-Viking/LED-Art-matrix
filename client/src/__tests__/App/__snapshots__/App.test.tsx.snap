@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="3540.4470675939747something unique lol"
+          id="6002.167581617375something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="1508.6022150978672something unique lol"
+          id="7862.911108182167something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="2042.907813742154something unique lol"
+          id="38.1020460199788something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="2819.655365243374something unique lol"
+          id="4604.471607241491something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="3624.133023652281something unique lol"
+          id="2172.7195508982654something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="5857.825880451171something unique lol"
+          id="5321.682442389832something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1091,21 +1091,30 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           </p>
         </button>
         <div
-          style="display: flex; flex-direction: column;"
+          style="display: flex; flex-direction: column; justify-content: center;"
         >
           <h2>
             MIDI Device 1
           </h2>
           <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
+            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
           >
             <p
-              style="margin-bottom: 1em;"
+              style="margin-bottom: .5em; margin-top: .5em;"
             >
               XONE:K2
             </p>
-            <span>
-              Connection: 1
+            <div>
+              <span>
+                Connection: closed
+              </span>
+              <div
+                style="display: flex; justify-content: space-around;"
+              >
+                <div
+                  style="width: 50%;"
+                />
+              </div>
               <div
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
@@ -1122,29 +1131,47 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                     />
                   </div>
                 </span>
-                <p>
-                  Channel: 4
-                </p>
+                <div
+                  style="margin-bottom: .5em;"
+                >
+                  <span>
+                    Channel: 16
+                  </span>
+                  <p
+                    style="margin: 0px;"
+                  >
+                    1_fader
+                  </p>
+                </div>
               </span>
-            </span>
+            </div>
           </div>
         </div>
         <div
-          style="display: flex; flex-direction: column;"
+          style="display: flex; flex-direction: column; justify-content: center;"
         >
           <h2>
             MIDI Device 2
           </h2>
           <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
+            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
           >
             <p
-              style="margin-bottom: 1em;"
+              style="margin-bottom: .5em; margin-top: .5em;"
             >
               XONE:K2
             </p>
-            <span>
-              Connection: 1
+            <div>
+              <span>
+                Connection: closed
+              </span>
+              <div
+                style="display: flex; justify-content: space-around;"
+              >
+                <div
+                  style="width: 50%;"
+                />
+              </div>
               <div
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
@@ -1161,29 +1188,47 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                     />
                   </div>
                 </span>
-                <p>
-                  Channel: 4
-                </p>
+                <div
+                  style="margin-bottom: .5em;"
+                >
+                  <span>
+                    Channel: 16
+                  </span>
+                  <p
+                    style="margin: 0px;"
+                  >
+                    1_fader
+                  </p>
+                </div>
               </span>
-            </span>
+            </div>
           </div>
         </div>
         <div
-          style="display: flex; flex-direction: column;"
+          style="display: flex; flex-direction: column; justify-content: center;"
         >
           <h2>
             MIDI Device 3
           </h2>
           <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
+            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
           >
             <p
-              style="margin-bottom: 1em;"
+              style="margin-bottom: .5em; margin-top: .5em;"
             >
               XONE:K2
             </p>
-            <span>
-              Connection: 1
+            <div>
+              <span>
+                Connection: closed
+              </span>
+              <div
+                style="display: flex; justify-content: space-around;"
+              >
+                <div
+                  style="width: 50%;"
+                />
+              </div>
               <div
                 style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
               />
@@ -1200,11 +1245,20 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
                     />
                   </div>
                 </span>
-                <p>
-                  Channel: 4
-                </p>
+                <div
+                  style="margin-bottom: .5em;"
+                >
+                  <span>
+                    Channel: 16
+                  </span>
+                  <p
+                    style="margin: 0px;"
+                  >
+                    1_fader
+                  </p>
+                </div>
               </span>
-            </span>
+            </div>
           </div>
         </div>
       </div>

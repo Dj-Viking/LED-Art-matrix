@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setAccess, determineDeviceControl } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
 import { animVarCoeffChange } from "../actions/led-actions";
-import { XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
+import { XONEK2_MIDI_CHANNEL_TABLE, SUPPORTED_CONTROLLERS } from "../constants";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import IntensityBar from "./IntensityBar";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
@@ -23,6 +23,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
   const { figureOn } = useSelector((state: MyRootState) => state.artScrollerState);
   const [size, setSize] = useState<number>(0);
   const [intensity, setIntensity] = useState<number>(0);
+  const [option, setOption] = useState<string>("");
   // channel 16 is xone:k2's left most fader
   const [channel, setChannel] = useState<number>(16);
   const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
@@ -60,7 +61,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                   usingFader: is_fader,
                   usingKnob: is_knob
                 }));
-            
+
                 // console.log("dump data", midi_event);
                 switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
                   case "1_upper_knob":
@@ -117,60 +118,75 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
   return (
     <>
       {
-        accessState.online ? accessState.inputs.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
-          if (input.name.includes("XONE:K2")) {
+        accessState.online
+          ?
+          accessState.inputs.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
+            <h2>MIDI Device {i + 1}</h2>;
             return (
               <div key={keyGen()} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <h2>MIDI Device {i + 1}</h2>
-                <div style={{ position: "relative", width: "50%", margin: "0 auto", border: input.state === MIDIPortDeviceState.connected ? "solid 1px green" : " solid 1px red" }}>
-                  <p style={{ marginBottom: ".5em", marginTop: ".5em"  }}>
-                    {input.name}
-                  </p>
-                  <div>
-                    
-                    <span>Connection: {input.connection}</span> 
-
-                    <div style={{ display: "flex", justifyContent: "space-around" }}>
-
-                      <div style={{ width: "50%" }}></div>
-
-                      { usingFader ? <Fader intensity_prop={intensity}/> : null }
-                      { usingKnob ? <Knob intensity_prop={intensity}/> : null }
-                      
-                    </div>
-
-
-                    <div style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === MIDIPortDeviceState.connected ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div>
-
-                    <span>
-                      {
-                        input.name.includes("XONE:K2") && (
-                          <>
-                            <span>
-                              Intensity: {intensity}
-
-                              <IntensityBar intensity={intensity} />
-                            </span>
-                            <div style={{ marginBottom: ".5em" }}>
-                              <span>Channel: {channel}</span>
-                              <p style={{ margin: 0 }}>
-                                {XONEK2_MIDI_CHANNEL_TABLE[channel]}
-                              </p>
-                            </div>
-                            
-                          </>
-                        ) 
-                      }
-                    </span>
-
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <select onChange={(e) => {
+                    setOption(e.target.value);
+                  }} style={{ backgroundColor: "black" }}>
+                    {_arr.map(input => {
+                      return (
+                        <option key={input.id} value={input.name}>{input.name}</option>
+                      );
+                    })}
+                  </select>
                 </div>
-              </div>
+
+                {/* only show the device that is selected in the thing above */}
+                {option ? (<>
+                  <div
+                    style={{ position: "relative", width: "50%", margin: "0 auto", border: input.state === MIDIPortDeviceState.connected ? "solid 1px green" : "   solid 1px red" }}
+                  >
+                    <p style={{ marginBottom: ".5em", marginTop: ".5em" }}>
+                      {input.name}
+                    </p>
+                    <div>
+
+                      <div style={{ display: "flex", justifyContent: "space-around" }}>
+
+                        <div style={{ width: "50%" }}></div>
+
+                        {usingFader ? <Fader intensity_prop={intensity} /> : null}
+                        {usingKnob ? <Knob intensity_prop={intensity} /> : null}
+
+                      </div>
+
+
+                      <div style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === MIDIPortDeviceState.connected ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div>
+
+                      <span>
+                        {
+                          input.name.includes("XONE:K2") && (
+                            <>
+                              <span>
+                                Intensity: {intensity}
+
+                                <IntensityBar intensity={intensity} />
+                              </span>
+                              <div style={{ marginBottom: ".5em" }}>
+                                <span>Channel: {channel}</span>
+                                <p style={{ margin: 0 }}>
+                                  {XONEK2_MIDI_CHANNEL_TABLE[channel]}
+                                </p>
+                              </div>
+
+                            </>
+                          )
+                        }
+                      </span>
+
+                    </div>
+                  </div>
+                </>) : null
+
+                }
+              </div >
             );
-          } else { //only want to display xone:k2 device
-            return null;
-          }
-        }) : <p>MIDI OFFLINE</p>
+          }) : <p>MIDI OFFLINE</p>
       }
     </>
   );
