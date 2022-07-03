@@ -3,6 +3,10 @@
   "version": "1.9.2",
   "description": "",
   "main": "index.js",
+  "engine": {
+    "node": "16.14.2",
+    "npm": "8.10.0"
+  },
   "scripts": {
     "test": "sh test.sh",
     "test:ci": "npm run cover:ci",
