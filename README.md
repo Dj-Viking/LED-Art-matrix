@@ -99,6 +99,9 @@ PWA accessible! just install by clicking the + on the right side of the browser 
             }
         }
     ```
+    * NOTE: how the env.txt has '' single quotes around the right side of equal side EXAMPLE='somevalue'
+    * this is an important part of the parsing as this is what the regex is replacing when creating the entries object to spread into the process.env object
+    * otherwise the values will not be correct while the entire program starts and tries to access these values from the process.env
 
 
     ## NodeMailer
