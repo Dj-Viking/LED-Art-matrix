@@ -60,7 +60,7 @@ PWA accessible! just install by clicking the + on the right side of the browser 
         * expired JWT token for the purpose of testing
     - ```INVALID_SIGNATURE='eyJfsdhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb21lVXVpZCI6IjcxNmYzMzJlLTMxODQtNDJmMC04Y2I3LTRjOWNlNmJmODdkOCIsInVzZXJuYW1lIjoidGVzdC11c2VyIiwiZW1haWwiOiJ0ZXN0QGVtYWlsLmNvbSIsIl9pZCI6IjYxZTIxMzgwNTdjOTc4NGYyNDllNjIzNSIsImlhdCI6MTY0MjIwNjA4MCwiZXhwIjoxNjQyMjA5NjgwfQ.kShMP7vYDqYvw-raT1WUq1_XVD4LgU9YsJBZ_8qAqpM'```
         * invalid JWT token signature for the purpose of testing
-    - ```SALT='12'```
+    - ```SALT='10'```
         * read about bcrypt password hashing <a href="https://stackoverflow.com/questions/46693430/what-are-salt-rounds-and-how-are-salts-stored-in-bcrypt" target="_blank">salt rounds</a>
     - ```RESET_EXPIRATION='5m'```
         * the expiration time for the reset password email token to expire before the user has to make a new password reset request
