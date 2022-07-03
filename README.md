@@ -21,6 +21,7 @@ An LED Art Matrix with user interactability to maximize the audio visual experie
 * [Credits](#credits)
 * [HowToContribute](#contribute)
 * [ContributionNotes](#contribution-notes)
+* [Testing](#testing)
 * [License](#license)
 * [Questions](#questions)
 
@@ -72,6 +73,14 @@ PWA accessible! just install by clicking the + on the right side of the browser 
     - Not completely necessary for local setup, but if you want to test it yourself, you'll need to set up a gmail account that has app access rights to allow code executed inside nodejs to use a particular email to transport a message to the user's entered email. Which allows the user a short period of time to reset their password.
     - the jest test for this email feature has a mocked function that does not send the email during the server test. 
 
+    ## Testing
+    - must have env.txt created and located in the right directories for the server tests to pass. the client tests should be self contained
+    - and you can see the istanbul coverage report by going into the coverage folders inside server and client folders to see line coverage.
+    - If anybody knows a better way to do dependency injection for the MIDI controller testing I am looking for some help on this!
+    ```sh
+    # working directory should be the root folder of project
+    npm test
+    ```
 
     ## Contribution Notes
     - If anybody would like to contribute please fork the repo and submit a pull request or open any issues that anyone has that would like to improve on or add! Thanks 👍 Dont be afraid to reach out to my email! 😁
