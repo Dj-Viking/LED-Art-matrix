@@ -68,6 +68,38 @@ PWA accessible! just install by clicking the + on the right side of the browser 
     - ```NODEMAILER_AUTH_PASS='<REDACTED>'```
     - ```OTHER_NODEMAILER_AUTH_PASS='<REDACTED>'```
 
+    ## How env.txt works
+    * if the env.txt file is there the values will be inherited to the process.env object
+    * this is my way around having to install dotenv all the time works for me as a mac user, not 100% sure about other operating systems
+
+    ```sh
+    # from ./server/package.json
+    # storing into a temporary process environment variable called ENV_TXT with the value of the result of `cat env.txt` 
+    # in the context of running the node_module jest process from package.json
+    # this string value of the text file is stored into the process.env.ENV_TXT property to be parsed later by readEnv()
+        ENV_TXT=$(cat env.txt) jest --verbose --detectOpenHandles --watchAll=false
+    ```
+    ```ts
+    //from readEnv.ts
+        export function readEnv(): void {
+            let entries = {} as Record<string, string>;
+            let env;
+            if (typeof process.env.ENV_TXT !== "undefined") {
+                env = process.env.ENV_TXT.split("\n") as string[];
+                for (let i = 0; i < env.length; i++) {
+                    entries = {
+                        ...entries,
+                        [env[i].split("=")[0]]: env[i].split("=")[1].replace(/'/g, ""),
+                    };
+                }
+                process.env = {
+                    ...process.env,
+                    ...entries,
+                };
+            }
+        }
+    ```
+
 
     ## NodeMailer
     - Not completely necessary for local setup, but if you want to test it yourself, you'll need to set up a gmail account that has app access rights to allow code executed inside nodejs to use a particular email to transport a message to the user's entered email. Which allows the user a short period of time to reset their password.
