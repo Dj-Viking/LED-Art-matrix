@@ -39,18 +39,19 @@ interface MIDISelectProps {
 export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, option }) => {
     return (
         <select
+            data-testid="midi-select"
             value={option || "Select A Connected Device"}
             onChange={(e) => {
                 setOption(e.target.value);
             }}
             style={{ backgroundColor: "black" }}
         >
-            <option value="Select A Connected Device" disabled>
+            <option data-testid="select-option" value="Select A Connected Device" disabled>
                 Select A Connected Device
             </option>
             {midi_inputs.map(input => {
                 return (
-                    <option key={input.id} value={input.name}>{input.name}</option>
+                    <option data-testid="select-option" key={input.id} value={input.name}>{input.name}</option>
                 );
             })}
         </select>

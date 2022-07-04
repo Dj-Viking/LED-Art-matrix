@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="7491.7149287250795something unique lol"
+          id="1253.949741279108something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="918.8960447404004something unique lol"
+          id="3352.926641918803something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="9095.65240418835something unique lol"
+          id="1350.5617872476505something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="6913.549078809225something unique lol"
+          id="1826.0793107385175something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="996.5017514951047something unique lol"
+          id="8767.473606256704something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="8142.172661879407something unique lol"
+          id="8325.137029498677something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1100,25 +1100,30 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             style="display: flex; align-items: center; justify-content: center;"
           >
             <select
+              data-testid="midi-select"
               style="background-color: black;"
             >
               <option
+                data-testid="select-option"
                 disabled=""
                 value="Select A Connected Device"
               >
                 Select A Connected Device
               </option>
               <option
+                data-testid="select-option"
                 value="XONE:K2"
               >
                 XONE:K2
               </option>
               <option
+                data-testid="select-option"
                 value="XONE:K2"
               >
                 XONE:K2
               </option>
               <option
+                data-testid="select-option"
                 value="XONE:K2"
               >
                 XONE:K2

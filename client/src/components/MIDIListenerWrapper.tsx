@@ -32,15 +32,17 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     (async (): Promise<void> => {
       if ("navigator" in window) {
         // request access from browser
-        const access = await MIDIController.requestMIDIAccess();
+        const access = await new MIDIController().requestMIDIAccess();
+        const new_access = new MIDIController(access).getAccess();
+        console.log("new access during teset", new_access);
         dispatch(setAccess(new MIDIController(access).getInstance()));
         // set size of inputs to re-render component at this moment of time
-        setSize(access.inputs.size);
+        setSize(new_access.inputs.size);
         //at this moment the promise resolves with access if size changed at some point
         if (size > 0) {
-          dispatch(setAccess(new MIDIController(access).getInstance()));
+          dispatch(setAccess(new MIDIController(new_access).getInstance()));
           // define onstatechange callback to not be a function to execute when state changes later
-          access.onstatechange = function (_event: MIDIConnectionEvent): void {
+          new_access.onstatechange = function (_event: MIDIConnectionEvent): void {
 
             const onstatechangeAccess = new MIDIController(_event.target).getInstance();
 

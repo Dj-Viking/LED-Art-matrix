@@ -114,7 +114,7 @@ interface MIDIOutput {
 }
 
 
-type TestMIDIAccessRecord = null | {    
+type TestMIDIAccessRecord = null | {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
     onstatechange: null | ((event: TestMIDIConnectionEvent) => unknown);
@@ -139,40 +139,39 @@ interface IMIDIController {
 
 class MIDIController implements IMIDIController {
 
-    private _access = null as MIDIAccessRecord | null;
-
+    public access = null as MIDIAccessRecord | null;
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
     public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
 
-    constructor(access: MIDIAccessRecord) {
+    constructor(access?: MIDIAccessRecord) {
         if (access)
-            this._access = access;
-        if (!!this._access && !!this._access.inputs.size) {
+            this.access = access;
+        if (!!this.access && !!this.access.inputs.size) {
             this.online = true;
-            this.inputs_size = access.inputs.size;
-            this.outputs_size = access.outputs.size;
-            this._setInputs(access.inputs);
-            this._setOutputs(access.outputs);
+            this.inputs_size = access!.inputs.size;
+            this.outputs_size = access!.outputs.size;
+            this._setInputs(access!.inputs);
+            this._setOutputs(access!.outputs);
         }
     }
 
-    public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
+    public async requestMIDIAccess(): Promise<MIDIAccessRecord> {
         // @ts-ignore because for some reason in vscode
         // this method doesn't exist on the navigator I guess..
         // only supported in chrome mostly for now
         return window.navigator.requestMIDIAccess();
     }
-    
+
     public getInstance(): this {
         return this;
     }
 
 
     public getAccess(): MIDIAccessRecord {
-        return this._access as MIDIAccessRecord;
+        return this.access as MIDIAccessRecord;
     }
 
     public setOutputCbs(): this {
@@ -197,7 +196,7 @@ class MIDIController implements IMIDIController {
         this effectively sets connection "open" on the devices somehow?? to send/recieve with hardware
      */
     public setInputCbs(
-        _onmidicb?: (event: MIDIMessageEvent) => unknown, 
+        _onmidicb?: (event: MIDIMessageEvent) => unknown,
         _onstatechangecb?: (event: MIDIConnectionEvent) => unknown
     ): this {
         for (let j = 0; j < this.inputs!.length; j++) {
@@ -247,5 +246,5 @@ export type {
     TestMIDIMessageEvent,
     TestMIDIConnectionEvent
 };
-    
+
 export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };

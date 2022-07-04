@@ -5,7 +5,7 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render,  screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
@@ -13,9 +13,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID } from "../../constants";
-import { MIDIAccessRecord, MIDIConnectionEvent, MIDIMessageEvent } from "../../utils/MIDIControlClass";
-import { act } from "react-dom/test-utils";
-import { TestService } from "../../utils/TestServiceClass";
+import { MIDIAccessRecord, MIDIController } from "../../utils/MIDIControlClass";
 
 const store = createStore(
   allReducers,
@@ -30,19 +28,50 @@ window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
 // eslint-disable-next-line
 // @ts-ignore
 window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
+const MOCK_MIDI_ACCESS_RECORD = {
+  inputs: MOCK_ACCESS_INPUTS,
+  outputs: MOCK_ACCESS_OUTPUTS,
+  sysexEnabled: false,
+  onstatechange: jest.fn(),
+} as MIDIAccessRecord;
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
-window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
-  return Promise.resolve({
-    inputs: MOCK_ACCESS_INPUTS,
-    outputs: MOCK_ACCESS_OUTPUTS,
-    sysexEnabled: false,
-    onstatechange: function (_event: MIDIConnectionEvent): void {
-      return void 0;
-    }
-  } as MIDIAccessRecord);
+global.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
+  return Promise.resolve(MOCK_MIDI_ACCESS_RECORD);
 };
+
+jest.mock("../../utils/MIDIControlClass.ts", () => {
+
+  const MockMIDIControllerConstructor = function (this: MIDIController): MIDIController {
+    //MOCK METHODS
+
+    const fakeonstatechangefn = (): void => void 0;
+    const onstatechangefn = jest.fn().mockImplementation(fakeonstatechangefn);
+    this.requestMIDIAccess = async function () {
+      return Promise.resolve(MOCK_MIDI_ACCESS_RECORD);
+    };
+    this.online = true;
+    this.getAccess = jest.fn().mockImplementation(function () {
+      return { ...MOCK_MIDI_ACCESS_RECORD, onstatechange: onstatechangefn };
+      // return MOCK_MIDI_ACCESS_RECORD;
+    });
+    this.getInstance = jest.fn().mockImplementation(() => {
+      return this;
+    });
+    return this;
+  };
+
+  //MOCK MODULE OF MIDI UTILS FILE
+  // module to mock returned object NOTE - make sure to mock all modules being exported individually!
+  return {
+    MIDIPort: { open: () => Promise.resolve({}) },
+    MIDIPortType: { type: "input" },
+    MIDIConnectionEvent: {},
+    MIDIPortDeviceState: { connected: "connected" },
+    MIDIPortConnectionState: { closed: "closed" },
+    MIDIController: MockMIDIControllerConstructor
+  };
+});
 
 describe("faking navigator for midiaccess testing", () => {
   test("fake the navigator.requestMIDIAccess callback func", async () => {
@@ -57,38 +86,6 @@ describe("faking navigator for midiaccess testing", () => {
     );
 
     expect((await screen.findByTestId(LOCATION_DISPLAY_ID)).textContent).toBe("/");
-    await act(async () => {
-
-      // @ts-ignore
-      const access = await window.navigator.requestMIDIAccess();
-      console.log("test access", access);
-      
-      const TestMIDIController = new TestService(access);
-
-      TestMIDIController.setInputCbs(
-        function(midi_event: MIDIMessageEvent) {
-          console.log("heres a test midi message event", midi_event);
-        }, 
-        function(connection_event: MIDIConnectionEvent) {
-          console.log("heres a test connection event", connection_event);
-        }
-      );
-
-      console.log("test controller with cbs", TestMIDIController);
-      TestMIDIController.inputs[0].onmidimessage!(new TestService(access).createMIDIMessageEvent());
-
-      access.onstatechange = function(connection_event: MIDIConnectionEvent) {
-        console.log("access state change event fired OFF", connection_event);
-      };
-
-      // this isn't affecting coverage. the functions called in the component are called by 
-      // the browser itself when it's running
-      // and also by human intervention into the app when adjust controls on the hardware, 
-      // I have no idea how to simulate this with jest... 😫 
-      // maybe i am approaching this all wrong, do i have to do some mocks?
-      access.onstatechange(TestMIDIController.createAccessStateChangeEvent());
-
-    });
 
   });
 });
