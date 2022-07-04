@@ -12,12 +12,11 @@ import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
-import { renderHook } from "@testing-library/react-hooks";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { TestService } from "../../utils/TestServiceClass";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
-import { MIDIAccessRecord, TestMIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { MIDIAccessRecord } from "../../utils/MIDIControlClass";
 
 const store = createStore(
   allReducers,
@@ -57,17 +56,21 @@ describe("Adding a preset error", () => {
     localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
     expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
 
-    const fakeMockAddFail = (value: any): Promise<{ status: 500, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 500, json: () => Promise.resolve(value)});
-    
+    const fakeMockAddFail = (value: any): Promise<{
+      status: 500, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 500, json: () => Promise.resolve(value) });
+
     const mockFetch = jest.fn()
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
-                      .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
+      .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -81,8 +84,8 @@ describe("Adding a preset error", () => {
         </Provider>
       </>
     );
-    await act(async() => void 0);
-    
+    await act(async () => void 0);
+
     /**
      * TODO: look into renderHook with `@testing-library/react-hooks/dom`
      * @see https://stackoverflow.com/questions/71351203/testing-with-jest-to-update-a-react-state-inside-a-rejected-promise
@@ -105,7 +108,7 @@ describe("Adding a preset error", () => {
     //   console.log("testmidi connection event obj", TestMIDI.createMIDIConnectionEvent());
     //   TestMIDI.getAccess()?.onstatechange!(TestMIDI.createMIDIConnectionEvent());
     // });
-    
+
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(3);
     const btnContainer = await screen.findByTestId("buttons-parent");
@@ -123,7 +126,7 @@ describe("Adding a preset error", () => {
       sliderVal: await screen.findByTestId("modal-anim-var-coeff")
     };
     const slider = await screen.findByTestId("led-anim-variation");
-    
+
     act(() => {
       waves.dispatchEvent(TestService.createBubbledEvent("click", {}));
     });
@@ -133,7 +136,7 @@ describe("Adding a preset error", () => {
     expect(modal_els.sliderVal).toBeInTheDocument();
 
     act(() => {
-      fireEvent.change(slider, { target: { value: "10" }});
+      fireEvent.change(slider, { target: { value: "10" } });
       slider.dispatchEvent(TestService.createBubbledEvent("change", {}));
     });
 
@@ -156,12 +159,12 @@ describe("Adding a preset error", () => {
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
-    expect(fetch).toHaveBeenNthCalledWith(4, 
-      "http://localhost:3001/user/add-preset", 
+    expect(fetch).toHaveBeenNthCalledWith(4,
+      "http://localhost:3001/user/add-preset",
       {
-        "body": expect.any(String), 
+        "body": expect.any(String),
         "headers": {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
           "authorization": expect.any(String)
         },
         "method": "POST"
