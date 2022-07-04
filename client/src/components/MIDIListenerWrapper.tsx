@@ -54,7 +54,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 setChannel(midi_channel);
                 setIntensity(midi_intensity);
 
-                const is_fader = midi_channel >= 16 && midi_channel <= 19;
+                const is_fader = /fader/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
                 const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
 
                 dispatch(determineDeviceControl({
