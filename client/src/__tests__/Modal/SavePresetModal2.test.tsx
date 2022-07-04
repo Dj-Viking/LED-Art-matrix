@@ -41,16 +41,16 @@ window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 describe("moving this to a separate file to avoid the leaky mocks that dont get cleared from the previous test", () => {
 
   it("tests that the api didn't send an array with items, buttons should not render", async () => {
-  
+
     expect(screen.queryByTestId("waves")).not.toBeInTheDocument();
     const store = createStore(
       allReducers,
       // @ts-expect-error this will exist in the browser
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     );
-  
+
     expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
-  
+
     expect(localStorage.getItem("id_token")).toBe(null);
     localStorage.setItem("id_token", TestService.signTestToken({
       username: "test user",
@@ -59,14 +59,16 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
       _id: keyGen(),
     }));
     expect(typeof localStorage.getItem("id_token")).toBe("string");
-    
+
     const history = createMemoryHistory();
-    const fakeFetchRes = (value: any): Promise<{ json: () => 
-      Promise<any>; }> => Promise.resolve({ json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      .mockReturnValueOnce(fakeFetchRes({ presets: [] })) // and this is second 
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
+      .mockReturnValueOnce(fakeFetchRes({ presets: [] })) // and this is second 
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     //@ts-ignore
     global.fetch = mockFetch;
     render(
@@ -78,19 +80,19 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
-  
+
     expect(fetch).toHaveBeenCalledTimes(3);
     // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
-  
+
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-  
+
     //only style tag should be present since we shouldn't get an array from the fake api fetch
     const buttonsParent2 = await screen.findByTestId("buttons-parent");
-    expect(buttonsParent2.children).toHaveLength(5);
-    
+    expect(buttonsParent2.children).toHaveLength(4);
+
   });
 });

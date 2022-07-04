@@ -53,12 +53,14 @@ describe("test the save modal functionality", () => {
 
   it("tests the modal can have input changing and rendering, click the save button and close button", async () => {
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -87,7 +89,7 @@ describe("test the save modal functionality", () => {
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     //just care about the fetch returning the presets
     // even though the response is also going to the /user endpoint it's irrelevant to this test
-    expect(fetch).toHaveBeenCalledTimes(3); 
+    expect(fetch).toHaveBeenCalledTimes(3);
     // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkjd"); 
 
     //open modal
@@ -101,7 +103,7 @@ describe("test the save modal functionality", () => {
     const styleValues = TestService.getStyles(screen.getByTestId("save-modal").parentElement!.style);
     expect(styleValues.values.display).toBe("flex");
 
-    
+
     const modal_els = {
       close: screen.getByTestId("modal-close-button") as HTMLElement,
       save: screen.getByTestId("modal-save-button") as HTMLElement,
@@ -134,7 +136,7 @@ describe("test the save modal functionality", () => {
     expect(awaitedButton.classList).toHaveLength(1);
     expect(awaitedButton.classList[0]).toBe("preset-button-inactive");
     const buttonsParent = screen.getByTestId("buttons-parent");
-    expect(buttonsParent.children).toHaveLength(17);
+    expect(buttonsParent.children).toHaveLength(16);
 
     //start a preset to make the slider appear
     const v2 = await screen.findByTestId("v2");
@@ -159,7 +161,7 @@ describe("test the save modal functionality", () => {
     act(() => {
       modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-    
+
     //open again
     act(() => {
       savePresetBtn.dispatchEvent(TestService.createBubbledEvent("click"));

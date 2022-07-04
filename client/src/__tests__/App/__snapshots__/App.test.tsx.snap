@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="6002.167581617375something unique lol"
+          id="7491.7149287250795something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="7862.911108182167something unique lol"
+          id="918.8960447404004something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="38.1020460199788something unique lol"
+          id="9095.65240418835something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="4604.471607241491something unique lol"
+          id="6913.549078809225something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="2172.7195508982654something unique lol"
+          id="996.5017514951047something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="5321.682442389832something unique lol"
+          id="8142.172661879407something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1090,175 +1090,40 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             dm5
           </p>
         </button>
+        <h2>
+          MIDI Devices
+        </h2>
         <div
           style="display: flex; flex-direction: column; justify-content: center;"
         >
-          <h2>
-            MIDI Device 1
-          </h2>
           <div
-            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
+            style="display: flex; align-items: center; justify-content: center;"
           >
-            <p
-              style="margin-bottom: .5em; margin-top: .5em;"
+            <select
+              style="background-color: black;"
             >
-              XONE:K2
-            </p>
-            <div>
-              <span>
-                Connection: closed
-              </span>
-              <div
-                style="display: flex; justify-content: space-around;"
+              <option
+                disabled=""
+                value="Select A Connected Device"
               >
-                <div
-                  style="width: 50%;"
-                />
-              </div>
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <div
-                  style="margin-bottom: .5em;"
-                >
-                  <span>
-                    Channel: 16
-                  </span>
-                  <p
-                    style="margin: 0px;"
-                  >
-                    1_fader
-                  </p>
-                </div>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          style="display: flex; flex-direction: column; justify-content: center;"
-        >
-          <h2>
-            MIDI Device 2
-          </h2>
-          <div
-            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
-          >
-            <p
-              style="margin-bottom: .5em; margin-top: .5em;"
-            >
-              XONE:K2
-            </p>
-            <div>
-              <span>
-                Connection: closed
-              </span>
-              <div
-                style="display: flex; justify-content: space-around;"
+                Select A Connected Device
+              </option>
+              <option
+                value="XONE:K2"
               >
-                <div
-                  style="width: 50%;"
-                />
-              </div>
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <div
-                  style="margin-bottom: .5em;"
-                >
-                  <span>
-                    Channel: 16
-                  </span>
-                  <p
-                    style="margin: 0px;"
-                  >
-                    1_fader
-                  </p>
-                </div>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div
-          style="display: flex; flex-direction: column; justify-content: center;"
-        >
-          <h2>
-            MIDI Device 3
-          </h2>
-          <div
-            style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
-          >
-            <p
-              style="margin-bottom: .5em; margin-top: .5em;"
-            >
-              XONE:K2
-            </p>
-            <div>
-              <span>
-                Connection: closed
-              </span>
-              <div
-                style="display: flex; justify-content: space-around;"
+                XONE:K2
+              </option>
+              <option
+                value="XONE:K2"
               >
-                <div
-                  style="width: 50%;"
-                />
-              </div>
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <div
-                  style="margin-bottom: .5em;"
-                >
-                  <span>
-                    Channel: 16
-                  </span>
-                  <p
-                    style="margin: 0px;"
-                  >
-                    1_fader
-                  </p>
-                </div>
-              </span>
-            </div>
+                XONE:K2
+              </option>
+              <option
+                value="XONE:K2"
+              >
+                XONE:K2
+              </option>
+            </select>
           </div>
         </div>
       </div>

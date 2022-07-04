@@ -6,7 +6,7 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, screen} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@types/jest";
@@ -46,23 +46,27 @@ describe("test deleting a preset from the user's preset button list", () => {
     expect(typeof localStorage.getItem("id_token")).toBe("string");
     const history = createMemoryHistory();
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
 
-    const fakeMockAddFail = (value: any): Promise<{ status: 500, json: () => 
-        Promise<any>; }> => Promise.resolve({ status: 500, json: () => Promise.resolve(value)});
+    const fakeMockAddFail = (value: any): Promise<{
+      status: 500, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 500, json: () => Promise.resolve(value) });
 
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      // fourth
-                      .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      // first
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      // second
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      // fourth
+      .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
     // @ts-ignore
     global.fetch = mockFetch;
     render(
@@ -79,10 +83,10 @@ describe("test deleting a preset from the user's preset button list", () => {
     // expect(fetch).toHaveBeenNthCalledWith(1, "dkfkdfjkd"); // /user/presets first /user second
     // expect(fetch).toHaveBeenNthCalledWith(2, "dkfkdfjkd"); // /user/presets first /user second
 
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(17);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(16);
 
     const deleteBtn = await screen.findByTestId("deletePreset");
-    
+
     expect(deleteBtn.textContent).toBe("Delete A Preset");
     act(() => {
       deleteBtn.dispatchEvent(TestService.createBubbledEvent("click"));
@@ -134,20 +138,20 @@ describe("test deleting a preset from the user's preset button list", () => {
 
     expect(fetch).toHaveBeenCalledTimes(4);
     // expect(fetch).toHaveBeenNthCalledWith(3, "dkjfdkj");
-    expect(fetch).toHaveBeenNthCalledWith(4, 
-      "http://localhost:3001/user/delete-preset", 
+    expect(fetch).toHaveBeenNthCalledWith(4,
+      "http://localhost:3001/user/delete-preset",
       {
-        "body": expect.any(String), 
+        "body": expect.any(String),
         "headers": {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
           "authorization": expect.any(String)
         },
         "method": "DELETE"
       }
     );
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(17);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(16);
 
     expect((await screen.findByTestId("delete-error"))).toBeInTheDocument();
-  
+
   });
 });

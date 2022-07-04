@@ -5,7 +5,7 @@ import App from "../../App";
 import allReducers from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, screen} from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@types/jest";
@@ -54,7 +54,7 @@ describe("test the preset buttons are becoming active and inactive and clearing 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
 
     const btnsParent = screen.getByTestId("buttons-parent");
-    expect(btnsParent.children).toHaveLength(8);
+    expect(btnsParent.children).toHaveLength(9);
 
     const waves = screen.getByTestId("waves");
 
@@ -65,37 +65,37 @@ describe("test the preset buttons are becoming active and inactive and clearing 
     // check the style of the button is active
     expect(screen.getByTestId("waves").classList).toHaveLength(1);
     expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-active");
-    
+
     const v2 = screen.getByTestId("v2");
-    
+
     act(() => {
       v2.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-    
+
     expect(screen.getByTestId("v2").classList).toHaveLength(1);
     expect(screen.getByTestId("v2").classList[0]).toBe("preset-button-active");
     expect(screen.getByTestId("waves").classList).toHaveLength(1);
     expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-inactive");
-    
+
     const clear = screen.getByTestId("clear");
-    
+
     act(() => {
       clear.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-    
+
     expect(screen.getByTestId("v2").classList).toHaveLength(1);
     expect(screen.getByTestId("v2").classList[0]).toBe("preset-button-inactive");
     expect(screen.getByTestId("waves").classList).toHaveLength(1);
     expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-inactive");
-    
+
     act(() => {
       waves.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-    
+
     expect(screen.getByTestId("waves").classList).toHaveLength(1);
     expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-active");
-    
-    
+
+
     act(() => {
       waves.dispatchEvent(TestService.createBubbledEvent("click"));
     });
