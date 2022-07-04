@@ -127,7 +127,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     return SUPPORTED_CONTROLLERS[inputname as keyof ControllerLookup][channel] || "unknown control name";
   }
 
-  type ControlTypes = "usingFader" | "usingKnob"
+  type ControlTypes = "usingFader" | "usingKnob";
   function renderControlSvg(usings: Record<ControlTypes, boolean>, intensity_input: number): JSX.Element | null {
     if (usings.usingFader) return <Fader intensity_prop={intensity_input} />;
     if (usings.usingKnob) return <Knob intensity_prop={intensity_input} />;
