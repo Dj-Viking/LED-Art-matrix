@@ -1,11 +1,15 @@
 {
   "name": "led-art-matrix",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.14.2",
+    "npm": "8.5.0"
+  },
   "scripts": {
     "test": "sh test.sh",
-    "test:ci": "sh test:ci.sh",
+    "test:ci": "npm run cover:ci",
     "test:jest": "jest --verbose --coverage --watchAll=false --config='./client/src/jest.config.ts'",
     "cover": "npm run cover:all",
     "cover:all": "npm run test:server; npm run test:client; npx codecov",
@@ -20,7 +24,7 @@
     "clear:jest": "cd server; npm run clear:jest",
     "client:dev": "cd client; npm start",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev:tsc\" \"cd client && npm start\"",
-    "install": "cd server && npm i; cd ../client && npm i",
+    "install": "cd server && npm i; cd ../client && npm i --force",
     "server:dev": "sh server.sh",
     "seed": "cd server && npm run seed",
     "heroku-postbuild": "cd client && npm run build"
