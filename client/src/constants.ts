@@ -190,9 +190,6 @@ export const DM5_ANIMATION = `
   }
 }`;
 
-// temp solution for now
-// if i need more than 15 keys for > 15 presets will
-// come up with a different solution
 export type MyIndexToKeyMap = Record<number, string>
 export const MY_INDEX_TO_KEY_MAP = {
   1: "1",
@@ -223,8 +220,15 @@ export type TABLE_VALUES =
   | "1_fader"
   | "2_fader"
   | "3_fader"
-  | "4_fader";
-export type XONEK2_MIDIChannelTable = Record<number, TABLE_VALUES>;
+  | "4_fader"
+  | string;
+
+export type ControllerName =
+  | "XONE:K2"
+  | "UltraLite mk3 Hybrid MIDI Port"
+  | "UltraLite mk3 Hybrid Sync Port";
+
+export type ControllerMIDIChannelTable = Record<number, TABLE_VALUES>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE = {
   4: "1_upper_knob",
@@ -237,8 +241,37 @@ export const XONEK2_MIDI_CHANNEL_TABLE = {
   17: "2_fader",
   18: "3_fader",
   19: "4_fader",
-} as XONEK2_MIDIChannelTable;
+} as ControllerMIDIChannelTable;
 
-export const SUPPORTED_CONTROLLERS = [
-  "XONE:K2"
-];
+export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
+  4: "1_upper_knob",
+  8: "1_middle_knob",
+  12: "1_lower_knob",
+  5: "2_upper_knob",
+  9: "2_middle_knob",
+  13: "2_lower_knob",
+  16: "1_fader",
+  17: "2_fader",
+  18: "3_fader",
+  19: "4_fader",
+} as ControllerMIDIChannelTable;
+export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
+  4: "1_upper_knob",
+  8: "1_middle_knob",
+  12: "1_lower_knob",
+  5: "2_upper_knob",
+  9: "2_middle_knob",
+  13: "2_lower_knob",
+  16: "1_fader",
+  17: "2_fader",
+  18: "3_fader",
+  19: "4_fader",
+} as ControllerMIDIChannelTable;
+
+export type ControllerLookup = Record<ControllerName, ControllerMIDIChannelTable>
+
+export const SUPPORTED_CONTROLLERS = {
+  "XONE:K2": XONEK2_MIDI_CHANNEL_TABLE,
+  "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
+  "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT
+} as ControllerLookup;

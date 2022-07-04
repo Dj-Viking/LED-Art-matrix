@@ -1,13 +1,13 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { keyGen } from "../utils/keyGen";
 import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent, MIDIPortDeviceState } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
+import { DeviceSvgContainer, MIDIChannelControl, SpaceDivider, ControlNameContainer, DeviceInterfaceContainer, ChannelNumber, InputName, MIDIWrapperHeader, MIDIWrapperContainer, MIDISelectContainer, MIDISelect } from "./MIDIListenerWrapper.style";
 import { setAccess, determineDeviceControl } from "../actions/midi-access-actions";
 import { MyRootState } from "../types";
 import { animVarCoeffChange } from "../actions/led-actions";
-import { XONEK2_MIDI_CHANNEL_TABLE, SUPPORTED_CONTROLLERS } from "../constants";
+import { XONEK2_MIDI_CHANNEL_TABLE, SUPPORTED_CONTROLLERS, ControllerLookup } from "../constants";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import IntensityBar from "./IntensityBar";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
@@ -115,79 +115,43 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     })();
   }, [dispatch, accessState.inputs.length, size, figureOn]);
 
+  function getInputName(all_inputs: MIDIInput[], option: string): string {
+    return all_inputs.find(item => item.name === option)?.name as string || "";
+  }
+
+  function getInput(all_inputs: MIDIInput[], option: string): MIDIInput {
+    return all_inputs.find(item => item.name === option) as MIDIInput;
+  }
+
+  function getControlName(inputname: string, channel: number): string {
+    return SUPPORTED_CONTROLLERS[inputname as keyof ControllerLookup][channel] || "unknown control name";
+  }
+
   return (
     <>
-      {
-        accessState.online
-          ?
-          accessState.inputs.map((input: MIDIInput, i: number, _arr: Array<MIDIInput>) => {
-            <h2>MIDI Device {i + 1}</h2>;
-            return (
-              <div key={keyGen()} style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <select onChange={(e) => {
-                    setOption(e.target.value);
-                  }} style={{ backgroundColor: "black" }}>
-                    {_arr.map(input => {
-                      return (
-                        <option key={input.id} value={input.name}>{input.name}</option>
-                      );
-                    })}
-                  </select>
-                </div>
-
-                {/* only show the device that is selected in the thing above */}
-                {option ? (<>
-                  <div
-                    style={{ position: "relative", width: "50%", margin: "0 auto", border: input.state === MIDIPortDeviceState.connected ? "solid 1px green" : "   solid 1px red" }}
-                  >
-                    <p style={{ marginBottom: ".5em", marginTop: ".5em" }}>
-                      {input.name}
-                    </p>
-                    <div>
-
-                      <div style={{ display: "flex", justifyContent: "space-around" }}>
-
-                        <div style={{ width: "50%" }}></div>
-
-                        {usingFader ? <Fader intensity_prop={intensity} /> : null}
-                        {usingKnob ? <Knob intensity_prop={intensity} /> : null}
-
-                      </div>
-
-
-                      <div style={{ margin: "0 auto 0 auto", width: "40px", height: "0px", backgroundColor: input.connection === MIDIPortDeviceState.connected ? "black" : "black", borderRadius: "50%", border: "solid black 1px" }}></div>
-
-                      <span>
-                        {
-                          input.name.includes("XONE:K2") && (
-                            <>
-                              <span>
-                                Intensity: {intensity}
-
-                                <IntensityBar intensity={intensity} />
-                              </span>
-                              <div style={{ marginBottom: ".5em" }}>
-                                <span>Channel: {channel}</span>
-                                <p style={{ margin: 0 }}>
-                                  {XONEK2_MIDI_CHANNEL_TABLE[channel]}
-                                </p>
-                              </div>
-
-                            </>
-                          )
-                        }
-                      </span>
-
-                    </div>
-                  </div>
-                </>) : null
-
-                }
-              </div >
-            );
-          }) : <p>MIDI OFFLINE</p>
-      }
+      <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
+      <MIDIWrapperContainer>
+        <MIDISelectContainer>
+          <MIDISelect setOption={setOption} option={option} midi_inputs={accessState.inputs} />
+        </MIDISelectContainer>
+        {option ? (
+          <>
+            <DeviceInterfaceContainer statename={getInput(accessState.inputs, option).state}>
+              <InputName name={getInputName(accessState.inputs, option)} />
+              <DeviceSvgContainer>
+                <SpaceDivider />
+                {usingFader ? <Fader intensity_prop={intensity} /> : null}
+                {usingKnob ? <Knob intensity_prop={intensity} /> : null}
+              </DeviceSvgContainer>
+              <IntensityBar intensity={intensity} />
+              <ControlNameContainer>
+                <ChannelNumber channel={channel || 0} />
+                <MIDIChannelControl name={getControlName(getInputName(accessState.inputs, option), channel)} />
+              </ControlNameContainer>
+            </DeviceInterfaceContainer>
+          </>
+        ) : null}
+      </MIDIWrapperContainer>
     </>
   );
 };
