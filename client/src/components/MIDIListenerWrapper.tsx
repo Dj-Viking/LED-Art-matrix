@@ -127,6 +127,13 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     return SUPPORTED_CONTROLLERS[inputname as keyof ControllerLookup][channel] || "unknown control name";
   }
 
+  type ControlTypes = "usingFader" | "usingKnob"
+  function renderControlSvg(usings: Record<ControlTypes, boolean>, intensity_input: number): JSX.Element | null {
+    if (usings.usingFader) return <Fader intensity_prop={intensity_input} />;
+    if (usings.usingKnob) return <Knob intensity_prop={intensity_input} />;
+    return null;
+  }
+
   return (
     <>
       <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
@@ -140,10 +147,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
               <InputName name={getInputName(accessState.inputs, option)} />
               <DeviceSvgContainer>
                 <SpaceDivider />
-                {usingFader ? <Fader intensity_prop={intensity} /> : null}
-                {usingKnob ? <Knob intensity_prop={intensity} /> : null}
+                {renderControlSvg({ usingFader, usingKnob }, intensity)}
               </DeviceSvgContainer>
-              <IntensityBar intensity={intensity} />
+              <IntensityBar intensity={intensity || 0} />
               <ControlNameContainer>
                 <ChannelNumber channel={channel || 0} />
                 <MIDIChannelControl name={getControlName(getInputName(accessState.inputs, option), channel)} />
