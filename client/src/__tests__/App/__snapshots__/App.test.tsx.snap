@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="3540.4470675939747something unique lol"
+          id="2867.669416053513something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="1508.6022150978672something unique lol"
+          id="8893.000680309406something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="2042.907813742154something unique lol"
+          id="9646.721315588162something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="2819.655365243374something unique lol"
+          id="595.6400669395579something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="3624.133023652281something unique lol"
+          id="4818.156373574951something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="5857.825880451171something unique lol"
+          id="1254.2716622573157something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1090,121 +1090,45 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             dm5
           </p>
         </button>
+        <h2>
+          MIDI Devices
+        </h2>
         <div
-          style="display: flex; flex-direction: column;"
+          style="display: flex; flex-direction: column; justify-content: center;"
         >
-          <h2>
-            MIDI Device 1
-          </h2>
           <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
+            style="display: flex; align-items: center; justify-content: center;"
           >
-            <p
-              style="margin-bottom: 1em;"
+            <select
+              data-testid="midi-select"
+              style="background-color: black;"
             >
-              XONE:K2
-            </p>
-            <span>
-              Connection: 1
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <p>
-                  Channel: 4
-                </p>
-              </span>
-            </span>
-          </div>
-        </div>
-        <div
-          style="display: flex; flex-direction: column;"
-        >
-          <h2>
-            MIDI Device 2
-          </h2>
-          <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
-          >
-            <p
-              style="margin-bottom: 1em;"
-            >
-              XONE:K2
-            </p>
-            <span>
-              Connection: 1
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <p>
-                  Channel: 4
-                </p>
-              </span>
-            </span>
-          </div>
-        </div>
-        <div
-          style="display: flex; flex-direction: column;"
-        >
-          <h2>
-            MIDI Device 3
-          </h2>
-          <div
-            style="width: 50%; margin: 0px auto; border: 1px solid red;"
-          >
-            <p
-              style="margin-bottom: 1em;"
-            >
-              XONE:K2
-            </p>
-            <span>
-              Connection: 1
-              <div
-                style="margin: 0px auto 0px auto; width: 40px; height: 0px; background-color: black; border-radius: 50%; border: 1px solid black;"
-              />
-              <span>
-                <span>
-                  Intensity: 0
-                  <div
-                    style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
-                  >
-                    <progress
-                      max="127"
-                      style="width: 50%;"
-                      value="0"
-                    />
-                  </div>
-                </span>
-                <p>
-                  Channel: 4
-                </p>
-              </span>
-            </span>
+              <option
+                data-testid="select-option"
+                disabled=""
+                value="Select A Connected Device"
+              >
+                Select A Connected Device
+              </option>
+              <option
+                data-testid="select-option"
+                value="XONE:K2"
+              >
+                XONE:K2
+              </option>
+              <option
+                data-testid="select-option"
+                value="XONE:K2"
+              >
+                XONE:K2
+              </option>
+              <option
+                data-testid="select-option"
+                value="XONE:K2"
+              >
+                XONE:K2
+              </option>
+            </select>
           </div>
         </div>
       </div>

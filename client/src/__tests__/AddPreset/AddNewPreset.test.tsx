@@ -57,17 +57,19 @@ describe("Adding a preset", () => {
     localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
     expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      .mockReturnValueOnce(fakeFetchRes({ 
-                        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } 
-                      }))
-                      .mockReturnValueOnce(fakeFetchRes({ 
-                        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } 
-                      }))
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_ADD_PRESET_RES }));
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      .mockReturnValueOnce(fakeFetchRes({
+        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" }
+      }))
+      .mockReturnValueOnce(fakeFetchRes({
+        preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" }
+      }))
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_ADD_PRESET_RES }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -84,7 +86,7 @@ describe("Adding a preset", () => {
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(2);
     const btnContainer = await screen.findByTestId("buttons-parent");
-    expect(btnContainer.children).toHaveLength(17);
+    expect(btnContainer.children).toHaveLength(16);
 
     // activate and change one of the constant/always provided presets and 
     // attempt to save it with some new parameter values
@@ -98,7 +100,7 @@ describe("Adding a preset", () => {
       sliderVal: await screen.findByTestId("modal-anim-var-coeff")
     };
     const slider = await screen.findByTestId("led-anim-variation");
-    
+
     act(() => {
       waves.dispatchEvent(TestService.createBubbledEvent("click"));
     });
@@ -108,7 +110,7 @@ describe("Adding a preset", () => {
     expect(modal_els.sliderVal).toBeInTheDocument();
 
     act(() => {
-      fireEvent.change(slider, { target: { value: "10" }});
+      fireEvent.change(slider, { target: { value: "10" } });
       slider.dispatchEvent(TestService.createBubbledEvent("change"));
     });
 
@@ -131,19 +133,19 @@ describe("Adding a preset", () => {
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
-    expect(fetch).toHaveBeenNthCalledWith(4, 
-      "http://localhost:3001/user/add-preset", 
+    expect(fetch).toHaveBeenNthCalledWith(4,
+      "http://localhost:3001/user/add-preset",
       {
-        "body": expect.any(String), 
+        "body": expect.any(String),
         "headers": {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
           "authorization": expect.any(String)
         },
         "method": "POST"
       }
     );
 
-    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(13);
+    expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(12);
     const newPresetBtn = await screen.findByText(/new preset/);
     expect(newPresetBtn).toBeInTheDocument();
 
@@ -152,7 +154,7 @@ describe("Adding a preset", () => {
       newPresetBtn.dispatchEvent(TestService.createBubbledEvent("click"));
     });
 
-    
+
 
   });
 });

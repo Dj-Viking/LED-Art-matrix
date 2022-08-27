@@ -7,6 +7,8 @@ import { MIDIAccessRecord, MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MID
  * most helper methods are static on this class so no need to instantiate the class to use the methods
  */
 
+console.log("what is test mocked midi port type here", MIDIPortType);
+
 interface ITestService {
   inputMap: Map<MIDIInput["id"], MIDIInput>;
   outputMap: Map<MIDIOutput["id"], MIDIOutput>;
@@ -14,7 +16,7 @@ interface ITestService {
   makeFakeMIDIOutputs: () => Map<MIDIOutput["id"], MIDIOutput>;
   setInputCbs: (
     _onmidicb: (midi_event: MIDIMessageEvent) => void,
-    _onstatechangecb: (connection_event: MIDIConnectionEvent) => void 
+    _onstatechangecb: (connection_event: MIDIConnectionEvent) => void
   ) => this;
 }
 export class TestService implements ITestService {
@@ -58,7 +60,7 @@ export class TestService implements ITestService {
    * @returns a new bubbled event with optional parameters
    */
   public static createBubbledEvent(
-    type: keyof GlobalEventHandlersEventMap | "statechange", 
+    type: keyof GlobalEventHandlersEventMap | "statechange",
     props = {} as Record<string, any>
   ): Event {
     const event = new Event(type, { bubbles: true });
@@ -93,7 +95,7 @@ export class TestService implements ITestService {
 
   public static s_makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput> {
     const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
-    const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void { 
+    const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
       console.log("output connection event test", connection_event);
     };
     const _onmidicb = function (midi_event: MIDIMessageEvent): void {
@@ -115,7 +117,7 @@ export class TestService implements ITestService {
     return newMap;
   }
 
-  public makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput>{
+  public makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput> {
     let newMap = new Map<MIDIInput["id"], MIDIInput>();
     const _onmidicb = function (midi_event: MIDIMessageEvent): void {
       console.log("midi input event data test", midi_event.data);
@@ -140,9 +142,9 @@ export class TestService implements ITestService {
     return newMap;
   }
 
-  public makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput>{
+  public makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput> {
     const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
-    const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void { 
+    const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
       console.log("output connection event test", connection_event);
     };
     const _onmidicb = function (midi_event: MIDIMessageEvent): void {
@@ -163,27 +165,27 @@ export class TestService implements ITestService {
     }
     return newMap;
   }
-/**
- * 
- * @example
-  * interface MIDIMessageEvent {
-  *    isTrusted: boolean;
-  *    bubbles: boolean;
-  *    cancelBubble: boolean;
-  *    composed: boolean;
-  *    currentTarget: MIDIInput;
-  *    data: Uint8Array;
-  *    defaultPrevented: boolean;
-  *    eventPhase: number;
-  *    path: Array<any>;
-  *    returnValue: boolean;
-  *    srcElement: MIDIInput;
-  *    target: MIDIInput;
-  *    timeStamp: number;
-  *    type: "midimessage"
-}
- * @returns test midi message event
- */
+  /**
+   * 
+   * @example
+    * interface MIDIMessageEvent {
+    *    isTrusted: boolean;
+    *    bubbles: boolean;
+    *    cancelBubble: boolean;
+    *    composed: boolean;
+    *    currentTarget: MIDIInput;
+    *    data: Uint8Array;
+    *    defaultPrevented: boolean;
+    *    eventPhase: number;
+    *    path: Array<any>;
+    *    returnValue: boolean;
+    *    srcElement: MIDIInput;
+    *    target: MIDIInput;
+    *    timeStamp: number;
+    *    type: "midimessage"
+  }
+   * @returns test midi message event
+   */
   public createMIDIMessageEvent(): MIDIMessageEvent {
     return {
       isTrusted: true,
@@ -227,9 +229,9 @@ export class TestService implements ITestService {
       const entries = this.inputMap.entries();
 
       for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
-          this.inputs?.push(entries.next().value[1]);
+        this.inputs?.push(entries.next().value[1]);
       }
-  }
+    }
     return this;
   }
 
@@ -238,7 +240,7 @@ export class TestService implements ITestService {
    * @returns returns an instance of the class after setting all the input array's callback functions
    */
   public setInputCbs(
-    _onmidicb: (midi_event: MIDIMessageEvent) => unknown, 
+    _onmidicb: (midi_event: MIDIMessageEvent) => unknown,
     _onstatechangecb: (connection_event: MIDIConnectionEvent) => unknown
   ): this {
     const input_size = this.inputMap.size;
@@ -280,7 +282,7 @@ export class TestService implements ITestService {
   }
 
   public static signTestToken(args: ISignTestTokenArgs): string {
-    const { 
+    const {
       uuid: someUuid,
       username,
       email,

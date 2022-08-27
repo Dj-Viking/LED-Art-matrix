@@ -1,0 +1,85 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test selecting midi device toggles which device shows select device from dropdown menu 1`] = `
+<DocumentFragment>
+  <h2>
+    MIDI Devices
+  </h2>
+  <div
+    style="display: flex; flex-direction: column; justify-content: center;"
+  >
+    <div
+      style="display: flex; align-items: center; justify-content: center;"
+    >
+      <select
+        data-testid="midi-select"
+        style="background-color: black;"
+      >
+        <option
+          data-testid="select-option"
+          disabled=""
+          value="Select A Connected Device"
+        >
+          Select A Connected Device
+        </option>
+        <option
+          data-testid="select-option"
+          value="XONE:K2"
+        >
+          XONE:K2
+        </option>
+        <option
+          data-testid="select-option"
+          value="XONE:K2"
+        >
+          XONE:K2
+        </option>
+        <option
+          data-testid="select-option"
+          value="XONE:K2"
+        >
+          XONE:K2
+        </option>
+      </select>
+    </div>
+    <div
+      style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
+    >
+      <p>
+        XONE:K2
+      </p>
+      <div
+        class="sc-bczRLJ cEpPlh"
+      >
+        <div
+          class="sc-gsnTZi gBehKH"
+        />
+      </div>
+      <span>
+        Intensity: 0
+      </span>
+      <div
+        style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+      >
+        <progress
+          max="127"
+          style="width: 50%;"
+          value="0"
+        />
+      </div>
+      <div
+        class="sc-dkzDqf eChQMB"
+      >
+        <span>
+          Channel: 16
+        </span>
+        <p
+          style="margin: 0px;"
+        >
+          1_fader
+        </p>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

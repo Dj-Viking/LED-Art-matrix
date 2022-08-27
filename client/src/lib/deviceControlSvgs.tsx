@@ -9,7 +9,8 @@ export const Fader: React.FC<DeviceControlSvgProps> = ({ intensity_prop }): JSX.
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: `
+      <div dangerouslySetInnerHTML={{
+        __html: `
         <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
         
@@ -58,9 +59,8 @@ export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
     const rotationPercentage = calcPositionFromRange(intensity_input, 0, 100, 0, 127);
 
     // somehow take the percentage and convert this into angle, x, y values for the rotation
-    
+
     let angle = calcPositionFromRange(rotationPercentage, -140, 137, 0, 100);
-    console.log("intensity input", intensity_input, "rotation percentage", rotationPercentage, "angle", angle);
 
     //so we can rotate along our own defined axis to follow the circle perimeter
     const vec2 = { x: 45, y: 62 };
@@ -70,7 +70,8 @@ export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={{ __html: `
+      <div dangerouslySetInnerHTML={{
+        __html: `
 
         <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">

@@ -7,6 +7,7 @@ interface IntensityBarProps {
 const IntensityBar: React.FC<IntensityBarProps> = ({ intensity }) => {
   return (
     <>
+      <span>Intensity: {intensity}</span>
       <div
         style={{
           marginTop: "1em",
@@ -16,7 +17,7 @@ const IntensityBar: React.FC<IntensityBarProps> = ({ intensity }) => {
           alignItems: "center"
         }}
       >
-        <progress 
+        <progress
           style={{ width: "50%" }}
           value={intensity}
           max={127}
