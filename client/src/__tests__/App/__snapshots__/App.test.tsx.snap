@@ -751,7 +751,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="1253.949741279108something unique lol"
+          id="2867.669416053513something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +808,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="3352.926641918803something unique lol"
+          id="8893.000680309406something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +865,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="1350.5617872476505something unique lol"
+          id="9646.721315588162something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +922,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="1826.0793107385175something unique lol"
+          id="595.6400669395579something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +979,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="8767.473606256704something unique lol"
+          id="4818.156373574951something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1036,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="8325.137029498677something unique lol"
+          id="1254.2716622573157something unique lol"
           role="button"
           tabindex="-1"
         >

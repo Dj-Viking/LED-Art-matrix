@@ -125,8 +125,6 @@ describe("test selecting midi device toggles which device shows", () => {
             </Provider>
         );
 
-
-
         const select = {
             dropdown: await screen.findByTestId("midi-select") as HTMLElement,
             options: await screen.findAllByTestId("select-option") as HTMLElement[],
