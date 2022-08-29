@@ -39,7 +39,10 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 ## Contribute
 
 * Running Locally
-    -  must first <a href="https://www.mongodb.com/docs/manual/administration/install-community/" rel="noopener noreferrer" target="_blank">install mongodb</a> on your local machine for the server to start and save data to the database
+    - For bcrypt to install properly on windows, one must install Visual Studio C++ Desktop Development SDK
+    since this npm package requires native bindings that which node-gyp will try to use as a means to bind 
+    the javascript package to the native bindings of the C++ development kit 
+    - Must first <a href="https://www.mongodb.com/docs/manual/administration/install-community/" rel="noopener noreferrer" target="_blank">install mongodb</a> on your local machine for the server to start and save data to the database
     - For Windows users that have at least powershell v6.0 run
         ```powershell
         git clone "git@github.com:Dj-Viking/LED-Art-matrix.git";
