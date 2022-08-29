@@ -40,8 +40,10 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 
 * Running Locally
     - For Windows users that have at least powershell v6.0 run
-        ```sh
-        npm run start-windows 
+        ```powershell
+        git clone "git@github.com:Dj-Viking/LED-Art-matrix.git";
+        cd "LED-Art-matrix";
+        npm run start-windows; 
         ```
     - For Mac users 
     - must first <a href="https://www.mongodb.com/docs/manual/administration/install-community/" rel="noopener noreferrer" target="_blank">install mongodb</a> on your local machine for the server to save it's data
