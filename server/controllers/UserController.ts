@@ -2,9 +2,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
+// @ts-ignore @types/bcrypt are installed....
 import bcrypt from "bcrypt";
 import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
 import { Express } from "../types";
+// @ts-ignore @types/express are installed...
 import { Response } from "express";
 import { PresetClass } from "../models/PresetClass";
 import { UserClass } from "../models/User";
@@ -42,7 +44,9 @@ export const UserController = {
         { new: true }
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
-    } catch (error) {}
+    } catch (error) {
+      return res.status(500).json({ error: error.message })
+    }
   },
   deleteUserPreset: async function (
     req: Express.MyRequest,

@@ -45,7 +45,9 @@ exports.UserController = {
                 }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
-            catch (error) { }
+            catch (error) {
+                return res.status(500).json({ error: error.message });
+            }
         });
     },
     deleteUserPreset: function (req, res) {
