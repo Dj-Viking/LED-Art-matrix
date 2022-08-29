@@ -48,12 +48,12 @@ PWA accessible! just install by clicking the + on the right side of the browser 
         ```
     - For Mac users 
     
-    ```sh
+        ```sh
         git clone "git@github.com:Dj-Viking/LED-Art-matrix.git"; \
         cd LED-Art-matrix; \
         npm install --verbose; \
         npm start;
-    ```
+        ```
     - you should at least have the client webpack dev server start and the server will crash without env.txt file. the client doesn't NEED the server just to play around with the LED controls. But for the purposes of using the art scroller and saving LED pattern presets the server needs to work to save user data.
     - ![asdf](./docs/images/start-after-clone.png)
     ## env.txt 
