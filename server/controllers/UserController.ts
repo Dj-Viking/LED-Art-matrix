@@ -117,13 +117,15 @@ export const UserController = {
       const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
       return res.status(200).json({
         preset: {
-          displayName: foundUser!.defaultPreset!.displayName,
-          presetName: foundUser!.defaultPreset!.presetName,
-          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
-          _id: foundUser!.defaultPreset!._id,
+          displayName: foundUser!.defaultPreset?.displayName,
+          presetName: foundUser!.defaultPreset?.presetName,
+          animVarCoeff: foundUser!.defaultPreset?.animVarCoeff,
+          _id: foundUser!.defaultPreset?._id,
         },
       });
-    } catch (error) {}
+    } catch (error) {
+      return res.status(500).json({error: error.message});
+    }
   },
   //TODO: when updating, push this preset into the user's preset collection
   // make sure to gather the animVarCoeff or whatever parameters on the preset

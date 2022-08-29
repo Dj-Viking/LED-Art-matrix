@@ -59,19 +59,19 @@ if (process.env.NODE_ENV === "production") {
     });
 }
 connection_1.default.once("open", () => {
-    console.log("connection opened");
+    console.log("mongdb connection opened");
     app.listen(PORT, () => {
         setTimeout(() => {
             console.log("\x1b[33m", `🔊 🎶 now listening on port ${PORT} 🔊 🎶`, "\x1b[00m");
         }, 300);
         setTimeout(() => {
-            console.log("\x1b[34m", `🌎 node environment install success listening on port ${PORT} 🌎`, "\x1b[00m");
+            console.log("\x1b[33m", `🌎 node environment install success listening on port ${PORT} 🌎`, "\x1b[00m");
         }, 400);
         setTimeout(() => {
             console.log("\x1b[32m", `🌱 if in development: stand by for react server to begin...`, "\x1b[00m");
         }, 600);
         setTimeout(() => __awaiter(void 0, void 0, void 0, function* () {
-            seedSearchTerms();
+            yield seedSearchTerms();
         }), 800);
     });
 });
