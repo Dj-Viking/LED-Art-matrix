@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === "production") {
 
 //OPEN DATABASE AND THEN START SERVER
 connection.once("open", () => {
-  console.log("connection opened");
+  console.log("mongdb connection opened");
   app.listen(PORT, () => {
     //SERVER LISTENING ON PORT
     setTimeout(() => {
@@ -67,7 +67,7 @@ connection.once("open", () => {
     }, 300);
     setTimeout(() => {
       console.log(
-        "\x1b[34m",
+        "\x1b[33m",
         `🌎 node environment install success listening on port ${PORT} 🌎`,
         "\x1b[00m"
       );
@@ -82,7 +82,7 @@ connection.once("open", () => {
 
     //seed Presets and SearchTerms tables with new preset names so the user can add them to their account as a default starting values
     setTimeout(async () => {
-      seedSearchTerms();
+      await seedSearchTerms();
     }, 800);
   });
 });

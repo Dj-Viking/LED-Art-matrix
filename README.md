@@ -39,14 +39,21 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 ## Contribute
 
 * Running Locally
-    - 
-    - must first <a href="https://www.mongodb.com/docs/manual/administration/install-community/" rel="noopener noreferrer" target="_blank">install mongodb</a> on your local machine for the server to save it's data
-    ```sh
+    -  must first <a href="https://www.mongodb.com/docs/manual/administration/install-community/" rel="noopener noreferrer" target="_blank">install mongodb</a> on your local machine for the server to start and save data to the database
+    - For Windows users that have at least powershell v6.0 run
+        ```powershell
+        git clone "git@github.com:Dj-Viking/LED-Art-matrix.git";
+        cd "LED-Art-matrix";
+        npm run start-windows; 
+        ```
+    - For Mac users 
+    
+        ```sh
         git clone "git@github.com:Dj-Viking/LED-Art-matrix.git"; \
-        cd LED-Art-matrix/; \
+        cd LED-Art-matrix; \
         npm install --verbose; \
         npm start;
-    ```
+        ```
     - you should at least have the client webpack dev server start and the server will crash without env.txt file. the client doesn't NEED the server just to play around with the LED controls. But for the purposes of using the art scroller and saving LED pattern presets the server needs to work to save user data.
     - ![asdf](./docs/images/start-after-clone.png)
     ## env.txt 

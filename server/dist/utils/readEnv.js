@@ -7,7 +7,9 @@ function readEnv() {
     if (typeof process.env.ENV_TXT !== "undefined") {
         env = process.env.ENV_TXT.split("\n");
         for (let i = 0; i < env.length; i++) {
-            entries = Object.assign(Object.assign({}, entries), { [env[i].split("=")[0]]: env[i].split("=")[1].replace(/'/g, "") });
+            const key = env[i].split("=")[0];
+            const value = env[i].split("=")[1].replace(/'/g, "").replace(/\r/g, "");
+            entries = Object.assign(Object.assign({}, entries), { [key]: value });
         }
         process.env = Object.assign(Object.assign({}, process.env), entries);
     }

@@ -1,5 +1,15 @@
 'use strict';
 
+// for development in windows when running the run.ps1 powershell script
+if ( 
+  process.env.MY_OS && 
+  /Windows/g.test(process.env.MY_OS) && 
+  /LED/g.test(process.cwd())
+) {
+  process.chdir("./client");
+  console.log("Switched to client directory to start react dev server\n", process.cwd());
+}
+
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';

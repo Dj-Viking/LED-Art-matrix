@@ -45,7 +45,9 @@ exports.UserController = {
                 }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
-            catch (error) { }
+            catch (error) {
+                return res.status(500).json({ error: error.message });
+            }
         });
     },
     deleteUserPreset: function (req, res) {
@@ -102,19 +104,22 @@ exports.UserController = {
         });
     },
     getUserDefaultPreset: function (req, res) {
+        var _a, _b, _c, _d;
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const foundUser = yield models_1.User.findOne({ email: req.user.email }).select("-password");
                 return res.status(200).json({
                     preset: {
-                        displayName: foundUser.defaultPreset.displayName,
-                        presetName: foundUser.defaultPreset.presetName,
-                        animVarCoeff: foundUser.defaultPreset.animVarCoeff,
-                        _id: foundUser.defaultPreset._id,
+                        displayName: (_a = foundUser.defaultPreset) === null || _a === void 0 ? void 0 : _a.displayName,
+                        presetName: (_b = foundUser.defaultPreset) === null || _b === void 0 ? void 0 : _b.presetName,
+                        animVarCoeff: (_c = foundUser.defaultPreset) === null || _c === void 0 ? void 0 : _c.animVarCoeff,
+                        _id: (_d = foundUser.defaultPreset) === null || _d === void 0 ? void 0 : _d._id,
                     },
                 });
             }
-            catch (error) { }
+            catch (error) {
+                return res.status(500).json({ error: error.message });
+            }
         });
     },
     updateDefaultPreset: function (req, res) {
