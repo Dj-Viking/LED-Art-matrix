@@ -98,16 +98,16 @@ PWA accessible! just install by clicking the + on the right side of the browser 
             if (typeof process.env.ENV_TXT !== "undefined") {
                 env = process.env.ENV_TXT.split("\n") as string[];
                 for (let i = 0; i < env.length; i++) {
-                const key = env[i].split("=")[0];
-                const value = env[i].split("=")[1].replace(/'/g, "").replace(/\r/g, "");
-                entries = {
-                    ...entries,
-                    [key]: value,
-                };
+                    const key = env[i].split("=")[0];
+                    const value = env[i].split("=")[1].replace(/'/g, "").replace(/\r/g, "");
+                    entries = {
+                        ...entries,
+                        [key]: value,
+                    };
                 }
                 process.env = {
-                ...process.env,
-                ...entries,
+                    ...process.env,
+                    ...entries,
                 };
             }
         }
