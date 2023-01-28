@@ -6,9 +6,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll",
-    "test:coverage": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll --coverage",
-    "test:ci": "npm run clear:jest; node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
+    "test": "npm run clear:jest && node scripts/test.js --updateSnapshot --verbose --watchAll",
+    "test:coverage": "npm run clear:jest && node scripts/test.js --updateSnapshot --verbose --watchAll --coverage",
+    "test:ci": "npm run clear:jest && node scripts/test.js --updateSnapshot --verbose --watchAll=false --coverage",
     "clear:jest": "jest --clearCache",
     "deploy-gh": "gh-pages -d build"
   },
