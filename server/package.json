@@ -10,7 +10,7 @@
     "dev": "cd dist && ENV_TXT=$(cat ../env.txt) nodemon -L index.js",
     "tsw": "tsc -w",
     "clear:jest": "jest --clearCache",
-    "server:ci": "npm run clear:jest; jest --verbose --detectOpenHandles --watchAll=false --coverage",
+    "server:ci": "npm run clear:jest && jest --verbose --detectOpenHandles --watchAll=false --coverage",
     "test": "ENV_TXT=$(cat env.txt) jest --verbose --detectOpenHandles --watchAll=false",
     "test:coverage": "ENV_TXT=$(cat env.txt) jest --verbose --detectOpenHandles --watchAll=false --coverage",
     "concurrently": "ENV_TXT=$(cat env.txt) concurrently \"npm run tsw\" \"npm run dev\""

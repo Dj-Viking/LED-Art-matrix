@@ -2,8 +2,7 @@
 // import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
 import { keyGen } from "./keyGen";
-import { MIDIInput, MIDIOutput } from "./MIDIControlClass";
-import { TestService } from "./TestServiceClass";
+import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType } from "./MIDIControlClass";
 const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
@@ -22,59 +21,59 @@ export const MOCK_SIGN_TOKEN_ARGS = {
   _id: keyGen(),
 };
 export const MOCK_PRESETS = [
-  {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
-  {displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
-  {displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
-  {displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
-  {displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
-  {displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
-  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
-  {displayName: "bogus1", presetName: "bogus1", animVarCoeff: "64", _id: "6200149468fe291e26584eaf"},
-  {displayName: "bogus2", presetName: "bogus2", animVarCoeff: "64", _id: "6200149468fe291e26584e14"},
-  {displayName: "bogus3", presetName: "bogus3", animVarCoeff: "64", _id: "6200149468fe291e26584e15"},
-  {displayName: "bogus4", presetName: "bogus4", animVarCoeff: "64", _id: "6200149468fe291e26584e16"},
-  {displayName: "bogus5", presetName: "bogus5", animVarCoeff: "64", _id: "6200149468fe291e26584e17"},
+  { displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b" },
+  { displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c" },
+  { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" },
+  { displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e" },
+  { displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f" },
+  { displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50" },
+  { displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51" },
+  { displayName: "bogus1", presetName: "bogus1", animVarCoeff: "64", _id: "6200149468fe291e26584eaf" },
+  { displayName: "bogus2", presetName: "bogus2", animVarCoeff: "64", _id: "6200149468fe291e26584e14" },
+  { displayName: "bogus3", presetName: "bogus3", animVarCoeff: "64", _id: "6200149468fe291e26584e15" },
+  { displayName: "bogus4", presetName: "bogus4", animVarCoeff: "64", _id: "6200149468fe291e26584e16" },
+  { displayName: "bogus5", presetName: "bogus5", animVarCoeff: "64", _id: "6200149468fe291e26584e17" },
 ];
 export const MOCK_ADD_PRESET_RES = [
-  {displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b"},
-  {displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c"},
-  {displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d"},
-  {displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e"},
-  {displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f"},
-  {displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50"},
-  {displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51"},
-  {displayName: "new preset", presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e53"},
+  { displayName: "", presetName: "rainbowTest", animVarCoeff: "64", _id: "6200149468fe291e26584e4b" },
+  { displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c" },
+  { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" },
+  { displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e" },
+  { displayName: "", presetName: "fourSpirals", animVarCoeff: "64", _id: "6200149468fe291e26584e4f" },
+  { displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50" },
+  { displayName: "bogus", presetName: "bogus", animVarCoeff: "64", _id: "6200149468fe291e26584e51" },
+  { displayName: "new preset", presetName: "new preset", animVarCoeff: "64", _id: "6200149468fe291e26584e53" },
 ];
 
 
 export const ASSERT_ANIMATION = {
   clearLed: "led1-1",
-  keyframes: /keyframes/g,
-  durationStyleRegex: /animation-duration: ([0-9.s])+/,
-  delayStyleRegex: /animation-delay: ([0-9.s])+/,
+  keyframes: new RegExp("keyframes", "g"),
+  durationStyleRegex: new RegExp("animation-duration: ([0-9.s])+"),
+  delayStyleRegex: new RegExp("animation-delay: ([0-9.s])+"),
   rainbowTest: {
-    regex: /rainbowTest/g,
+    regex: new RegExp("rainbowTest", "g"),
     classListItem: "led1-1rainbowTest",
   },
   v2: {
-    regex: /v2/g,
+    regex: new RegExp("v2", "g"),
     classListItem: "led1-1v2",
   },
   waves: {
-    regex: /waves/g,
+    regex: new RegExp("waves", "g"),
     classListItem: "led1-1waves",
-    
+
   },
   spiral: {
-    regex: /spiral/g,
+    regex: new RegExp("spiral", "g"),
     classListItem: "led1-1spiral"
   },
   fourSpirals: {
-    regex: /fourSpirals/g,
+    regex: new RegExp("fourSpirals", "g"),
     classListItem: "led1-1fourSpirals"
   },
   dm5: {
-    regex: /dm5/g,
+    regex: new RegExp("dm5", "g"),
     classListItem: "led1-1dm5"
   },
 };
@@ -117,7 +116,7 @@ export const LOGIN_MOCK_ERROR_CODE = {
 };
 
 export const LOGIN_MOCK_NO_TOKEN = {
-  user:  {
+  user: {
     token: void 0,
     _id: "weeeeeeeee"
   }
@@ -126,7 +125,7 @@ export const LOGIN_MOCK_NO_TOKEN = {
 
 // TODO: sign a new token!!
 export const LOGIN_MOCK_TOKEN = {
-  user:  {
+  user: {
     token: jwt.sign({
       username: "weeeee",
       _id: "weeeeeee",
@@ -176,9 +175,63 @@ export const SIGNUP_MOCK_RESULT = {
 //   })
 // );
 
+export function makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput> {
+  const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
+  const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
+    console.log("output connection event test", connection_event);
+  };
+  const _onmidicb = function (midi_event: MIDIMessageEvent): void {
+    console.log("output midi_event data test", midi_event.data);
+  };
+
+  for (let i = 0; i < 3; i++) {
+    newMap?.set(i.toString(), {
+      id: i.toString(),
+      state: MIDIPortDeviceState.connected,
+      name: "kdjfkjdj",
+      type: MIDIPortType.output,
+      version: "kdfkjdj",
+      connection: MIDIPortConnectionState.closed,
+      onstatechange: _onstatechangecb,
+      onmidimessage: _onmidicb
+    } as MIDIOutput);
+  }
+  return newMap;
+}
+
+export function makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput> {
+  let newMap = new Map<MIDIInput["id"], MIDIInput>();
+  const _onmidicb = function (midi_event: MIDIMessageEvent): void {
+    console.log("midi input event data test", midi_event.data);
+  };
+  const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
+    console.log("midi input connection event test", connection_event);
+  };
+
+  for (let i = 0; i < 3; i++) {
+    newMap?.set(i.toString(), {
+      id: i.toString(),
+      manufacturer: "holy bajeebus",
+      name: "XONE:K2 MIDI",
+      type: MIDIPortType.input,
+      version: "over 9000",
+      state: MIDIPortDeviceState.connected,
+      connection: MIDIPortConnectionState.closed,
+      onmidimessage: _onmidicb,
+      onstatechange: _onstatechangecb
+    } as MIDIInput);
+  }
+  return newMap;
+}
 
 
-export const MOCK_ACCESS_INPUTS: Map<MIDIInput["id"], MIDIInput> = TestService.s_makeFakeMIDIInputs();
-export const MOCK_ACCESS_OUTPUTS: Map<MIDIOutput["id"], MIDIOutput> = TestService.s_makeFakeMIDIOutputs();
+export const MOCK_ACCESS_INPUTS: Map<MIDIInput["id"], MIDIInput> = makeFakeMIDIInputs();
+export const MOCK_ACCESS_OUTPUTS: Map<MIDIOutput["id"], MIDIOutput> = makeFakeMIDIOutputs();
+export const MOCK_MIDI_ACCESS_RECORD = {
+  inputs: MOCK_ACCESS_INPUTS,
+  outputs: MOCK_ACCESS_OUTPUTS,
+  sysexEnabled: false,
+  onstatechange: jest.fn(),
+};
 // export const MOCK_MIDI_MESSAGE_EVENT = TestService.createMIDIMessageEvent();
 // export const MOCK_MIDI_CONNECTION_EVENT = TestService.createMIDIConnectionEvent();

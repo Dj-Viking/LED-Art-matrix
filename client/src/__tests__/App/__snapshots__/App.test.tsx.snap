@@ -49,7 +49,6 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
     tabindex="0"
   >
     <audio
-      autoplay=""
       preload="auto"
       src="G6_-24_db_for_web_test.m4a"
     />
@@ -751,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="2867.669416053513something unique lol"
+          id="3582.429803669116something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -808,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="8893.000680309406something unique lol"
+          id="9295.374454773793something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -865,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="9646.721315588162something unique lol"
+          id="9584.18281329335something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -922,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="595.6400669395579something unique lol"
+          id="5695.3174312381425something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -979,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="4818.156373574951something unique lol"
+          id="4048.409476921078something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1036,7 +1035,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="1254.2716622573157something unique lol"
+          id="4460.869451827932something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1112,21 +1111,21 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               </option>
               <option
                 data-testid="select-option"
-                value="XONE:K2"
+                value="XONE:K2 MIDI"
               >
-                XONE:K2
+                XONE:K2 MIDI
               </option>
               <option
                 data-testid="select-option"
-                value="XONE:K2"
+                value="XONE:K2 MIDI"
               >
-                XONE:K2
+                XONE:K2 MIDI
               </option>
               <option
                 data-testid="select-option"
-                value="XONE:K2"
+                value="XONE:K2 MIDI"
               >
-                XONE:K2
+                XONE:K2 MIDI
               </option>
             </select>
           </div>

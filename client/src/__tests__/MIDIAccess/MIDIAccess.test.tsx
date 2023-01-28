@@ -14,6 +14,7 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID } from "../../constants";
 import { MIDIAccessRecord, MIDIController } from "../../utils/MIDIControlClass";
+import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
   allReducers,
@@ -40,38 +41,7 @@ global.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
   return Promise.resolve(MOCK_MIDI_ACCESS_RECORD);
 };
 
-jest.mock("../../utils/MIDIControlClass.ts", () => {
-
-  const MockMIDIControllerConstructor = function (this: MIDIController): MIDIController {
-    //MOCK METHODS
-
-    const fakeonstatechangefn = (): void => void 0;
-    const onstatechangefn = jest.fn().mockImplementation(fakeonstatechangefn);
-    this.requestMIDIAccess = async function () {
-      return Promise.resolve(MOCK_MIDI_ACCESS_RECORD);
-    };
-    this.online = true;
-    this.getAccess = jest.fn().mockImplementation(function () {
-      return { ...MOCK_MIDI_ACCESS_RECORD, onstatechange: onstatechangefn };
-      // return MOCK_MIDI_ACCESS_RECORD;
-    });
-    this.getInstance = jest.fn().mockImplementation(() => {
-      return this;
-    });
-    return this;
-  };
-
-  //MOCK MODULE OF MIDI UTILS FILE
-  // module to mock returned object NOTE - make sure to mock all modules being exported individually!
-  return {
-    MIDIPort: { open: () => Promise.resolve({}) },
-    MIDIPortType: { type: "input" },
-    MIDIConnectionEvent: {},
-    MIDIPortDeviceState: { connected: "connected" },
-    MIDIPortConnectionState: { closed: "closed" },
-    MIDIController: MockMIDIControllerConstructor
-  };
-});
+TestService.createMockMIDIControllerClass();
 
 describe("faking navigator for midiaccess testing", () => {
   test("fake the navigator.requestMIDIAccess callback func", async () => {
