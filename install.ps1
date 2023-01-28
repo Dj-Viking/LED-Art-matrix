@@ -6,12 +6,12 @@ npm install
 
 Write-Host "[INFO]: Installing server javascript dependencies..." -ForegroundColor Cyan 
 
-cd server
+Set-Location -Path ".\server"
 npm install
 Write-Host "[INFO]: Done installing server dependencies" -ForegroundColor Green 
 
-cd ..
-cd client
+Set-Location -Path ".."
+Set-Location -Path ".\client"
 
 Write-Host "[INFO]: Installing client javascript dependencies..." -ForegroundColor Cyan 
 

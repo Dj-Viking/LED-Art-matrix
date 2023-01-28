@@ -25,7 +25,7 @@
     "clear:jest": "cd server; npm run clear:jest",
     "client:dev": "cd client; npm start",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server; npm run dev:tsc\" \"cd client && npm start\"",
-    "install": "cd server && npm i; cd ../client && npm i --force",
+    "install": "cd server && npm install && cd ../client && npm install --force",
     "server:dev": "sh server.sh",
     "seed": "cd server && npm run seed",
     "heroku-postbuild": "cd client && npm run build"

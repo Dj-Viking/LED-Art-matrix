@@ -2,7 +2,7 @@
 
 # LED Art matrix
 
-![screenshot](./led-matrix-gif.gif)
+![screenshot](./docs/led-matrix-gif.gif)
 
 Check it out here! 👇
 
