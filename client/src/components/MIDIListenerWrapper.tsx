@@ -88,21 +88,19 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <MIDISelectContainer>
                     <MIDISelect setOption={setOption} option={option} midi_inputs={accessState.inputs} />
                 </MIDISelectContainer>
-                {option ? (
-                    <>
-                        <DeviceInterfaceContainer statename={getInput(accessState.inputs, option)?.state || "NOT CONNECTED"}>
-                            <InputName name={getInputName(accessState.inputs, option)} />
-                            <DeviceSvgContainer>
-                                <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
-                            </DeviceSvgContainer>
-                            <IntensityBar intensity={intensity || 0} />
-                            <ControlNameContainer>
-                                <ChannelNumber channel={channel || 0} />
-                                <MIDIChannelControl name={getControlName(getInputName(accessState.inputs, option), channel)} />
-                            </ControlNameContainer>
-                        </DeviceInterfaceContainer>
-                    </>
-                ) : null}
+                {option && (
+                    <DeviceInterfaceContainer statename={getInput(accessState.inputs, option)?.state || "disconnected"}>
+                        <InputName name={getInputName(accessState.inputs, option)} />
+                        <DeviceSvgContainer>
+                            <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
+                        </DeviceSvgContainer>
+                        <IntensityBar intensity={intensity || 0} />
+                        <ControlNameContainer>
+                            <ChannelNumber channel={channel || 0} />
+                            <MIDIChannelControl name={getControlName(getInputName(accessState.inputs, option), channel)} />
+                        </ControlNameContainer>
+                    </DeviceInterfaceContainer>
+                )}
             </MIDIWrapperContainer>
         </>
     );

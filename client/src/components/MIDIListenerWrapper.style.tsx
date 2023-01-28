@@ -110,7 +110,7 @@ export const InputName: React.FC<{ name: MIDIInputName }> = ({ name }) => {
     return <p>{MIDIController.stripNativeLabelFromMIDIInputName(name)}</p>;
 };
 
-export const DeviceInterfaceContainer: React.FC<{ statename: string }> = (props) => {
+export const DeviceInterfaceContainer: React.FC<{ statename: keyof typeof MIDIPortDeviceState }> = (props) => {
     const { statename, children } = props;
     return <div style={{
         position: "relative",
