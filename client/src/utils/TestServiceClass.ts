@@ -81,7 +81,7 @@ export class TestService implements ITestService {
       newMap?.set(i.toString(), {
         id: i.toString(),
         manufacturer: "holy bajeebus",
-        name: "XONE:K2",
+        name: "XONE:K2 MIDI",
         type: MIDIPortType.input,
         version: "over 9000",
         state: MIDIPortDeviceState.connected,
@@ -130,7 +130,7 @@ export class TestService implements ITestService {
       newMap?.set(i.toString(), {
         id: i.toString(),
         manufacturer: "holy bajeebus",
-        name: "XONE:K2",
+        name: "XONE:K2 MIDI",
         type: MIDIPortType.input,
         version: "over 9000",
         state: MIDIPortDeviceState.connected,

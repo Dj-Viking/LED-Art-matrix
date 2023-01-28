@@ -1,14 +1,25 @@
 import styled from "styled-components";
 import React, { ReactNode } from "react";
-import { MIDIPortDeviceState, MIDIInput } from "../utils/MIDIControlClass";
+import { MIDIPortDeviceState, MIDIInput, MIDIController } from "../utils/MIDIControlClass";
+import { MIDIInputName } from "../constants";
+import { Fader, Knob } from "../lib/deviceControlSvgs";
 
 export const DeviceSvgContainer = styled.div`
-     display: flex; 
-     justify-content: space-around; 
+    position: relative;
+    display: flex; 
+    justify-content: space-around; 
 `;
 
-export const SpaceDivider = styled.div`
-    width: 50%;
+export const FaderSvgDiv = styled.div`
+    position: absolute;
+    right: 25px;
+    bottom: -80px;
+`;
+
+export const KnobSvgDiv = styled.div`
+    position: absolute;
+    right: 6px;
+    bottom: -85px;
 `;
 
 export const ControlNameContainer = styled.div`
@@ -29,6 +40,28 @@ export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {
     </div>;
 };
 
+export type ControlTypes = "usingFader" | "usingKnob";
+export interface IControlSvgProps {
+    usings: Record<ControlTypes, boolean>;
+    intensity_input: number;
+}
+export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
+    return (
+        <>
+            {props.usings.usingFader && (
+                <FaderSvgDiv>
+                    <Fader intensity_prop={props.intensity_input} />
+                </FaderSvgDiv>
+            )}
+            {props.usings.usingKnob && (
+                <KnobSvgDiv>
+                    <Knob intensity_prop={props.intensity_input} />
+                </KnobSvgDiv>
+            )}
+        </>
+    );
+}
+
 interface MIDISelectProps {
     setOption: React.Dispatch<React.SetStateAction<string>>;
     children?: ReactNode | ReactNode[];
@@ -37,6 +70,7 @@ interface MIDISelectProps {
 }
 
 export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, option }) => {
+
     return (
         <select
             data-testid="midi-select"
@@ -51,7 +85,9 @@ export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, 
             </option>
             {midi_inputs.map(input => {
                 return (
-                    <option data-testid="select-option" key={input.id} value={input.name}>{input.name}</option>
+                    <option data-testid="select-option" key={input.id} value={input.name}>
+                        {MIDIController.stripNativeLabelFromMIDIInputName(input.name)}
+                    </option>
                 );
             })}
         </select>
@@ -59,6 +95,8 @@ export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, 
 };
 
 export const MIDISelectContainer: React.FC<any> = ({ children }) => {
+
+
     return <div style={{
         display: "flex",
         alignItems: "center",
@@ -68,11 +106,12 @@ export const MIDISelectContainer: React.FC<any> = ({ children }) => {
     </div>;
 };
 
-export const InputName: React.FC<{ name: string }> = ({ name }) => {
-    return <p>{name}</p>;
+export const InputName: React.FC<{ name: MIDIInputName }> = ({ name }) => {
+    return <p>{MIDIController.stripNativeLabelFromMIDIInputName(name)}</p>;
 };
 
-export const DeviceInterfaceContainer: React.FC<{ statename: string }> = ({ statename, children }) => {
+export const DeviceInterfaceContainer: React.FC<{ statename: string }> = (props) => {
+    const { statename, children } = props;
     return <div style={{
         position: "relative",
         width: "50%",

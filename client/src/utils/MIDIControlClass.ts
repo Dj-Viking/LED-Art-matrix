@@ -1,4 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React from "react";
+import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
+import { animVarCoeffChange } from "../actions/led-actions";
+import { determineDeviceControl } from "../actions/midi-access-actions";
+import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -93,7 +98,7 @@ type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
 interface MIDIInput {
     id: string;
     manufacturer: string;
-    name: string;
+    name: MIDIInputName;
     type: MIDIPortType.input;
     version: string;
     state: MIDIPortDeviceState | string;
@@ -230,6 +235,71 @@ class MIDIController implements IMIDIController {
             }
         }
 
+    }
+
+    public static stripNativeLabelFromMIDIInputName(name: string): MIDIInputName {
+        return name.replace(/(\d-\s)/g, "") as MIDIInputName;
+    }
+
+    public static handleXONEK2MIDIMessage(
+        midi_event: MIDIMessageEvent,
+        _setChannel: React.Dispatch<React.SetStateAction<number>>,
+        _setIntensity: React.Dispatch<React.SetStateAction<number>>,
+        _dispatchcb: React.Dispatch<any>,
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+    ): void {
+        const midi_intensity = midi_event.data[2];
+        const midi_channel = midi_event.data[1];
+
+        _setChannel(midi_channel);
+        _setIntensity(midi_intensity);
+
+        const is_fader = /fader/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
+        const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
+
+        _dispatchcb(determineDeviceControl({
+            usingFader: is_fader,
+            usingKnob: is_knob
+        }));
+
+        // console.log("dump data", midi_event);
+        switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "1_upper_knob":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(setCircleWidth(midi_intensity.toString()));
+                }, 20);
+                break;
+            case "1_middle_knob":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(setVertPos(midi_intensity.toString()));
+                }, 20);
+                break;
+            case "1_lower_knob":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(setHPos(midi_intensity.toString()));
+                }, 20);
+                break;
+            case "2_upper_knob":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(setInvert(midi_intensity.toString()));
+                }, 20);
+                break;
+            case "2_middle_knob":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(setAnimDuration(
+                        midi_intensity <= 0 ? "1" : midi_intensity.toString()
+                    ));
+                }, 20);
+                break;
+            case "1_fader":
+                timeoutRef.current = setTimeout(() => {
+                    _dispatchcb(animVarCoeffChange((
+                        midi_intensity === 0 ? "1" : midi_intensity * 2
+                    ).toString()));
+                }, 10);
+                break;
+            default: break;
+        }
     }
 
 }
