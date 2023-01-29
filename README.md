@@ -81,7 +81,6 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 
     ## How env.txt works
     * if the env.txt file is there the values will be inherited to the process.env object
-    * this is my way around having to install dotenv all the time works for me as a mac user, not 100% sure about other operating systems
 
     ```sh
     # from ./server/package.json
