@@ -220,14 +220,17 @@ export type TABLE_VALUES =
   | "1_fader"
   | "2_fader"
   | "3_fader"
-  | "4_fader"
-  | string;
+  | "4_fader";
 
 export type ControllerName =
-  | "XONE:K2"
+  | "Not Found"
+  | "UltraLite mk3 Hybrid"
+  | "XONE:K2 MIDI"
   | "UltraLite mk3 Hybrid MIDI Port"
   | "UltraLite mk3 Hybrid Sync Port";
 
+
+export type MIDIInputName = string & keyof ControllerLookup;
 export type ControllerMIDIChannelTable = Record<number, TABLE_VALUES>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE = {
@@ -268,10 +271,14 @@ export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
   19: "4_fader",
 } as ControllerMIDIChannelTable;
 
-export type ControllerLookup = Record<ControllerName, ControllerMIDIChannelTable>
+type Nullable<T> = null | T;
 
-export const SUPPORTED_CONTROLLERS = {
-  "XONE:K2": XONEK2_MIDI_CHANNEL_TABLE,
+export type ControllerLookup = Record<ControllerName, Nullable<ControllerMIDIChannelTable>>
+
+export const SUPPORTED_CONTROLLERS: ControllerLookup = {
+  "Not Found": null,
+  "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
+  "UltraLite mk3 Hybrid": null,
   "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
   "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT
-} as ControllerLookup;
+};

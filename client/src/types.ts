@@ -21,20 +21,20 @@ export interface ILedState {
   isInverted: boolean;
   animVarCoeff: string;
 }
-export type ILedActionTypes = 
-| "LOAD_USER_SPLASH_CONFIG"
-| "INVERT_SWITCH"
-| "PRESET_SWITCH"
-| "VAR_COEFF_CHANGE"
-| "ALPHA_FADER_CHANGE";
+export type ILedActionTypes =
+  | "LOAD_USER_SPLASH_CONFIG"
+  | "INVERT_SWITCH"
+  | "PRESET_SWITCH"
+  | "VAR_COEFF_CHANGE"
+  | "ALPHA_FADER_CHANGE";
 
-export type ILedActionPayloads = 
-| ILedLoadUserSplashConfigAction["payload"]
-| ILedAlphaFaderChangeAction["payload"]
-| ILedAnimationDelayChange["payload"]
-| ILedAnimVarCoeffChangeAction["payload"]
-| ILedAnimationDurationChangeAction["payload"]
-| ILedPresetSwitchAction["payload"]
+export type ILedActionPayloads =
+  | ILedLoadUserSplashConfigAction["payload"]
+  | ILedAlphaFaderChangeAction["payload"]
+  | ILedAnimationDelayChange["payload"]
+  | ILedAnimVarCoeffChangeAction["payload"]
+  | ILedAnimationDurationChangeAction["payload"]
+  | ILedPresetSwitchAction["payload"]
 
 export interface ILedAction {
   type: ILedActionTypes;
@@ -125,13 +125,13 @@ export interface ILoginFormState {
   password: string;
   passwordIsComplete: boolean;
 }
-export type ILoginFormActionTypes = 
-| "LOGIN_EMAIL_OR_USERNAME_CHANGE"
-| "LOGIN_PASSWORD_CHANGE"
+export type ILoginFormActionTypes =
+  | "LOGIN_EMAIL_OR_USERNAME_CHANGE"
+  | "LOGIN_PASSWORD_CHANGE"
 
 export type ILoginFormActionPayloads =
-| ILoginUsernameOrEmailChangeAction["payload"]
-| ILoginPasswordChangeAction["payload"]
+  | ILoginUsernameOrEmailChangeAction["payload"]
+  | ILoginPasswordChangeAction["payload"]
 
 export interface ILoginFormAction {
   type: ILoginFormActionTypes;
@@ -153,15 +153,15 @@ export interface ISignupFormState {
   password: string;
   passwordIsComplete: boolean;
 }
-export type ISignupFormActionTypes = 
-| "SIGNUP_USERNAME_CHANGE"
-| "SIGNUP_EMAIL_CHANGE"
-| "SIGNUP_PASSWORD_CHANGE";
+export type ISignupFormActionTypes =
+  | "SIGNUP_USERNAME_CHANGE"
+  | "SIGNUP_EMAIL_CHANGE"
+  | "SIGNUP_PASSWORD_CHANGE";
 
 export type ISignupFormActionPayloads =
-| ISignupEmailChangeAction["payload"]
-| ISignupUsernameChangeAction["payload"]
-| ISignupPasswordChangeAction["payload"];
+  | ISignupEmailChangeAction["payload"]
+  | ISignupUsernameChangeAction["payload"]
+  | ISignupPasswordChangeAction["payload"];
 
 export interface ISignupFormAction {
   type: ISignupFormActionTypes
@@ -191,23 +191,23 @@ export interface IArtScrollerState {
   figureOn: boolean;
 }
 
-export type IArtScrollerActionTypes = 
-| IGetGifsAction["type"]
-| ISetAnimDurationAction["type"]
-| ISetVertPosAction["type"]
-| ISetHPosAction["type"]
-| ISetCircleWidthAction["type"]
-| ISetInvertAction["type"]
-| ISetFigureOnAction["type"]
+export type IArtScrollerActionTypes =
+  | IGetGifsAction["type"]
+  | ISetAnimDurationAction["type"]
+  | ISetVertPosAction["type"]
+  | ISetHPosAction["type"]
+  | ISetCircleWidthAction["type"]
+  | ISetInvertAction["type"]
+  | ISetFigureOnAction["type"]
 
-export type IArtScrollerPayloads = 
-| IGetGifsAction["payload"]
-| ISetAnimDurationAction["payload"]
-| ISetVertPosAction["payload"]
-| ISetHPosAction["payload"]
-| ISetCircleWidthAction["payload"]
-| ISetInvertAction["payload"]
-| ISetFigureOnAction["payload"]
+export type IArtScrollerPayloads =
+  | IGetGifsAction["payload"]
+  | ISetAnimDurationAction["payload"]
+  | ISetVertPosAction["payload"]
+  | ISetHPosAction["payload"]
+  | ISetCircleWidthAction["payload"]
+  | ISetInvertAction["payload"]
+  | ISetFigureOnAction["payload"]
 
 export interface IArtScrollerAction {
   type: IArtScrollerActionTypes;
@@ -227,13 +227,13 @@ export interface ILedStyleTagState {
   html: string
 }
 
-export type ILedStyleTagActionTypes = 
-| "SET_STYLE"
-| "CLEAR_STYLE"
+export type ILedStyleTagActionTypes =
+  | "SET_STYLE"
+  | "CLEAR_STYLE"
 
 export type ILedStyleTagActionPayloads =
-| ILedSetStyleAction["payload"]
-| ILedClearStyleAction["payload"];
+  | ILedSetStyleAction["payload"]
+  | ILedClearStyleAction["payload"];
 
 export interface ILedStyleAction {
   type: ILedStyleTagActionTypes
@@ -258,16 +258,16 @@ export interface IPresetButtonsAction {
   type: IPresetButtonListActionTypes;
   payload: IPresetButtonListActionPayloads;
 }
-export type IPresetButtonListActionTypes = 
-| ISetPresetButtonsListAction["type"]
-| "CHECK_BUTTONS_ACTIVE"
-| "SET_ALL_INACTIVE"
-| "DELETE_PRESET"
-| "TOGGLE_DELETE_MODE";
+export type IPresetButtonListActionTypes =
+  | ISetPresetButtonsListAction["type"]
+  | "CHECK_BUTTONS_ACTIVE"
+  | "SET_ALL_INACTIVE"
+  | "DELETE_PRESET"
+  | "TOGGLE_DELETE_MODE";
 
 export type IPresetButtonListActionPayloads =
-| ISetPresetButtonsListAction["payload"]
-| IPresetButton[];
+  | ISetPresetButtonsListAction["payload"]
+  | IPresetButton[];
 
 export interface IPresetButton {
   id: string;
@@ -287,9 +287,9 @@ export interface ILoggedinAction {
   payload: ILoggedInActionPayloads
 }
 
-export type ILoggedInActionTypes = 
-| "LOG_IN"
-| "LOG_OUT";
+export type ILoggedInActionTypes =
+  | "LOG_IN"
+  | "LOG_OUT";
 
 export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
   type: "SET_ALL_INACTIVE";
@@ -301,8 +301,8 @@ export type IToggleDeleteModeAction = (on: boolean) => {
 }
 
 export type ILoggedInActionPayloads =
-| ILoginAction["payload"]
-| ILogoutAction["payload"];
+  | ILoginAction["payload"]
+  | ILogoutAction["payload"];
 export interface ILoginAction {
   type: "LOG_IN";
   payload: true;
@@ -393,12 +393,12 @@ export interface ISaveModalState {
   saveModalContext: { animVarCoeff: string, presetName: string };
 }
 export type ISaveModalActionTypes =
-| ISetSaveModalIsOpenAction["type"]
-| ISetSaveModalContextAction["type"];
+  | ISetSaveModalIsOpenAction["type"]
+  | ISetSaveModalContextAction["type"];
 
 export type ISaveModalActionPayloads =
-| ISetSaveModalIsOpenAction["payload"]
-| ISetSaveModalContextAction["payload"];
+  | ISetSaveModalIsOpenAction["payload"]
+  | ISetSaveModalContextAction["payload"];
 export interface ISaveModalAction {
   type: ISaveModalActionTypes,
   payload: ISaveModalActionPayloads
@@ -409,15 +409,15 @@ export interface IDeleteModalState {
   deleteModalContext: { btnId: string; displayName: string; };
 }
 
-export type UDeleteModalActionTypes = 
-| ISetDeleteModalOpenAction["type"]
-| "TOGGLE_DELETE_MODE"
-| ISetDeleteModalContextAction["type"];
+export type UDeleteModalActionTypes =
+  | ISetDeleteModalOpenAction["type"]
+  | "TOGGLE_DELETE_MODE"
+  | ISetDeleteModalContextAction["type"];
 
-export type UDeleteModalActionPayloads = 
-| ISetDeleteModalOpenAction["payload"]
-| boolean
-| ISetDeleteModalContextAction["payload"];
+export type UDeleteModalActionPayloads =
+  | ISetDeleteModalOpenAction["payload"]
+  | boolean
+  | ISetDeleteModalContextAction["payload"];
 
 export interface IDeleteModalAction {
   type: UDeleteModalActionTypes,
@@ -428,19 +428,25 @@ export interface IDeletePresetAction {
   payload: IPresetButton[];
 }
 
-export type IAccessRecordState  = {
+export type IAccessRecordState = {
   usingFader: boolean;
   usingKnob: boolean;
   inputs: Array<MIDIInput>;
   outputs: Array<MIDIOutput>;
   online: boolean;
+  access: {
+    inputs: Map<string, any>,
+    outputs: Map<string, any>
+    sysexEnabled: boolean;
+    onstatechange: onstatechangeHandler | null;
+  }
   onstatechange: onstatechangeHandler | null;
   sysexEnabled: boolean;
 }
 
-export type UAccessRecordActionTypes = 
-| "SET_ACCESS"
-| "DETERMINE_DEVICE_CONTROL";
+export type UAccessRecordActionTypes =
+  | "SET_ACCESS"
+  | "DETERMINE_DEVICE_CONTROL";
 
 export interface ISetAccessRecordActionObj {
   type: "SET_ACCESS",
@@ -448,8 +454,8 @@ export interface ISetAccessRecordActionObj {
 }
 
 export type ISetAccessRecordAction = (
-  access: MIDIController, 
-  onmidicb?: (event: MIDIMessageEvent) => void, 
+  access: MIDIController,
+  onmidicb?: (event: MIDIMessageEvent) => void,
   onstatechangecb?: (event: MIDIConnectionEvent) => void
 ) => MIDIController;
 
@@ -458,9 +464,9 @@ export interface IDetermineDeviceControlAction {
   payload: { usingFader: boolean, usingKnob: boolean };
 }
 
-export type UAccessRecordActionPayloads = 
-| ISetAccessRecordActionObj["payload"]
-| IDetermineDeviceControlAction["payload"]
+export type UAccessRecordActionPayloads =
+  | ISetAccessRecordActionObj["payload"]
+  | IDetermineDeviceControlAction["payload"]
 
 export interface IAccessRecordAction {
   type: UAccessRecordActionTypes;

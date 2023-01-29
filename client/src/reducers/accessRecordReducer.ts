@@ -1,5 +1,5 @@
 import { IAccessRecordState, IAccessRecordAction } from "../types";
-import { MIDIInput, MIDIOutput } from "../utils/MIDIControlClass";
+import { MIDIAccessRecord, MIDIInput, MIDIOutput } from "../utils/MIDIControlClass";
 
 
 const accessRecordReducer = (
@@ -9,9 +9,10 @@ const accessRecordReducer = (
     inputs: [] as Array<MIDIInput>,
     outputs: [] as Array<MIDIOutput>,
     online: false,
+    access: {} as MIDIAccessRecord,
     onstatechange: null,
     sysexEnabled: false
-  }, 
+  },
   action: IAccessRecordAction
 ): IAccessRecordState => {
   switch (action.type) {
@@ -21,7 +22,7 @@ const accessRecordReducer = (
         ...action.payload
       };
     }
-    case "SET_ACCESS": 
+    case "SET_ACCESS":
       return {
         ...state,
         ...action.payload

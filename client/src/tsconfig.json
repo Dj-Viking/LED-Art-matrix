@@ -28,7 +28,9 @@
     "resolveJsonModule": true,
     "baseUrl": "src",
     "paths": {
-      "@types/*": [ "node_modules/*" ]
+      "@types/*": [
+        "node_modules/*"
+      ]
     },
     "allowJs": true,
     "strict": true,
@@ -45,6 +47,6 @@
     "./**/*.tsx",
     "./**/*.ts",
     "./src/**/*.ts",
-    "./src/**/*.tsx" 
+    "./src/**/*.tsx"
   ]
 }

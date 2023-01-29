@@ -75,44 +75,25 @@ describe("Adding a preset error", () => {
     global.fetch = mockFetch;
 
     const history = createMemoryHistory();
-    render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-    await act(async () => void 0);
 
-    /**
-     * TODO: look into renderHook with `@testing-library/react-hooks/dom`
-     * @see https://stackoverflow.com/questions/71351203/testing-with-jest-to-update-a-react-state-inside-a-rejected-promise
-     */
-
-    // await act(async () => {
-    //   // @ts-ignore
-    //   const access = await window.navigator.requestMIDIAccess();
-    //   console.log("access in the test", access);
-    //   // TODO: fake onstatechange with this access object!
-    //   const TestMIDI = new TestService(access);
-    //   TestMIDI!.getAccess()!.onstatechange = function (connection_event: TestMIDIConnectionEvent) {
-    //     console.log("connection event", connection_event);
-    //     window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-    //     act(() => {
-    //       return void 0;
-    //     });
-    //   };
-    //   console.log("testmidi now after onstate definition", TestMIDI);
-    //   console.log("testmidi connection event obj", TestMIDI.createMIDIConnectionEvent());
-    //   TestMIDI.getAccess()?.onstatechange!(TestMIDI.createMIDIConnectionEvent());
-    // });
+    await act(async () => {
+      await new Promise(resolve => resolve(
+        render(
+          <>
+            <Provider store={store}>
+              <Router history={history}>
+                <App />
+              </Router>
+            </Provider>
+          </>
+        )
+      ));
+    });
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
     expect(fetch).toHaveBeenCalledTimes(3);
     const btnContainer = await screen.findByTestId("buttons-parent");
-    expect(btnContainer.children).toHaveLength(16);
+    expect(btnContainer.children).toHaveLength(17);
 
     // activate and change one of the constant/always provided presets and 
     // attempt to save it with some new parameter values
@@ -171,7 +152,7 @@ describe("Adding a preset error", () => {
       }
     );
 
-    expect(btnContainer.children).toHaveLength(16);
+    expect(btnContainer.children).toHaveLength(17);
     const error = await screen.findByTestId("add-error");
     expect(error).toBeInTheDocument();
 

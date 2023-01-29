@@ -46,7 +46,7 @@ const App: React.FC = (): JSX.Element => {
               <Route exact path="/signup" component={Signup} />
               <Route exact path="/forgotPassword" component={ForgotPassword} />
               <Route exact path="/changePassword/:token?" component={ChangePassword} />
-            </KeyListenerWrapper>          
+            </KeyListenerWrapper>
             <HiddenLocationDisplay />
           </BrowserRouter>
         </Router>

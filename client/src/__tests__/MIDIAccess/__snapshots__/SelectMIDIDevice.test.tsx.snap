@@ -2,6 +2,9 @@
 
 exports[`test selecting midi device toggles which device shows select device from dropdown menu 1`] = `
 <DocumentFragment>
+  <div
+    style="display: none;"
+  />
   <h2>
     MIDI Devices
   </h2>
@@ -24,21 +27,21 @@ exports[`test selecting midi device toggles which device shows select device fro
         </option>
         <option
           data-testid="select-option"
-          value="XONE:K2"
+          value="XONE:K2 MIDI"
         >
-          XONE:K2
+          XONE:K2 MIDI
         </option>
         <option
           data-testid="select-option"
-          value="XONE:K2"
+          value="XONE:K2 MIDI"
         >
-          XONE:K2
+          XONE:K2 MIDI
         </option>
         <option
           data-testid="select-option"
-          value="XONE:K2"
+          value="XONE:K2 MIDI"
         >
-          XONE:K2
+          XONE:K2 MIDI
         </option>
       </select>
     </div>
@@ -46,15 +49,11 @@ exports[`test selecting midi device toggles which device shows select device fro
       style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
     >
       <p>
-        XONE:K2
+        XONE:K2 MIDI
       </p>
       <div
-        class="sc-bczRLJ cEpPlh"
-      >
-        <div
-          class="sc-gsnTZi gBehKH"
-        />
-      </div>
+        class="sc-bczRLJ gGpyYT"
+      />
       <span>
         Intensity: 0
       </span>
@@ -68,15 +67,15 @@ exports[`test selecting midi device toggles which device shows select device fro
         />
       </div>
       <div
-        class="sc-dkzDqf eChQMB"
+        class="sc-hKMtZM fCrJUW"
       >
         <span>
-          Channel: 16
+          Channel: 0
         </span>
         <p
           style="margin: 0px;"
         >
-          1_fader
+          unknown control name
         </p>
       </div>
     </div>

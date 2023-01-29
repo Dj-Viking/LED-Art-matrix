@@ -3,15 +3,15 @@ import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/
 
 // @ts-ignore
 export const setAccess: ISetAccessRecordAction = (
-  access: MIDIController, 
-  onmidicb: (event: MIDIMessageEvent) => unknown, 
+  access: MIDIController,
+  onmidicb: (event: MIDIMessageEvent) => unknown,
   onstatechangecb: (event: MIDIConnectionEvent) => unknown
 ) => {
 
   if (!access.inputs?.length) {
     return {
       type: "SET_ACCESS",
-      payload: {...new MIDIController(access.getAccess())}
+      payload: { ...new MIDIController(access.getAccess()) }
     };
   }
 

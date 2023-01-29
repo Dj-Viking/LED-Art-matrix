@@ -67,14 +67,14 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
       setCurrentSong(event.target.id);
     }
   }
-  
+
   // volume slider state
   const [volumeState, setVolumeState] = useState(0);
   // eslint-disable-next-line
   function handleVolumeChange(event: any, data: number) {
     setVolumeState(event.target.value || data);
   }
-  
+
   const sliderContainerStyle = {
     display: "flex",
     flexDirection: "column",
@@ -84,11 +84,11 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
   const labelStyle = {
     color: "white"
   };
-  
+
   return (
     <>
       <AudioPlayer
-        autoPlay
+        autoPlay={false}
         preload="auto"
         src={currentSong}
         volume={volumeState}
@@ -103,7 +103,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
           htmlFor="player-volume"
           style={labelStyle}
         >
-          Music Player Volume: 
+          Music Player Volume:
           {" "}
           {volumeState}
         </label>
@@ -143,14 +143,14 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
           songs.map((song) => (
             <div
               style={
-                currentSong === song.filePath 
-                ? trackListStylePlaying 
-                : trackListStyle
+                currentSong === song.filePath
+                  ? trackListStylePlaying
+                  : trackListStyle
               }
               className={
                 currentSong === song.filePath
-                ? "anim-playing-text"
-                : ""
+                  ? "anim-playing-text"
+                  : ""
               }
               id={song.filePath}
               key={song.trackName}

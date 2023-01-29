@@ -4,13 +4,13 @@
   "description": "server to the led-matrix application",
   "main": "index.js",
   "scripts": {
-    "start": "ENV_TXT=$(cat env.txt) cd dist; node index.js",
+    "start": "ENV_TXT=$(cat env.txt) cd dist && node index.js",
     "tsc": "tsc",
-    "dev:tsc": "echo 'transpiling TS and then starting server' && npm run tsc; cd dist; ENV_TXT=$(cat ../env.txt)  nodemon -L index.js",
-    "dev": "cd dist; ENV_TXT=$(cat ../env.txt) nodemon -L index.js",
+    "dev:tsc": "echo 'transpiling TS and then starting server' && npm run tsc && cd dist && ENV_TXT=$(cat ../env.txt) nodemon -L index.js",
+    "dev": "cd dist && ENV_TXT=$(cat ../env.txt) nodemon -L index.js",
     "tsw": "tsc -w",
     "clear:jest": "jest --clearCache",
-    "server:ci": "npm run clear:jest; jest --verbose --detectOpenHandles --watchAll=false --coverage",
+    "server:ci": "npm run clear:jest && jest --verbose --detectOpenHandles --watchAll=false --coverage",
     "test": "ENV_TXT=$(cat env.txt) jest --verbose --detectOpenHandles --watchAll=false",
     "test:coverage": "ENV_TXT=$(cat env.txt) jest --verbose --detectOpenHandles --watchAll=false --coverage",
     "concurrently": "ENV_TXT=$(cat env.txt) concurrently \"npm run tsw\" \"npm run dev\""
