@@ -2,7 +2,7 @@
 import React from "react";
 import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import { animVarCoeffChange } from "../actions/led-actions";
-import { determineDeviceControl } from "../actions/midi-access-actions";
+import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 
 /**
@@ -300,6 +300,52 @@ class MIDIController implements IMIDIController {
             default: break;
         }
     }
+
+    public static async setupMIDI(
+        dispatchcb: React.Dispatch<any>,
+        size: number,
+        _setSize: React.Dispatch<React.SetStateAction<number>>,
+        _setChannel: React.Dispatch<React.SetStateAction<number>>,
+        _setIntensity: React.Dispatch<React.SetStateAction<number>>,
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+    ): Promise<void> {
+        return new Promise<void>(resolve => {
+            (async () => {
+                if ("navigator" in window) {
+                    // request access from browser
+                    const access = await new MIDIController().requestMIDIAccess();
+                    const new_access = new MIDIController(access).getAccess();
+                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                    // set size of inputs to re-render component at this moment of time
+                    _setSize(new_access.inputs.size);
+                    //at this moment the promise resolves with access if size changed at some point
+                    if (size > 0) {
+                        dispatchcb(setAccess(new MIDIController(new_access).getInstance()));
+                        // define onstatechange callback to not be a function to execute when state changes later
+                        new_access.onstatechange = function (_event: MIDIConnectionEvent): void {
+
+                            const onstatechangeAccess = new MIDIController(_event.target).getInstance();
+
+                            const midicb = function (midi_event: MIDIMessageEvent): void {
+                                clearTimeout(timeoutRef.current);
+                                if (midi_event.currentTarget.name.includes("XONE:K2")) {
+                                    MIDIController.handleXONEK2MIDIMessage(midi_event, _setChannel, _setIntensity, dispatchcb, timeoutRef);
+                                }
+                            };
+
+                            const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
+                                // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
+                            };
+
+                            dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
+                        };// end onstatechange def
+                    } // endif size > 0 
+                    // accessState dead zone
+                }// endif "navigator" in window
+            })();
+            resolve();
+        });
+    };
 
 }
 

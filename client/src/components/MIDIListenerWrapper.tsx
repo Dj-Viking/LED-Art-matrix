@@ -2,10 +2,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent } from "../utils/MIDIControlClass";
+import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import { DeviceSvgContainer, MIDIChannelControl, ControlNameContainer, DeviceInterfaceContainer, ChannelNumber, InputName, MIDIWrapperHeader, MIDIWrapperContainer, MIDISelectContainer, MIDISelect, ControlSvg } from "./MIDIListenerWrapper.style";
-import { setAccess } from "../actions/midi-access-actions";
 import { IAccessRecordState, MyRootState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
@@ -20,7 +19,7 @@ export const TestMIDI: React.FC<ITestMIDIProps> = (_props) => {
 
         </div>
     );
-}
+};
 
 export interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[]
@@ -37,44 +36,20 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const [channel, setChannel] = useState<number>(0);
     const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
+
+
     useEffect(() => {
         (async (): Promise<void> => {
-            if ("navigator" in window) {
-                // request access from browser
-                const access = await new MIDIController().requestMIDIAccess();
-                const new_access = new MIDIController(access).getAccess();
-                dispatch(setAccess(new MIDIController(access).getInstance()));
-                // set size of inputs to re-render component at this moment of time
-                setSize(new_access.inputs.size);
-                //at this moment the promise resolves with access if size changed at some point
-                if (size > 0) {
-                    dispatch(setAccess(new MIDIController(new_access).getInstance()));
-                    // define onstatechange callback to not be a function to execute when state changes later
-                    new_access.onstatechange = function (_event: MIDIConnectionEvent): void {
-
-                        const onstatechangeAccess = new MIDIController(_event.target).getInstance();
-
-                        const midicb = function (midi_event: MIDIMessageEvent): void {
-                            clearTimeout(filterTimeoutRef.current);
-                            if (midi_event.currentTarget.name.includes("XONE:K2")) {
-                                MIDIController.handleXONEK2MIDIMessage(midi_event, setChannel, setIntensity, dispatch, filterTimeoutRef);
-                            }
-                        };
-
-                        const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
-                            // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
-                        };
-
-                        dispatch(setAccess(onstatechangeAccess, midicb, onstatechangecb));
-                    };// end onstatechange def
-                } // endif size > 0 
-                // accessState dead zone
-            }// endif "navigator" in window
+            await MIDIController.setupMIDI(dispatch, size, setSize, setChannel, setIntensity, filterTimeoutRef);
         })();
     }, [dispatch, accessState.inputs.length, size]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find(item => item.name === option)?.name || "Not Found";
+    }
+
+    function getStrippedInputName(name: string): MIDIInputName {
+        return MIDIController.stripNativeLabelFromMIDIInputName(name);
     }
 
     function getInput(all_inputs: MIDIInput[], option: string): MIDIInput {
@@ -101,7 +76,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <MIDISelect setOption={setOption} option={option} midi_inputs={accessState.inputs} />
                 </MIDISelectContainer>
                 {option && (
-                    <DeviceInterfaceContainer statename={getInput(accessState.inputs, option)?.state || "disconnected"}>
+                    <DeviceInterfaceContainer
+                        statename={getInput(accessState.inputs, option)?.state || "disconnected"}
+                        controllerName={getStrippedInputName(getInputName(accessState.inputs, option))}
+                    >
                         <InputName name={getInputName(accessState.inputs, option)} />
                         <DeviceSvgContainer>
                             <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />

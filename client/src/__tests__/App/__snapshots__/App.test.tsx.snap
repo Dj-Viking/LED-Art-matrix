@@ -750,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="5495.369662366081something unique lol"
+          id="387.66654230387275something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -807,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="5267.085734148744something unique lol"
+          id="3747.266363448527something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -864,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="9422.504880048808something unique lol"
+          id="6553.122930930169something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -921,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="8467.7823593531something unique lol"
+          id="4307.254061148405something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -978,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="4661.91931935845something unique lol"
+          id="1282.1399109870235something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1035,7 +1035,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="2393.54440404306something unique lol"
+          id="4154.675178189673something unique lol"
           role="button"
           tabindex="-1"
         >

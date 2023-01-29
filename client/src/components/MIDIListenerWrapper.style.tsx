@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import React, { ReactNode } from "react";
 import { MIDIPortDeviceState, MIDIInput, MIDIController } from "../utils/MIDIControlClass";
-import { MIDIInputName } from "../constants";
+import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../constants";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
 
 export const DeviceSvgContainer = styled.div`
@@ -60,7 +60,7 @@ export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
             )}
         </>
     );
-}
+};
 
 interface MIDISelectProps {
     setOption: React.Dispatch<React.SetStateAction<string>>;
@@ -110,13 +110,21 @@ export const InputName: React.FC<{ name: MIDIInputName }> = ({ name }) => {
     return <p>{MIDIController.stripNativeLabelFromMIDIInputName(name)}</p>;
 };
 
-export const DeviceInterfaceContainer: React.FC<{ statename: keyof typeof MIDIPortDeviceState }> = (props) => {
+export const DeviceInterfaceContainer: React.FC<{ statename: keyof typeof MIDIPortDeviceState, controllerName: MIDIInputName }> = (props) => {
     const { statename, children } = props;
+
+    const adjustBorder = (state: keyof typeof MIDIPortDeviceState, ctrlName: MIDIInputName): string => {
+        switch (true) {
+            case !!SUPPORTED_CONTROLLERS[ctrlName]:
+            case state === MIDIPortDeviceState.connected: return "solid 1px green";
+            default: return "solid 1px red";
+        }
+    };
     return <div style={{
         position: "relative",
         width: "50%",
         margin: "0 auto",
-        border: statename === MIDIPortDeviceState.connected ? "solid 1px green" : " solid 1px red"
+        border: adjustBorder(statename, props.controllerName)
     }}>
         {children}
     </div>;
