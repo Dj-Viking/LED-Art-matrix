@@ -1,13 +1,14 @@
 'use strict';
 
 // for development in windows when running the run.ps1 powershell script
-if ( 
-  process.env.MY_OS && 
-  /Windows/g.test(process.env.MY_OS) && 
+if (
+  process.env.MY_OS &&
+  /Windows/g.test(process.env.MY_OS) &&
   /LED/g.test(process.cwd())
-) {
+)
+{
   process.chdir("./client");
-  console.log("Switched to client directory to start react dev server\n", process.cwd());
+  console.log("\x1b[36m [INFO]: Switched to client directory to start react dev server\n", process.cwd(), "\x1b[00m");
 }
 
 // Do this as the first thing so that any code reading it knows the right env.
@@ -49,7 +50,8 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
 
 // Warn and crash if required files are missing
-if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
+if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs]))
+{
   process.exit(1);
 }
 
@@ -57,7 +59,8 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
 
-if (process.env.HOST) {
+if (process.env.HOST)
+{
   console.log(
     chalk.cyan(
       `Attempting to bind to HOST environment variable: ${chalk.yellow(
@@ -84,7 +87,8 @@ checkBrowsers(paths.appPath, isInteractive)
     return choosePort(HOST, DEFAULT_PORT);
   })
   .then(port => {
-    if (port == null) {
+    if (port == null)
+    {
       // We have not found a port.
       return;
     }
@@ -125,11 +129,13 @@ checkBrowsers(paths.appPath, isInteractive)
     const devServer = new WebpackDevServer(serverConfig, compiler);
     // Launch WebpackDevServer.
     devServer.startCallback(() => {
-      if (isInteractive) {
+      if (isInteractive)
+      {
         clearConsole();
       }
 
-      if (env.raw.FAST_REFRESH && semver.lt(react.version, '16.10.0')) {
+      if (env.raw.FAST_REFRESH && semver.lt(react.version, '16.10.0'))
+      {
         console.log(
           chalk.yellow(
             `Fast Refresh requires React 16.10 or higher. You are using React ${react.version}.`
@@ -148,7 +154,8 @@ checkBrowsers(paths.appPath, isInteractive)
       });
     });
 
-    if (process.env.CI !== 'true') {
+    if (process.env.CI !== 'true')
+    {
       // Gracefully exit when stdin ends
       process.stdin.on('end', function () {
         devServer.close();
@@ -157,7 +164,8 @@ checkBrowsers(paths.appPath, isInteractive)
     }
   })
   .catch(err => {
-    if (err && err.message) {
+    if (err && err.message)
+    {
       console.log(err.message);
     }
     process.exit(1);

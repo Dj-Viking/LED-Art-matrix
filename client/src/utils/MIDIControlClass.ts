@@ -182,11 +182,11 @@ class MIDIController implements IMIDIController {
     public setOutputCbs(): this {
         // OUTPUT CBS SETTING HERE
         for (let j = 0; j < this.outputs!.length; j++) {
-            this.outputs![j].onstatechange = function (event: MIDIConnectionEvent) {
-                console.log("output onstatechange event", event);
+            this.outputs![j].onstatechange = function (_event: MIDIConnectionEvent) {
+                // console.log("output onstatechange event", event);
             };
-            this.outputs![j].onmidimessage = function (event: MIDIMessageEvent) {
-                console.log("output midimessage event", event);
+            this.outputs![j].onmidimessage = function (_event: MIDIMessageEvent) {
+                // console.log("output midimessage event", event);
             };
         }
         return this;
@@ -262,7 +262,6 @@ class MIDIController implements IMIDIController {
             usingKnob: is_knob
         }));
 
-        // console.log("dump data", midi_event);
         switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
             case "1_upper_knob":
                 timeoutRef.current = setTimeout(() => {

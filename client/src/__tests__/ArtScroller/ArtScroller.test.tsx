@@ -70,7 +70,7 @@ describe("test art scroller turning on with gifs", () => {
     const history = createMemoryHistory();
 
     render(
-      <>  
+      <>
         <Provider store={store}>
           <Router history={history}>
             <App />
@@ -78,10 +78,7 @@ describe("test art scroller turning on with gifs", () => {
         </Provider>
       </>
     );
-    await act(async() => {
-      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-    });
-    
+
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
@@ -95,18 +92,18 @@ describe("test art scroller turning on with gifs", () => {
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      "http://localhost:3001/gifs/get", 
+      "http://localhost:3001/gifs/get",
       {
         "headers": {
           "Content-Type": "application/json"
-        }, 
+        },
         "method": "GET"
       }
     );
 
     expect(screen.getByTestId("gif-0")).toBeInTheDocument();
-    
-    
+
+
   });
 
   it("tests the sliders change the artscrollers style values", async () => {
@@ -114,7 +111,7 @@ describe("test art scroller turning on with gifs", () => {
     const history = createMemoryHistory();
 
     render(
-      <>  
+      <>
         <Provider store={store}>
           <Router history={history}>
             <App />
@@ -123,10 +120,6 @@ describe("test art scroller turning on with gifs", () => {
       </>
     );
 
-    await act(async() => {
-      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-    });
-    
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
@@ -140,15 +133,15 @@ describe("test art scroller turning on with gifs", () => {
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      "http://localhost:3001/gifs/get", 
+      "http://localhost:3001/gifs/get",
       {
         "headers": {
           "Content-Type": "application/json"
-        }, 
+        },
         "method": "GET"
       }
     );
-                                      
+
     expect(screen.getByTestId("gif-0")).toBeInTheDocument();
     expect(screen.getByTestId("gif-0").id).toBe("gif-0");
 
@@ -184,7 +177,7 @@ describe("test art scroller turning on with gifs", () => {
       invert: screen.getByTestId("invert") as HTMLInputElement,
       scrollSpeed: screen.getByTestId("anim-duration") as HTMLInputElement,
     };
-        
+
     expect(sliders.circleWidth).toBeInTheDocument();
     expect(sliders.circleWidth.value).toBe("30");
 
@@ -219,16 +212,16 @@ describe("test art scroller turning on with gifs", () => {
 
     expect(sliders.circleWidth.value).not.toBe("0");
     expect(sliders.circleWidth.value).toBe("10");
-    
+
     expect(sliders.vertPos.value).not.toBe("0");
     expect(sliders.vertPos.value).toBe("10");
-    
+
     expect(sliders.left.value).not.toBe("0");
     expect(sliders.left.value).toBe("10");
-    
+
     expect(sliders.invert.value).not.toBe("0");
     expect(sliders.invert.value).toBe("20");
-    
+
     expect(sliders.scrollSpeed.value).not.toBe("0");
     expect(sliders.scrollSpeed.value).toBe("10");
 
@@ -256,7 +249,7 @@ describe("test art scroller turning on with gifs", () => {
     const history = createMemoryHistory();
 
     render(
-      <>  
+      <>
         <Provider store={store}>
           <Router history={history}>
             <App />
@@ -265,10 +258,6 @@ describe("test art scroller turning on with gifs", () => {
       </>
     );
 
-    await act(async() => {
-      window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-    });
-    
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
@@ -282,15 +271,15 @@ describe("test art scroller turning on with gifs", () => {
 
     expect(fetch).toHaveBeenCalledTimes(1);
     expect(fetch).toHaveBeenCalledWith(
-      "http://localhost:3001/gifs/get", 
+      "http://localhost:3001/gifs/get",
       {
         "headers": {
           "Content-Type": "application/json"
-        }, 
+        },
         "method": "GET"
       }
     );
-                                      
+
     expect(screen.getByTestId("gif-0")).toBeInTheDocument();
     expect(screen.getByTestId("gif-0").id).toBe("gif-0");
 

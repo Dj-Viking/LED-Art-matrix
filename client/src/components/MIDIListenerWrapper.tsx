@@ -6,11 +6,23 @@ import { MIDIConnectionEvent, MIDIController, MIDIInput, MIDIMessageEvent } from
 import { useDispatch, useSelector } from "react-redux";
 import { DeviceSvgContainer, MIDIChannelControl, ControlNameContainer, DeviceInterfaceContainer, ChannelNumber, InputName, MIDIWrapperHeader, MIDIWrapperContainer, MIDISelectContainer, MIDISelect, ControlSvg } from "./MIDIListenerWrapper.style";
 import { setAccess } from "../actions/midi-access-actions";
-import { MyRootState } from "../types";
+import { IAccessRecordState, MyRootState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 
-interface MIDIListenerWrapperProps {
+export interface ITestMIDIProps {
+    testid: string;
+    midi_access: IAccessRecordState;
+}
+export const TestMIDI: React.FC<ITestMIDIProps> = (_props) => {
+    return (
+        <div style={{ display: "none" }}>
+
+        </div>
+    );
+}
+
+export interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[]
 }
 
@@ -18,12 +30,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const dispatch = useDispatch();
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob } = accessState;
-    const { figureOn } = useSelector((state: MyRootState) => state.artScrollerState);
     const [size, setSize] = useState<number>(0);
     const [intensity, setIntensity] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     // channel 16 is xone:k2's left most fader
-    const [channel, setChannel] = useState<number>(16);
+    const [channel, setChannel] = useState<number>(0);
     const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
     useEffect(() => {
@@ -32,7 +43,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 // request access from browser
                 const access = await new MIDIController().requestMIDIAccess();
                 const new_access = new MIDIController(access).getAccess();
-                console.log("new access during teset", new_access);
                 dispatch(setAccess(new MIDIController(access).getInstance()));
                 // set size of inputs to re-render component at this moment of time
                 setSize(new_access.inputs.size);
@@ -52,7 +62,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         };
 
                         const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
-                            console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
+                            // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
                         };
 
                         dispatch(setAccess(onstatechangeAccess, midicb, onstatechangecb));
@@ -61,7 +71,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 // accessState dead zone
             }// endif "navigator" in window
         })();
-    }, [dispatch, accessState.inputs.length, size, figureOn]);
+    }, [dispatch, accessState.inputs.length, size]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find(item => item.name === option)?.name || "Not Found";
@@ -81,8 +91,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         return SUPPORTED_CONTROLLERS[strippedName]![channel] || "unknown control name";
     }
 
+
     return (
         <>
+            <TestMIDI testid="test-midi" midi_access={accessState} />
             <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
             <MIDIWrapperContainer>
                 <MIDISelectContainer>

@@ -15,13 +15,6 @@ import {
 import { MOCK_MIDI_ACCESS_RECORD } from "./mocks";
 
 
-/**
- * helper class for the testing environment
- * most helper methods are static on this class so no need to instantiate the class to use the methods
- */
-
-console.log("what is test mocked midi port type here", MIDIPortType);
-
 interface ITestService {
     inputMap: Map<MIDIInput["id"], MIDIInput>;
     outputMap: Map<MIDIOutput["id"], MIDIOutput>;
@@ -32,6 +25,9 @@ interface ITestService {
         _onstatechangecb: (connection_event: MIDIConnectionEvent) => void
     ) => this;
 }
+/**
+ * helper class for the testing environment
+ */
 export class TestService implements ITestService {
 
     private _access: MIDIAccessRecord;
@@ -48,8 +44,8 @@ export class TestService implements ITestService {
     }
 
     /**
-     * 
-     * @param cssDeclaration style object of the selected element from the virtual DOM 
+     *
+     * @param cssDeclaration style object of the selected element from the virtual DOM
      * @returns a simple object as { values: string } with the style values object containing the css rules of the selected element
      */
     public static getStyles(cssDeclaration: CSSStyleDeclaration): Record<"values", any> {
@@ -67,7 +63,7 @@ export class TestService implements ITestService {
     }
 
     /**
-     * 
+     *
      * @param type string key of the global event handlers event map type like "click" or "change"
      * @param props optional object to pass parameters to the new event object
      * @returns a new bubbled event with optional parameters
@@ -129,10 +125,10 @@ export class TestService implements ITestService {
                     return this;
                 };
                 this.requestMIDIAccess = async function () {
-                    return Promise.resolve(MOCK_MIDI_ACCESS_RECORD);
+                    return Promise.resolve({ ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)) });
                 };
                 this.getAccess = jest.fn().mockImplementation(function () {
-                    return { ...MOCK_MIDI_ACCESS_RECORD, onstatechange: onstatechangefn };
+                    return { ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)), onstatechange: onstatechangefn };
                     // return MOCK_MIDI_ACCESS_RECORD;
                 });
                 this.getInstance = jest.fn().mockImplementation(() => {
@@ -203,7 +199,7 @@ export class TestService implements ITestService {
         return newMap;
     }
     /**
-     * 
+     *
      * @example
       * interface MIDIMessageEvent {
       *    isTrusted: boolean;
@@ -236,7 +232,7 @@ export class TestService implements ITestService {
     }
 
     /**
-     *  
+     *
      * @example
      * return {
      *  isTrusted: true,
@@ -273,7 +269,7 @@ export class TestService implements ITestService {
     }
 
     /**
-     * 
+     *
      * @returns returns an instance of the class after setting all the input array's callback functions
      */
     public setInputCbs(
@@ -291,7 +287,7 @@ export class TestService implements ITestService {
 
 
     /**
-     *  
+     *
      * @example
      * return {
      *  isTrusted: true,

@@ -1,5 +1,3 @@
-// import { rest } from "msw";
-// import { setupServer } from "msw/node";
 import jwt from "jsonwebtoken";
 import { keyGen } from "./keyGen";
 import { MIDIConnectionEvent, MIDIInput, MIDIMessageEvent, MIDIOutput, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType } from "./MIDIControlClass";
@@ -168,13 +166,6 @@ export const SIGNUP_MOCK_RESULT = {
   _id: "heres an id"
 };
 
-// with msw (mock service worker)
-// export const server = setupServer(
-//   rest.post("http://localhost:3001/user", async (_req, res, ctx) => {
-//     return res(ctx.json(SIGNUP_MOCK_RESULT));
-//   })
-// );
-
 export function makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput> {
   const newMap = new Map<MIDIOutput["id"], MIDIOutput>();
   const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
@@ -200,25 +191,25 @@ export function makeFakeMIDIOutputs(): Map<MIDIOutput["id"], MIDIOutput> {
 }
 
 export function makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput> {
-  let newMap = new Map<MIDIInput["id"], MIDIInput>();
-  const _onmidicb = function (midi_event: MIDIMessageEvent): void {
+  const newMap = new Map<MIDIInput["id"], MIDIInput>();
+  const _onmidicb = (midi_event: MIDIMessageEvent): void => {
     console.log("midi input event data test", midi_event.data);
   };
-  const _onstatechangecb = function (connection_event: MIDIConnectionEvent): void {
+  const _onstatechangecb = (connection_event: MIDIConnectionEvent): void => {
     console.log("midi input connection event test", connection_event);
   };
 
   for (let i = 0; i < 3; i++) {
     newMap?.set(i.toString(), {
       id: i.toString(),
-      manufacturer: "holy bajeebus",
+      manufacturer: "holy bajeebus i am fake " + i,
       name: "XONE:K2 MIDI",
       type: MIDIPortType.input,
       version: "over 9000",
       state: MIDIPortDeviceState.connected,
       connection: MIDIPortConnectionState.closed,
-      onmidimessage: _onmidicb,
-      onstatechange: _onstatechangecb
+      onmidimessage: (event: MIDIMessageEvent) => { /** */ },
+      onstatechange: (event: MIDIConnectionEvent) => { /**  */ }
     } as MIDIInput);
   }
   return newMap;
@@ -233,5 +224,3 @@ export const MOCK_MIDI_ACCESS_RECORD = {
   sysexEnabled: false,
   onstatechange: jest.fn(),
 };
-// export const MOCK_MIDI_MESSAGE_EVENT = TestService.createMIDIMessageEvent();
-// export const MOCK_MIDI_CONNECTION_EVENT = TestService.createMIDIConnectionEvent();

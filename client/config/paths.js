@@ -43,7 +43,8 @@ const resolveModule = (resolveFn, filePath) => {
     fs.existsSync(resolveFn(`${filePath}.${extension}`))
   );
 
-  if (extension) {
+  if (extension)
+  {
     return resolveFn(`${filePath}.${extension}`);
   }
 

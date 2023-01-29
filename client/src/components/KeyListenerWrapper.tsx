@@ -7,8 +7,9 @@ import { clearStyle, setLedStyle } from "../actions/style-actions";
 import { IPresetButton, MyRootState } from "../types";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 
+
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
-  
+
   const dispatch = useDispatch();
   const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
   const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
@@ -23,7 +24,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     dispatch(setLedStyle(new LedStyleEngine(preset.presetName).createStyleSheet(preset.animVarCoeff)));
 
   }, [dispatch, presetButtons]);
-  
+
   const handleKeyPress = useCallback((event: KeyboardEvent): void => {
 
     if (deleteModeActive) return;
@@ -56,7 +57,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [handleKeyPress]);
-  
+
   return (
     <>
       {children}

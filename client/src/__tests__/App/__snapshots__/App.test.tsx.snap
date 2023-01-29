@@ -750,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="3582.429803669116something unique lol"
+          id="5495.369662366081something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -807,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="9295.374454773793something unique lol"
+          id="5267.085734148744something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -864,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="9584.18281329335something unique lol"
+          id="9422.504880048808something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -921,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="5695.3174312381425something unique lol"
+          id="8467.7823593531something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -978,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="4048.409476921078something unique lol"
+          id="4661.91931935845something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1035,7 +1035,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="4460.869451827932something unique lol"
+          id="2393.54440404306something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1089,6 +1089,9 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
             dm5
           </p>
         </button>
+        <div
+          style="display: none;"
+        />
         <h2>
           MIDI Devices
         </h2>

@@ -1,5 +1,11 @@
 import type { Config } from "@jest/types";
 import { defaults } from "jest-config";
+
+import Enzyme from 'enzyme';
+import Adapter from '@wojtekmaj/enzyme-adapter-react-17';
+
+Enzyme.configure({ adapter: new Adapter() });
+
 export async function MyConfig(): Promise<Config.InitialOptions> {
   return {
     verbose: true,

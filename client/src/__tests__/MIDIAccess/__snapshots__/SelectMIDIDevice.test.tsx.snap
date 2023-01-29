@@ -2,6 +2,9 @@
 
 exports[`test selecting midi device toggles which device shows select device from dropdown menu 1`] = `
 <DocumentFragment>
+  <div
+    style="display: none;"
+  />
   <h2>
     MIDI Devices
   </h2>
@@ -67,12 +70,12 @@ exports[`test selecting midi device toggles which device shows select device fro
         class="sc-hKMtZM fCrJUW"
       >
         <span>
-          Channel: 16
+          Channel: 0
         </span>
         <p
           style="margin: 0px;"
         >
-          1_fader
+          unknown control name
         </p>
       </div>
     </div>
