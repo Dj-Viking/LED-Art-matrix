@@ -126,6 +126,10 @@ PWA accessible! just install by clicking the + on the right side of the browser 
     # working directory should be the root folder of project
     npm test
     ```
+    ```powershell
+    # for windows users
+    npm run test-windows
+    ```
     - must have env.txt created and located in the right directories for the server tests to pass. the client tests should be self contained
     - If anybody knows a better way to do dependency injection for the MIDI controller testing I am looking for some help on this!
     - You can see the istanbul code coverage report by going into the coverage folders inside server and client folders to see line coverage.
