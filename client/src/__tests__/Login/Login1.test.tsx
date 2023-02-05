@@ -36,14 +36,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -67,17 +59,19 @@ describe("Test rendering login correctly", () => {
 
   const originalFetch = global.fetch;
   beforeEach(() => {
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }))
-                      // fourth
-                      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }));
+      // first
+      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+      // second
+      .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }))
+      // fourth
+      .mockReturnValueOnce(fakeFetchRes({ displayName: "", preset: "waves" }));
     // @ts-ignore
     global.fetch = mockFetch;
   });
@@ -99,25 +93,25 @@ describe("Test rendering login correctly", () => {
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(fetch).toHaveBeenCalledTimes(0);
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
-    
+
     const page = (await screen.findAllByText(/^Login$/g)).find((el) => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
     expect(page).toBeInTheDocument();
     fireEvent.click(page);
     expect(screen.getByTestId("location-display").textContent).toBe("/login");
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
-    
+
     const formEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
@@ -144,22 +138,22 @@ describe("Test rendering login correctly", () => {
     await act(async () => {
       formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
 
     expect(fetch).toHaveBeenCalledTimes(4);
-    expect(fetch).toHaveBeenNthCalledWith(1, 
-      "http://localhost:3001/user/login", 
+    expect(fetch).toHaveBeenNthCalledWith(1,
+      "http://localhost:3001/user/login",
       {
         "body": "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
         "headers": {
           "Content-Type": "application/json"
-        }, 
+        },
         "method": "POST"
       }
     );
@@ -179,7 +173,7 @@ describe("test signup functionality with no token", () => {
       })
     );
   });
-  
+
   afterEach(() => {
     cleanup();
     global.fetch = originalFetch;
@@ -197,21 +191,21 @@ describe("test signup functionality with no token", () => {
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
-    
+
     const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
     expect(page).toBeInTheDocument();
     fireEvent.click(page);
     expect(screen.getByTestId("location-display").textContent).toBe("/login");
-    
+
     const inputEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
@@ -230,7 +224,7 @@ describe("test signup functionality with no token", () => {
     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
     expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
     expect(inputEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.password);
-    
+
     // fireEvent.click(inputEls.btn);
     await act(async () => {
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));

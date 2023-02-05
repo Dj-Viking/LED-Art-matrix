@@ -21,13 +21,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -83,16 +76,16 @@ describe("Test rendering forgot password page", () => {
       </Provider>
     );
 
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-    
+
     const link = await screen.findByText(/^Login$/g);
     expect(link).toBeInTheDocument();
     fireEvent.click(link);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
-    
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
@@ -135,16 +128,16 @@ describe("Test sending forgot pass request", () => {
         </Router>
       </Provider>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-    
+
     const link = await screen.findByText(/^Login$/g);
     expect(link).toBeInTheDocument();
     fireEvent.click(link);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
-    
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
@@ -163,7 +156,7 @@ describe("Test sending forgot pass request", () => {
     expect(forgotEls.btn).toBeInTheDocument();
     expect(forgotEls.btn).toBeDisabled();
     expect(forgotEls.btn.classList[0]).toBe("form-btn-disabled");
-    
+
     user.type(forgotEls.forgotEmail, FORGOT_MOCK_INPUT.email);
     expect(forgotEls.forgotEmail.value).toBe(FORGOT_MOCK_INPUT.email);
     expect(forgotEls.btn).not.toBeDisabled();
@@ -211,16 +204,16 @@ describe("Test request error mock", () => {
         </Router>
       </Provider>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-    
+
     const link = await screen.findByText(/^Login$/g);
     expect(link).toBeInTheDocument();
     fireEvent.click(link);
     expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
-    
+
     const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
       return btn.style.textDecoration === "none";
     }) as HTMLElement;
@@ -238,7 +231,7 @@ describe("Test request error mock", () => {
     expect(forgotEls.btn).toBeInTheDocument();
     expect(forgotEls.btn).toBeDisabled();
     expect(forgotEls.btn.classList[0]).toBe("form-btn-disabled");
-    
+
     user.type(forgotEls.forgotEmail, FORGOT_MOCK_INPUT.email);
     expect(forgotEls.forgotEmail.value).toBe(FORGOT_MOCK_INPUT.email);
     expect(forgotEls.btn).not.toBeDisabled();

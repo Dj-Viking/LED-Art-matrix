@@ -19,14 +19,6 @@ import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlCl
 
 const store = createStore(allReducers);
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {

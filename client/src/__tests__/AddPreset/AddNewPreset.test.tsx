@@ -23,14 +23,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 // stub the keydown event because jest test will not work properly with the react app containing window.eventListener("keyup") listener callbacks
 const map = {} as Record<any, any>;
 window.addEventListener = jest.fn((event, cb) => {

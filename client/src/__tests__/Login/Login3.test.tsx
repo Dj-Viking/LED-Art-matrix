@@ -7,7 +7,7 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import { LOGIN_MOCK_PAYLOAD_EMAIL, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS} from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_EMAIL, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -33,17 +33,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
-
-
 describe("Tests network error message", () => {
 
   const originalFetch = global.fetch;
@@ -55,7 +44,7 @@ describe("Tests network error message", () => {
       })
     );
   });
-  
+
   afterEach(() => {
     cleanup();
     global.fetch = originalFetch;
@@ -76,14 +65,14 @@ describe("Tests network error message", () => {
     );
 
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    
+
     const page = (await screen.findAllByText(/Login/g)).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
     expect(page).toBeInTheDocument();
     fireEvent.click(page);
     expect(screen.getByTestId("location-display").textContent).toBe("/login");
-    
+
     const formEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
@@ -108,7 +97,7 @@ describe("Tests network error message", () => {
     expect(formEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername);
     expect(formEls.password.value).toBe(LOGIN_MOCK_PAYLOAD_EMAIL.password);
 
-    
+
     //click signup to simulate api mock
     //clicking the button will start an asynchronous fetch that will update state during and after the async function is done
     await act(async () => {
@@ -118,6 +107,6 @@ describe("Tests network error message", () => {
     expect(fetch).toHaveBeenCalledTimes(1);
 
     expect(screen.getByTestId("location-display").textContent).toBe("/login");
-    
+
   });
 });

@@ -32,15 +32,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
 const originalFetch = global.fetch;
 
 afterEach(() => {
@@ -67,7 +58,7 @@ it("Render the home page and then click sign up button to go to that page", asyn
       </Router>
     </Provider>
   );
-  await act(async() => {
+  await act(async () => {
     return void 0;
   });
 

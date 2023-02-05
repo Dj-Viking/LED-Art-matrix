@@ -28,16 +28,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
   } as MIDIAccessRecord);
 };
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
-
 describe("moving this to a separate file to avoid the leaky mocks that dont get cleared from the previous test", () => {
 
   it("tests that the api didn't send an array with items, buttons should not render", async () => {

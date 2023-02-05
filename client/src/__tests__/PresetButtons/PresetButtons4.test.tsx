@@ -36,19 +36,10 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
 //V2
 it("tests the led styles change to v2 when v2 button is clicked", async () => {
   const history = createMemoryHistory();
-  
+
   const { container } = render(
     <>
       <Provider store={store}>
@@ -80,7 +71,7 @@ it("tests the led styles change to v2 when v2 button is clicked", async () => {
     fireEvent.click(preset_buttons.clear);
     preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
   });
-  
+
   const ledPost = screen.getByTestId("led1-1") as HTMLElement;
   expect(ledPost.classList.length).toBe(1);
   expect(ledPost.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
@@ -97,7 +88,7 @@ it("tests the led styles change to v2 when v2 button is clicked", async () => {
   // get led ref and style tag ref for after the click event and state updates
   let ledPostRef: HTMLElement | null = null;
   let styleTagRef: HTMLStyleElement | null = null;
- 
+
   act(() => {
     preset_buttons.v2.dispatchEvent(new MouseEvent("click", { bubbles: true }));
   });

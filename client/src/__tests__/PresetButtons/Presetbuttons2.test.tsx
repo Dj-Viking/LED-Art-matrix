@@ -35,28 +35,22 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 const originalFetch = global.fetch;
 
 beforeEach(() => {
-  const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-    Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+  const fakeFetchRes = (value: any): Promise<{
+    status: 200, json: () =>
+      Promise<any>;
+  }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
   const mockFetch = jest.fn()
-                    //default
-                    // .mockReturnValue("kdfjkdj")
-                    // first
-                    .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                    // second
-                    .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                    // third
-                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
+    //default
+    // .mockReturnValue("kdfjkdj")
+    // first
+    .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+    // second
+    .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+    // third
+    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
   // @ts-ignore
   global.fetch = mockFetch;
 });
@@ -68,7 +62,7 @@ afterEach(() => {
 
 it("tests the preset buttons render", async () => {
   const history = createMemoryHistory();
-  
+
   render(
     <>
       <Provider store={store}>

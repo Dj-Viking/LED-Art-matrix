@@ -151,7 +151,7 @@ class MIDIController implements IMIDIController {
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
 
-    constructor(access?: MIDIAccessRecord) {
+    protected constructor(access?: MIDIAccessRecord) {
         if (access)
             this.access = access;
         if (!!this.access && !!this.access.inputs.size) {

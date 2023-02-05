@@ -35,38 +35,29 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
-
-
 describe("test signup functionality with token", () => {
   document.body.innerHTML = "";
 
   //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
   beforeEach(() => {
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      // first
+      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+      // second
+      .mockReturnValueOnce(fakeFetchRes({ presets: [] }))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ preset: "waves" }));
     // @ts-ignore
     global.fetch = mockFetch;
   });
-  
+
   afterEach(() => {
     cleanup();
     global.fetch = originalFetch;
@@ -102,7 +93,7 @@ describe("test signup functionality with token", () => {
     expect(inputEls.emailOrUsername).toBeInTheDocument();
     expect(inputEls.password).toBeInTheDocument();
     expect(inputEls.btn).toBeInTheDocument();
-    
+
     user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
     expect(inputEls.emailOrUsername.value).toBe(LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);

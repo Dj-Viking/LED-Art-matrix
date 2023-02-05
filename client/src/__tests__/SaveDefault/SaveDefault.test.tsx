@@ -34,38 +34,32 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 describe("test the save default button is making the request, mock the response", () => {
 
   const originalFetch = global.fetch;
-  
+
   afterEach(() => {
     cleanup();
     //leave storage with token
     global.fetch = originalFetch;
   });
-  
+
   it("logs in so the next test can have buttons enabled", async () => {
-    const fakeFetchRes = (value: any): Promise<{ ok: boolean, status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      ok: boolean, status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      // fourth getting default preset inside PresetButtons component for setting active on page load while logged in
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      // first
+      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+      // second
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      // fourth getting default preset inside PresetButtons component for setting active on page load while logged in
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -79,7 +73,7 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
 
@@ -94,7 +88,7 @@ describe("test the save default button is making the request, mock the response"
     fireEvent.click(page);
 
     expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
-    
+
     const inputEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
@@ -113,11 +107,11 @@ describe("test the save default button is making the request, mock the response"
       inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
     expect(fetch).toHaveBeenCalledTimes(4);
-    expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {"body": expect.any(String), "headers": {"Content-Type": "application/json"}, "method": "POST"});
+    expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", { "body": expect.any(String), "headers": { "Content-Type": "application/json" }, "method": "POST" });
     // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdjjk");
-    
+
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(localStorage.getItem("id_token")).toBeTruthy();
@@ -137,17 +131,19 @@ describe("test the save default button is making the request, mock the response"
 
   it("tests the save default button", async () => {
     expect(typeof localStorage.getItem("id_token")).toBe("string");
-    const fakeFetchRes = (value: any): Promise<{ ok: boolean, status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      ok: boolean, status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ ok: true, status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes(SAVE_DEFAULT_MOCK_SUCCESS))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      // first
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
+      // second
+      .mockReturnValueOnce(fakeFetchRes(SAVE_DEFAULT_MOCK_SUCCESS))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
     // @ts-ignore
     global.fetch = mockFetch;
     const history = createMemoryHistory();
@@ -161,7 +157,7 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
 
@@ -179,15 +175,15 @@ describe("test the save default button is making the request, mock the response"
 
     expect(preset_buttons.waves).toBeInTheDocument();
     expect(preset_buttons.waves.classList).toHaveLength(1);
-    
+
     expect(preset_buttons.saveDefault).toBeInTheDocument();
     expect(preset_buttons.saveDefault).not.toBeDisabled();
-    
+
     //make waves active so that we can save it as default
     act(() => {
       preset_buttons.waves.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-    
+
     await act(async () => {
       preset_buttons.saveDefault.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
@@ -196,12 +192,12 @@ describe("test the save default button is making the request, mock the response"
   });
 
   it("tests the save default button with error response", async () => {
-    
+
 
     expect(localStorage.getItem("id_token")).toBeTruthy();
     // @ts-ignore trying to mock fetch
-    global.fetch = jest.fn(() => 
-    //res
+    global.fetch = jest.fn(() =>
+      //res
       Promise.resolve({
         ok: void 0,
         json: () => Promise.resolve({
@@ -220,7 +216,7 @@ describe("test the save default button is making the request, mock the response"
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
 
@@ -278,8 +274,8 @@ describe("test the save default button is making the request, mock the response"
     expect(keyFramesMatches).toHaveLength(1);
 
     // @ts-ignore trying to mock fetch for update preset fetch request
-    global.fetch = jest.fn(() => 
-    //res
+    global.fetch = jest.fn(() =>
+      //res
       Promise.resolve({
         ok: void 0,
         json: () => Promise.resolve(SAVE_DEFAULT_MOCK_ERROR)

@@ -34,18 +34,10 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 describe("test logging in and checking buttons are there", () => {
-  
+
   //create a reference to the original fetch before we change it swap it back
   const originalFetch = global.fetch;
 
@@ -57,17 +49,19 @@ describe("test logging in and checking buttons are there", () => {
 
   it("Checks the input fields are available and can submit with a stubbed api", async () => {
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      // first
-                      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
-                      // second
-                      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                      // third
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      // first
+      .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+      // second
+      .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+      // third
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -80,7 +74,7 @@ describe("test logging in and checking buttons are there", () => {
       </Provider>
     );
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
-    
+
     const page = (await screen.findAllByRole("link", { name: "Login" })).find(el => {
       return el.classList.contains("nav-button");
     }) as HTMLElement;
@@ -88,7 +82,7 @@ describe("test logging in and checking buttons are there", () => {
     fireEvent.click(page);
 
     expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
-    
+
     const inputEls = {
       emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
       password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
@@ -102,7 +96,7 @@ describe("test logging in and checking buttons are there", () => {
 
     user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
-    
+
     user.type(inputEls.emailOrUsername, LOGIN_MOCK_PAYLOAD_USERNAME.emailOrUsername);
     user.type(inputEls.password, LOGIN_MOCK_PAYLOAD_USERNAME.password);
 
@@ -114,11 +108,13 @@ describe("test logging in and checking buttons are there", () => {
     expect(localStorage.getItem("id_token")).toBeTruthy();
 
     expect(fetch).toHaveBeenCalledTimes(4);
-    expect(fetch).toHaveBeenNthCalledWith(1, 
+    expect(fetch).toHaveBeenNthCalledWith(1,
       "http://localhost:3001/user/login",
-      {"body": expect.any(String),
-      "headers": {"Content-Type": "application/json"},
-      "method": "POST"});
+      {
+        "body": expect.any(String),
+        "headers": { "Content-Type": "application/json" },
+        "method": "POST"
+      });
 
     const preset_buttons = {
       clear: screen.getByTestId("clear"),
@@ -139,19 +135,21 @@ describe("test logging in and checking buttons are there", () => {
     expect(preset_buttons.fourSpirals).toBeInTheDocument();
     expect(preset_buttons.dm5).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-    
+
   });
 
   //WAVES
   it("checks token and test undisabled waves button", async () => {
 
-    const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-      Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+    const fakeFetchRes = (value: any): Promise<{
+      status: 200, json: () =>
+        Promise<any>;
+    }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
     const mockFetch = jest.fn()
-                      //default
-                      // .mockReturnValue("kdfjkdj")
-                      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
-                      // .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
+      //default
+      // .mockReturnValue("kdfjkdj")
+      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves" } }));
+    // .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }));
     // @ts-ignore
     global.fetch = mockFetch;
 
@@ -194,7 +192,7 @@ describe("test logging in and checking buttons are there", () => {
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
-   
+
     act(() => {
       preset_buttons.waves.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
@@ -281,7 +279,7 @@ describe("test logging in and checking buttons are there", () => {
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
-   
+
     act(() => {
       preset_buttons.spiral.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
@@ -369,7 +367,7 @@ describe("test logging in and checking buttons are there", () => {
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
-   
+
     act(() => {
       preset_buttons.fourSpirals.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });
@@ -458,7 +456,7 @@ describe("test logging in and checking buttons are there", () => {
     // get led ref and style tag ref for after the click event and state updates
     let ledPostRef: HTMLElement | null = null;
     let styleTagRef: HTMLStyleElement | null = null;
-   
+
     act(() => {
       preset_buttons.dm5.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     });

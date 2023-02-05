@@ -23,13 +23,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -54,7 +47,7 @@ jest.mock("react-router-dom", () => ({
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
 describe("test that the fake window location pathname works with the jest test", () => {
-  
+
   const originalFetch = global.fetch;
 
   afterEach(() => {
@@ -86,7 +79,7 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
@@ -140,7 +133,7 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
@@ -194,7 +187,7 @@ describe("test that the fake window location pathname works with the jest test",
         </Provider>
       </>
     );
-    await act(async() => {
+    await act(async () => {
       return void 0;
     });
     expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");

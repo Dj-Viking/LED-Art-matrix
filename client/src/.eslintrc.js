@@ -46,6 +46,7 @@ module.exports = {
     "class-methods-use-this": "off",
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
+    "testing-library/no-unnecessary-act": "off",
     "no-new-func": "off",
     "comma-spacing": "off",
     "comma-dangle": "off",

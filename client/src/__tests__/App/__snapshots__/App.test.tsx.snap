@@ -750,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="387.66654230387275something unique lol"
+          id="9606.148594578077something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -807,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="3747.266363448527something unique lol"
+          id="2049.0595436160497something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -864,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="6553.122930930169something unique lol"
+          id="6596.09128375746something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -921,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="4307.254061148405something unique lol"
+          id="1136.174806139596something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -978,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="1282.1399109870235something unique lol"
+          id="4293.75153096661something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1035,7 +1035,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="4154.675178189673something unique lol"
+          id="6216.2160122375835something unique lol"
           role="button"
           tabindex="-1"
         >

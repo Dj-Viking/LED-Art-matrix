@@ -36,27 +36,19 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
-
-
-
 const originalFetch = global.fetch;
 beforeEach(() => {
-  const fakeFetchRes = (value: any): Promise<{ status: 200, json: () => 
-    Promise<any>; }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value)});
+  const fakeFetchRes = (value: any): Promise<{
+    status: 200, json: () =>
+      Promise<any>;
+  }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
   const mockFetch = jest.fn()
-                    //default
-                    // .mockReturnValue("kdfjkdj")
-                    // first
-                    .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-                    // second
-                    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "" } }));
+    //default
+    // .mockReturnValue("kdfjkdj")
+    // first
+    .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+    // second
+    .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "" } }));
   // @ts-ignore
   global.fetch = mockFetch;
 });
@@ -150,7 +142,7 @@ it("tests the led styles change to rainbowTest when rainbow button is clicked", 
 
   expect(keyFramesMatches).toHaveLength(1);
 
-  
+
   //clear preset before next test... not sure how to useDispatch in a jest test, it's probably break rules of hooks.
   let clearLedRef = screen.getByTestId("led1-1");
   act(() => {
@@ -160,7 +152,7 @@ it("tests the led styles change to rainbowTest when rainbow button is clicked", 
   expect(clearLedRef).toBeInTheDocument();
   expect(clearLedRef.classList.length).toBe(1);
   // clearLedRef.classList.forEach((value: string, key: number, parent: DOMTokenList) => {
-    // console.log("value", value, "key", key, "parent", parent);
+  // console.log("value", value, "key", key, "parent", parent);
   // });
   expect(clearLedRef.classList.contains("led1-1")).toBe(true);
 

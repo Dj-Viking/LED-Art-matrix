@@ -36,8 +36,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const [channel, setChannel] = useState<number>(0);
     const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
-
-
     useEffect(() => {
         (async (): Promise<void> => {
             await MIDIController.setupMIDI(dispatch, size, setSize, setChannel, setIntensity, filterTimeoutRef);

@@ -22,13 +22,6 @@ const store = createStore(
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
-//letting these methods be available to silence the jest errors
-window.HTMLMediaElement.prototype.load = () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.play = async () => { /* do nothing */ };
-window.HTMLMediaElement.prototype.pause = () => { /* do nothing */ };
-// eslint-disable-next-line
-// @ts-ignore
-window.HTMLMediaElement.prototype.addTextTrack = () => { /* do nothing */ };
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -64,7 +57,7 @@ describe("Test that the animation variation slider changes the style values", ()
       </>
     );
     expect(screen.getByTestId("location-display").textContent).toBe("/");
-    
+
     const preset_buttons = {
       clear: await screen.findByTestId("clear"),
       rainbowTest: await screen.findByTestId("rainbowTest"),
@@ -95,7 +88,7 @@ describe("Test that the animation variation slider changes the style values", ()
     const ledStyleRef = screen.getByTestId("led-style");
 
     const styleSplit = ledStyleRef?.textContent?.split(/(\r\n|\r|\n)/) as string[];
-    
+
     expect(styleSplit.length > 0).toBe(true);
     const delayMatches: string[] | [] = styleSplit.map(str => {
       if (ASSERT_ANIMATION.delayStyleRegex.test(str)) return str;
@@ -116,14 +109,14 @@ describe("Test that the animation variation slider changes the style values", ()
 
 
     sliderRef = screen.getByTestId("led-anim-variation") as HTMLInputElement;
-    expect(sliderRef.value).toBe("100"); 
+    expect(sliderRef.value).toBe("100");
 
     // TODO: parse the style values from the stylesheet
     // to check if the animation-duration and/or delays are
     // changing
 
     const ledStyleRef2 = screen.getByTestId("led-style");
-    
+
     const styleSplit2 = ledStyleRef2?.textContent?.split(/(\r\n|\r|\n)/) as string[];
     expect(styleSplit2.length > 0).toBe(true);
     const delayMatches2: string[] | [] = styleSplit2.map(str => {
