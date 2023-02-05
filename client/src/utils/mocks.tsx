@@ -208,8 +208,8 @@ export function makeFakeMIDIInputs(): Map<MIDIInput["id"], MIDIInput> {
       version: "over 9000",
       state: MIDIPortDeviceState.connected,
       connection: MIDIPortConnectionState.closed,
-      onmidimessage: (event: MIDIMessageEvent) => { /** */ },
-      onstatechange: (event: MIDIConnectionEvent) => { /**  */ }
+      onmidimessage: _onmidicb,
+      onstatechange: _onstatechangecb
     } as MIDIInput);
   }
   return newMap;

@@ -45,7 +45,7 @@ export const UserController = {
       ).select("-password");
       return res.status(201).json({ token, _id: newUser._id });
     } catch (error) {
-      return res.status(500).json({ error: error.message })
+      return res.status(500).json({ error: error.message });
     }
   },
   deleteUserPreset: async function (
@@ -124,7 +124,7 @@ export const UserController = {
         },
       });
     } catch (error) {
-      return res.status(500).json({error: error.message});
+      return res.status(500).json({ error: error.message });
     }
   },
   //TODO: when updating, push this preset into the user's preset collection

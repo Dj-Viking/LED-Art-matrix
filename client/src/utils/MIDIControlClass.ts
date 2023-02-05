@@ -1,8 +1,17 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
-import { setAnimDuration, setCircleWidth, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
+import {
+    setAnimDuration,
+    setCircleWidth,
+    setHPos,
+    setInvert,
+    setVertPos,
+} from "../actions/art-scroller-actions";
 import { animVarCoeffChange } from "../actions/led-actions";
-import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
+import {
+    determineDeviceControl,
+    setAccess,
+} from "../actions/midi-access-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
 
 /**
@@ -22,8 +31,8 @@ import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
  */
 interface MIDIPort {
     IODevice: MIDIInput | MIDIOutput;
-    open: () => Promise<MIDIPort>
-    close: () => Promise<MIDIPort>
+    open: () => Promise<MIDIPort>;
+    close: () => Promise<MIDIPort>;
 }
 interface TestMIDIConnectionEvent {
     isTrusted: boolean;
@@ -48,21 +57,21 @@ interface MIDIConnectionEvent {
     srcElement: MIDIAccessRecord;
     target: MIDIAccessRecord;
     timeStamp: number;
-    type: string | "statechange"
+    type: string | "statechange";
 }
 enum MIDIPortType {
     input = "input",
-    output = "output"
-};
+    output = "output",
+}
 enum MIDIPortConnectionState {
     open = "open",
     closed = "closed",
-    pending = "pending"
-};
+    pending = "pending",
+}
 enum MIDIPortDeviceState {
     disconnected = "disconnected",
-    connected = "connected"
-};
+    connected = "connected",
+}
 
 interface TestMIDIMessageEvent {
     isTrusted: boolean;
@@ -87,10 +96,10 @@ interface MIDIMessageEvent {
     srcElement: MIDIInput;
     target: MIDIInput;
     timeStamp: number;
-    type: "midimessage"
+    type: "midimessage";
 }
 
-// type MIDIEventHandlers  = 
+// type MIDIEventHandlers  =
 //     null | ((event: MIDIMessageEvent) => unknown) |
 //     null | ((event: MIDIConnectionEvent) => unknown) | undefined | unknown;
 
@@ -114,17 +123,16 @@ interface MIDIOutput {
     type: MIDIPortType.output;
     state: MIDIPortDeviceState;
     version: string;
-    onstatechange: undefined | onstatechangeHandler
+    onstatechange: undefined | onstatechangeHandler;
     onmidimessage: undefined | null | ((event: MIDIMessageEvent) => unknown);
 }
-
 
 type TestMIDIAccessRecord = null | {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
     onstatechange: null | ((event: TestMIDIConnectionEvent) => unknown);
     readonly sysexEnabled: boolean;
-}
+};
 interface MIDIAccessRecord {
     readonly inputs: Map<MIDIInput["id"], MIDIInput>;
     readonly outputs: Map<MIDIOutput["id"], MIDIOutput>;
@@ -143,7 +151,6 @@ interface IMIDIController {
 }
 
 class MIDIController implements IMIDIController {
-
     public access = null as MIDIAccessRecord | null;
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
@@ -151,9 +158,9 @@ class MIDIController implements IMIDIController {
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
 
-    protected constructor(access?: MIDIAccessRecord) {
-        if (access)
-            this.access = access;
+    public constructor(access?: MIDIAccessRecord) {
+        if (access) this.access = access;
+
         if (!!this.access && !!this.access.inputs.size) {
             this.online = true;
             this.inputs_size = access!.inputs.size;
@@ -174,7 +181,6 @@ class MIDIController implements IMIDIController {
         return this;
     }
 
-
     public getAccess(): MIDIAccessRecord {
         return this.access as MIDIAccessRecord;
     }
@@ -182,10 +188,14 @@ class MIDIController implements IMIDIController {
     public setOutputCbs(): this {
         // OUTPUT CBS SETTING HERE
         for (let j = 0; j < this.outputs!.length; j++) {
-            this.outputs![j].onstatechange = function (_event: MIDIConnectionEvent) {
+            this.outputs![j].onstatechange = function (
+                _event: MIDIConnectionEvent
+            ) {
                 // console.log("output onstatechange event", event);
             };
-            this.outputs![j].onmidimessage = function (_event: MIDIMessageEvent) {
+            this.outputs![j].onmidimessage = function (
+                _event: MIDIMessageEvent
+            ) {
                 // console.log("output midimessage event", event);
             };
         }
@@ -212,7 +222,6 @@ class MIDIController implements IMIDIController {
     }
 
     private _setOutputs(outputs: Map<string, MIDIOutput>): void {
-
         if (outputs.size > 0) {
             const MIDI_OUTPUT_LIST_SIZE = outputs.size;
             const entries = outputs.entries();
@@ -221,11 +230,9 @@ class MIDIController implements IMIDIController {
                 this.outputs!.push(entries.next().value[1]);
             }
         }
-
     }
 
     private _setInputs(inputs: Map<string, MIDIInput>): void {
-
         if (inputs.size > 0) {
             const MIDI_INPUT_LIST_SIZE = inputs.size;
             const entries = inputs.entries();
@@ -234,10 +241,11 @@ class MIDIController implements IMIDIController {
                 this.inputs!.push(entries.next().value[1]);
             }
         }
-
     }
 
-    public static stripNativeLabelFromMIDIInputName(name: string): MIDIInputName {
+    public static stripNativeLabelFromMIDIInputName(
+        name: string
+    ): MIDIInputName {
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
@@ -257,10 +265,12 @@ class MIDIController implements IMIDIController {
         const is_fader = /fader/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
         const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
 
-        _dispatchcb(determineDeviceControl({
-            usingFader: is_fader,
-            usingKnob: is_knob
-        }));
+        _dispatchcb(
+            determineDeviceControl({
+                usingFader: is_fader,
+                usingKnob: is_knob,
+            })
+        );
 
         switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
             case "1_upper_knob":
@@ -285,19 +295,29 @@ class MIDIController implements IMIDIController {
                 break;
             case "2_middle_knob":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setAnimDuration(
-                        midi_intensity <= 0 ? "1" : midi_intensity.toString()
-                    ));
+                    _dispatchcb(
+                        setAnimDuration(
+                            midi_intensity <= 0
+                                ? "1"
+                                : midi_intensity.toString()
+                        )
+                    );
                 }, 20);
                 break;
             case "1_fader":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(animVarCoeffChange((
-                        midi_intensity === 0 ? "1" : midi_intensity * 2
-                    ).toString()));
+                    _dispatchcb(
+                        animVarCoeffChange(
+                            (midi_intensity === 0
+                                ? "1"
+                                : midi_intensity * 2
+                            ).toString()
+                        )
+                    );
                 }, 10);
                 break;
-            default: break;
+            default:
+                break;
         }
     }
 
@@ -309,44 +329,73 @@ class MIDIController implements IMIDIController {
         _setIntensity: React.Dispatch<React.SetStateAction<number>>,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): Promise<void> {
-        return new Promise<void>(resolve => {
+        return new Promise<void>((resolve) => {
             (async () => {
                 if ("navigator" in window) {
                     // request access from browser
-                    const access = await new MIDIController().requestMIDIAccess();
+                    const access =
+                        await new MIDIController().requestMIDIAccess();
                     const new_access = new MIDIController(access).getAccess();
-                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                    dispatchcb(
+                        setAccess(new MIDIController(access).getInstance())
+                    );
                     // set size of inputs to re-render component at this moment of time
                     _setSize(new_access.inputs.size);
                     //at this moment the promise resolves with access if size changed at some point
                     if (size > 0) {
-                        dispatchcb(setAccess(new MIDIController(new_access).getInstance()));
+                        dispatchcb(
+                            setAccess(
+                                new MIDIController(new_access).getInstance()
+                            )
+                        );
                         // define onstatechange callback to not be a function to execute when state changes later
-                        new_access.onstatechange = function (_event: MIDIConnectionEvent): void {
+                        new_access.onstatechange = function (
+                            _event: MIDIConnectionEvent
+                        ): void {
+                            const onstatechangeAccess = new MIDIController(
+                                _event.target
+                            ).getInstance();
 
-                            const onstatechangeAccess = new MIDIController(_event.target).getInstance();
-
-                            const midicb = function (midi_event: MIDIMessageEvent): void {
+                            const midicb = function (
+                                midi_event: MIDIMessageEvent
+                            ): void {
                                 clearTimeout(timeoutRef.current);
-                                if (midi_event.currentTarget.name.includes("XONE:K2")) {
-                                    MIDIController.handleXONEK2MIDIMessage(midi_event, _setChannel, _setIntensity, dispatchcb, timeoutRef);
+                                if (
+                                    midi_event.currentTarget.name.includes(
+                                        "XONE:K2"
+                                    )
+                                ) {
+                                    MIDIController.handleXONEK2MIDIMessage(
+                                        midi_event,
+                                        _setChannel,
+                                        _setIntensity,
+                                        dispatchcb,
+                                        timeoutRef
+                                    );
                                 }
                             };
 
-                            const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
+                            const onstatechangecb = function (
+                                _connection_event: MIDIConnectionEvent
+                            ): void {
                                 // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
                             };
 
-                            dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
-                        };// end onstatechange def
-                    } // endif size > 0 
+                            dispatchcb(
+                                setAccess(
+                                    onstatechangeAccess,
+                                    midicb,
+                                    onstatechangecb
+                                )
+                            );
+                        }; // end onstatechange def
+                    } // endif size > 0
                     // accessState dead zone
-                }// endif "navigator" in window
+                } // endif "navigator" in window
             })();
             resolve();
         });
-    };
-
+    }
 }
 
 export type {
@@ -359,7 +408,12 @@ export type {
     MIDIMessageEvent,
     TestMIDIAccessRecord,
     TestMIDIMessageEvent,
-    TestMIDIConnectionEvent
+    TestMIDIConnectionEvent,
 };
 
-export { MIDIController, MIDIPortConnectionState, MIDIPortDeviceState, MIDIPortType };
+export {
+    MIDIController,
+    MIDIPortConnectionState,
+    MIDIPortDeviceState,
+    MIDIPortType,
+};
