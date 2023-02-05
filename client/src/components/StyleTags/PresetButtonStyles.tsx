@@ -2,9 +2,10 @@ import React from "react";
 import { escape } from "he";
 
 const PresetButtonStyles: React.FC = (): JSX.Element => {
-  return (
-    <style dangerouslySetInnerHTML={{
-      __html: escape(`
+    return (
+        <style
+            dangerouslySetInnerHTML={{
+                __html: escape(`
         
         .preset-delete-mode {
           margin-left: 5px;
@@ -65,9 +66,10 @@ const PresetButtonStyles: React.FC = (): JSX.Element => {
           text-align: center;
           cursor: pointer;
         }
-      `)
-    }}></style>
-  );
+      `),
+            }}
+        ></style>
+    );
 };
 
 export default PresetButtonStyles;

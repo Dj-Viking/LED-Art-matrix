@@ -21,17 +21,13 @@ interface PresetButtonProps {
         isActive: boolean;
         testid: string;
         classList?: string;
-        clickHandler: React.MouseEventHandler<HTMLElement>
-    }
+        clickHandler: React.MouseEventHandler<HTMLElement>;
+    };
 }
 
-const StyledButton = styled.button`
-  
-`;
+const StyledButton = styled.button``;
 
-const PresetButton: React.FC<PresetButtonProps> = ({
-    button
-}) => {
+const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
     const {
         id,
         role,
@@ -41,12 +37,11 @@ const PresetButton: React.FC<PresetButtonProps> = ({
         testid,
         isActive,
         clickHandler,
-        keyBinding
+        keyBinding,
     } = button;
     const dispatch = useDispatch();
     const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
     const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
-
 
     function setStyle(preset: string): void {
         const LedEngine = new LedStyleEngine(preset);
@@ -93,17 +88,12 @@ const PresetButton: React.FC<PresetButtonProps> = ({
                     }
                 }}
             >
-
                 {/* TODO: make display none if the screen is mobile, check user agent? or just media query??*/}
                 <KeyIcon type={keyBinding} />
-                <p style={{ margin: 0 }}>
-                    {displayName}
-                </p>
-
+                <p style={{ margin: 0 }}>{displayName}</p>
             </button>
         </>
     );
 };
-
 
 export default PresetButton;

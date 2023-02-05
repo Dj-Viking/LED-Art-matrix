@@ -14,7 +14,11 @@ import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID, SUPPORTED_CONTROLLERS } from "../../constants";
-import { MIDIAccessRecord, MIDIConnectionEvent, MIDIMessageEvent } from "../../utils/MIDIControlClass";
+import {
+    MIDIAccessRecord,
+    MIDIConnectionEvent,
+    MIDIMessageEvent,
+} from "../../utils/MIDIControlClass";
 import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
 import { ITestMIDIProps, TestMIDI } from "../../components/MIDIListenerWrapper";
@@ -46,20 +50,20 @@ describe("faking navigator for midiaccess testing", () => {
         const history = createMemoryHistory();
 
         await act(async () => {
-            await new Promise<RenderResult>(resolve => resolve(
-                render(
-                    <Provider store={store}>
-                        <Router history={history}>
-                            <App />
-                        </Router>
-                    </Provider>
+            await new Promise<RenderResult>((resolve) =>
+                resolve(
+                    render(
+                        <Provider store={store}>
+                            <Router history={history}>
+                                <App />
+                            </Router>
+                        </Provider>
+                    )
                 )
-            ));
+            );
         });
 
-
         expect((await screen.findByTestId(LOCATION_DISPLAY_ID)).textContent).toBe("/");
-
     });
 
     test("trying something", async () => {
@@ -69,45 +73,48 @@ describe("faking navigator for midiaccess testing", () => {
         let testMidi: ReactWrapper<ITestMIDIProps>;
 
         await act(async () => {
-
-            app = await new Promise<ReactWrapper<any>>(resolve => resolve(mount(
-                <Provider store={store}>
-                    <Router history={history}>
-                        <App />
-                    </Router>
-                </Provider>
-            )));
+            app = await new Promise<ReactWrapper<any>>((resolve) =>
+                resolve(
+                    mount(
+                        <Provider store={store}>
+                            <Router history={history}>
+                                <App />
+                            </Router>
+                        </Provider>
+                    )
+                )
+            );
 
             testMidi = app.find(TestMIDI);
 
             await act(async () => {
-                await new Promise<void>(resolve => {
+                await new Promise<void>((resolve) => {
                     // call onstatechange
-                    testMidi.props().midi_access.access.onstatechange?.({ target: MOCK_MIDI_ACCESS_RECORD } as any);
-                    // call onmidimessage 
+                    testMidi.props().midi_access.access.onstatechange?.({
+                        target: MOCK_MIDI_ACCESS_RECORD,
+                    } as any);
+                    // call onmidimessage
                     Object.keys(SUPPORTED_CONTROLLERS).forEach((key: string) => {
                         const name = testMidi.props().midi_access.inputs[0].name;
                         if (key.includes(name)) {
                             for (const key of Object.keys(SUPPORTED_CONTROLLERS[name]!)) {
+                                const is2MiddleKnobOr1Fader: boolean =
+                                    SUPPORTED_CONTROLLERS[name]![Number(key)] === "1_fader" ||
+                                    SUPPORTED_CONTROLLERS[name]![Number(key)] === "2_middle_knob";
 
-                                const is2MiddleKnobOr1Fader: boolean = (
-                                    SUPPORTED_CONTROLLERS[name]![Number(key)] === "1_fader"
-                                    || SUPPORTED_CONTROLLERS[name]![Number(key)] === "2_middle_knob"
-                                );
+                                testMidi.props().midi_access.inputs[0].onmidimessage?.({
+                                    currentTarget: testMidi.props().midi_access.inputs[0],
+                                    data: new Uint8Array([
+                                        1,
+                                        Number(key),
+                                        is2MiddleKnobOr1Fader ? 0 : 1,
+                                    ]),
+                                } as Partial<MIDIMessageEvent> as any);
 
-                                testMidi.props().midi_access.inputs[0].onmidimessage?.(
-                                    {
-                                        currentTarget: testMidi.props().midi_access.inputs[0],
-                                        data: new Uint8Array([1, Number(key), is2MiddleKnobOr1Fader ? 0 : 1])
-                                    } as Partial<MIDIMessageEvent> as any
-                                );
-
-                                testMidi.props().midi_access.inputs[0].onmidimessage?.(
-                                    {
-                                        currentTarget: testMidi.props().midi_access.inputs[0],
-                                        data: new Uint8Array([1, Number(key), 255])
-                                    } as Partial<MIDIMessageEvent> as any
-                                );
+                                testMidi.props().midi_access.inputs[0].onmidimessage?.({
+                                    currentTarget: testMidi.props().midi_access.inputs[0],
+                                    data: new Uint8Array([1, Number(key), 255]),
+                                } as Partial<MIDIMessageEvent> as any);
                                 jest.advanceTimersByTime(20);
                             }
                         }
@@ -116,14 +123,10 @@ describe("faking navigator for midiaccess testing", () => {
                 });
             });
 
-
             // call device onstagechange
-            testMidi.props().midi_access.inputs[0].onstatechange?.(
-                {
-                    currentTarget: testMidi.props().midi_access.access
-                } as Partial<MIDIConnectionEvent> as any
-            );
+            testMidi.props().midi_access.inputs[0].onstatechange?.({
+                currentTarget: testMidi.props().midi_access.access,
+            } as Partial<MIDIConnectionEvent> as any);
         });
-
     });
 });

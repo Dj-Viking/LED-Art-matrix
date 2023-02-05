@@ -24,7 +24,7 @@ exports.default = () => __awaiter(void 0, void 0, void 0, function* () {
             "!constants.ts",
             "!./config/*",
             "!jest.config.ts",
-            "!./stubs/*"
+            "!./stubs/*",
         ],
         coverageReporters: ["json", "html"],
         moduleFileExtensions: ["ts", "js"],

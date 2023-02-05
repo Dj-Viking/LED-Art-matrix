@@ -190,95 +190,94 @@ export const DM5_ANIMATION = `
   }
 }`;
 
-export type MyIndexToKeyMap = Record<number, string>
+export type MyIndexToKeyMap = Record<number, string>;
 export const MY_INDEX_TO_KEY_MAP = {
-  1: "1",
-  2: "2",
-  3: "3",
-  4: "4",
-  5: "q",
-  6: "w",
-  7: "e",
-  8: "r",
-  9: "a",
-  10: "s",
-  11: "d",
-  12: "f"
+    1: "1",
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "q",
+    6: "w",
+    7: "e",
+    8: "r",
+    9: "a",
+    10: "s",
+    11: "d",
+    12: "f",
 } as MyIndexToKeyMap;
 export const LOCATION_DISPLAY_ID = "location-display";
 
 export type TABLE_VALUES =
-  | "1_upper_knob"
-  | "1_upper_button"
-  | "1_middle_button"
-  | "1_lower_button"
-  | "1_middle_knob"
-  | "1_lower_knob"
-  | "2_upper_knob"
-  | "2_middle_knob"
-  | "2_lower_knob"
-  | "1_fader"
-  | "2_fader"
-  | "3_fader"
-  | "4_fader";
+    | "1_upper_knob"
+    | "1_upper_button"
+    | "1_middle_button"
+    | "1_lower_button"
+    | "1_middle_knob"
+    | "1_lower_knob"
+    | "2_upper_knob"
+    | "2_middle_knob"
+    | "2_lower_knob"
+    | "1_fader"
+    | "2_fader"
+    | "3_fader"
+    | "4_fader";
 
 export type ControllerName =
-  | "Not Found"
-  | "UltraLite mk3 Hybrid"
-  | "XONE:K2 MIDI"
-  | "UltraLite mk3 Hybrid MIDI Port"
-  | "UltraLite mk3 Hybrid Sync Port";
-
+    | "Not Found"
+    | "UltraLite mk3 Hybrid"
+    | "XONE:K2 MIDI"
+    | "UltraLite mk3 Hybrid MIDI Port"
+    | "UltraLite mk3 Hybrid Sync Port";
 
 export type MIDIInputName = string & keyof ControllerLookup;
 export type ControllerMIDIChannelTable = Record<number, TABLE_VALUES>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE = {
-  4: "1_upper_knob",
-  8: "1_middle_knob",
-  12: "1_lower_knob",
-  5: "2_upper_knob",
-  9: "2_middle_knob",
-  13: "2_lower_knob",
-  16: "1_fader",
-  17: "2_fader",
-  18: "3_fader",
-  19: "4_fader",
+    4: "1_upper_knob",
+    8: "1_middle_knob",
+    12: "1_lower_knob",
+    5: "2_upper_knob",
+    9: "2_middle_knob",
+    13: "2_lower_knob",
+    16: "1_fader",
+    17: "2_fader",
+    18: "3_fader",
+    19: "4_fader",
 } as ControllerMIDIChannelTable;
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
-  4: "1_upper_knob",
-  8: "1_middle_knob",
-  12: "1_lower_knob",
-  5: "2_upper_knob",
-  9: "2_middle_knob",
-  13: "2_lower_knob",
-  16: "1_fader",
-  17: "2_fader",
-  18: "3_fader",
-  19: "4_fader",
+    4: "1_upper_knob",
+    8: "1_middle_knob",
+    12: "1_lower_knob",
+    5: "2_upper_knob",
+    9: "2_middle_knob",
+    13: "2_lower_knob",
+    16: "1_fader",
+    17: "2_fader",
+    18: "3_fader",
+    19: "4_fader",
 } as ControllerMIDIChannelTable;
 export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
-  4: "1_upper_knob",
-  8: "1_middle_knob",
-  12: "1_lower_knob",
-  5: "2_upper_knob",
-  9: "2_middle_knob",
-  13: "2_lower_knob",
-  16: "1_fader",
-  17: "2_fader",
-  18: "3_fader",
-  19: "4_fader",
+    4: "1_upper_knob",
+    8: "1_middle_knob",
+    12: "1_lower_knob",
+    5: "2_upper_knob",
+    9: "2_middle_knob",
+    13: "2_lower_knob",
+    16: "1_fader",
+    17: "2_fader",
+    18: "3_fader",
+    19: "4_fader",
 } as ControllerMIDIChannelTable;
 
 type Nullable<T> = null | T;
 
-export type ControllerLookup = Record<ControllerName, Nullable<ControllerMIDIChannelTable>>
+export type ControllerLookup = Record<ControllerName, Nullable<ControllerMIDIChannelTable>>;
 
 export const SUPPORTED_CONTROLLERS: ControllerLookup = {
-  "Not Found": null,
-  "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
-  "UltraLite mk3 Hybrid": null,
-  "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
-  "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT
+    "Not Found": null,
+    "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
+    "UltraLite mk3 Hybrid": null,
+    "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
+    "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
 };

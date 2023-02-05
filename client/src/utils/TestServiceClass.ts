@@ -10,10 +10,9 @@ import {
     MIDIPortConnectionState,
     MIDIPortDeviceState,
     MIDIPortType,
-    TestMIDIConnectionEvent
+    TestMIDIConnectionEvent,
 } from "./MIDIControlClass";
 import { MOCK_MIDI_ACCESS_RECORD } from "./mocks";
-
 
 interface ITestService {
     inputMap: Map<MIDIInput["id"], MIDIInput>;
@@ -29,7 +28,6 @@ interface ITestService {
  * helper class for the testing environment
  */
 export class TestService implements ITestService {
-
     private _access: MIDIAccessRecord;
     public inputMap = new Map<string, MIDIInput>();
     public inputs = [] as MIDIInput[];
@@ -55,7 +53,7 @@ export class TestService implements ITestService {
             if (key === "_values") {
                 styleValues = {
                     ...styleValues,
-                    values: cssDeclaration[key as any]
+                    values: cssDeclaration[key as any],
                 };
             }
         });
@@ -75,11 +73,10 @@ export class TestService implements ITestService {
         const event = new Event(type, { bubbles: true });
         Object.assign(event, props);
         return event;
-    };
+    }
 
     public static createMockMIDIControllerClass(): void {
         jest.mock("./MIDIControlClass.ts", () => {
-
             const MockMIDIControllerConstructor = function (this: MIDIController): MIDIController {
                 //MOCK METHODS AND MEMBER VARIABLES
 
@@ -97,8 +94,12 @@ export class TestService implements ITestService {
                             version: "over 9000",
                             state: "connected",
                             connection: "closed",
-                            onmidimessage: function () { return void 0; },
-                            onstatechange: function () { return void 0; }
+                            onmidimessage: function () {
+                                return void 0;
+                            },
+                            onstatechange: function () {
+                                return void 0;
+                            },
                         });
                     }
                     // @ts-ignore
@@ -110,7 +111,7 @@ export class TestService implements ITestService {
                 this.inputs = createFakeInputs();
                 // @ts-ignore
                 this.setInputCbs = function (onmidicb, onstatechangecb) {
-                    this.inputs?.forEach(input => {
+                    this.inputs?.forEach((input) => {
                         input.onmidimessage = onmidicb;
                         input.onstatechange = onstatechangecb;
                     });
@@ -118,17 +119,26 @@ export class TestService implements ITestService {
                 };
                 // @ts-ignore
                 this.setOutputCbs = function () {
-                    this.outputs?.forEach(output => {
-                        output.onmidimessage = function () { return void 0; };
-                        output.onstatechange = function () { return void 0; };
+                    this.outputs?.forEach((output) => {
+                        output.onmidimessage = function () {
+                            return void 0;
+                        };
+                        output.onstatechange = function () {
+                            return void 0;
+                        };
                     });
                     return this;
                 };
                 this.requestMIDIAccess = async function () {
-                    return Promise.resolve({ ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)) });
+                    return Promise.resolve({
+                        ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
+                    });
                 };
                 this.getAccess = jest.fn().mockImplementation(function () {
-                    return { ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)), onstatechange: onstatechangefn };
+                    return {
+                        ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
+                        onstatechange: onstatechangefn,
+                    };
                     // return MOCK_MIDI_ACCESS_RECORD;
                 });
                 this.getInstance = jest.fn().mockImplementation(() => {
@@ -145,7 +155,7 @@ export class TestService implements ITestService {
                 MIDIConnectionEvent: {},
                 MIDIPortDeviceState: { connected: "connected" },
                 MIDIPortConnectionState: { closed: "closed" },
-                MIDIController: MockMIDIControllerConstructor
+                MIDIController: MockMIDIControllerConstructor,
             };
         });
     }
@@ -169,7 +179,7 @@ export class TestService implements ITestService {
                 state: MIDIPortDeviceState.connected,
                 connection: MIDIPortConnectionState.closed,
                 onmidimessage: _onmidicb,
-                onstatechange: _onstatechangecb
+                onstatechange: _onstatechangecb,
             } as MIDIInput);
         }
         return newMap;
@@ -193,7 +203,7 @@ export class TestService implements ITestService {
                 version: "kdfkjdj",
                 connection: MIDIPortConnectionState.closed,
                 onstatechange: _onstatechangecb,
-                onmidimessage: _onmidicb
+                onmidimessage: _onmidicb,
             } as MIDIOutput);
         }
         return newMap;
@@ -227,7 +237,7 @@ export class TestService implements ITestService {
             composed: false,
             target: this.makeFakeMIDIInputs().get("1") as MIDIInput,
             //@ts-ignore
-            data: [190, 16, 113]
+            data: [190, 16, 113],
         };
     }
 
@@ -285,7 +295,6 @@ export class TestService implements ITestService {
         return this;
     }
 
-
     /**
      *
      * @example
@@ -306,7 +315,7 @@ export class TestService implements ITestService {
             cancelBubble: false,
             cancelable: true,
             composed: false,
-            target: this.inputMap.get("1") as MIDIInput
+            target: this.inputMap.get("1") as MIDIInput,
         };
     }
 
@@ -315,12 +324,7 @@ export class TestService implements ITestService {
     }
 
     public static signTestToken(args: ISignTestTokenArgs): string {
-        const {
-            uuid: someUuid,
-            username,
-            email,
-            _id,
-        } = args;
+        const { uuid: someUuid, username, email, _id } = args;
         const token = jwt.sign(
             {
                 someUuid,

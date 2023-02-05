@@ -1,7 +1,7 @@
 import { combineReducers } from "redux";
 import ledReducer from "./ledReducer";
-import deleteModalReducer from "./deleteModalReducer"; 
-import saveModalReducer from "./saveModalReducer"; 
+import deleteModalReducer from "./deleteModalReducer";
+import saveModalReducer from "./saveModalReducer";
 import styleTagReducer from "./styleTagReducer";
 import loggedInReducer from "./loggedInReducer";
 import loginFormReducer from "./loginFormReducer";
@@ -10,8 +10,7 @@ import artScrollerReducer from "./artScrollerReducer";
 import presetButtonsListReducer from "./presetButtonsListReducer";
 import accessRecordReducer from "./accessRecordReducer";
 
-const allReducers = combineReducers(
-  {
+const allReducers = combineReducers({
     presetButtonsListState: presetButtonsListReducer,
     ledState: ledReducer,
     loggedInState: loggedInReducer,
@@ -21,8 +20,7 @@ const allReducers = combineReducers(
     artScrollerState: artScrollerReducer,
     deleteModalState: deleteModalReducer,
     saveModalState: saveModalReducer,
-    accessRecordState: accessRecordReducer
-  }
-);
+    accessRecordState: accessRecordReducer,
+});
 
 export default allReducers;

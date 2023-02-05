@@ -15,44 +15,48 @@ import allReducers from "./reducers";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
 
 const store = createStore(
-  allReducers,
-  // @ts-expect-error this will exist in the browser
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    allReducers,
+    // @ts-expect-error this will exist in the browser
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 
 export const HiddenLocationDisplay = (): JSX.Element => {
-  const location = useLocation();
-  return (
-    <div
-      style={{ visibility: "hidden", height: 0, width: 0, color: "black" }}
-      data-testid="location-display"
-    >
-      {location.pathname}
-    </div>
-  );
+    const location = useLocation();
+    return (
+        <div
+            style={{ visibility: "hidden", height: 0, width: 0, color: "black" }}
+            data-testid="location-display"
+        >
+            {location.pathname}
+        </div>
+    );
 };
 
 const App: React.FC = (): JSX.Element => {
-  const history = createBrowserHistory();
-  return (
-    <>
-      <Provider store={store}>
-        <Router history={history}>
-          <BrowserRouter>
-            <KeyListenerWrapper>
-              <SplashHeader />
-              <Route exact path="/" component={Home} />
-              <Route exact path="/login" component={Login} />
-              <Route exact path="/signup" component={Signup} />
-              <Route exact path="/forgotPassword" component={ForgotPassword} />
-              <Route exact path="/changePassword/:token?" component={ChangePassword} />
-            </KeyListenerWrapper>
-            <HiddenLocationDisplay />
-          </BrowserRouter>
-        </Router>
-      </Provider>
-    </>
-  );
+    const history = createBrowserHistory();
+    return (
+        <>
+            <Provider store={store}>
+                <Router history={history}>
+                    <BrowserRouter>
+                        <KeyListenerWrapper>
+                            <SplashHeader />
+                            <Route exact path="/" component={Home} />
+                            <Route exact path="/login" component={Login} />
+                            <Route exact path="/signup" component={Signup} />
+                            <Route exact path="/forgotPassword" component={ForgotPassword} />
+                            <Route
+                                exact
+                                path="/changePassword/:token?"
+                                component={ChangePassword}
+                            />
+                        </KeyListenerWrapper>
+                        <HiddenLocationDisplay />
+                    </BrowserRouter>
+                </Router>
+            </Provider>
+        </>
+    );
 };
 
 export default App;

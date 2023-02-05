@@ -2,15 +2,15 @@ import React from "react";
 import { calcPositionFromRange } from "../utils/calcPositionFromRange";
 
 interface DeviceControlSvgProps {
-  intensity_prop: number;
+    intensity_prop: number;
 }
 
 export const Fader: React.FC<DeviceControlSvgProps> = ({ intensity_prop }): JSX.Element => {
-
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{
-        __html: `
+    return (
+        <>
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: `
         <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
         
@@ -33,45 +33,63 @@ export const Fader: React.FC<DeviceControlSvgProps> = ({ intensity_prop }): JSX.
 
           <!-- both fader background and border and middle rect of fader -->
           <g filter="url(#filter0_d_101_2)">
-            <rect x="4" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="20" height="37" rx="5" fill="black"/>
-            <rect x="5" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="18" height="35" rx="4" stroke="white" stroke-width="2"/>
-            <rect x="6" y="${calcPositionFromRange(intensity_prop, 70, 1, 0, 127)}" width="16" height="2" fill="white" transform="translate(0, 16)"/>          
+            <rect x="4" y="${calcPositionFromRange(
+                intensity_prop,
+                70,
+                1,
+                0,
+                127
+            )}" width="20" height="37" rx="5" fill="black"/>
+            <rect x="5" y="${calcPositionFromRange(
+                intensity_prop,
+                70,
+                1,
+                0,
+                127
+            )}" width="18" height="35" rx="4" stroke="white" stroke-width="2"/>
+            <rect x="6" y="${calcPositionFromRange(
+                intensity_prop,
+                70,
+                1,
+                0,
+                127
+            )}" width="16" height="2" fill="white" transform="translate(0, 16)"/>          
           </g>
 
         </svg>
 
 
-      `}}>
-      </div>
-    </>
-  );
+      `,
+                }}
+            ></div>
+        </>
+    );
 };
 
 export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
+    /**
+     * takes the input intensity number value into a string to translate and rotate the <rect> around the ellipse
+     * referencing this @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform#rotate
+     * @param intensity_input midi intensity value
+     */
+    function translateKnobRect(intensity_input: number): string {
+        const rotationPercentage = calcPositionFromRange(intensity_input, 0, 100, 0, 127);
 
-  /**
-   * takes the input intensity number value into a string to translate and rotate the <rect> around the ellipse
-   * referencing this @see https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/transform#rotate
-   * @param intensity_input midi intensity value
-   */
-  function translateKnobRect(intensity_input: number): string {
+        // somehow take the percentage and convert this into angle, x, y values for the rotation
 
-    const rotationPercentage = calcPositionFromRange(intensity_input, 0, 100, 0, 127);
+        let angle = calcPositionFromRange(rotationPercentage, -140, 137, 0, 100);
 
-    // somehow take the percentage and convert this into angle, x, y values for the rotation
+        //so we can rotate along our own defined axis to follow the circle perimeter
+        const vec2 = { x: 45, y: 62 };
 
-    let angle = calcPositionFromRange(rotationPercentage, -140, 137, 0, 100);
+        return `rotate(${angle}, ${vec2.x}, ${vec2.y})`;
+    }
 
-    //so we can rotate along our own defined axis to follow the circle perimeter
-    const vec2 = { x: 45, y: 62 };
-
-    return `rotate(${angle}, ${vec2.x}, ${vec2.y})`;
-  }
-
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{
-        __html: `
+    return (
+        <>
+            <div
+                dangerouslySetInnerHTML={{
+                    __html: `
 
         <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
         <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
@@ -98,9 +116,9 @@ export const Knob: React.FC<DeviceControlSvgProps> = ({ intensity_prop }) => {
         </svg>
 
 
-      `}}>
-
-      </div>
-    </>
-  );
+      `,
+                }}
+            ></div>
+        </>
+    );
 };

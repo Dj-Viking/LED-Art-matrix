@@ -8,13 +8,14 @@
  * @returns the precentage calculation value from the input given the range the input number lies within
  */
 export function calcPositionFromRange(
-  input: number, 
-  minPercentage: number, 
-  maxPercentage: number, 
-  minInput: number, 
-  maxInput: number
+    input: number,
+    minPercentage: number,
+    maxPercentage: number,
+    minInput: number,
+    maxInput: number
 ): number {
-  return Math.floor(
-      (maxPercentage - minPercentage) * (input - minInput) / (maxInput - minInput) + minPercentage
+    return Math.floor(
+        ((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) +
+            minPercentage
     );
 }

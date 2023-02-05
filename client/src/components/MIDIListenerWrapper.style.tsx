@@ -6,8 +6,8 @@ import { Fader, Knob } from "../lib/deviceControlSvgs";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
-    display: flex; 
-    justify-content: space-around; 
+    display: flex;
+    justify-content: space-around;
 `;
 
 export const FaderSvgDiv = styled.div`
@@ -23,7 +23,7 @@ export const KnobSvgDiv = styled.div`
 `;
 
 export const ControlNameContainer = styled.div`
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
 `;
 
 export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) => {
@@ -31,13 +31,17 @@ export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) =>
 };
 
 export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {
-    return <div style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center"
-    }}>
-        {children}
-    </div>;
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+            }}
+        >
+            {children}
+        </div>
+    );
 };
 
 export type ControlTypes = "usingFader" | "usingKnob";
@@ -70,7 +74,6 @@ interface MIDISelectProps {
 }
 
 export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, option }) => {
-
     return (
         <select
             data-testid="midi-select"
@@ -83,7 +86,7 @@ export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, 
             <option data-testid="select-option" value="Select A Connected Device" disabled>
                 Select A Connected Device
             </option>
-            {midi_inputs.map(input => {
+            {midi_inputs.map((input) => {
                 return (
                     <option data-testid="select-option" key={input.id} value={input.name}>
                         {MIDIController.stripNativeLabelFromMIDIInputName(input.name)}
@@ -95,39 +98,53 @@ export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, 
 };
 
 export const MIDISelectContainer: React.FC<any> = ({ children }) => {
-
-
-    return <div style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center"
-    }}>
-        {children}
-    </div>;
+    return (
+        <div
+            style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            {children}
+        </div>
+    );
 };
 
 export const InputName: React.FC<{ name: MIDIInputName }> = ({ name }) => {
     return <p>{MIDIController.stripNativeLabelFromMIDIInputName(name)}</p>;
 };
 
-export const DeviceInterfaceContainer: React.FC<{ statename: keyof typeof MIDIPortDeviceState, controllerName: MIDIInputName }> = (props) => {
+export const DeviceInterfaceContainer: React.FC<{
+    statename: keyof typeof MIDIPortDeviceState;
+    controllerName: MIDIInputName;
+}> = (props) => {
     const { statename, children } = props;
 
-    const adjustBorder = (state: keyof typeof MIDIPortDeviceState, ctrlName: MIDIInputName): string => {
+    const adjustBorder = (
+        state: keyof typeof MIDIPortDeviceState,
+        ctrlName: MIDIInputName
+    ): string => {
         switch (true) {
             case !!SUPPORTED_CONTROLLERS[ctrlName]:
-            case state === MIDIPortDeviceState.connected: return "solid 1px green";
-            default: return "solid 1px red";
+            case state === MIDIPortDeviceState.connected:
+                return "solid 1px green";
+            default:
+                return "solid 1px red";
         }
     };
-    return <div style={{
-        position: "relative",
-        width: "50%",
-        margin: "0 auto",
-        border: adjustBorder(statename, props.controllerName)
-    }}>
-        {children}
-    </div>;
+    return (
+        <div
+            style={{
+                position: "relative",
+                width: "50%",
+                margin: "0 auto",
+                border: adjustBorder(statename, props.controllerName),
+            }}
+        >
+            {children}
+        </div>
+    );
 };
 
 export const ChannelNumber: React.FC<{ channel: number }> = ({ channel }) => {

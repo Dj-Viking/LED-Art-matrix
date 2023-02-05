@@ -1,17 +1,17 @@
 /**
- * 
+ *
  * @param {Number} _min lower range of numbers to randomize between
  * @param {Number} _max upper range of numbers to randomize between
  * @returns {Number} random number between the range given between min and max
  */
 export function getRandomIntLimit(_min: number, _max: number): number {
-  const min = Math.ceil(_min);
-  const max = Math.floor(_max);
-  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+    const min = Math.ceil(_min);
+    const max = Math.floor(_max);
+    return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
 }
 
 // /**
-//  * 
+//  *
 //  * @param {String} storeName a string to match against to choose which object store to select you want to place an action on
 //  * @param {String} method a string to match against to determine which action to perform on the selected storeName
 //  * @param {{[key: string]: any}} object for put and delete static actions: Some object we pass in to manipulate in or out of the object store
@@ -25,9 +25,9 @@ export function getRandomIntLimit(_min: number, _max: number): number {
 //     // initialize the variables we want to use to reference
 //     // different methods with different names i guess? once we get them
 //     // from the original api and rename them...thats why I think we do this.
-//     let db; let transaction; let 
+//     let db; let transaction; let
 // store;
-    
+
 //     // if version has changed or if this is the first time using
 //     // the database, run this method and create your object stores for your
 //     // project
@@ -36,7 +36,7 @@ export function getRandomIntLimit(_min: number, _max: number): number {
 //     // to open an indexedDB place of memory with the name and version
 //     request.onupgradeneeded = function (event) {
 //       const db = request.result;
-//       // create the object store for each type of data and set 
+//       // create the object store for each type of data and set
 //       // "primary" key index to be the `_id` of the data
 //       db.createObjectStore("presets", { keyPath: "_id" });
 //       db.createObjectStore("gifs", { keyPath: "_id" });
@@ -59,7 +59,7 @@ export function getRandomIntLimit(_min: number, _max: number): number {
 //       // must match one of the object store names in this promise
 //       transaction = db.transaction(storeName, "readwrite");
 
-//       // save a reference to that object store that we passed as 
+//       // save a reference to that object store that we passed as
 //       // the storename string
 //       store = transaction.objectStore(storeName);
 
@@ -73,7 +73,7 @@ export function getRandomIntLimit(_min: number, _max: number): number {
 //       // that we want to match against...hmm looks like redux a bit
 
 //       switch (method) {
-//         case "put": 
+//         case "put":
 //           store.put(object);
 //           resolve(object);
 //         break;
@@ -86,7 +86,7 @@ export function getRandomIntLimit(_min: number, _max: number): number {
 //           // console.log(object);
 //           store.delete(object._id);
 //         break;
-//         default: 
+//         default:
 //           all.onerror = () => {
 //             console.log("Not a valid method passed into the function executing this code...");
 //           };

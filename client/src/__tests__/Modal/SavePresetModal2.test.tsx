@@ -18,71 +18,91 @@ import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 const uuid = require("uuid");
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
-  return Promise.resolve({
-    inputs: MOCK_ACCESS_INPUTS,
-    outputs: MOCK_ACCESS_OUTPUTS,
-    sysexEnabled: false,
-    onstatechange: function (_event: MIDIConnectionEvent): void {
-      return void 0;
-    }
-  } as MIDIAccessRecord);
+    return Promise.resolve({
+        inputs: MOCK_ACCESS_INPUTS,
+        outputs: MOCK_ACCESS_OUTPUTS,
+        sysexEnabled: false,
+        onstatechange: function (_event: MIDIConnectionEvent): void {
+            return void 0;
+        },
+    } as MIDIAccessRecord);
 };
 
 describe("moving this to a separate file to avoid the leaky mocks that dont get cleared from the previous test", () => {
+    it("tests that the api didn't send an array with items, buttons should not render", async () => {
+        expect(screen.queryByTestId("waves")).not.toBeInTheDocument();
+        const store = createStore(
+            allReducers,
+            // @ts-expect-error this will exist in the browser
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        );
 
-  it("tests that the api didn't send an array with items, buttons should not render", async () => {
+        expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
-    expect(screen.queryByTestId("waves")).not.toBeInTheDocument();
-    const store = createStore(
-      allReducers,
-      // @ts-expect-error this will exist in the browser
-      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    );
+        expect(localStorage.getItem("id_token")).toBe(null);
+        localStorage.setItem(
+            "id_token",
+            TestService.signTestToken({
+                username: "test user",
+                email: "test email",
+                uuid: uuid.v4(),
+                _id: keyGen(),
+            })
+        );
+        expect(typeof localStorage.getItem("id_token")).toBe("string");
 
-    expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
+        const history = createMemoryHistory();
+        const fakeFetchRes = (
+            value: any
+        ): Promise<{
+            json: () => Promise<any>;
+        }> => Promise.resolve({ json: () => Promise.resolve(value) });
+        const mockFetch = jest
+            .fn()
+            .mockReturnValueOnce(fakeFetchRes({ presets: [] })) // and this is second
+            .mockReturnValueOnce(
+                fakeFetchRes({
+                    preset: {
+                        displayName: "",
+                        presetName: "waves",
+                        animVarCoeff: "64",
+                        _id: "6200149468fe291e26584e4d",
+                    },
+                })
+            )
+            .mockReturnValueOnce(
+                fakeFetchRes({
+                    preset: {
+                        displayName: "",
+                        presetName: "waves",
+                        animVarCoeff: "64",
+                        _id: "6200149468fe291e26584e4d",
+                    },
+                })
+            );
+        //@ts-ignore
+        global.fetch = mockFetch;
+        render(
+            <>
+                <Provider store={store}>
+                    <Router history={history}>
+                        <App />
+                    </Router>
+                </Provider>
+            </>
+        );
+        await act(async () => {
+            return void 0;
+        });
+        expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
-    expect(localStorage.getItem("id_token")).toBe(null);
-    localStorage.setItem("id_token", TestService.signTestToken({
-      username: "test user",
-      email: "test email",
-      uuid: uuid.v4(),
-      _id: keyGen(),
-    }));
-    expect(typeof localStorage.getItem("id_token")).toBe("string");
+        expect(fetch).toHaveBeenCalledTimes(3);
+        // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
 
-    const history = createMemoryHistory();
-    const fakeFetchRes = (value: any): Promise<{
-      json: () =>
-        Promise<any>;
-    }> => Promise.resolve({ json: () => Promise.resolve(value) });
-    const mockFetch = jest.fn()
-      .mockReturnValueOnce(fakeFetchRes({ presets: [] })) // and this is second 
-      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }))
-      .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" } }));
-    //@ts-ignore
-    global.fetch = mockFetch;
-    render(
-      <>
-        <Provider store={store}>
-          <Router history={history}>
-            <App />
-          </Router>
-        </Provider>
-      </>
-    );
-    await act(async () => {
-      return void 0;
+        expect(screen.getByTestId("location-display").textContent).toBe("/");
+
+        //only style tag should be present since we shouldn't get an array from the fake api fetch
+        const buttonsParent2 = await screen.findByTestId("buttons-parent");
+        expect(buttonsParent2.children).toHaveLength(5);
     });
-    expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
-
-    expect(fetch).toHaveBeenCalledTimes(3);
-    // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
-
-    expect(screen.getByTestId("location-display").textContent).toBe("/");
-
-    //only style tag should be present since we shouldn't get an array from the fake api fetch
-    const buttonsParent2 = await screen.findByTestId("buttons-parent");
-    expect(buttonsParent2.children).toHaveLength(5);
-
-  });
 });

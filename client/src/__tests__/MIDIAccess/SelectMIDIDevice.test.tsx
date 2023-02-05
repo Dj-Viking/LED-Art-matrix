@@ -45,8 +45,8 @@ describe("test selecting midi device toggles which device shows", () => {
         );
 
         const select = {
-            dropdown: await screen.findByTestId("midi-select") as HTMLElement,
-            options: await screen.findAllByTestId("select-option") as HTMLElement[],
+            dropdown: (await screen.findByTestId("midi-select")) as HTMLElement,
+            options: (await screen.findAllByTestId("select-option")) as HTMLElement[],
         };
 
         expect(select.dropdown).toBeInTheDocument();
@@ -61,6 +61,5 @@ describe("test selecting midi device toggles which device shows", () => {
         expect(select.dropdown).toHaveValue("XONE:K2 MIDI");
 
         expect(asFragment()).toMatchSnapshot();
-
     });
 });

@@ -12,12 +12,12 @@ import { ILedAnimVarCoeffChangeAction, ILedPresetSwitchAction } from "../types";
 //   }
 // });
 export const presetSwitch = (preset: string): ILedPresetSwitchAction => ({
-  type: "PRESET_SWITCH",
-  payload: preset
+    type: "PRESET_SWITCH",
+    payload: preset,
 });
 export const animVarCoeffChange = (coeff: string): ILedAnimVarCoeffChangeAction => ({
-  type: "VAR_COEFF_CHANGE",
-  payload: coeff
+    type: "VAR_COEFF_CHANGE",
+    payload: coeff,
 });
 // export const animationDurationChange = (data: string): ILedAnimationDurationChangeAction => ({
 //   type: "ANIMATION_DURATION_CHANGE",
@@ -37,5 +37,5 @@ export const animVarCoeffChange = (coeff: string): ILedAnimVarCoeffChangeAction 
 //   type: "SAVE_PRESET_NAME",
 //   payload: data
 // });
-// on mouse up?? transition from position in 
-// animation to beginning of current animation or 
+// on mouse up?? transition from position in
+// animation to beginning of current animation or

@@ -3,31 +3,33 @@ import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/
 
 // @ts-ignore
 export const setAccess: ISetAccessRecordAction = (
-  access: MIDIController,
-  onmidicb: (event: MIDIMessageEvent) => unknown,
-  onstatechangecb: (event: MIDIConnectionEvent) => unknown
+    access: MIDIController,
+    onmidicb: (event: MIDIMessageEvent) => unknown,
+    onstatechangecb: (event: MIDIConnectionEvent) => unknown
 ) => {
+    if (!access.inputs?.length) {
+        return {
+            type: "SET_ACCESS",
+            payload: { ...new MIDIController(access.getAccess()) },
+        };
+    }
 
-  if (!access.inputs?.length) {
+    const a = access;
+    a.setInputCbs(onmidicb, onstatechangecb);
+    a.setOutputCbs();
+
     return {
-      type: "SET_ACCESS",
-      payload: { ...new MIDIController(access.getAccess()) }
+        type: "SET_ACCESS",
+        payload: a as MIDIController | unknown,
     };
-  }
-
-  const a = access;
-  a.setInputCbs(onmidicb, onstatechangecb);
-  a.setOutputCbs();
-
-  return {
-    type: "SET_ACCESS",
-    payload: a as MIDIController | unknown
-  };
 };
 
-export const determineDeviceControl = (using: { usingFader: boolean, usingKnob: boolean }): IDetermineDeviceControlAction => {
-  return {
-    type: "DETERMINE_DEVICE_CONTROL",
-    payload: using
-  };
+export const determineDeviceControl = (using: {
+    usingFader: boolean;
+    usingKnob: boolean;
+}): IDetermineDeviceControlAction => {
+    return {
+        type: "DETERMINE_DEVICE_CONTROL",
+        payload: using,
+    };
 };

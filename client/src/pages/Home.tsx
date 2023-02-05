@@ -9,20 +9,19 @@ import { useHistory } from "react-router-dom";
 
 // audio player and big led box
 const Home: React.FC = (): JSX.Element => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+    const dispatch = useDispatch();
+    const history = useHistory();
 
-	useEffect(() => {
-    Auth.loggedIn() ? dispatch(login()) : dispatch(logout());
-	}, [history, dispatch]);
+    useEffect(() => {
+        Auth.loggedIn() ? dispatch(login()) : dispatch(logout());
+    }, [history, dispatch]);
 
-  
-  return (
-    <> 
-      <AudioPlayerComponent />
-      <BigLedBox />
-    </>
-  );
+    return (
+        <>
+            <AudioPlayerComponent />
+            <BigLedBox />
+        </>
+    );
 };
 
 export default Home;

@@ -15,7 +15,7 @@ export default async (): Promise<Config.InitialOptions> => {
       "!constants.ts",
       "!./config/*",
       "!jest.config.ts",
-      "!./stubs/*"
+      "!./stubs/*",
     ],
     coverageReporters: ["json", "html"],
     moduleFileExtensions: ["ts", "js"],
