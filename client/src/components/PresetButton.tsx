@@ -8,7 +8,6 @@ import { checkPresetButtonsActive } from "../actions/preset-button-actions";
 import { MyRootState } from "../types";
 import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
 import { KeyIcon } from "./KeyIcon";
-import styled from "styled-components";
 
 interface PresetButtonProps {
     button: {
@@ -24,8 +23,6 @@ interface PresetButtonProps {
         clickHandler: React.MouseEventHandler<HTMLElement>;
     };
 }
-
-const StyledButton = styled.button``;
 
 const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
     const {

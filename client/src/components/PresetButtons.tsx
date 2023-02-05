@@ -19,7 +19,6 @@ import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
 import { setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
-import PresetButtonStyles from "./StyleTags/PresetButtonStyles";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
@@ -233,7 +232,6 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             </div>
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
-                <PresetButtonStyles />
                 {Array.isArray(presetButtons) &&
                     presetButtons.map((button) => {
                         return <PresetButton key={button.key} button={{ ...button }} />;

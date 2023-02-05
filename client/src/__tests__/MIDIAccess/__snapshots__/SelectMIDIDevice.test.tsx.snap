@@ -52,7 +52,7 @@ exports[`test selecting midi device toggles which device shows select device fro
         XONE:K2 MIDI
       </p>
       <div
-        class="sc-bczRLJ gGpyYT"
+        class="sc-bczRLJ MTFLb"
       />
       <span>
         Intensity: 0
@@ -67,7 +67,7 @@ exports[`test selecting midi device toggles which device shows select device fro
         />
       </div>
       <div
-        class="sc-hKMtZM fCrJUW"
+        class="sc-hKMtZM fYEwBS"
       >
         <span>
           Channel: 0

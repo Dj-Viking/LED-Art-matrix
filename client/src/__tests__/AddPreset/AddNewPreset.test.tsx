@@ -100,7 +100,7 @@ describe("Adding a preset", () => {
         expect(screen.getByTestId("location-display").textContent).toBe("/");
         expect(fetch).toHaveBeenCalledTimes(2);
         const btnContainer = await screen.findByTestId("buttons-parent");
-        expect(btnContainer.children).toHaveLength(17);
+        expect(btnContainer.children).toHaveLength(16);
 
         // activate and change one of the constant/always provided presets and
         // attempt to save it with some new parameter values
@@ -156,7 +156,7 @@ describe("Adding a preset", () => {
             method: "POST",
         });
 
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(13);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(12);
         const newPresetBtn = await screen.findByText(/new preset/);
         expect(newPresetBtn).toBeInTheDocument();
 
