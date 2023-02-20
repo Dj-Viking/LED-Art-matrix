@@ -6,7 +6,7 @@
 
 Check it out here! 👇
 
-[![Deployed_on: Heroku](https://img.shields.io/badge/Deployed_on-Heroku-480087.svg)](https://led-matrices.herokuapp.com/)
+[![Deployed_on: Render](https://img.shields.io/badge/Deployed_on-Render-480087.svg)](https://led-matrices.onrender.com/)
 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT) 
