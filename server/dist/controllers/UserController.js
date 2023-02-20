@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const models_1 = require("../models");
 const utils_1 = require("../utils");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const constants_1 = require("../constants");
 const uuid = require("uuid");
 (0, utils_1.readEnv)();
@@ -233,7 +233,7 @@ exports.UserController = {
                 const decoded = yield (0, utils_1.verifyTokenAsync)(token);
                 if (decoded instanceof Error)
                     return res.status(403).json({ error: decoded });
-                const hashed = yield bcrypt_1.default.hash(password, Number(SALT));
+                const hashed = yield bcryptjs_1.default.hash(password, Number(SALT));
                 const user = yield models_1.User.findOneAndUpdate({ email: decoded.resetEmail }, {
                     password: hashed,
                 }, { new: true }).select("-password");

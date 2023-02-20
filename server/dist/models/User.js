@@ -25,14 +25,14 @@ exports.UserClass = void 0;
 require("dotenv").config();
 const typegoose_1 = require("@typegoose/typegoose");
 const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Order_1 = require("./Order");
 const PresetClass_1 = require("./PresetClass");
 const SearchTerm_1 = require("./SearchTerm");
 let UserClass = class UserClass {
     isCorrectPassword(plainPass) {
         return __awaiter(this, void 0, void 0, function* () {
-            return bcrypt_1.default.compare(plainPass, this.password);
+            return bcryptjs_1.default.compare(plainPass, this.password);
         });
     }
 };
@@ -75,7 +75,7 @@ UserClass = __decorate([
     (0, typegoose_1.pre)("save", function (next) {
         return __awaiter(this, void 0, void 0, function* () {
             if (this.isNew)
-                this.password = yield bcrypt_1.default.hash(this.password, Number(process.env.SALT));
+                this.password = yield bcryptjs_1.default.hash(this.password, Number(process.env.SALT));
             next();
         });
     }),

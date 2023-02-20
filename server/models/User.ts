@@ -2,7 +2,7 @@ require("dotenv").config();
 import { pre, prop, plugin, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
 import mongooseUniqueValidator from "mongoose-unique-validator";
 
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { OrderClass } from "./Order";
 import { PresetClass } from "./PresetClass";
 import { SearchTermClass } from "./SearchTerm";
