@@ -71,8 +71,6 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
     "mini-css-extract-plugin": "^2.4.5",
-    "msw": "^0.36.4",
-    "node-sass": "^7.0.1",
     "postcss": "^8.4.4",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-loader": "^6.2.1",
