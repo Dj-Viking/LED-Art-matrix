@@ -1,5 +1,5 @@
 export const IS_PROD = process.env.NODE_ENV === "production";
-export const API_URL = IS_PROD ? "https://https://led-matrices.onrender.com/" : "http://localhost:3001";
+export const API_URL = IS_PROD ? "https://led-matrices.onrender.com/" : "http://localhost:3001";
 export const RAINBOW_TEST_ANIMATION = `
 @keyframes rainbowTest {
   0.001% {
