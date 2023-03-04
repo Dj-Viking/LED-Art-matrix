@@ -3,80 +3,93 @@
 exports[`test selecting midi device toggles which device shows select device from dropdown menu 1`] = `
 <DocumentFragment>
   <div
-    style="display: none;"
-  />
-  <h2>
-    MIDI Devices
-  </h2>
-  <div
-    style="display: flex; flex-direction: column; justify-content: center;"
+    style="visibility: visible; height: auto;"
   >
     <div
-      style="display: flex; align-items: center; justify-content: center;"
+      style="display: none;"
+    />
+    <h2
+      class=""
     >
-      <select
-        data-testid="midi-select"
-        style="background-color: black;"
-      >
-        <option
-          data-testid="select-option"
-          disabled=""
-          value="Select A Connected Device"
-        >
-          Select A Connected Device
-        </option>
-        <option
-          data-testid="select-option"
-          value="XONE:K2 MIDI"
-        >
-          XONE:K2 MIDI
-        </option>
-        <option
-          data-testid="select-option"
-          value="XONE:K2 MIDI"
-        >
-          XONE:K2 MIDI
-        </option>
-        <option
-          data-testid="select-option"
-          value="XONE:K2 MIDI"
-        >
-          XONE:K2 MIDI
-        </option>
-      </select>
-    </div>
+      MIDI Devices
+    </h2>
     <div
-      style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
+      style="display: flex; flex-direction: column; justify-content: center;"
     >
-      <p>
-        XONE:K2 MIDI
-      </p>
       <div
-        class="sc-bczRLJ MTFLb"
-      />
-      <span>
-        Intensity: 0
-      </span>
-      <div
-        style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+        class=""
+        style="display: flex; align-items: center; justify-content: center;"
       >
-        <progress
-          max="127"
-          style="width: 50%;"
-          value="0"
-        />
+        <select
+          class=""
+          data-testid="midi-select"
+          style="background-color: black;"
+        >
+          <option
+            data-testid="select-option"
+            disabled=""
+            value="Select A Connected Device"
+          >
+            Select A Connected Device
+          </option>
+          <option
+            data-testid="select-option"
+            value="XONE:K2 MIDI"
+          >
+            XONE:K2 MIDI
+          </option>
+          <option
+            data-testid="select-option"
+            value="XONE:K2 MIDI"
+          >
+            XONE:K2 MIDI
+          </option>
+          <option
+            data-testid="select-option"
+            value="XONE:K2 MIDI"
+          >
+            XONE:K2 MIDI
+          </option>
+        </select>
       </div>
       <div
-        class="sc-hKMtZM fYEwBS"
+        class=""
+        style="position: relative; width: 50%; margin: 0px auto; border: 1px solid green;"
       >
-        <span>
-          Channel: 0
-        </span>
-        <p
-          style="margin: 0px;"
-        >
-          unknown control name
+        <p>
+          XONE:K2 MIDI
         </p>
+        <div
+          class="sc-bczRLJ MTFLb"
+        >
+          <div
+            class=""
+          />
+        </div>
+        <span>
+          Intensity: 0
+        </span>
+        <div
+          style="margin-top: 1em; display: flex; flex-direction: column; justify-content: center; align-items: center;"
+        >
+          <progress
+            max="127"
+            style="width: 50%;"
+            value="0"
+          />
+        </div>
+        <div
+          class="sc-hKMtZM fYEwBS"
+        >
+          <span>
+            Channel: 0
+          </span>
+          <p
+            style="margin: 0px;"
+          >
+            unknown control name
+          </p>
+        </div>
       </div>
     </div>
   </div>

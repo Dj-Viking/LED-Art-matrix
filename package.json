@@ -42,6 +42,7 @@
   },
   "homepage": "https://github.com/Dj-Viking/03-project#readme",
   "dependencies": {
+    "@types/testing-library__react": "^10.2.0",
     "concurrently": "^5.3.0",
     "istanbul-lib-coverage": "^3.2.0",
     "nyc": "^15.1.0"

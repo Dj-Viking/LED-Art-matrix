@@ -124,7 +124,7 @@ describe("Test that the animation variation slider changes the style values", ()
             })
             .filter((item) => typeof item === "string") as string[] | [];
 
-        expect(delayMatches2.length).toBe(1024);
+        expect(delayMatches2.length).toBe(1089);
 
         const delayValAfter = delayMatches2[0].trim();
         expect(delayValAfter).toBe("animation-delay: 0.2079326923076923s;");
