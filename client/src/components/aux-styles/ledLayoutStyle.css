@@ -31,6 +31,10 @@
   margin-top: 10vh;
 }
 
+.led-matrix-container-led-window {
+  margin: 0;
+}
+
 .border-top-led {
   border-top: ridge 5px rgb(67, 26, 163);
   border-radius: 50%;

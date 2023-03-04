@@ -266,6 +266,7 @@ code {
   }
 }
 .preset-delete-mode {
+  border: solid 1px white;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 10px;
@@ -286,10 +287,19 @@ code {
   width: 100px;
   text-align: center;
   color: white;
+  border: solid 1px white;
   background-color: black;
   cursor: pointer;
 }
+
+.no-height {
+  height: 0px;
+  padding: 0;
+  margin: 0;
+}
+
 .preset-button-active {
+  border: solid 1px white;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 10px;
@@ -303,6 +313,7 @@ code {
 }
 
 .preset-button-disabled {
+  border: solid 1px white;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 10px;
@@ -314,6 +325,7 @@ code {
 }
 
 .preset-button-inactive {
+  border: solid 1px white;
   margin-left: 5px;
   margin-right: 5px;
   margin-bottom: 10px;

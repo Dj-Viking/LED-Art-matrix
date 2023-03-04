@@ -15,6 +15,7 @@ import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
+import { isLedWindow } from "../App";
 
 const BigLedBox: React.FC = (): JSX.Element => {
     const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
@@ -72,19 +73,25 @@ const BigLedBox: React.FC = (): JSX.Element => {
         }
     }
 
-    createLedObjectsArray(33);
-    createLedRowsArray(33);
+    createLedObjectsArray(34);
+    createLedRowsArray(34);
 
     return (
         <>
-            <main className="box-style">
+            <main>
                 <LedStyleTag />
-                <section className="controls-container">
+                <section
+                    className="controls-container"
+                    style={{
+                        visibility: isLedWindow() ? "hidden" : "visible",
+                        height: isLedWindow() ? "0px" : "auto",
+                    }}
+                >
                     <ArtScroller />
                     <div className="border-top-led" />
                     <PresetButtons />
                 </section>
-                <section id="led-box" className="led-matrix-container">
+                <section className={"led-matrix-container-led-window"}>
                     {rows.map((row, index) => (
                         <div
                             key={`row${index + 1}`}

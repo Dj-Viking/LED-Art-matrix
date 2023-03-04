@@ -3,6 +3,7 @@ import React, { ReactNode } from "react";
 import { MIDIPortDeviceState, MIDIInput, MIDIController } from "../utils/MIDIControlClass";
 import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../constants";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
+import { isLedWindow } from "../App";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
@@ -27,7 +28,7 @@ export const ControlNameContainer = styled.div`
 `;
 
 export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) => {
-    return <h2>{heading}</h2>;
+    return <h2 className={isLedWindow() ? "no-height" : ""}>{heading}</h2>;
 };
 
 export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {
@@ -51,7 +52,7 @@ export interface IControlSvgProps {
 }
 export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
     return (
-        <>
+        <div className={isLedWindow() ? "no-height" : ""}>
             {props.usings.usingFader && (
                 <FaderSvgDiv>
                     <Fader intensity_prop={props.intensity_input} />
@@ -62,7 +63,7 @@ export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
                     <Knob intensity_prop={props.intensity_input} />
                 </KnobSvgDiv>
             )}
-        </>
+        </div>
     );
 };
 
@@ -76,6 +77,7 @@ interface MIDISelectProps {
 export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, option }) => {
     return (
         <select
+            className={isLedWindow() ? "no-height" : ""}
             data-testid="midi-select"
             value={option || "Select A Connected Device"}
             onChange={(e) => {
@@ -100,6 +102,7 @@ export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, 
 export const MIDISelectContainer: React.FC<any> = ({ children }) => {
     return (
         <div
+            className={isLedWindow() ? "no-height" : ""}
             style={{
                 display: "flex",
                 alignItems: "center",
@@ -135,6 +138,7 @@ export const DeviceInterfaceContainer: React.FC<{
     };
     return (
         <div
+            className={isLedWindow() ? "no-height" : ""}
             style={{
                 position: "relative",
                 width: "50%",

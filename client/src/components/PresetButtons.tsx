@@ -2,13 +2,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
 import PresetButton from "./PresetButton";
 import {
     _deletePresetButtonSpring,
     _saveButtonSpring,
     _clear,
     _saveNewPresetButtonSpring,
+    _openNewWindow,
 } from "./SpringButtons";
 import { AuthService as Auth } from "../utils/AuthService";
 import API from "../utils/ApiService";
@@ -30,6 +31,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     const saveButtonSpring = useSpring(_saveButtonSpring);
     const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
     const deletePresetButtonSpring = useSpring(_deletePresetButtonSpring);
+    const openNewWindowButtonSpring = useSpring(_openNewWindow);
     const clear = useSpring(_clear);
 
     const dispatch = useDispatch();
@@ -228,6 +230,20 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                             ? "Don't Delete A Preset"
                             : "Delete A Preset"
                         : null}
+                </animated.button>
+
+                <animated.button
+                    role="button"
+                    data-testid="openNewWindow"
+                    style={openNewWindowButtonSpring}
+                    className="preset-button"
+                    onClick={(event: any) => {
+                        event.preventDefault();
+                        window.open(window.location + "LedWindow");
+                        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
+                    }}
+                >
+                    {"Open LED Grid In New Window"}
                 </animated.button>
             </div>
 

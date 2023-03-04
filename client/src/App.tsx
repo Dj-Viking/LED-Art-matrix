@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import { createStore } from "redux";
 import allReducers from "./reducers";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
+import { LedWindow } from "./pages/LedWindow";
 
 const store = createStore(
     allReducers,
@@ -32,6 +33,10 @@ export const HiddenLocationDisplay = (): JSX.Element => {
     );
 };
 
+export function isLedWindow(): boolean {
+    return window.location.pathname.includes("LedWindow");
+}
+
 const App: React.FC = (): JSX.Element => {
     const history = createBrowserHistory();
     return (
@@ -40,11 +45,12 @@ const App: React.FC = (): JSX.Element => {
                 <Router history={history}>
                     <BrowserRouter>
                         <KeyListenerWrapper>
-                            <SplashHeader />
+                            {!isLedWindow() && <SplashHeader />}
                             <Route exact path="/" component={Home} />
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/signup" component={Signup} />
                             <Route exact path="/forgotPassword" component={ForgotPassword} />
+                            <Route exact path="/ledWindow" component={LedWindow} />
                             <Route
                                 exact
                                 path="/changePassword/:token?"

@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
-import { LedStyleEngine } from "../utils/LedStyleEngineClass";
-import { setLedStyle } from "../actions/style-actions";
 import { checkPresetButtonsActive } from "../actions/preset-button-actions";
 import { MyRootState } from "../types";
 import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
 import { KeyIcon } from "./KeyIcon";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 
 interface PresetButtonProps {
     button: {
@@ -40,14 +38,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
     const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
     const { deleteModeActive } = useSelector((state: MyRootState) => state.deleteModalState);
 
-    function setStyle(preset: string): void {
-        const LedEngine = new LedStyleEngine(preset);
-        const styleHTML = LedEngine.createStyleSheet(animVarCoeff);
-        dispatch(animVarCoeffChange(animVarCoeff));
-        dispatch(setLedStyle(styleHTML));
-    }
-
-    // @ts-ignore
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
         switch (true) {
             case isActive && !deleteModeActive: {
@@ -62,6 +52,8 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
             case isActive && deleteModeActive: {
                 return "preset-delete-mode";
             }
+            default:
+                return "";
         }
     }
 
@@ -77,8 +69,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                     clickHandler(event);
                     if (!deleteModeActive) {
                         dispatch(checkPresetButtonsActive(presetButtons, id));
-                        dispatch(presetSwitch(presetName));
-                        setStyle(presetName);
+                        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
                     } else {
                         dispatch(setDeleteModalOpen(true));
                         dispatch(setDeleteModalContext({ btnId: id, displayName }));

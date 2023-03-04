@@ -65,8 +65,8 @@ export class LedStyleEngine {
 
     private createLedClass(coeff: string): string {
         let ledClass = "";
-        for (let row = 1; row < 33; row++) {
-            for (let led = 1; led < 33; led++) {
+        for (let row = 1; row < 34; row++) {
+            for (let led = 1; led < 34; led++) {
                 ledClass += this.generateLedClass(led, row, coeff); //appending with += because this is procedural for each column and row
             }
         }
