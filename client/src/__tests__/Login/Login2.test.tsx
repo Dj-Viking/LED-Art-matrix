@@ -2,7 +2,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
@@ -22,6 +22,7 @@ import { createMemoryHistory } from "history";
 
 // did not have this method implemented by default during the test
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { LOCATION_DISPLAY_ID } from "../../constants";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -35,10 +36,12 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 };
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
+
+let mockFetch: jest.Mock<any, any>;
 
 describe("test signup functionality with token", () => {
     document.body.innerHTML = "";
@@ -52,7 +55,7 @@ describe("test signup functionality with token", () => {
             status: 200;
             json: () => Promise<any>;
         }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
-        const mockFetch = jest
+        mockFetch = jest
             .fn()
             //default
             // .mockReturnValue("kdfjkdj")
@@ -89,7 +92,11 @@ describe("test signup functionality with token", () => {
             return el.classList.contains("nav-button");
         }) as HTMLElement;
         expect(page).toBeInTheDocument();
-        fireEvent.click(page);
+        act(() => {
+            fireEvent.click(page);
+        });
+
+        expect(screen.getByTestId(LOCATION_DISPLAY_ID).textContent).toBe("/login");
 
         const inputEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
@@ -113,16 +120,12 @@ describe("test signup functionality with token", () => {
             inputEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
 
-        // console.log("local storage", localStorage.getItem("id_token"));
-
-        //not sure why logout button can't be found might have to fake local storage too.
         const logout = (await screen.findAllByText(/Logout/g)).find((el) => {
             return el.classList.contains("nav-button");
         }) as HTMLElement;
 
         expect(logout).toBeInTheDocument();
 
-        // fireEvent.click(logout);
         document.body.innerHTML = "";
     });
 });

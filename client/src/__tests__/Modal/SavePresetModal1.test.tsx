@@ -3,7 +3,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -82,7 +82,7 @@ describe("test the save modal functionality", () => {
         const history = createMemoryHistory();
 
         const store = createStore(
-            allReducers,
+            combinedReducers,
             // @ts-expect-error this will exist in the browser
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
         );

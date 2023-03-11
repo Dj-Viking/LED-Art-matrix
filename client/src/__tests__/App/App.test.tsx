@@ -2,7 +2,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen } from "@testing-library/react";
@@ -17,7 +17,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

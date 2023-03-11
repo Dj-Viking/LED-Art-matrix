@@ -43,4 +43,3 @@ class AuthService {
 }
 
 export default AuthService;
-export { AuthService };

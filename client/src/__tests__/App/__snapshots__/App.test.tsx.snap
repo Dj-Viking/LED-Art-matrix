@@ -289,7 +289,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-fetch-button"
               data-testid="start-art"
               role="button"
-              style="opacity: 0.02573745909509893; margin-right: 974.3912282003765px;"
+              style="opacity: 0.2782163991655446; margin-right: 723.1746828302831px;"
             >
               Start Art Scroller!
             </button>
@@ -297,7 +297,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-toggle-button-off"
               data-testid="switch-scroller"
               role="button"
-              style="opacity: 0.02573745909509893;"
+              style="opacity: 0.2782163991655446;"
             >
               <div>
                 
@@ -646,7 +646,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="preset-button"
           data-testid="clear"
           role="button"
-          style="opacity: 0.022634843307857987;"
+          style="opacity: 0.20769585416091543;"
         >
           clear
         </button>
@@ -655,7 +655,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="saveDefault"
           disabled=""
           role="button"
-          style="opacity: 0.022634843307857987;"
+          style="opacity: 0.20769585416091543;"
         >
           Save as Default
         </button>
@@ -664,7 +664,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="savePreset"
           disabled=""
           role="button"
-          style="opacity: 0.022634843307857987;"
+          style="opacity: 0.20769585416091543;"
         >
           Save as new Preset
         </button>
@@ -673,7 +673,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="deletePreset"
           disabled=""
           role="button"
-          style="opacity: 0.022634843307857987;"
+          style="opacity: 0.20769585416091543;"
         >
           Delete A Preset
         </button>
@@ -681,7 +681,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="preset-button"
           data-testid="openNewWindow"
           role="button"
-          style="opacity: 0.022634843307857987;"
+          style="opacity: 0.20769585416091543;"
         >
           Open LED Grid In New Window
         </button>
@@ -693,7 +693,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="295.63464576919387something unique lol"
+          id="4116.799154841566something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -750,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="2075.5757591229053something unique lol"
+          id="212.4038940156092something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -807,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="641.6525080247459something unique lol"
+          id="4958.710758410689something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -864,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="4642.937572584318something unique lol"
+          id="4680.082855305974something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -921,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="5473.66489930599something unique lol"
+          id="4203.3760372799something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -978,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="936.4866326160337something unique lol"
+          id="6460.579303972736something unique lol"
           role="button"
           tabindex="-1"
         >

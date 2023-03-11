@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import { AuthService as Auth } from "./AuthService";
+import Auth from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
 import { API_URL } from "../constants";
 import { IGif, ISaveUserPresetArgs } from "../types";

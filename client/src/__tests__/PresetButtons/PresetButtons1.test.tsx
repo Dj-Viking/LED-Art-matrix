@@ -2,7 +2,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
@@ -35,7 +35,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 };
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -74,10 +74,8 @@ it("full app rendering/navigating", async () => {
     render(
         <Provider store={store}>
             <Router history={history}>
-                s
                 <App />
             </Router>
-            ,
         </Provider>
     );
 
@@ -118,13 +116,12 @@ it("full app rendering/navigating", async () => {
 
     expect(fetch).toHaveBeenCalledTimes(4);
     expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-        body: "{\"usernameOrEmail\":{\"username\":\"i existi exist\"},\"password\":\"believe itbelieve it\"}",
+        body: '{"usernameOrEmail":{"username":"i existi exist"},"password":"believe itbelieve it"}',
         headers: {
             "Content-Type": "application/json",
         },
         method: "POST",
     });
-    // expect(fetch).toHaveBeenNthCalledWith(2, "kdjfkdj");
 
     //should be routed home after logging in
     expect(hiddenHistoryRef2).toHaveTextContent("/");

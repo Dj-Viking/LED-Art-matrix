@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { useHistory } from "react-router-dom";
 import { Spinner } from "../components/Spinner";

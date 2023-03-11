@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { escape } from "he";
 import API from "../../utils/ApiService";
-import { AuthService as Auth } from "../../utils/AuthService";
+import Auth from "../../utils/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { MyRootState } from "../../types";
 import { deletePreset } from "../../actions/preset-button-actions";

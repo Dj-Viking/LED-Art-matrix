@@ -3,7 +3,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
@@ -21,6 +21,9 @@ import {
     MOCK_SIGN_TOKEN_ARGS,
 } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import PresetButtons from "../../components/PresetButtons";
+import { mount } from "enzyme";
+import { DeleteButton } from "../../components/PresetButton.style";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -33,9 +36,12 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     } as MIDIAccessRecord);
 };
 
-const store = createStore(allReducers);
+const store = createStore(combinedReducers);
 
 describe("test deleting a preset from the user's preset button list", () => {
+    afterEach(() => {
+        localStorage.clear();
+    });
     it("enables a delete function to allow clicking a preset that deletes it, checks if user wants to delete the preset first", async () => {
         expect(localStorage.getItem("id_token")).toBe(null);
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
@@ -137,5 +143,38 @@ describe("test deleting a preset from the user's preset button list", () => {
             headers: { "Content-Type": "application/json", authorization: expect.any(String) },
             method: "DELETE",
         });
+    });
+    it("coverages the delete button click handler", () => {
+        expect(localStorage.getItem("id_token")).toBe(null);
+        localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
+        expect(typeof localStorage.getItem("id_token")).toBe("string");
+
+        const fakeFetchRes = (
+            value: any
+        ): Promise<{
+            status: 200;
+            json: () => Promise<any>;
+        }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
+        const mockFetch = jest
+            .fn()
+            .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+            .mockReturnValueOnce(
+                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
+            )
+            .mockReturnValueOnce(
+                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
+            )
+            .mockReturnValueOnce(fakeFetchRes({ message: "deleted" }));
+        // @ts-ignore
+        global.fetch = mockFetch;
+        const wrapper = mount(
+            <Provider store={store}>
+                <PresetButtons />
+            </Provider>
+        );
+
+        const deleteButton = wrapper.find(DeleteButton);
+
+        deleteButton.props().clickHandler?.(TestService.createBubbledEvent("click"));
     });
 });

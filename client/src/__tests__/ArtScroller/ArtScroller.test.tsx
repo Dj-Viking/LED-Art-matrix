@@ -3,7 +3,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
@@ -17,7 +17,7 @@ import { act } from "react-dom/test-utils";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 
-const store = createStore(allReducers);
+const store = createStore(combinedReducers);
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test

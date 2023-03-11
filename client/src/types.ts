@@ -313,6 +313,18 @@ export interface ILogoutAction {
     type: "LOG_OUT";
     payload: false;
 }
+
+export type GlobalState = IAccessRecordState &
+    ISaveModalState &
+    IDeleteModalState &
+    ILedState &
+    IPresetButtonsListState &
+    ILoggedInState &
+    ILedStyleTagState &
+    ILoginFormState &
+    ISignupFormState &
+    IArtScrollerState;
+
 export interface MyRootState {
     accessRecordState: IAccessRecordState;
     saveModalState: ISaveModalState;

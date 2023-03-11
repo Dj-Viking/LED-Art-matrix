@@ -2,7 +2,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
@@ -28,7 +28,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     } as MIDIAccessRecord);
 };
 
-const store = createStore(allReducers);
+const store = createStore(combinedReducers);
 
 describe("test the preset buttons are becoming active and inactive and clearing active status when clear button clicked", () => {
     it("tests page renders", () => {

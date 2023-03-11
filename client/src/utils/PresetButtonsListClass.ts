@@ -18,7 +18,7 @@ class PresetButtonsList {
         dbPresets: IDBPreset[] | [],
         activeId?: string
     ) {
-        this._list = dbPresets.map((preset, index: number) => {
+        this._list = dbPresets?.map((preset, index: number) => {
             return {
                 id: preset._id,
                 key: preset._id,

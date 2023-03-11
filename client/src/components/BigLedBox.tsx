@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
@@ -39,7 +39,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
         (async (): Promise<void> => {
             if (Auth.loggedIn()) {
                 const preset = (await getDefaultPreset()) as IDBPreset;
-                if (typeof preset.presetName === "string") {
+                if (typeof preset?.presetName === "string") {
                     dispatch(animVarCoeffChange(preset.animVarCoeff as string));
                     dispatch(presetSwitch(preset.presetName));
                     LedEngineRef.current = new LedStyleEngine(preset.presetName);

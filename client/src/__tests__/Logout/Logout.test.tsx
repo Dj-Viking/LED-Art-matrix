@@ -1,7 +1,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
@@ -33,7 +33,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 };
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -114,7 +114,7 @@ describe("tests the logout works", () => {
 
         expect(fetch).toHaveBeenCalledTimes(4);
         expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-            body: "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
+            body: '{"usernameOrEmail":{"email":"iexist@exist.com"},"password":"believe it"}',
             headers: {
                 "Content-Type": "application/json",
             },

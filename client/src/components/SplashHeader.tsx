@@ -1,5 +1,5 @@
 import React from "react";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import Nav from "./Nav";
 
 const SplashHeader: React.FC = (): JSX.Element => (

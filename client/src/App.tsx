@@ -11,12 +11,12 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ChangePassword from "./pages/ChangePassword";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import allReducers from "./reducers";
+import { combinedReducers } from "./reducers";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
 import { LedWindow } from "./pages/LedWindow";
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

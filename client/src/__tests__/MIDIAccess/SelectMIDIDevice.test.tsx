@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 //@ts-ignore
 import React from "react";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { fireEvent, render, screen } from "@testing-library/react";
@@ -19,7 +19,7 @@ import { TestService } from "../../utils/TestServiceClass";
 import { MOCK_MIDI_ACCESS_RECORD } from "../../utils/mocks";
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );

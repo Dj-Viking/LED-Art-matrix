@@ -1,21 +1,11 @@
 /* eslint-disable no-empty */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useSpring, animated } from "@react-spring/web";
 import PresetButton from "./PresetButton";
-import {
-    _deletePresetButtonSpring,
-    _saveButtonSpring,
-    _clear,
-    _saveNewPresetButtonSpring,
-    _openNewWindow,
-} from "./SpringButtons";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
-import { clearStyle } from "../actions/style-actions";
-import { IPresetButton, MyRootState } from "../types";
+import { IPresetButton } from "../types";
 import Modal from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
 import { setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
@@ -26,23 +16,35 @@ import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-ac
 import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
 import { keyGen } from "../utils/keyGen";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
+import { getGlobalState } from "../reducers";
+import {
+    ClearButton,
+    DeleteButton,
+    OpenNewWindowButton,
+    PresetControlButtonsContainer,
+    PresetLabelTitle,
+    SaveDefaultButton,
+    SavePresetButton,
+} from "./PresetButton.style";
+import { clearStyle } from "../actions/style-actions";
 
-const PresetButtons: React.FC<any> = (): JSX.Element => {
-    const saveButtonSpring = useSpring(_saveButtonSpring);
-    const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
-    const deletePresetButtonSpring = useSpring(_deletePresetButtonSpring);
-    const openNewWindowButtonSpring = useSpring(_openNewWindow);
-    const clear = useSpring(_clear);
+export interface IPresetButtonsProps {
+    children?: any;
+}
 
+const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const dispatch = useDispatch();
-    const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
-    const { presetButtons } = useSelector((state: MyRootState) => state.presetButtonsListState);
-    const { deleteModalIsOpen, deleteModalContext, deleteModeActive } = useSelector(
-        (state: MyRootState) => state.deleteModalState
-    );
-    const { saveModalIsOpen, saveModalContext } = useSelector(
-        (state: MyRootState) => state.saveModalState
-    );
+
+    const {
+        presetName,
+        animVarCoeff,
+        deleteModalIsOpen,
+        deleteModalContext,
+        deleteModeActive,
+        saveModalIsOpen,
+        saveModalContext,
+        presetButtons,
+    } = getGlobalState(useSelector);
 
     async function handleSaveDefault(event: any): Promise<void> {
         event.preventDefault();
@@ -50,6 +52,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             Array.isArray(presetButtons) && presetButtons.length > 0
                 ? presetButtons.filter((btn) => btn.isActive)[0]
                 : void 0;
+
         if (preset) {
             await API.updateDefaultPreset({
                 displayName: preset.displayName,
@@ -59,6 +62,24 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                 token: Auth.getToken() as string,
             });
         }
+    }
+
+    function handleOpenNewWindow(event: any): void {
+        event.preventDefault();
+        window.open(window.location + "LedWindow");
+        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
+    }
+
+    function deleteButtonClickHandler(event: any): void {
+        event.preventDefault();
+        dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+    }
+
+    function clearButtonClickHandler(event: any): void {
+        event.preventDefault();
+        dispatch(presetSwitch(""));
+        dispatch(clearStyle());
+        dispatch(setAllInactive(presetButtons));
     }
 
     const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
@@ -74,7 +95,7 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        if (presetButtons.length === 0) {
+        if (presetButtons?.length === 0) {
             if (!Auth.loggedIn()) {
                 const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
 
@@ -112,8 +133,10 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
             }
         }
 
-        return void 0;
-    }, [dispatch, getPresets, presetButtons.length]);
+        return () => {
+            /*do nothing on unmount */
+        };
+    }, [dispatch, getPresets, getDefaultForActiveStatus, presetButtons?.length]);
 
     return (
         <>
@@ -143,116 +166,24 @@ const PresetButtons: React.FC<any> = (): JSX.Element => {
                 />
             </Modal>
 
-            <span
-                style={{
-                    color: "white",
-                    textAlign: "center",
-                }}
-            >
-                LED Matrix Presets
-            </span>
-            {!Auth.loggedIn() && (
-                <>
-                    <span
-                        style={{
-                            color: "white",
-                        }}
-                    >
-                        To save your own Preset, Log in or Sign up!
-                    </span>
-                </>
-            )}
-            <div className="preset-button-container">
-                <animated.button
-                    style={clear}
-                    role="button"
-                    data-testid="clear"
-                    className="preset-button"
-                    onClick={() => {
-                        dispatch(presetSwitch(""));
-                        dispatch(clearStyle());
-                        dispatch(setAllInactive(presetButtons));
-                    }}
-                >
-                    clear
-                </animated.button>
+            <PresetLabelTitle auth={Auth} />
 
-                <animated.button
-                    role="button"
-                    data-testid="saveDefault"
-                    style={saveButtonSpring}
-                    className={
-                        Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
-                    }
-                    disabled={!Auth.loggedIn()} // enable if logged in
-                    onClick={handleSaveDefault}
-                >
-                    Save as Default
-                </animated.button>
-
-                <animated.button
-                    role="button"
-                    data-testid="savePreset"
-                    style={saveNewPresetButtonSpring}
-                    className={
-                        Auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
-                    }
-                    disabled={!Auth.loggedIn()} // enable if logged in
-                    onClick={(event: any) => {
-                        event.preventDefault();
-                        dispatch(setSaveModalIsOpen(true));
-                        dispatch(
-                            setSaveModalContext({
-                                animVarCoeff,
-                                presetName,
-                            })
-                        );
-                    }}
-                >
-                    Save as new Preset
-                </animated.button>
-
-                <animated.button
-                    role="button"
-                    data-testid="deletePreset"
-                    style={deletePresetButtonSpring}
-                    className={
-                        Auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"
-                    }
-                    disabled={!Auth.loggedIn()} // enable if logged in
-                    onClick={(event: any) => {
-                        event.preventDefault();
-                        dispatch(toggleDeleteMode(deleteModeActive ? false : true));
-                    }}
-                >
-                    {Array.isArray(presetButtons) && presetButtons.length > 0
-                        ? deleteModeActive
-                            ? "Don't Delete A Preset"
-                            : "Delete A Preset"
-                        : null}
-                </animated.button>
-
-                <animated.button
-                    role="button"
-                    data-testid="openNewWindow"
-                    style={openNewWindowButtonSpring}
-                    className="preset-button"
-                    onClick={(event: any) => {
-                        event.preventDefault();
-                        window.open(window.location + "LedWindow");
-                        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
-                    }}
-                >
-                    {"Open LED Grid In New Window"}
-                </animated.button>
-            </div>
+            <PresetControlButtonsContainer>
+                <ClearButton clickHandler={clearButtonClickHandler} />
+                <SaveDefaultButton auth={Auth} clickHandler={handleSaveDefault} />
+                <SavePresetButton auth={Auth} />
+                <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
+                <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
+            </PresetControlButtonsContainer>
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
                 {Array.isArray(presetButtons) &&
                     presetButtons.map((button) => {
                         return <PresetButton key={button.key} button={{ ...button }} />;
                     })}
+
                 <MIDIListenerWrapper />
+
                 {["dm5", "waves", "v2", "rainbowTest"].includes(presetName) && (
                     <>
                         <Slider

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { logout } from "../actions/logged-in-actions";
 import { MyRootState } from "../types";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import "./aux-styles/navStyles.css";
 
 const Nav: React.FC = (): JSX.Element => {

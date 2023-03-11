@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import { login, logout } from "../actions/logged-in-actions";
 // components
 import AudioPlayerComponent from "../components/AudioPlayer";
