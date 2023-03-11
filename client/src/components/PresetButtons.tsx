@@ -48,10 +48,10 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
     async function handleSaveDefault(event: any): Promise<void> {
         event.preventDefault();
+        /* istanbul ignore next */
         const preset: IPresetButton | void =
             Array.isArray(presetButtons) && presetButtons.length > 0
                 ? presetButtons.filter((btn) => btn.isActive)[0]
-                /* istanbul ignore next */
                 : void 0;
 
         if (preset) {

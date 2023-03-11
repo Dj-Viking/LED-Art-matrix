@@ -693,7 +693,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="4116.799154841566something unique lol"
+          id="6274.709741927453something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -750,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="212.4038940156092something unique lol"
+          id="8553.820212879089something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -807,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="4958.710758410689something unique lol"
+          id="7843.3700770587575something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -864,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="4680.082855305974something unique lol"
+          id="9551.416517720058something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -921,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="4203.3760372799something unique lol"
+          id="2729.223340579967something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -978,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="6460.579303972736something unique lol"
+          id="4153.414792556034something unique lol"
           role="button"
           tabindex="-1"
         >
