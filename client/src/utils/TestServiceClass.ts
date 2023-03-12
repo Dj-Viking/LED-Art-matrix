@@ -52,14 +52,18 @@ export class TestService implements ITestService {
      * @param cssDeclaration style object of the selected element from the virtual DOM
      * @returns a simple object as { values: string } with the style values object containing the css rules of the selected element
      */
-    public static getStyles(cssDeclaration: CSSStyleDeclaration): Record<"values", any> {
+    public static getStyles(
+        cssDeclaration: CSSStyleDeclaration
+    ): Record<"values", CSSStyleDeclaration> {
         let styleValues = {} as Record<"values", any>;
         Object.keys(cssDeclaration).forEach((key) => {
             // console.log("key", key, ":", gifStyleRef[key as keyof CSSStyleDeclaration]);
-            if (key === "_values") {
+            // ignoring this type because this _values thing comes from the test itself
+            // with whatever the testing library objects that were created
+            if (key === ("_values" as any)) {
                 styleValues = {
                     ...styleValues,
-                    values: cssDeclaration[key as any],
+                    values: cssDeclaration[key],
                 };
             }
         });

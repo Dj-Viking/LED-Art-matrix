@@ -40,19 +40,13 @@ const reducers = {
 function getGlobalState(selectorFn: typeof useSelector): GlobalState {
     const state = selectorFn((state: MyRootState) => state);
 
-    let ret: GlobalState;
-    ret = {} as any;
+    let ret = {} as GlobalState;
 
-    Object.keys(state).forEach((_key: string) => {
-        let state_key = _key as keyof MyRootState;
-        Object.keys(state[state_key]).forEach((__key: string) => {
-            let key = __key as any;
-            // @ts-ignore this works just fine - i can't make a type for this easily
-            // spreading the keys and values of each state object into just one global state object
-            // and make it type safe... yet
-            ret[key] = state[state_key as keyof MyRootState][key as any];
-        });
-    });
+    for (const stateKey of Object.keys(state)) {
+        for (const stateValueKey of Object.keys(state[stateKey])) {
+            ret[stateValueKey] = state[stateKey][stateValueKey];
+        }
+    }
 
     return ret;
 }

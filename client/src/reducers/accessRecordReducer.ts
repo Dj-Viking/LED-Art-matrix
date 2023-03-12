@@ -1,5 +1,10 @@
 import { IAccessRecordState, IAccessRecordAction } from "../types";
-import { MIDIAccessRecord, MIDIInput, MIDIOutput } from "../utils/MIDIControlClass";
+import {
+    MIDIAccessRecord,
+    MIDIConnectionEvent,
+    MIDIInput,
+    MIDIOutput,
+} from "../utils/MIDIControlClass";
 
 const accessRecordReducer = (
     state: IAccessRecordState = {
@@ -8,8 +13,13 @@ const accessRecordReducer = (
         inputs: [] as Array<MIDIInput>,
         outputs: [] as Array<MIDIOutput>,
         online: false,
-        access: {} as MIDIAccessRecord,
-        onstatechange: null,
+        access: {
+            inputs: new Map<string, any>(),
+            outputs: new Map<string, any>(),
+            sysexEnabled: false,
+            onstatechange: (_event: MIDIConnectionEvent) => void 0,
+        } as MIDIAccessRecord,
+        onstatechange: (_event: MIDIConnectionEvent) => void 0,
         sysexEnabled: false,
     },
     action: IAccessRecordAction
