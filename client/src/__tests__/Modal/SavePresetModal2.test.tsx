@@ -2,7 +2,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { act, render, screen } from "@testing-library/react";
@@ -32,7 +32,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
     it("tests that the api didn't send an array with items, buttons should not render", async () => {
         expect(screen.queryByTestId("waves")).not.toBeInTheDocument();
         const store = createStore(
-            allReducers,
+            combinedReducers,
             // @ts-expect-error this will exist in the browser
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
         );
@@ -103,6 +103,6 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
 
         //only style tag should be present since we shouldn't get an array from the fake api fetch
         const buttonsParent2 = await screen.findByTestId("buttons-parent");
-        expect(buttonsParent2.children).toHaveLength(4);
+        expect(buttonsParent2.children).toHaveLength(2);
     });
 });

@@ -3,7 +3,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -82,7 +82,7 @@ describe("test the save modal functionality", () => {
         const history = createMemoryHistory();
 
         const store = createStore(
-            allReducers,
+            combinedReducers,
             // @ts-expect-error this will exist in the browser
             window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
         );
@@ -153,7 +153,7 @@ describe("test the save modal functionality", () => {
         expect(awaitedButton.classList).toHaveLength(1);
         expect(awaitedButton.classList[0]).toBe("preset-button-inactive");
         const buttonsParent = screen.getByTestId("buttons-parent");
-        expect(buttonsParent.children).toHaveLength(16);
+        expect(buttonsParent.children).toHaveLength(14);
 
         //start a preset to make the slider appear
         const v2 = await screen.findByTestId("v2");

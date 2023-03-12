@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
-import { AuthService as Auth } from "../utils/AuthService";
+import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
@@ -15,6 +15,7 @@ import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
+import { isLedWindow } from "../App";
 
 const BigLedBox: React.FC = (): JSX.Element => {
     const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
@@ -38,7 +39,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
         (async (): Promise<void> => {
             if (Auth.loggedIn()) {
                 const preset = (await getDefaultPreset()) as IDBPreset;
-                if (typeof preset.presetName === "string") {
+                if (typeof preset?.presetName === "string") {
                     dispatch(animVarCoeffChange(preset.animVarCoeff as string));
                     dispatch(presetSwitch(preset.presetName));
                     LedEngineRef.current = new LedStyleEngine(preset.presetName);
@@ -72,19 +73,25 @@ const BigLedBox: React.FC = (): JSX.Element => {
         }
     }
 
-    createLedObjectsArray(33);
-    createLedRowsArray(33);
+    createLedObjectsArray(34);
+    createLedRowsArray(34);
 
     return (
         <>
-            <main className="box-style">
+            <main>
                 <LedStyleTag />
-                <section className="controls-container">
+                <section
+                    className="controls-container"
+                    style={{
+                        visibility: isLedWindow() ? "hidden" : "visible",
+                        height: isLedWindow() ? "0px" : "auto",
+                    }}
+                >
                     <ArtScroller />
                     <div className="border-top-led" />
                     <PresetButtons />
                 </section>
-                <section id="led-box" className="led-matrix-container">
+                <section className={"led-matrix-container-led-window"}>
                     {rows.map((row, index) => (
                         <div
                             key={`row${index + 1}`}

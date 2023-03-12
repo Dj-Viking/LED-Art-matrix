@@ -1,6 +1,7 @@
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
+//
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,7 @@ import {
 import { IAccessRecordState, MyRootState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
+import { isLedWindow } from "../App";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -81,43 +83,52 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
     return (
         <>
-            <TestMIDI testid="test-midi" midi_access={accessState} />
-            <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
-            <MIDIWrapperContainer>
-                <MIDISelectContainer>
-                    <MIDISelect
-                        setOption={setOption}
-                        option={option}
-                        midi_inputs={accessState.inputs}
-                    />
-                </MIDISelectContainer>
-                {option && (
-                    <DeviceInterfaceContainer
-                        statename={getInput(accessState.inputs, option)?.state || "disconnected"}
-                        controllerName={getStrippedInputName(
-                            getInputName(accessState.inputs, option)
-                        )}
-                    >
-                        <InputName name={getInputName(accessState.inputs, option)} />
-                        <DeviceSvgContainer>
-                            <ControlSvg
-                                usings={{ usingFader, usingKnob }}
-                                intensity_input={intensity}
-                            />
-                        </DeviceSvgContainer>
-                        <IntensityBar intensity={intensity || 0} />
-                        <ControlNameContainer>
-                            <ChannelNumber channel={channel || 0} />
-                            <MIDIChannelControl
-                                name={getControlName(
-                                    getInputName(accessState.inputs, option),
-                                    channel
-                                )}
-                            />
-                        </ControlNameContainer>
-                    </DeviceInterfaceContainer>
-                )}
-            </MIDIWrapperContainer>
+            <div
+                style={{
+                    visibility: isLedWindow() ? "hidden" : "visible",
+                    height: isLedWindow() ? "0px" : "auto",
+                }}
+            >
+                <TestMIDI testid="test-midi" midi_access={accessState} />
+                <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
+                <MIDIWrapperContainer>
+                    <MIDISelectContainer>
+                        <MIDISelect
+                            setOption={setOption}
+                            option={option}
+                            midi_inputs={accessState.inputs}
+                        />
+                    </MIDISelectContainer>
+                    {option && (
+                        <DeviceInterfaceContainer
+                            statename={
+                                getInput(accessState.inputs, option)?.state || "disconnected"
+                            }
+                            controllerName={getStrippedInputName(
+                                getInputName(accessState.inputs, option)
+                            )}
+                        >
+                            <InputName name={getInputName(accessState.inputs, option)} />
+                            <DeviceSvgContainer>
+                                <ControlSvg
+                                    usings={{ usingFader, usingKnob }}
+                                    intensity_input={intensity}
+                                />
+                            </DeviceSvgContainer>
+                            <IntensityBar intensity={intensity || 0} />
+                            <ControlNameContainer>
+                                <ChannelNumber channel={channel || 0} />
+                                <MIDIChannelControl
+                                    name={getControlName(
+                                        getInputName(accessState.inputs, option),
+                                        channel
+                                    )}
+                                />
+                            </ControlNameContainer>
+                        </DeviceInterfaceContainer>
+                    )}
+                </MIDIWrapperContainer>
+            </div>
         </>
     );
 };

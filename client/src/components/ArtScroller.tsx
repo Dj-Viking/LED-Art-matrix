@@ -1,5 +1,5 @@
 import React from "react";
-import { useSpring, animated } from "react-spring";
+import { useSpring, animated } from "@react-spring/web";
 import { useSelector, useDispatch } from "react-redux";
 import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
 import "./aux-styles/artScrollerLayoutStyle.css";
@@ -73,7 +73,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                                     ? "scroller-toggle-button-on"
                                     : "scroller-toggle-button-off"
                             }
-                            onClick={(event) => {
+                            onClick={(event: any) => {
                                 event.preventDefault();
                                 dispatch(setFigureOn(!figureOn));
                             }}

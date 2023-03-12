@@ -3,7 +3,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
@@ -33,7 +33,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     } as MIDIAccessRecord);
 };
 
-const store = createStore(allReducers);
+const store = createStore(combinedReducers);
 
 describe("test deleting a preset from the user's preset button list", () => {
     it.only("enables a delete function to allow clicking a preset that deletes it, checks if user wants to delete the preset first", async () => {
@@ -102,7 +102,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         // expect(fetch).toHaveBeenNthCalledWith(1, "dkfkdfjkd"); // /user/presets first /user second
         // expect(fetch).toHaveBeenNthCalledWith(2, "dkfkdfjkd"); // /user/presets first /user second
 
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(16);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(14);
 
         const deleteBtn = await screen.findByTestId("deletePreset");
 
@@ -165,7 +165,7 @@ describe("test deleting a preset from the user's preset button list", () => {
             },
             method: "DELETE",
         });
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(16);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(14);
 
         expect(await screen.findByTestId("delete-error")).toBeInTheDocument();
     });

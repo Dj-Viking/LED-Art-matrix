@@ -3,7 +3,7 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -24,7 +24,7 @@ import {
 import { MIDIAccessRecord } from "../../utils/MIDIControlClass";
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -100,7 +100,7 @@ describe("Adding a preset error", () => {
         expect(screen.getByTestId("location-display").textContent).toBe("/");
         expect(fetch).toHaveBeenCalledTimes(3);
         const btnContainer = await screen.findByTestId("buttons-parent");
-        expect(btnContainer.children).toHaveLength(16);
+        expect(btnContainer.children).toHaveLength(14);
 
         // activate and change one of the constant/always provided presets and
         // attempt to save it with some new parameter values
@@ -156,7 +156,7 @@ describe("Adding a preset error", () => {
             method: "POST",
         });
 
-        expect(btnContainer.children).toHaveLength(16);
+        expect(btnContainer.children).toHaveLength(14);
         const error = await screen.findByTestId("add-error");
         expect(error).toBeInTheDocument();
     });

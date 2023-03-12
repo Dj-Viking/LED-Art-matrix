@@ -1,1 +1,191 @@
-export {};
+import React from "react";
+import { useSpring, animated } from "@react-spring/web";
+import {
+    _deletePresetButtonSpring,
+    _saveButtonSpring,
+    _clear,
+    _saveNewPresetButtonSpring,
+    _openNewWindow,
+} from "./SpringButtons";
+import { useDispatch, useSelector } from "react-redux";
+import AuthService from "../utils/AuthService";
+import { getGlobalState } from "../reducers";
+import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
+
+interface PresetLabelTitleProps {
+    auth: typeof AuthService;
+}
+
+const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
+    return (
+        <>
+            <span
+                style={{
+                    color: "white",
+                    textAlign: "center",
+                }}
+            >
+                LED Matrix Presets
+            </span>
+            {!props.auth.loggedIn() && (
+                <>
+                    <span
+                        style={{
+                            color: "white",
+                        }}
+                    >
+                        To save your own Preset, Log in or Sign up!
+                    </span>
+                </>
+            )}
+        </>
+    );
+};
+
+interface ClearButtonProps {
+    clickHandler: (event: any) => void;
+}
+
+const ClearButton: React.FC<ClearButtonProps> = (props) => {
+    const clear = useSpring(_clear);
+    return (
+        <animated.button
+            style={clear}
+            role="button"
+            data-testid="clear"
+            className="preset-button"
+            onClick={props.clickHandler}
+        >
+            clear
+        </animated.button>
+    );
+};
+
+interface SaveDefaultButtonProps {
+    auth: typeof AuthService;
+    clickHandler: (_event: any) => Promise<void>;
+}
+
+const SaveDefaultButton: React.FC<SaveDefaultButtonProps> = (props) => {
+    const saveButtonSpring = useSpring(_saveButtonSpring);
+
+    return (
+        <animated.button
+            role="button"
+            data-testid="saveDefault"
+            style={saveButtonSpring}
+            className={
+                props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
+            }
+            disabled={!props.auth.loggedIn()} // enable if logged in
+            onClick={props.clickHandler}
+        >
+            Save as Default
+        </animated.button>
+    );
+};
+
+interface SavePresetButtonProps {
+    auth: typeof AuthService;
+}
+
+const SavePresetButton: React.FC<SavePresetButtonProps> = (props) => {
+    const saveNewPresetButtonSpring = useSpring(_saveNewPresetButtonSpring);
+    const dispatch = useDispatch();
+    const { presetName, animVarCoeff } = getGlobalState(useSelector);
+    return (
+        <animated.button
+            role="button"
+            data-testid="savePreset"
+            style={saveNewPresetButtonSpring}
+            className={
+                props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
+            }
+            disabled={!props.auth.loggedIn()} // enable if logged in
+            onClick={(event: any) => {
+                event.preventDefault();
+                dispatch(setSaveModalIsOpen(true));
+                dispatch(
+                    setSaveModalContext({
+                        animVarCoeff,
+                        presetName,
+                    })
+                );
+            }}
+        >
+            Save as new Preset
+        </animated.button>
+    );
+};
+
+interface DeletePresetButtonProps {
+    auth: typeof AuthService;
+    clickHandler: (event: any) => void;
+}
+
+const DeleteButton: React.FC<DeletePresetButtonProps> = (props) => {
+    const deletePresetButtonSpring = useSpring(_deletePresetButtonSpring);
+    const { presetButtons, deleteModeActive } = getGlobalState(useSelector);
+
+    return (
+        <animated.button
+            role="button"
+            data-testid="deletePreset"
+            style={deletePresetButtonSpring}
+            className={
+                props.auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"
+            }
+            disabled={!props.auth.loggedIn()} // enable if logged in
+            onClick={props.clickHandler}
+        >
+            {Array.isArray(presetButtons) && presetButtons.length > 0
+                ? deleteModeActive
+                    ? "Don't Delete A Preset"
+                    : "Delete A Preset"
+                : null}
+        </animated.button>
+    );
+};
+
+interface OpenNewWindowButtonProps {
+    handleOpenNewWindow: (event: any) => void;
+}
+
+const OpenNewWindowButton: React.FC<OpenNewWindowButtonProps> = (props) => {
+    const openNewWindowButtonSpring = useSpring(_openNewWindow);
+    return (
+        <animated.button
+            role="button"
+            data-testid="openNewWindow"
+            style={openNewWindowButtonSpring}
+            className="preset-button"
+            onClick={props.handleOpenNewWindow}
+        >
+            {"Open LED Grid In New Window"}
+        </animated.button>
+    );
+};
+
+const PresetControlButtonsContainer: React.FC<{
+    children: React.ReactNode | React.ReactNode[];
+}> = ({ children }) => {
+    return <div className="preset-button-container">{children}</div>;
+};
+
+export type {
+    SavePresetButtonProps,
+    DeletePresetButtonProps,
+    PresetLabelTitleProps,
+    SaveDefaultButtonProps,
+    ClearButtonProps,
+    OpenNewWindowButtonProps,
+};
+export {
+    SavePresetButton,
+    PresetLabelTitle,
+    PresetControlButtonsContainer,
+    ClearButton,
+    SaveDefaultButton,
+    DeleteButton,
+    OpenNewWindowButton,
+};

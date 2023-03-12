@@ -22,6 +22,8 @@ window.HTMLMediaElement.prototype.addTextTrack = () => {
     /* do nothing */
 };
 
+window.open = () => null;
+
 export async function MyConfig(): Promise<Config.InitialOptions> {
     return {
         verbose: true,

@@ -1,4 +1,4 @@
-import { ISignTestTokenArgs } from "../types";
+import { GlobalState, ISignTestTokenArgs } from "../types";
 import jwt from "jsonwebtoken";
 import {
     MIDIAccessRecord,
@@ -13,8 +13,12 @@ import {
     TestMIDIConnectionEvent,
 } from "./MIDIControlClass";
 import { MOCK_MIDI_ACCESS_RECORD } from "./mocks";
+import * as redux from "react-redux";
+
+const mockedRedux: jest.Mocked<typeof redux> = redux as any;
 
 interface ITestService {
+    mockedRedux: jest.Mocked<typeof redux>;
     inputMap: Map<MIDIInput["id"], MIDIInput>;
     outputMap: Map<MIDIOutput["id"], MIDIOutput>;
     makeFakeMIDIInputs: () => Map<MIDIInput["id"], MIDIInput>;
@@ -28,6 +32,7 @@ interface ITestService {
  * helper class for the testing environment
  */
 export class TestService implements ITestService {
+    public mockedRedux: jest.Mocked<typeof redux> = mockedRedux;
     private _access: MIDIAccessRecord;
     public inputMap = new Map<string, MIDIInput>();
     public inputs = [] as MIDIInput[];
@@ -36,9 +41,10 @@ export class TestService implements ITestService {
 
     constructor(access: MIDIAccessRecord) {
         this._access = access;
-        if (access.inputs.size > 0) this.inputMap = access.inputs;
-        if (access.outputs.size > 0) this.outputMap = access.outputs;
-        if (this.inputMap.size > 0) this._setInputArrs();
+        if (access.inputs?.size > 0) this.inputMap = access.inputs;
+        if (access.outputs?.size > 0) this.outputMap = access.outputs;
+        if (this.inputMap?.size > 0) this._setInputArrs();
+        this.mockReduxModule();
     }
 
     /**
@@ -46,18 +52,49 @@ export class TestService implements ITestService {
      * @param cssDeclaration style object of the selected element from the virtual DOM
      * @returns a simple object as { values: string } with the style values object containing the css rules of the selected element
      */
-    public static getStyles(cssDeclaration: CSSStyleDeclaration): Record<"values", any> {
+    public static getStyles(
+        cssDeclaration: CSSStyleDeclaration
+    ): Record<"values", CSSStyleDeclaration> {
         let styleValues = {} as Record<"values", any>;
         Object.keys(cssDeclaration).forEach((key) => {
             // console.log("key", key, ":", gifStyleRef[key as keyof CSSStyleDeclaration]);
-            if (key === "_values") {
+            // ignoring this type because this _values thing comes from the test itself
+            // with whatever the testing library objects that were created
+            if (key === ("_values" as any)) {
                 styleValues = {
                     ...styleValues,
-                    values: cssDeclaration[key as any],
+                    values: cssDeclaration[key],
                 };
             }
         });
         return styleValues;
+    }
+
+    public mockReduxModule(): void {
+        let original: any;
+        original = jest.requireActual("react-redux");
+
+        this.mockedRedux = {
+            ...original,
+            useSelector: jest.fn(),
+        };
+
+        jest.mock("react-redux", () => {
+            const original = jest.requireActual("react-redux");
+            return {
+                ...original,
+                useSelector: jest.fn(),
+            };
+        });
+    }
+
+    public selectorFnMockImpl(
+        mockSelectorFn: jest.Mock<any, any>,
+        additionalProps: Record<keyof GlobalState, GlobalState[keyof GlobalState]>
+    ): void {
+        mockSelectorFn.mockImplementation(() => ({
+            ...additionalProps,
+        }));
     }
 
     /**

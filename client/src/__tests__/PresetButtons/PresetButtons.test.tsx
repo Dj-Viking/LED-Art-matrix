@@ -2,14 +2,13 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import allReducers from "../../reducers";
+import { combinedReducers } from "../../reducers";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
@@ -24,6 +23,15 @@ import {
 } from "../../utils/mocks";
 import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { mount, ReactWrapper } from "enzyme";
+import PresetButtons, { IPresetButtonsProps } from "../../components/PresetButtons";
+import {
+    ClearButton,
+    OpenNewWindowButton,
+    SaveDefaultButton,
+} from "../../components/PresetButton.style";
+import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
+import { setPresetButtonsList } from "../../actions/preset-button-actions";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -37,7 +45,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 };
 
 const store = createStore(
-    allReducers,
+    combinedReducers,
     // @ts-expect-error this will exist in the browser
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -71,7 +79,13 @@ describe("test logging in and checking buttons are there", () => {
             .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
             // third
             .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
+                fakeFetchRes({
+                    preset: {
+                        displayName: "waves",
+                        presetName: "waves",
+                        _id: "something",
+                    } as IDBPreset,
+                })
             );
         // @ts-ignore
         global.fetch = mockFetch;
@@ -526,5 +540,121 @@ describe("test logging in and checking buttons are there", () => {
         expect(clearLedRef).toBeInTheDocument();
         expect(clearLedRef.classList.length).toBe(1);
         expect(clearLedRef.classList[0]).toBe(ASSERT_ANIMATION.clearLed);
+    });
+
+    it("covers clicking the open new window button and calls the handler that opens the new window in the browser", () => {
+        const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
+            <Provider store={store}>
+                <PresetButtons />
+            </Provider>
+        );
+
+        const openNewWindowButton = wrapper.find(OpenNewWindowButton);
+
+        openNewWindowButton.props().handleOpenNewWindow?.({ preventDefault: () => null });
+    });
+    it("covers clicking the clear button click handler", () => {
+        const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
+            <Provider store={store}>
+                <PresetButtons />
+            </Provider>
+        );
+
+        const clearButton = wrapper.find(ClearButton);
+
+        clearButton.props().clickHandler?.({ preventDefault: () => null });
+    });
+
+    it("covers clicking the save default button click handler", () => {
+        const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
+            <Provider store={store}>
+                <PresetButtons />
+            </Provider>
+        );
+
+        const saveDefaultButton = wrapper.find(SaveDefaultButton);
+
+        saveDefaultButton.props().clickHandler?.({ preventDefault: () => null });
+    });
+    it("covers clicking the save default button click handler if there is a preset set in global state", () => {
+        jest.mock("../../utils/AuthService", () => {
+            class fakeService {
+                public static getToken(): string | false {
+                    // Retrieves the user token from localStorage
+                    return "fake token";
+                }
+
+                public static loggedIn(): boolean {
+                    return true;
+                }
+
+                public static isTokenExpired(_token: string): boolean {
+                    return false;
+                }
+
+                public static login(_token: string): boolean | void {
+                    return true;
+                }
+
+                public static logout(): void {
+                    return void 0;
+                }
+            }
+            return fakeService;
+        });
+        const fakeFetchRes = (
+            value: any
+        ): Promise<{
+            status: 200;
+            json: () => Promise<any>;
+        }> => Promise.resolve({ status: 200, json: () => Promise.resolve(value) });
+        const mockFetch = jest
+            .fn()
+            //default
+            // .mockReturnValue("kdfjkdj")
+            // first
+            .mockReturnValueOnce(fakeFetchRes(LOGIN_MOCK_TOKEN))
+            // second
+            .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
+            // third
+            .mockReturnValueOnce(
+                fakeFetchRes({
+                    preset: {
+                        displayName: "waves",
+                        presetName: "waves",
+                        _id: "something",
+                    } as IDBPreset,
+                })
+            );
+        // @ts-ignore
+        global.fetch = mockFetch;
+
+        // set an active preset in the store
+        store.dispatch(
+            setPresetButtonsList(
+                new PresetButtonsList(
+                    () => null,
+                    [
+                        {
+                            _id: "someid",
+                            animVarCoeff: "0",
+                            displayName: "fake preset",
+                            presetName: "whatevever",
+                        },
+                    ],
+                    "someid"
+                ).getList()
+            )
+        );
+
+        const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
+            <Provider store={store}>
+                <PresetButtons />
+            </Provider>
+        );
+
+        const saveDefaultButton = wrapper.find(SaveDefaultButton);
+
+        saveDefaultButton.props().clickHandler?.({ preventDefault: () => null });
     });
 });

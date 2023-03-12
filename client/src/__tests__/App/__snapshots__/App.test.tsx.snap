@@ -261,15 +261,14 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
       g6
     </div>
   </section>
-  <main
-    class="box-style"
-  >
+  <main>
     <style
       data-testid="led-style"
       id="led-style"
     />
     <section
       class="controls-container"
+      style="visibility: visible; height: auto;"
     >
       <main
         style="display: flex; flex-direction: column;"
@@ -290,7 +289,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-fetch-button"
               data-testid="start-art"
               role="button"
-              style="opacity: 0; margin-right: 1000px;"
+              style="opacity: 0.2782163991655446; margin-right: 723.1746828302831px;"
             >
               Start Art Scroller!
             </button>
@@ -298,7 +297,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
               class="scroller-toggle-button-off"
               data-testid="switch-scroller"
               role="button"
-              style="opacity: 0;"
+              style="opacity: 0.2782163991655446;"
             >
               <div>
                 
@@ -647,7 +646,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="preset-button"
           data-testid="clear"
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.20769585416091543;"
         >
           clear
         </button>
@@ -656,7 +655,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="saveDefault"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.20769585416091543;"
         >
           Save as Default
         </button>
@@ -665,7 +664,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="savePreset"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.20769585416091543;"
         >
           Save as new Preset
         </button>
@@ -674,9 +673,17 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="deletePreset"
           disabled=""
           role="button"
-          style="opacity: 0;"
+          style="opacity: 0.20769585416091543;"
         >
           Delete A Preset
+        </button>
+        <button
+          class="preset-button"
+          data-testid="openNewWindow"
+          role="button"
+          style="opacity: 0.20769585416091543;"
+        >
+          Open LED Grid In New Window
         </button>
       </div>
       <div
@@ -686,7 +693,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="rainbowTest"
-          id="7996.802162532459something unique lol"
+          id="6274.709741927453something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -743,7 +750,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="v2"
-          id="3715.4132358842617something unique lol"
+          id="8553.820212879089something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -800,7 +807,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="waves"
-          id="273.1628219220528something unique lol"
+          id="7843.3700770587575something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -857,7 +864,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="spiral"
-          id="8778.01981443409something unique lol"
+          id="9551.416517720058something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -914,7 +921,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="fourSpirals"
-          id="2055.792598570667something unique lol"
+          id="2729.223340579967something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -971,7 +978,7 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
         <button
           class="preset-button-inactive"
           data-testid="dm5"
-          id="3648.1756412049826something unique lol"
+          id="4153.414792556034something unique lol"
           role="button"
           tabindex="-1"
         >
@@ -1026,54 +1033,61 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           </p>
         </button>
         <div
-          style="display: none;"
-        />
-        <h2>
-          MIDI Devices
-        </h2>
-        <div
-          style="display: flex; flex-direction: column; justify-content: center;"
+          style="visibility: visible; height: auto;"
         >
           <div
-            style="display: flex; align-items: center; justify-content: center;"
+            style="display: none;"
+          />
+          <h2
+            class=""
           >
-            <select
-              data-testid="midi-select"
-              style="background-color: black;"
+            MIDI Devices
+          </h2>
+          <div
+            style="display: flex; flex-direction: column; justify-content: center;"
+          >
+            <div
+              class=""
+              style="display: flex; align-items: center; justify-content: center;"
             >
-              <option
-                data-testid="select-option"
-                disabled=""
-                value="Select A Connected Device"
+              <select
+                class=""
+                data-testid="midi-select"
+                style="background-color: black;"
               >
-                Select A Connected Device
-              </option>
-              <option
-                data-testid="select-option"
-                value="XONE:K2 MIDI"
-              >
-                XONE:K2 MIDI
-              </option>
-              <option
-                data-testid="select-option"
-                value="XONE:K2 MIDI"
-              >
-                XONE:K2 MIDI
-              </option>
-              <option
-                data-testid="select-option"
-                value="XONE:K2 MIDI"
-              >
-                XONE:K2 MIDI
-              </option>
-            </select>
+                <option
+                  data-testid="select-option"
+                  disabled=""
+                  value="Select A Connected Device"
+                >
+                  Select A Connected Device
+                </option>
+                <option
+                  data-testid="select-option"
+                  value="XONE:K2 MIDI"
+                >
+                  XONE:K2 MIDI
+                </option>
+                <option
+                  data-testid="select-option"
+                  value="XONE:K2 MIDI"
+                >
+                  XONE:K2 MIDI
+                </option>
+                <option
+                  data-testid="select-option"
+                  value="XONE:K2 MIDI"
+                >
+                  XONE:K2 MIDI
+                </option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
     </section>
     <section
-      class="led-matrix-container"
-      id="led-box"
+      class="led-matrix-container-led-window"
     >
       <div
         style="display: flex; flex-direction: row;"
@@ -1237,6 +1251,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-1"
           data-testid="led32-1"
           id="led32-1"
+        />
+        <div
+          class="led33-1"
+          data-testid="led33-1"
+          id="led33-1"
         />
       </div>
       <div
@@ -1402,6 +1421,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-2"
           id="led32-2"
         />
+        <div
+          class="led33-2"
+          data-testid="led33-2"
+          id="led33-2"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -1565,6 +1589,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-3"
           data-testid="led32-3"
           id="led32-3"
+        />
+        <div
+          class="led33-3"
+          data-testid="led33-3"
+          id="led33-3"
         />
       </div>
       <div
@@ -1730,6 +1759,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-4"
           id="led32-4"
         />
+        <div
+          class="led33-4"
+          data-testid="led33-4"
+          id="led33-4"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -1893,6 +1927,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-5"
           data-testid="led32-5"
           id="led32-5"
+        />
+        <div
+          class="led33-5"
+          data-testid="led33-5"
+          id="led33-5"
         />
       </div>
       <div
@@ -2058,6 +2097,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-6"
           id="led32-6"
         />
+        <div
+          class="led33-6"
+          data-testid="led33-6"
+          id="led33-6"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -2221,6 +2265,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-7"
           data-testid="led32-7"
           id="led32-7"
+        />
+        <div
+          class="led33-7"
+          data-testid="led33-7"
+          id="led33-7"
         />
       </div>
       <div
@@ -2386,6 +2435,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-8"
           id="led32-8"
         />
+        <div
+          class="led33-8"
+          data-testid="led33-8"
+          id="led33-8"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -2549,6 +2603,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-9"
           data-testid="led32-9"
           id="led32-9"
+        />
+        <div
+          class="led33-9"
+          data-testid="led33-9"
+          id="led33-9"
         />
       </div>
       <div
@@ -2714,6 +2773,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-10"
           id="led32-10"
         />
+        <div
+          class="led33-10"
+          data-testid="led33-10"
+          id="led33-10"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -2877,6 +2941,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-11"
           data-testid="led32-11"
           id="led32-11"
+        />
+        <div
+          class="led33-11"
+          data-testid="led33-11"
+          id="led33-11"
         />
       </div>
       <div
@@ -3042,6 +3111,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-12"
           id="led32-12"
         />
+        <div
+          class="led33-12"
+          data-testid="led33-12"
+          id="led33-12"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -3205,6 +3279,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-13"
           data-testid="led32-13"
           id="led32-13"
+        />
+        <div
+          class="led33-13"
+          data-testid="led33-13"
+          id="led33-13"
         />
       </div>
       <div
@@ -3370,6 +3449,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-14"
           id="led32-14"
         />
+        <div
+          class="led33-14"
+          data-testid="led33-14"
+          id="led33-14"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -3533,6 +3617,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-15"
           data-testid="led32-15"
           id="led32-15"
+        />
+        <div
+          class="led33-15"
+          data-testid="led33-15"
+          id="led33-15"
         />
       </div>
       <div
@@ -3698,6 +3787,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-16"
           id="led32-16"
         />
+        <div
+          class="led33-16"
+          data-testid="led33-16"
+          id="led33-16"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -3861,6 +3955,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-17"
           data-testid="led32-17"
           id="led32-17"
+        />
+        <div
+          class="led33-17"
+          data-testid="led33-17"
+          id="led33-17"
         />
       </div>
       <div
@@ -4026,6 +4125,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-18"
           id="led32-18"
         />
+        <div
+          class="led33-18"
+          data-testid="led33-18"
+          id="led33-18"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -4189,6 +4293,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-19"
           data-testid="led32-19"
           id="led32-19"
+        />
+        <div
+          class="led33-19"
+          data-testid="led33-19"
+          id="led33-19"
         />
       </div>
       <div
@@ -4354,6 +4463,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-20"
           id="led32-20"
         />
+        <div
+          class="led33-20"
+          data-testid="led33-20"
+          id="led33-20"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -4517,6 +4631,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-21"
           data-testid="led32-21"
           id="led32-21"
+        />
+        <div
+          class="led33-21"
+          data-testid="led33-21"
+          id="led33-21"
         />
       </div>
       <div
@@ -4682,6 +4801,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-22"
           id="led32-22"
         />
+        <div
+          class="led33-22"
+          data-testid="led33-22"
+          id="led33-22"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -4845,6 +4969,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-23"
           data-testid="led32-23"
           id="led32-23"
+        />
+        <div
+          class="led33-23"
+          data-testid="led33-23"
+          id="led33-23"
         />
       </div>
       <div
@@ -5010,6 +5139,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-24"
           id="led32-24"
         />
+        <div
+          class="led33-24"
+          data-testid="led33-24"
+          id="led33-24"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -5173,6 +5307,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-25"
           data-testid="led32-25"
           id="led32-25"
+        />
+        <div
+          class="led33-25"
+          data-testid="led33-25"
+          id="led33-25"
         />
       </div>
       <div
@@ -5338,6 +5477,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-26"
           id="led32-26"
         />
+        <div
+          class="led33-26"
+          data-testid="led33-26"
+          id="led33-26"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -5501,6 +5645,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-27"
           data-testid="led32-27"
           id="led32-27"
+        />
+        <div
+          class="led33-27"
+          data-testid="led33-27"
+          id="led33-27"
         />
       </div>
       <div
@@ -5666,6 +5815,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-28"
           id="led32-28"
         />
+        <div
+          class="led33-28"
+          data-testid="led33-28"
+          id="led33-28"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -5829,6 +5983,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-29"
           data-testid="led32-29"
           id="led32-29"
+        />
+        <div
+          class="led33-29"
+          data-testid="led33-29"
+          id="led33-29"
         />
       </div>
       <div
@@ -5994,6 +6153,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-30"
           id="led32-30"
         />
+        <div
+          class="led33-30"
+          data-testid="led33-30"
+          id="led33-30"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -6158,6 +6322,11 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           data-testid="led32-31"
           id="led32-31"
         />
+        <div
+          class="led33-31"
+          data-testid="led33-31"
+          id="led33-31"
+        />
       </div>
       <div
         style="display: flex; flex-direction: row;"
@@ -6321,6 +6490,180 @@ exports[`test rendering the app and snapshot matches snapshot DOM node structure
           class="led32-32"
           data-testid="led32-32"
           id="led32-32"
+        />
+        <div
+          class="led33-32"
+          data-testid="led33-32"
+          id="led33-32"
+        />
+      </div>
+      <div
+        style="display: flex; flex-direction: row;"
+      >
+        <div
+          class="led1-33"
+          data-testid="led1-33"
+          id="led1-33"
+        />
+        <div
+          class="led2-33"
+          data-testid="led2-33"
+          id="led2-33"
+        />
+        <div
+          class="led3-33"
+          data-testid="led3-33"
+          id="led3-33"
+        />
+        <div
+          class="led4-33"
+          data-testid="led4-33"
+          id="led4-33"
+        />
+        <div
+          class="led5-33"
+          data-testid="led5-33"
+          id="led5-33"
+        />
+        <div
+          class="led6-33"
+          data-testid="led6-33"
+          id="led6-33"
+        />
+        <div
+          class="led7-33"
+          data-testid="led7-33"
+          id="led7-33"
+        />
+        <div
+          class="led8-33"
+          data-testid="led8-33"
+          id="led8-33"
+        />
+        <div
+          class="led9-33"
+          data-testid="led9-33"
+          id="led9-33"
+        />
+        <div
+          class="led10-33"
+          data-testid="led10-33"
+          id="led10-33"
+        />
+        <div
+          class="led11-33"
+          data-testid="led11-33"
+          id="led11-33"
+        />
+        <div
+          class="led12-33"
+          data-testid="led12-33"
+          id="led12-33"
+        />
+        <div
+          class="led13-33"
+          data-testid="led13-33"
+          id="led13-33"
+        />
+        <div
+          class="led14-33"
+          data-testid="led14-33"
+          id="led14-33"
+        />
+        <div
+          class="led15-33"
+          data-testid="led15-33"
+          id="led15-33"
+        />
+        <div
+          class="led16-33"
+          data-testid="led16-33"
+          id="led16-33"
+        />
+        <div
+          class="led17-33"
+          data-testid="led17-33"
+          id="led17-33"
+        />
+        <div
+          class="led18-33"
+          data-testid="led18-33"
+          id="led18-33"
+        />
+        <div
+          class="led19-33"
+          data-testid="led19-33"
+          id="led19-33"
+        />
+        <div
+          class="led20-33"
+          data-testid="led20-33"
+          id="led20-33"
+        />
+        <div
+          class="led21-33"
+          data-testid="led21-33"
+          id="led21-33"
+        />
+        <div
+          class="led22-33"
+          data-testid="led22-33"
+          id="led22-33"
+        />
+        <div
+          class="led23-33"
+          data-testid="led23-33"
+          id="led23-33"
+        />
+        <div
+          class="led24-33"
+          data-testid="led24-33"
+          id="led24-33"
+        />
+        <div
+          class="led25-33"
+          data-testid="led25-33"
+          id="led25-33"
+        />
+        <div
+          class="led26-33"
+          data-testid="led26-33"
+          id="led26-33"
+        />
+        <div
+          class="led27-33"
+          data-testid="led27-33"
+          id="led27-33"
+        />
+        <div
+          class="led28-33"
+          data-testid="led28-33"
+          id="led28-33"
+        />
+        <div
+          class="led29-33"
+          data-testid="led29-33"
+          id="led29-33"
+        />
+        <div
+          class="led30-33"
+          data-testid="led30-33"
+          id="led30-33"
+        />
+        <div
+          class="led31-33"
+          data-testid="led31-33"
+          id="led31-33"
+        />
+        <div
+          class="led32-33"
+          data-testid="led32-33"
+          id="led32-33"
+        />
+        <div
+          class="led33-33"
+          data-testid="led33-33"
+          id="led33-33"
         />
       </div>
     </section>

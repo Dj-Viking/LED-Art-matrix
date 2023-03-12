@@ -9,6 +9,7 @@ import {
     MIDIPortDeviceState,
     MIDIPortType,
 } from "./MIDIControlClass";
+import { IDBPreset } from "./PresetButtonsListClass";
 const uuid = require("uuid");
 
 export const SAVE_DEFAULT_MOCK_SUCCESS = {
@@ -26,7 +27,7 @@ export const MOCK_SIGN_TOKEN_ARGS = {
     uuid: uuid.v4(),
     _id: keyGen(),
 };
-export const MOCK_PRESETS = [
+export const MOCK_PRESETS: IDBPreset[] = [
     {
         displayName: "",
         presetName: "rainbowTest",

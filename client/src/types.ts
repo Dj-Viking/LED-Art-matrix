@@ -9,6 +9,16 @@ import {
 } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 
+type RecordKey = string | number | symbol;
+declare global {
+    // make own overloads to the object static class methods
+    interface ObjectConstructor {
+        entries<K extends RecordKey, V>(o: Record<K, V> | ArrayLike<V>): [K, V][];
+        keys<O = object>(o: O): Array<keyof O>;
+        values<O = object>(o: O): Array<O[keyof O]>;
+    }
+}
+
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
     _id: string;
@@ -313,6 +323,18 @@ export interface ILogoutAction {
     type: "LOG_OUT";
     payload: false;
 }
+
+export type GlobalState = IAccessRecordState &
+    ISaveModalState &
+    IDeleteModalState &
+    ILedState &
+    IPresetButtonsListState &
+    ILoggedInState &
+    ILedStyleTagState &
+    ILoginFormState &
+    ISignupFormState &
+    IArtScrollerState;
+
 export interface MyRootState {
     accessRecordState: IAccessRecordState;
     saveModalState: ISaveModalState;

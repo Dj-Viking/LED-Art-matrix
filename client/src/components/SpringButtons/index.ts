@@ -1,4 +1,4 @@
-import { config } from "react-spring";
+import { config } from "@react-spring/web";
 
 export const _rainbowButtonSpring = {
     delay: 0,
@@ -122,6 +122,15 @@ export const _clear = {
     },
 };
 export const _deletePresetButtonSpring = {
+    delay: 0,
+    from: {
+        opacity: 0,
+    },
+    to: {
+        opacity: 1,
+    },
+};
+export const _openNewWindow = {
     delay: 0,
     from: {
         opacity: 0,
