@@ -192,7 +192,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                                     style={{
                                         position: "absolute",
                                         // satisfies type export type ZIndex = Globals | "auto" | (number & {});
-                                        zIndex: 1, 
+                                        zIndex: 1,
                                         filter: `invert(${Number(invert) / 100})`,
                                         borderRadius: "50%",
                                         animationName: "scrollAnim",
