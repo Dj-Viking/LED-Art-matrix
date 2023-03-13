@@ -191,8 +191,8 @@ const ArtScroller: React.FC = (): JSX.Element => {
                                     src={gif.gifSrc as string}
                                     style={{
                                         position: "absolute",
-                                        // @ts-expect-error whatever
-                                        zIndex: "1",
+                                        // satisfies type export type ZIndex = Globals | "auto" | (number & {});
+                                        zIndex: 1, 
                                         filter: `invert(${Number(invert) / 100})`,
                                         borderRadius: "50%",
                                         animationName: "scrollAnim",
