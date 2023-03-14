@@ -205,7 +205,7 @@ export const UserController = {
       }
 
       const returnUser = {
-        _id: foundUser!._id as string,
+        _id: foundUser!._id,
         defaultPreset: foundUser!.defaultPreset as PresetClass,
         token: foundUser!.token as string,
       };

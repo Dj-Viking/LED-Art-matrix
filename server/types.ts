@@ -2,6 +2,7 @@ import { Request } from "express";
 import { DocumentType } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
 import { UserClass } from "./models/User";
+import * as typegoose from "@typegoose/typegoose";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
@@ -17,7 +18,7 @@ export interface IJwtData extends jwt.JwtPayload {
 }
 
 export interface SignLoginRegisterMeTokenArgs {
-  _id?: string;
+  _id: typegoose.mongoose.Types.ObjectId | string;
   username: string;
   email: string;
   role?: string;
