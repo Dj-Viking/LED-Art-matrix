@@ -1,7 +1,7 @@
 import {
     IArtScrollerAction,
     IArtScrollerState,
-    IGetGifsAction,
+    ISetGifsAction,
     ISetAnimDurationAction,
     ISetCircleWidthAction,
     ISetFigureOnAction,
@@ -23,10 +23,10 @@ const artScrollerReducer = (
     action: IArtScrollerAction
 ): IArtScrollerState => {
     switch (action.type) {
-        case "GET_GIFS":
+        case "SET_GIFS":
             return {
                 ...state,
-                gifs: action.payload as IGetGifsAction["payload"],
+                gifs: action.payload as ISetGifsAction["payload"],
             };
         case "SET_ANIM_DUR":
             return {

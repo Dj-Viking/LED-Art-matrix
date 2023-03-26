@@ -1,148 +1,51 @@
 import React from "react";
-import { useSpring, animated } from "@react-spring/web";
 import { useSelector, useDispatch } from "react-redux";
-import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
-import "./aux-styles/artScrollerLayoutStyle.css";
-import API from "../utils/ApiService";
+// import "./aux-styles/artScrollerLayoutStyle.css";
 import { getRandomIntLimit } from "../utils/helpers";
-import {
-    getGifs,
-    setAnimDuration,
-    setCircleWidth,
-    setFigureOn,
-    setHPos,
-    setInvert,
-    setVertPos,
-} from "../actions/art-scroller-actions";
+import { setAnimDuration, setHPos, setInvert, setVertPos } from "../actions/art-scroller-actions";
 import { MyRootState } from "../types";
-import { BKeySvg } from "../lib/keySvgs";
+import {
+    ArtScrollerBorderTop,
+    ArtScrollerCircleWidthLabel,
+    ArtScrollerCircleWidthSlider,
+    ArtScrollerGifButtonContainer,
+    ArtScrollerHorizontalPositionSlider,
+    ArtScrollerHorizontalPositionSliderLabel,
+    ArtScrollerMainContainer,
+    ArtScrollerSection,
+    ArtScrollerSliderContainer,
+    ArtScrollerStartButton,
+    ArtScrollerTitle,
+    ArtScrollerToggleButton,
+    ArtScrollerVerticalPositionSlider,
+    ArtScrollerVerticalPositionSliderLabel,
+    InvertColorsSliderLabel,
+} from "./ArtScroller.style";
 
 const ArtScroller: React.FC = (): JSX.Element => {
-    const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
-    const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
     const dispatch = useDispatch();
     const { gifs, animDuration, vertPos, hPos, circleWidth, invert, figureOn } = useSelector(
         (state: MyRootState) => state.artScrollerState
     );
 
-    async function handleGetGifs(event: any): Promise<void> {
-        event.persist();
-        if (figureOn === false) dispatch(setFigureOn(true));
-        const gifs = await API.getGifs();
-        if (Array.isArray(gifs)) {
-            if (gifs.length) {
-                dispatch(getGifs(gifs));
-            }
-        }
-    }
-
     return (
         <>
-            <main
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                }}
-            >
-                <section>
-                    <div className="border-top-artScroller" />
-                    <span
-                        style={{
-                            color: "white",
-                            textAlign: "center",
-                        }}
-                    >
-                        Art Scroller Controls
-                    </span>
-                    <div className="gif-button-container">
-                        <animated.button
-                            style={leftInitButtonSpring}
-                            role="button"
-                            data-testid="start-art"
-                            className="scroller-fetch-button"
-                            onClick={handleGetGifs}
-                        >
-                            Start Art Scroller!
-                        </animated.button>
-                        <animated.button
-                            role="button"
-                            data-testid="switch-scroller"
-                            style={scrollerOnOffButtonSpring}
-                            className={
-                                figureOn
-                                    ? "scroller-toggle-button-on"
-                                    : "scroller-toggle-button-off"
-                            }
-                            onClick={(event: any) => {
-                                event.preventDefault();
-                                dispatch(setFigureOn(!figureOn));
-                            }}
-                        >
-                            {figureOn ? (
-                                <>
-                                    <BKeySvg />
-                                    <span style={{ color: "white" }}>Turn Off Scroller</span>
-                                </>
-                            ) : (
-                                <>
-                                    <BKeySvg />
-                                    <span style={{ color: "white" }}>Turn On Scroller</span>
-                                </>
-                            )}
-                        </animated.button>
-                    </div>
-                    <div className="slider-container">
-                        <label htmlFor="scroller-circle-width" style={{ color: "white" }}>
-                            Scroller Circle Width: {circleWidth}
-                        </label>
-                        <input
-                            name="scroller-circle-width"
-                            className="slider-style"
-                            type="range"
-                            data-testid="circle-width"
-                            min="0"
-                            max="100"
-                            value={circleWidth}
-                            onChange={(event) => {
-                                event.preventDefault();
-                                dispatch(setCircleWidth(event.target.value));
-                            }}
-                        />
-                        <label htmlFor="vertical-positioning" style={{ color: "white" }}>
-                            Scroller Vert Positioning: {vertPos}
-                        </label>
-                        <input
-                            name="vertical-positioning"
-                            className="slider-style"
-                            data-testid="vert-pos"
-                            type="range"
-                            min="0"
-                            max="200"
-                            value={vertPos}
-                            onChange={(event) => {
-                                event.preventDefault();
-                                dispatch(setVertPos(event.target.value));
-                            }}
-                        />
-                        <label htmlFor="horizontal-positioning" style={{ color: "white" }}>
-                            Scroller Horizontal Positioning: {Number(hPos) / 1000}
-                        </label>
-                        <input
-                            name="horizontal-positioning"
-                            className="slider-style"
-                            type="range"
-                            min="0"
-                            data-testid="horiz-pos"
-                            max="100"
-                            value={hPos}
-                            onChange={(event) => {
-                                event.preventDefault();
-                                dispatch(setHPos(event.target.value));
-                            }}
-                        />
-                        <label htmlFor="invert" style={{ color: "white" }}>
-                            Invert Colors: {Number(invert) / 100}
-                        </label>
+            <ArtScrollerMainContainer>
+                <ArtScrollerSection>
+                    <ArtScrollerBorderTop />
+                    <ArtScrollerTitle />
+                    <ArtScrollerGifButtonContainer>
+                        <ArtScrollerStartButton />
+                        <ArtScrollerToggleButton />
+                    </ArtScrollerGifButtonContainer>
+                    <ArtScrollerSliderContainer>
+                        <ArtScrollerCircleWidthLabel />
+                        <ArtScrollerCircleWidthSlider />
+                        <ArtScrollerVerticalPositionSliderLabel />
+                        <ArtScrollerVerticalPositionSlider />
+                        <ArtScrollerHorizontalPositionSliderLabel />
+                        <ArtScrollerHorizontalPositionSlider />
+                        <InvertColorsSliderLabel />
                         <input
                             className="slider-style"
                             name="invert"
@@ -172,7 +75,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                                 dispatch(setAnimDuration(event.target.value));
                             }}
                         />
-                    </div>
+                    </ArtScrollerSliderContainer>
                     <figure
                         data-testid="gifs-container"
                         style={{
@@ -212,8 +115,8 @@ const ArtScroller: React.FC = (): JSX.Element => {
                                 />
                             ))}
                     </figure>
-                </section>
-            </main>
+                </ArtScrollerSection>
+            </ArtScrollerMainContainer>
         </>
     );
 };

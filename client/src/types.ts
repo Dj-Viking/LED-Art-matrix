@@ -131,8 +131,8 @@ export interface ISetAnimDurationAction {
     type: "SET_ANIM_DUR";
     payload: string;
 }
-export interface IGetGifsAction {
-    type: "GET_GIFS";
+export interface ISetGifsAction {
+    type: "SET_GIFS";
     payload: Array<IGif>;
 }
 
@@ -207,7 +207,7 @@ export interface IArtScrollerState {
 }
 
 export type IArtScrollerActionTypes =
-    | IGetGifsAction["type"]
+    | ISetGifsAction["type"]
     | ISetAnimDurationAction["type"]
     | ISetVertPosAction["type"]
     | ISetHPosAction["type"]
@@ -216,7 +216,7 @@ export type IArtScrollerActionTypes =
     | ISetFigureOnAction["type"];
 
 export type IArtScrollerPayloads =
-    | IGetGifsAction["payload"]
+    | ISetGifsAction["payload"]
     | ISetAnimDurationAction["payload"]
     | ISetVertPosAction["payload"]
     | ISetHPosAction["payload"]
