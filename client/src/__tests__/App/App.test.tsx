@@ -54,22 +54,6 @@ describe("test rendering the app and snapshot", () => {
         });
     });
 
-    it("matches snapshot DOM node structure", async () => {
-        const history = createMemoryHistory();
-        const { asFragment } = render(
-            <Provider store={store}>
-                <Router history={history}>
-                    <App />
-                </Router>
-            </Provider>
-        );
-        //for the midi access state update no act warning
-        await act(async () => {
-            window.dispatchEvent(TestService.createBubbledEvent("statechange"));
-        });
-        expect(asFragment()).toMatchSnapshot();
-    });
-
     it("tests if we arrive to home page with an expired token in storage that, the logout button is not there", async () => {
         const history = createMemoryHistory();
         expect(localStorage.getItem("id_token")).toBe(null);

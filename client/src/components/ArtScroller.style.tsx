@@ -14,10 +14,11 @@ import {
     setInvert,
     setAnimDuration,
 } from "../actions/art-scroller-actions";
-import "./aux-styles/artScrollerLayoutStyle.css";
 import { BKeySvg } from "../lib/keySvgs";
 import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
+import "./aux-styles/artScrollerLayoutStyle.css";
+
 const ArtScrollerMainContainer = styled.main`
     display: flex;
     flex-direction: column;
