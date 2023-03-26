@@ -11,9 +11,13 @@ import {
     setCircleWidth,
     setVertPos,
     setHPos,
+    setInvert,
+    setAnimDuration,
 } from "../actions/art-scroller-actions";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import { BKeySvg } from "../lib/keySvgs";
+import { IGif } from "../types";
+import { getRandomIntLimit } from "../utils/helpers";
 const ArtScrollerMainContainer = styled.main`
     display: flex;
     flex-direction: column;
@@ -203,12 +207,120 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
     );
 };
 
-const InvertColorsSliderLabel: React.FC = () => {
+const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
     const { invert } = getGlobalState(useSelector);
     return (
         <label htmlFor="invert" style={{ color: "white" }}>
             Invert Colors: {Number(invert) / 100}
         </label>
+    );
+};
+
+type ArtScrollerInvertColorsSliderProps = DOMAttributes<HTMLInputElement>;
+
+const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps> = () => {
+    const { invert } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    return (
+        <input
+            className="slider-style"
+            name="invert"
+            type="range"
+            data-testid="invert"
+            min="0"
+            max="100"
+            value={invert}
+            onChange={(event) => {
+                event.preventDefault();
+                dispatch(setInvert(event.target.value));
+            }}
+        />
+    );
+};
+
+const ArtScrollerSpeedSliderLabel: React.FC = () => {
+    const { animDuration } = getGlobalState(useSelector);
+    return (
+        <label htmlFor="animation-duration" style={{ color: "white" }}>
+            Scroll Speed: {Number(animDuration) / 100}
+        </label>
+    );
+};
+
+type ArtScrollerSpeedSliderProps = DOMAttributes<HTMLInputElement>;
+
+const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
+    const { animDuration } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    return (
+        <input
+            className="slider-style"
+            name="animation-duration"
+            type="range"
+            data-testid="anim-duration"
+            min="1"
+            max="100"
+            value={animDuration}
+            onChange={(event) => {
+                event.preventDefault();
+                dispatch(setAnimDuration(event.target.value));
+            }}
+        />
+    );
+};
+
+const Gifs: React.FC<{ gifs: IGif[] }> = (props) => {
+    const { gifs } = props;
+    const { invert, animDuration, vertPos, circleWidth, hPos } = getGlobalState(useSelector);
+    return (
+        <>
+            {Array.isArray(gifs) &&
+                gifs.map((gif, index) => (
+                    <img
+                        key={gif._id}
+                        data-testid={`gif-${index}`}
+                        id={`gif-${index}`}
+                        alt={`gif-${index}`}
+                        src={gif.gifSrc}
+                        style={{
+                            position: "absolute",
+                            // satisfies type export type ZIndex = Globals | "auto" | (number & {});
+                            zIndex: 1,
+                            filter: `invert(${Number(invert) / 100})`,
+                            borderRadius: "50%",
+                            animationName: "scrollAnim",
+                            animationDuration: `${
+                                (Number(animDuration) / 100) *
+                                (index + getRandomIntLimit(index, 20))
+                            }s`,
+                            animationDelay: `0.${index + 1}`,
+                            animationTimingFunction: "ease-in",
+                            animationDirection: "reverse",
+                            animationIterationCount: "infinite",
+                            top: `${vertPos}vh`,
+                            width: `${circleWidth}vw`,
+                            left: `${hPos}vw`,
+                        }}
+                        className="scroller-media"
+                    />
+                ))}
+        </>
+    );
+};
+
+const ArtScrollerGifs: React.FC = () => {
+    const { figureOn, gifs } = getGlobalState(useSelector);
+    return (
+        <figure
+            data-testid="gifs-container"
+            style={{
+                display: `${figureOn ? "block" : "none"}`,
+                margin: "0",
+            }}
+            className="figure-transition-style"
+        >
+            <Gifs gifs={gifs} />
+        </figure>
     );
 };
 
@@ -218,6 +330,7 @@ export type {
     ArtScrollerCircleWidthSliderProps,
     ArtScrollerVerticalPositionSliderProps,
     ArtScrollerHorizontalPositionSliderProps,
+    ArtScrollerInvertColorsSliderProps,
 };
 export {
     ArtScrollerMainContainer,
@@ -234,5 +347,9 @@ export {
     ArtScrollerVerticalPositionSliderLabel,
     ArtScrollerHorizontalPositionSlider,
     ArtScrollerHorizontalPositionSliderLabel,
-    InvertColorsSliderLabel,
+    ArtScrollerInvertColorsSliderLabel,
+    ArtScrollerInvertColorsSlider,
+    ArtScrollerSpeedSliderLabel,
+    ArtScrollerSpeedSlider,
+    ArtScrollerGifs,
 };

@@ -103,7 +103,7 @@ export interface ILedIsAnimatingAction {
 // eslint-disable-next-line
 export interface IGif {
     gifCategory: string;
-    gifSrc: string | URL;
+    gifSrc: string;
     limit: string;
     _id: string;
 }
