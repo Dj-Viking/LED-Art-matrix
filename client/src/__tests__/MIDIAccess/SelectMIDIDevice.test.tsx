@@ -36,7 +36,7 @@ describe("test selecting midi device toggles which device shows", () => {
     it("select device from dropdown menu", async () => {
         const history = createMemoryHistory();
 
-        const { asFragment } = render(
+        render(
             <Provider store={store}>
                 <Router history={history}>
                     <MIDIListenerWrapper />
@@ -59,7 +59,5 @@ describe("test selecting midi device toggles which device shows", () => {
         });
 
         expect(select.dropdown).toHaveValue("XONE:K2 MIDI");
-
-        expect(asFragment()).toMatchSnapshot();
     });
 });

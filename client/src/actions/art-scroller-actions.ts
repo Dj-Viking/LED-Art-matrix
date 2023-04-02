@@ -7,14 +7,14 @@ import {
     ISetInvertAction,
     ISetCircleWidthAction,
     ISetVertPosAction,
-    IGetGifsAction,
+    ISetGifsAction,
     IGif,
     ISetAnimDurationAction,
 } from "../types";
 
 // ACTIVATE ON THE RETURN OF API QUERY DATA
-export const getGifs = (data: Array<IGif>): IGetGifsAction => ({
-    type: "GET_GIFS",
+export const setGifs = (data: Array<IGif>): ISetGifsAction => ({
+    type: "SET_GIFS",
     payload: data,
 });
 export const setAnimDuration = (duration: string): ISetAnimDurationAction => ({
