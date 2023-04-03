@@ -3,6 +3,7 @@ import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { LedStyleEngine } from "./LedStyleEngineClass";
 import { setLedStyle } from "../actions/style-actions";
 import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
+import { KeyBinding } from "../components/KeyIcon";
 
 export interface IDBPreset {
     _id: string;
@@ -23,7 +24,7 @@ class PresetButtonsList {
                 id: preset._id,
                 key: preset._id,
                 role: "button",
-                keyBinding: this.createKeyBinding(index),
+                keyBinding: PresetButtonsList.createKeyBinding(index),
                 isActive: this._determineActiveOnRender(preset._id, activeId),
                 animVarCoeff: preset.animVarCoeff,
                 presetName: preset.presetName,
@@ -70,7 +71,7 @@ class PresetButtonsList {
         return false;
     }
 
-    private createKeyBinding(index: number): string {
+    public static createKeyBinding(index: number): KeyBinding {
         return MY_INDEX_TO_KEY_MAP[(index + 1) as keyof MyIndexToKeyMap];
     }
 }

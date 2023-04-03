@@ -9,7 +9,9 @@ import {
 } from "../actions/art-scroller-actions";
 import { animVarCoeffChange } from "../actions/led-actions";
 import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
+import { toggleKeyBindConfig } from "../actions/preset-button-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
+import { IPresetButton } from "../types";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -245,7 +247,8 @@ class MIDIController implements IMIDIController {
         _setChannel: React.Dispatch<React.SetStateAction<number>>,
         _setIntensity: React.Dispatch<React.SetStateAction<number>>,
         _dispatchcb: React.Dispatch<any>,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+        presetButtons: IPresetButton[]
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
@@ -264,6 +267,13 @@ class MIDIController implements IMIDIController {
         );
 
         switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "1_lower_knob_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        _dispatchcb(toggleKeyBindConfig(presetButtons));
+                    }
+                }, 20);
+                return;
             case "1_upper_knob":
                 timeoutRef.current = setTimeout(() => {
                     _dispatchcb(setCircleWidth(midi_intensity.toString()));
@@ -311,7 +321,8 @@ class MIDIController implements IMIDIController {
         _setSize: React.Dispatch<React.SetStateAction<number>>,
         _setChannel: React.Dispatch<React.SetStateAction<number>>,
         _setIntensity: React.Dispatch<React.SetStateAction<number>>,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+        presetButtons: IPresetButton[]
     ): Promise<void> {
         return new Promise<void>((resolve) => {
             (async () => {
@@ -339,7 +350,8 @@ class MIDIController implements IMIDIController {
                                         _setChannel,
                                         _setIntensity,
                                         dispatchcb,
-                                        timeoutRef
+                                        timeoutRef,
+                                        presetButtons
                                     );
                                 }
                             };

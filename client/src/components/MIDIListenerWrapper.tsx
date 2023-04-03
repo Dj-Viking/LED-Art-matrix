@@ -22,6 +22,7 @@ import { IAccessRecordState, MyRootState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
+import { getGlobalState } from "../reducers";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -37,8 +38,8 @@ export interface MIDIListenerWrapperProps {
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
     const dispatch = useDispatch();
+    const { usingFader, usingKnob, presetButtons } = getGlobalState(useSelector);
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
-    const { usingFader, usingKnob } = accessState;
     const [size, setSize] = useState<number>(0);
     const [intensity, setIntensity] = useState<number>(0);
     const [option, setOption] = useState<string>("");
@@ -54,10 +55,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 setSize,
                 setChannel,
                 setIntensity,
-                filterTimeoutRef
+                filterTimeoutRef,
+                presetButtons
             );
         })();
-    }, [dispatch, accessState.inputs.length, size]);
+    }, [dispatch, accessState.inputs.length, size, presetButtons, intensity]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find((item) => item.name === option)?.name || "Not Found";

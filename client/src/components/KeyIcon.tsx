@@ -15,8 +15,23 @@ import {
     WKeySvg,
 } from "../lib/keySvgs";
 
+export type KeyBinding =
+    | "1"
+    | "2"
+    | "3"
+    | "4"
+    | "q"
+    | "w"
+    | "e"
+    | "r"
+    | "a"
+    | "s"
+    | "d"
+    | "f"
+    | "midi";
+
 interface KeyIconProps {
-    type: string;
+    type: KeyBinding;
 }
 
 const KeyIcon: React.FC<KeyIconProps> = ({ type }): JSX.Element => {
@@ -47,6 +62,8 @@ const KeyIcon: React.FC<KeyIconProps> = ({ type }): JSX.Element => {
                 return <DKeySvg />;
             case "f":
                 return <FKeySvg />;
+            case "midi":
+                return <div>&lt;&nbsp;MIDI&nbsp;&gt;</div>;
         }
     }
     return <>{renderIcon(type)}</>;

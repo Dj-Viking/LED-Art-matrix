@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { KeyBinding } from "./components/KeyIcon";
 import {
     MIDIConnectionEvent,
     MIDIController,
@@ -263,6 +264,11 @@ export interface ISetPresetButtonsListAction {
     type: "SET_BUTTONS_LIST";
     payload: IPresetButton[];
 }
+
+export type IToggleKeybindConfigAction = (buttons: IPresetButton[]) => {
+    type: "TOGGLE_KEYBIND_CONFIG";
+    payload: IPresetButton[];
+};
 export type ICheckPresetButtonsActiveAction = (
     buttons: IPresetButton[],
     id: string
@@ -270,25 +276,26 @@ export type ICheckPresetButtonsActiveAction = (
     type: "CHECK_BUTTONS_ACTIVE";
     payload: IPresetButton[];
 };
-export interface IPresetButtonsAction {
-    type: IPresetButtonListActionTypes;
-    payload: IPresetButtonListActionPayloads;
+export interface IPresetButtonsAction<T = IPresetButtonListActionType> {
+    type: T;
+    payload: IPresetButtonListActionPayload<T>;
 }
-export type IPresetButtonListActionTypes =
-    | ISetPresetButtonsListAction["type"]
+export type IPresetButtonListActionType =
+    | "SET_BUTTONS_LIST"
     | "CHECK_BUTTONS_ACTIVE"
+    | "TOGGLE_KEYBIND_CONFIG"
+    | "SET_DB_PRESETS"
     | "SET_ALL_INACTIVE"
     | "DELETE_PRESET"
     | "TOGGLE_DELETE_MODE";
 
-export type IPresetButtonListActionPayloads =
-    | ISetPresetButtonsListAction["payload"]
-    | IPresetButton[];
+export type IPresetButtonListActionPayload<T = IPresetButtonListActionType> =
+    T extends "SET_DB_PRESETS" ? string[] : IPresetButton[];
 
 export interface IPresetButton {
     id: string;
     role: string;
-    keyBinding: string;
+    keyBinding: KeyBinding;
     key: string;
     isActive: boolean;
     presetName: string;

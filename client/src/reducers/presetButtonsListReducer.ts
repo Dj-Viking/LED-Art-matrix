@@ -1,12 +1,22 @@
-import { IPresetButtonsAction, IPresetButtonsListState, IPresetButton } from "../types";
+import {
+    IPresetButtonsAction,
+    IPresetButtonsListState,
+    IPresetButton,
+    IPresetButtonListActionType,
+} from "../types";
 
 const presetButtonsListReducer = (
     state: IPresetButtonsListState = {
         presetButtons: [],
     },
-    action: IPresetButtonsAction
+    action: IPresetButtonsAction<IPresetButtonListActionType>
 ): IPresetButtonsListState => {
     switch (action.type) {
+        case "TOGGLE_KEYBIND_CONFIG":
+            return {
+                ...state,
+                presetButtons: action.payload as IPresetButton[],
+            };
         case "SET_BUTTONS_LIST":
             return {
                 ...state,

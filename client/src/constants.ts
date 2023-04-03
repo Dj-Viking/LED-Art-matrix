@@ -1,3 +1,5 @@
+import { KeyBinding } from "./components/KeyIcon";
+
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
 export const RAINBOW_TEST_ANIMATION = `
@@ -190,7 +192,7 @@ export const DM5_ANIMATION = `
   }
 }`;
 
-export type MyIndexToKeyMap = Record<number, string>;
+export type MyIndexToKeyMap = Record<number, KeyBinding>;
 export const MY_INDEX_TO_KEY_MAP = {
     1: "1",
     2: "2",
@@ -204,10 +206,11 @@ export const MY_INDEX_TO_KEY_MAP = {
     10: "s",
     11: "d",
     12: "f",
+    9999: "midi",
 } as MyIndexToKeyMap;
 export const LOCATION_DISPLAY_ID = "location-display";
 
-export type TABLE_VALUES =
+type XKONEK2_TABLE_TYPES =
     | "1_upper_knob"
     | "1_upper_button"
     | "1_middle_button"
@@ -220,7 +223,24 @@ export type TABLE_VALUES =
     | "1_fader"
     | "2_fader"
     | "3_fader"
-    | "4_fader";
+    | "4_fader"
+    | "a_button"
+    | "b_button"
+    | "c_button"
+    | "d_button"
+    | "e_button"
+    | "f_button"
+    | "g_button"
+    | "h_button"
+    | "i_button"
+    | "j_button"
+    | "k_button"
+    | "l_button"
+    | "m_button"
+    | "n_button"
+    | "o_button"
+    | "p_button"
+    | "1_lower_knob_button";
 
 export type ControllerName =
     | "Not Found"
@@ -230,7 +250,7 @@ export type ControllerName =
     | "UltraLite mk3 Hybrid Sync Port";
 
 export type MIDIInputName = string & keyof ControllerLookup;
-export type ControllerMIDIChannelTable = Record<number, TABLE_VALUES>;
+export type XONEK2_ControllerLookup = Record<number, XKONEK2_TABLE_TYPES>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE = {
     4: "1_upper_knob",
@@ -243,36 +263,37 @@ export const XONEK2_MIDI_CHANNEL_TABLE = {
     17: "2_fader",
     18: "3_fader",
     19: "4_fader",
-} as ControllerMIDIChannelTable;
+    36: "a_button",
+    37: "b_button",
+    38: "c_button",
+    39: "d_button",
+    32: "e_button",
+    33: "f_button",
+    34: "g_button",
+    35: "h_button",
+    28: "i_button",
+    29: "j_button",
+    30: "k_button",
+    31: "l_button",
+    24: "m_button",
+    25: "n_button",
+    26: "o_button",
+    27: "p_button",
+    40: "1_lower_knob_button",
+} as XONEK2_ControllerLookup;
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
-    4: "1_upper_knob",
-    8: "1_middle_knob",
-    12: "1_lower_knob",
-    5: "2_upper_knob",
-    9: "2_middle_knob",
-    13: "2_lower_knob",
-    16: "1_fader",
-    17: "2_fader",
-    18: "3_fader",
-    19: "4_fader",
-} as ControllerMIDIChannelTable;
+    /** UNIMPLEMENTED */
+};
 export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
-    4: "1_upper_knob",
-    8: "1_middle_knob",
-    12: "1_lower_knob",
-    5: "2_upper_knob",
-    9: "2_middle_knob",
-    13: "2_lower_knob",
-    16: "1_fader",
-    17: "2_fader",
-    18: "3_fader",
-    19: "4_fader",
-} as ControllerMIDIChannelTable;
+    /** UNIMPLEMENTED */
+};
+
+type ControllerLookupUnion = XONEK2_ControllerLookup;
 
 type Nullable<T> = null | T;
 
-export type ControllerLookup = Record<ControllerName, Nullable<ControllerMIDIChannelTable>>;
+export type ControllerLookup = Record<ControllerName, Nullable<ControllerLookupUnion>>;
 
 export const SUPPORTED_CONTROLLERS: ControllerLookup = {
     "Not Found": null,

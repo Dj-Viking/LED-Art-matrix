@@ -4,7 +4,9 @@ import {
     IPresetButton,
     ISetAllInactiveAction,
     IDeletePresetAction,
+    IToggleKeybindConfigAction,
 } from "../types";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 
 export const setPresetButtonsList = (
     buttons: IPresetButton[] | []
@@ -12,6 +14,25 @@ export const setPresetButtonsList = (
     type: "SET_BUTTONS_LIST",
     payload: buttons,
 });
+
+export const toggleKeyBindConfig: IToggleKeybindConfigAction = (buttons) => {
+    let newList = [];
+
+    newList = buttons.map((btn, index) => {
+        if (btn.keyBinding !== "midi") {
+            btn.keyBinding = "midi";
+        } else {
+            btn.keyBinding = PresetButtonsList.createKeyBinding(index);
+        }
+        return btn;
+    });
+
+    return {
+        type: "TOGGLE_KEYBIND_CONFIG",
+        payload: newList,
+    };
+};
+
 export const checkPresetButtonsActive: ICheckPresetButtonsActiveAction = (
     buttons: IPresetButton[],
     id: string

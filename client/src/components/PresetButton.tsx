@@ -3,7 +3,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkPresetButtonsActive } from "../actions/preset-button-actions";
 import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
-import { KeyIcon } from "./KeyIcon";
+import { KeyBinding, KeyIcon } from "./KeyIcon";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { getGlobalState } from "../reducers";
 
@@ -12,7 +12,7 @@ interface PresetButtonProps {
         id: string;
         role: string;
         presetName: string;
-        keyBinding: string;
+        keyBinding: KeyBinding;
         displayName: string;
         animVarCoeff: string;
         isActive: boolean;
