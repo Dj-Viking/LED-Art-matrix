@@ -220,7 +220,23 @@ export type XONEK2_ControlNames =
     | "1_fader"
     | "2_fader"
     | "3_fader"
-    | "4_fader";
+    | "4_fader"
+    | "1_b_button"
+    | "1_a_button"
+    | "1_c_button"
+    | "1_d_button"
+    | "2_e_button"
+    | "2_f_button"
+    | "2_g_button"
+    | "2_h_button"
+    | "3_i_button"
+    | "3_j_button"
+    | "3_k_button"
+    | "3_l_button"
+    | "4_m_button"
+    | "4_n_button"
+    | "4_o_button"
+    | "4_p_button";
 
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
@@ -228,13 +244,29 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     4: "1_upper_knob",
     8: "1_middle_knob",
     12: "1_lower_knob",
+    16: "1_fader",
+    36: "1_a_button",
+    37: "1_b_button",
+    38: "1_c_button",
+    39: "1_d_button",
     5: "2_upper_knob",
     9: "2_middle_knob",
     13: "2_lower_knob",
-    16: "1_fader",
     17: "2_fader",
+    32: "2_e_button",
+    33: "2_f_button",
+    34: "2_g_button",
+    35: "2_h_button",
     18: "3_fader",
+    28: "3_i_button",
+    29: "3_j_button",
+    30: "3_k_button",
+    31: "3_l_button",
     19: "4_fader",
+    24: "4_m_button",
+    25: "4_n_button",
+    26: "4_o_button",
+    27: "4_p_button",
 };
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
 export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;
