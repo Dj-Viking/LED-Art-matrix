@@ -257,12 +257,18 @@ export interface ILoggedInState {
 }
 
 export interface IPresetButtonsListState {
+    midiMode: boolean;
     presetButtons: IPresetButton[];
 }
 export interface ISetPresetButtonsListAction {
     type: "SET_BUTTONS_LIST";
     payload: IPresetButton[];
 }
+
+export type ITogglePresetButtonMidiMode = () => {
+    type: "TOGGLE_MIDI_MODE";
+    payload: null;
+};
 export type ICheckPresetButtonsActiveAction = (
     buttons: IPresetButton[],
     id: string
@@ -276,6 +282,7 @@ export interface IPresetButtonsAction {
 }
 export type IPresetButtonListActionTypes =
     | ISetPresetButtonsListAction["type"]
+    | "TOGGLE_MIDI_MODE"
     | "CHECK_BUTTONS_ACTIVE"
     | "SET_ALL_INACTIVE"
     | "DELETE_PRESET"
@@ -283,6 +290,7 @@ export type IPresetButtonListActionTypes =
 
 export type IPresetButtonListActionPayloads =
     | ISetPresetButtonsListAction["payload"]
+    | boolean
     | IPresetButton[];
 
 export interface IPresetButton {

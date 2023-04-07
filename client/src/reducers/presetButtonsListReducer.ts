@@ -2,11 +2,17 @@ import { IPresetButtonsAction, IPresetButtonsListState, IPresetButton } from "..
 
 const presetButtonsListReducer = (
     state: IPresetButtonsListState = {
+        midiMode: false,
         presetButtons: [],
     },
     action: IPresetButtonsAction
 ): IPresetButtonsListState => {
     switch (action.type) {
+        case "TOGGLE_MIDI_MODE":
+            return {
+                ...state,
+                midiMode: !state.midiMode as boolean,
+            };
         case "SET_BUTTONS_LIST":
             return {
                 ...state,

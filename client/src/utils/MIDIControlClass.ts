@@ -10,6 +10,8 @@ import {
 import { animVarCoeffChange } from "../actions/led-actions";
 import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
+import { setMidiMode } from "../actions/preset-button-actions";
+import { PresetButtonsList } from "./PresetButtonsListClass";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -265,6 +267,20 @@ class MIDIController implements IMIDIController {
         );
 
         switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "1_a_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(_dispatchcb, "rainbowTest", "64");
+                    }
+                }, 20);
+                break;
+            case "1_lower_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        _dispatchcb(setMidiMode());
+                    }
+                }, 20);
+                break;
             case "1_upper_knob":
                 timeoutRef.current = setTimeout(() => {
                     _dispatchcb(setCircleWidth(midi_intensity.toString()));

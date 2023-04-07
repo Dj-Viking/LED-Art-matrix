@@ -178,6 +178,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             </PresetControlButtonsContainer>
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
+                {/* preset style toggle buttons */}
                 {Array.isArray(presetButtons) &&
                     presetButtons.map((button) => {
                         return <PresetButton key={button.key} button={{ ...button }} />;

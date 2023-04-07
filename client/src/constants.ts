@@ -267,6 +267,9 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     25: "4_n_button",
     26: "4_o_button",
     27: "4_p_button",
+    40: "1_lower_button",
+    44: "1_middle_button",
+    48: "1_upper_button",
 };
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
 export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;

@@ -47,6 +47,8 @@ const KeyIcon: React.FC<KeyIconProps> = ({ type }): JSX.Element => {
                 return <DKeySvg />;
             case "f":
                 return <FKeySvg />;
+            case "midi":
+                return <div>&lt;&nbsp;MIDI&nbsp;&gt;</div>;
         }
     }
     return <>{renderIcon(type)}</>;
