@@ -40,21 +40,24 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob } = accessState;
     const [size, setSize] = useState<number>(0);
-    const [intensity, setIntensity] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     const [channel, setChannel] = useState<number>(0);
 
+    const intensityRef = useRef<number>(0);
     const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
     const _setChannel = React.useCallback((channel: number): void => setChannel(channel), []);
     const _setSize = React.useCallback((size: number): void => setSize(size), []);
-    const _setIntensity = React.useCallback(
-        (intensity: number): void => setIntensity(intensity),
-        []
-    );
+    const _setIntensity = React.useCallback((intensity: number): void => {
+        intensityRef.current = intensity;
+    }, []);
 
     useEffect(() => {
         (async (): Promise<void> => {
+            // NOTE: be careful of what values are passed here - potential memory leaks
+            // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
+            // and then are used as input values in a different dispatch action. something happens
+            // with a reference counter and is not able to clean up things quick enough and freezes up the app
             await MIDIController.setupMIDI(
                 dispatch,
                 size,
@@ -119,10 +122,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             <DeviceSvgContainer>
                                 <ControlSvg
                                     usings={{ usingFader, usingKnob }}
-                                    intensity_input={intensity}
+                                    intensity_input={intensityRef.current}
                                 />
                             </DeviceSvgContainer>
-                            <IntensityBar intensity={intensity || 0} />
+                            <IntensityBar intensity={intensityRef.current || 0} />
                             <ControlNameContainer>
                                 <ChannelNumber channel={channel || 0} />
                                 <MIDIChannelControl

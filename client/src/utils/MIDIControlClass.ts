@@ -269,8 +269,58 @@ class MIDIController implements IMIDIController {
         switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
             case "1_a_button":
                 timeoutRef.current = setTimeout(() => {
+                    // TODO: when redux toolkit is in - we set styling based on our access to the whole state tree
+                    // and not what we are passing into this handler because passing state stuff in here
+                    // while it is changing causes memory leaks
                     if (midi_intensity === 127) {
-                        PresetButtonsList.setStyle(_dispatchcb, "rainbowTest", "64");
+                        PresetButtonsList.setStyle(
+                            _dispatchcb,
+                            "rainbowTest",
+                            midi_intensity.toString()
+                        );
+                    }
+                }, 20);
+                break;
+            case "1_b_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
+                    }
+                }, 20);
+                break;
+            case "1_c_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
+                    }
+                }, 20);
+                break;
+            case "1_d_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(
+                            _dispatchcb,
+                            "spiral",
+                            midi_intensity.toString()
+                        );
+                    }
+                }, 20);
+                break;
+            case "2_e_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(
+                            _dispatchcb,
+                            "fourSpirals",
+                            midi_intensity.toString()
+                        );
+                    }
+                }, 20);
+                break;
+            case "2_f_button":
+                timeoutRef.current = setTimeout(() => {
+                    if (midi_intensity === 127) {
+                        PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
                     }
                 }, 20);
                 break;
