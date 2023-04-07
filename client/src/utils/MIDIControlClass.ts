@@ -242,8 +242,8 @@ class MIDIController implements IMIDIController {
 
     public static handleXONEK2MIDIMessage(
         midi_event: MIDIMessageEvent,
-        _setChannel: React.Dispatch<React.SetStateAction<number>>,
-        _setIntensity: React.Dispatch<React.SetStateAction<number>>,
+        _setChannel: (channel: number) => void,
+        _setIntensity: (intensity: number) => void,
         _dispatchcb: React.Dispatch<any>,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): void {
@@ -309,25 +309,26 @@ class MIDIController implements IMIDIController {
     public static async setupMIDI(
         dispatchcb: React.Dispatch<any>,
         size: number,
-        _setSize: React.Dispatch<React.SetStateAction<number>>,
-        _setChannel: React.Dispatch<React.SetStateAction<number>>,
-        _setIntensity: React.Dispatch<React.SetStateAction<number>>,
+        _setSize: (size: number) => void,
+        _setChannel: (channel: number) => void,
+        _setIntensity: (intensity: number) => void,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): Promise<void> {
         return new Promise<void>((resolve) => {
             (async () => {
                 if ("navigator" in window) {
                     // request access from browser
-                    const access = await new MIDIController().requestMIDIAccess();
-                    const new_access = new MIDIController(access).getAccess();
+                    const access = new MIDIController(
+                        await new MIDIController().requestMIDIAccess()
+                    ).getAccess();
                     dispatchcb(setAccess(new MIDIController(access).getInstance()));
                     // set size of inputs to re-render component at this moment of time
-                    _setSize(new_access.inputs.size);
+                    _setSize(access.inputs.size);
                     //at this moment the promise resolves with access if size changed at some point
                     if (size > 0) {
-                        dispatchcb(setAccess(new MIDIController(new_access).getInstance()));
+                        dispatchcb(setAccess(new MIDIController(access).getInstance()));
                         // define onstatechange callback to not be a function to execute when state changes later
-                        new_access.onstatechange = function (_event: MIDIConnectionEvent): void {
+                        access.onstatechange = function (_event: MIDIConnectionEvent): void {
                             const onstatechangeAccess = new MIDIController(
                                 _event.target
                             ).getInstance();

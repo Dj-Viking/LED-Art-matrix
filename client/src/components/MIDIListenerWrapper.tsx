@@ -42,22 +42,29 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const [size, setSize] = useState<number>(0);
     const [intensity, setIntensity] = useState<number>(0);
     const [option, setOption] = useState<string>("");
-    // channel 16 is xone:k2's left most fader
     const [channel, setChannel] = useState<number>(0);
+
     const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
+
+    const _setChannel = React.useCallback((channel: number): void => setChannel(channel), []);
+    const _setSize = React.useCallback((size: number): void => setSize(size), []);
+    const _setIntensity = React.useCallback(
+        (intensity: number): void => setIntensity(intensity),
+        []
+    );
 
     useEffect(() => {
         (async (): Promise<void> => {
             await MIDIController.setupMIDI(
                 dispatch,
                 size,
-                setSize,
-                setChannel,
-                setIntensity,
+                _setSize,
+                _setChannel,
+                _setIntensity,
                 filterTimeoutRef
             );
         })();
-    }, [dispatch, accessState.inputs.length, size]);
+    }, [dispatch, size, _setChannel, _setIntensity, _setSize]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find((item) => item.name === option)?.name || "Not Found";
