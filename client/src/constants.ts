@@ -1,5 +1,6 @@
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
+export const LOCATION_DISPLAY_ID = "location-display";
 export const RAINBOW_TEST_ANIMATION = `
 @keyframes rainbowTest {
   0.001% {
@@ -205,9 +206,8 @@ export const MY_INDEX_TO_KEY_MAP = {
     11: "d",
     12: "f",
 } as MyIndexToKeyMap;
-export const LOCATION_DISPLAY_ID = "location-display";
 
-export type TABLE_VALUES =
+export type XONEK2_ControlNames =
     | "1_upper_knob"
     | "1_upper_button"
     | "1_middle_button"
@@ -222,62 +222,58 @@ export type TABLE_VALUES =
     | "3_fader"
     | "4_fader";
 
+export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
+
+export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
+    4: "1_upper_knob",
+    8: "1_middle_knob",
+    12: "1_lower_knob",
+    5: "2_upper_knob",
+    9: "2_middle_knob",
+    13: "2_lower_knob",
+    16: "1_fader",
+    17: "2_fader",
+    18: "3_fader",
+    19: "4_fader",
+};
+export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
+export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;
+export const nanoKontrol2_MIDI_CHANNEL_TABLE: nanoKontrol2_MIDIChannelTable = {
+    1: "something",
+    2: "else",
+    3: "not implemented yet",
+};
+
+export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
+    /** UNIMPLEMENTED */
+};
+export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
+    /** UNIMPLEMENTED */
+};
+
+type Nullable<T> = null | T;
 export type ControllerName =
     | "Not Found"
     | "UltraLite mk3 Hybrid"
     | "XONE:K2 MIDI"
+    | "nanoKontrol2"
     | "UltraLite mk3 Hybrid MIDI Port"
     | "UltraLite mk3 Hybrid Sync Port";
+export type MIDIInputName = string & keyof ControllerLookup<ControllerName>;
+export type ControllerLookup<Name extends ControllerName> = Record<
+    Name,
+    Name extends "XONE:K2 MIDI" //--------------// if
+        ? Nullable<XONEK2_MIDIChannelTable> //--// then
+        : Name extends "nanoKontrol2" //--------// else if
+        ? nanoKontrol2_MIDIChannelTable //------// then
+        : Nullable<Record<number, string>> //---// else
+>;
 
-export type MIDIInputName = string & keyof ControllerLookup;
-export type ControllerMIDIChannelTable = Record<number, TABLE_VALUES>;
-
-export const XONEK2_MIDI_CHANNEL_TABLE = {
-    4: "1_upper_knob",
-    8: "1_middle_knob",
-    12: "1_lower_knob",
-    5: "2_upper_knob",
-    9: "2_middle_knob",
-    13: "2_lower_knob",
-    16: "1_fader",
-    17: "2_fader",
-    18: "3_fader",
-    19: "4_fader",
-} as ControllerMIDIChannelTable;
-
-export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
-    4: "1_upper_knob",
-    8: "1_middle_knob",
-    12: "1_lower_knob",
-    5: "2_upper_knob",
-    9: "2_middle_knob",
-    13: "2_lower_knob",
-    16: "1_fader",
-    17: "2_fader",
-    18: "3_fader",
-    19: "4_fader",
-} as ControllerMIDIChannelTable;
-export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
-    4: "1_upper_knob",
-    8: "1_middle_knob",
-    12: "1_lower_knob",
-    5: "2_upper_knob",
-    9: "2_middle_knob",
-    13: "2_lower_knob",
-    16: "1_fader",
-    17: "2_fader",
-    18: "3_fader",
-    19: "4_fader",
-} as ControllerMIDIChannelTable;
-
-type Nullable<T> = null | T;
-
-export type ControllerLookup = Record<ControllerName, Nullable<ControllerMIDIChannelTable>>;
-
-export const SUPPORTED_CONTROLLERS: ControllerLookup = {
+export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
     "Not Found": null,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid": null,
+    nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
 };
