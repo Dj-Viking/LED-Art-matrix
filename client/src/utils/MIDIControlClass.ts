@@ -247,6 +247,7 @@ class MIDIController implements IMIDIController {
         _dispatchcb: React.Dispatch<any>,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): void {
+        clearTimeout(timeoutRef.current);
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
 
@@ -332,7 +333,6 @@ class MIDIController implements IMIDIController {
                             ).getInstance();
 
                             const midicb = function (midi_event: MIDIMessageEvent): void {
-                                clearTimeout(timeoutRef.current);
                                 if (midi_event.currentTarget.name.includes("XONE:K2")) {
                                     MIDIController.handleXONEK2MIDIMessage(
                                         midi_event,

@@ -18,9 +18,9 @@ else {
 if ($args[0] -eq "prettier") {
     Write-Host "[INFO]: running prettier and lint before start for formatting standards" -ForegroundColor Cyan
     $prettierArgs = "node .\client\node_modules\prettier\bin-prettier --write `"./**/*.{ts,tsx}`" && node .\client\node_modules\eslint\bin\eslint.js --fix `"./**/*.{ts,tsx}`" &&"
-} else {
+}
+else {
     Write-Host "[INFO]: prettier was not provided as an argument to the script - not linting code" -ForegroundColor Cyan  
 }
-
 
 node .\node_modules\concurrently\bin\concurrently.js "$tswatchArgs" "$serverArgs" "$prettierArgs $clientArgs"
