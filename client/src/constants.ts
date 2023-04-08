@@ -286,7 +286,7 @@ export const ULTRALITE_MK3_HYBRID_MIDI_PORT = {
     /** UNIMPLEMENTED */
 };
 
-type Nullable<T> = null | T;
+export type Nullable<T> = null | T;
 export type ControllerName =
     | "Not Found"
     | "UltraLite mk3 Hybrid"

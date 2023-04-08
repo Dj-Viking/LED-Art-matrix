@@ -5,6 +5,7 @@ import { API_URL } from "../constants";
 import { IGif, ISaveUserPresetArgs } from "../types";
 
 import { IDBPreset } from "../utils/PresetButtonsListClass";
+import { localGifHelper } from "./IdbClass";
 
 let headers = {};
 interface ISignupArgs {
@@ -206,11 +207,31 @@ class ApiService implements IApiService {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         try {
+            const gifs = await localGifHelper.handleRequest("getAll");
+            console.log("local gifs", gifs);
+
+            const haveLocalGifs = Array.isArray(gifs) && gifs.length;
+
+            if (haveLocalGifs) {
+                return gifs;
+            }
+
+            // TODO: if requesting new set that is in the user's column of preferred gifs
+            // delete all from the idb and store the new ones that are stored in the user's preferred gifs
+            // await localGifHelper.handleRequest("deleteAll");
+
             const res = await fetch(`${API_URL}/gifs/get`, {
                 method: "GET",
                 headers,
             });
-            const data = await res.json();
+
+            const data = (await res.json()) as { gifs: IGif[] };
+
+            if (!haveLocalGifs) {
+                const promises = data.gifs.map((gif) => localGifHelper.handleRequest("put", gif));
+                await Promise.all(promises);
+            }
+
             return data.gifs;
         } catch (error) {}
     }

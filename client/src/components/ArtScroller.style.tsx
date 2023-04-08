@@ -60,8 +60,10 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
         if (figureOn === false) dispatch(setFigureOn(true));
         const gifs = await API.getGifs();
         if (Array.isArray(gifs)) {
-            if (gifs.length) {
+            if (gifs.length > 0) {
                 dispatch(setGifs(gifs));
+            } else {
+                dispatch(setGifs([]));
             }
         }
     }
