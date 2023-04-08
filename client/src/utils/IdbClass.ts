@@ -32,28 +32,6 @@ class LocalGifHelper {
             request.onerror = (event: Event) => {
                 console.error("an error occurred during the open request", event);
             };
-            request.onsuccess = (event: Event) => {
-                console.info("indexed db open request succeeded", event);
-                // start saving references to the database to the `db` variable
-                const tempDb = request!.result;
-
-                // open a transaction to whatever we pass into `storeName`
-                // must match one of the object store names in this promise
-                const tempTransaction = tempDb.transaction(this.#storeName, "readwrite");
-
-                // save a reference to that object store that we passed as
-                // the storename string
-                tempTransaction.objectStore(this.#storeName);
-
-                tempDb.onerror = (event: Event) => {
-                    console.error("An error occurred during the onsuccess callback", event);
-                };
-
-                tempTransaction.oncomplete = (event: Event) => {
-                    console.info("transaction complete - closing idb connection", event);
-                    tempDb?.close();
-                };
-            };
         });
     }
 
@@ -64,7 +42,7 @@ class LocalGifHelper {
         });
     }
 
-    #openStore(reqResult: IDBRequest): Promise<[IDBObjectStore, IDBTransaction]> {
+    #openStore(reqResult: IDBRequest): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
         console.info("indexed db open request succeeded");
         return new Promise((res) => {
             // start saving references to the database to the `db` variable
@@ -78,7 +56,7 @@ class LocalGifHelper {
             // the storename string
             const store = tempTransaction.objectStore(this.#storeName);
 
-            res([store, tempTransaction]);
+            res([tempDb, store, tempTransaction]);
         });
     }
 
@@ -86,7 +64,7 @@ class LocalGifHelper {
         return new Promise<void | IGif[]>((resolve) => {
             this.#openConnection().then((request) => {
                 request.onsuccess = () => {
-                    this.#openStore(request).then(([store, transaction]) => {
+                    this.#openStore(request).then(([db, store, transaction]) => {
                         let gifsRequest: IDBRequest<IGif[]>;
 
                         switch (method) {
@@ -124,7 +102,8 @@ class LocalGifHelper {
                         }
 
                         transaction.oncomplete = () => {
-                            console.info("transaction complete");
+                            console.info("transaction complete closing connection");
+                            db.close();
                         };
                     });
                 };
