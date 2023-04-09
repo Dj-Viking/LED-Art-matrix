@@ -29,6 +29,7 @@ const Order_1 = require("./Order");
 const PresetClass_1 = require("./PresetClass");
 const SearchTerm_1 = require("./SearchTerm");
 const Gif_1 = require("./Gif");
+const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 let UserClass = class UserClass {
     isCorrectPassword(plainPass) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,7 +42,7 @@ __decorate([
     __metadata("design:type", String)
 ], UserClass.prototype, "username", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ required: true }),
+    (0, typegoose_1.prop)({ required: true, trim: true, unique: true }),
     __metadata("design:type", String)
 ], UserClass.prototype, "email", void 0);
 __decorate([
@@ -82,7 +83,8 @@ UserClass = __decorate([
                 this.password = yield bcryptjs_1.default.hash(this.password, Number(process.env.SALT));
             next();
         });
-    })
+    }),
+    (0, typegoose_1.plugin)(mongoose_unique_validator_1.default)
 ], UserClass);
 exports.UserClass = UserClass;
 //# sourceMappingURL=User.js.map
