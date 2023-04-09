@@ -35,8 +35,6 @@ export const UserController = {
 
             gif.listOwner = req.user!._id;
 
-            console.error("gif in test", gif);
-
             const mongoGif = await Gif.create(gif);
 
             const user = await User.findOneAndUpdate(

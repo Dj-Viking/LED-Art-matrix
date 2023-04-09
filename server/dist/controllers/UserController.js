@@ -42,7 +42,6 @@ exports.UserController = {
             try {
                 const { gif } = req.body;
                 gif.listOwner = req.user._id;
-                console.error("gif in test", gif);
                 const mongoGif = yield models_1.Gif.create(gif);
                 const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
                     $push: {
