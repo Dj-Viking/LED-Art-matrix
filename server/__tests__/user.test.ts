@@ -310,18 +310,18 @@ describe("test this runs through CRUD of a user entity", () => {
     });
 
     test("test that a user can set new gifs into their gifs column", async () => {
+        console.log("what is node env", process.env.NODE_ENV);
         const user = await request(app)
             .post("/user/createGifCollection")
             .set({
                 authorization: `Bearer ${newUserToken}`,
             })
             .send({
-                gifs: [
-                    {
-                        gifSrcs: ["", "123", "123"],
-                        listName: "something",
-                    },
-                ] as IGif[],
+                gif: {
+                    gifSrcs: ["", "123", "123"],
+                    listName: "something",
+                    listOwner: "",
+                } as IGif,
             });
         expect(user.status).toBe(200);
         const parsed = JSON.parse(user.text);

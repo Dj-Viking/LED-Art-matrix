@@ -5,7 +5,7 @@ export async function handleError(
     error: Error,
     res: Response
 ): Promise<Response> {
-    if (IS_PROD) {
+    if (!IS_PROD) {
         console.error(error);
         return res.status(500).json({
             error: "an error occured with " + endpoint + " " + error.message + `\n ${error.stack}`,

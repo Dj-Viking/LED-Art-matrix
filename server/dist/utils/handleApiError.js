@@ -13,7 +13,7 @@ exports.handleError = void 0;
 const constants_1 = require("../constants");
 function handleError(endpoint, error, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (constants_1.IS_PROD) {
+        if (!constants_1.IS_PROD) {
             console.error(error);
             return res.status(500).json({
                 error: "an error occured with " + endpoint + " " + error.message + `\n ${error.stack}`,
