@@ -29,6 +29,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Order_1 = require("./Order");
 const PresetClass_1 = require("./PresetClass");
 const SearchTerm_1 = require("./SearchTerm");
+const Gif_1 = require("./Gif");
 let UserClass = class UserClass {
     isCorrectPassword(plainPass) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,6 +57,10 @@ __decorate([
     (0, typegoose_1.prop)({ ref: () => Order_1.OrderClass }),
     __metadata("design:type", Array)
 ], UserClass.prototype, "orders", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: () => Gif_1.GifClass, default: [] }),
+    __metadata("design:type", Array)
+], UserClass.prototype, "gifs", void 0);
 __decorate([
     (0, typegoose_1.prop)({ type: () => PresetClass_1.PresetClass, default: [] }),
     __metadata("design:type", Array)

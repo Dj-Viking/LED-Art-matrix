@@ -1,11 +1,11 @@
 import { prop, modelOptions } from "@typegoose/typegoose";
 
 @modelOptions({
-  schemaOptions: { collection: "categories" },
+    schemaOptions: { collection: "categories" },
 })
 export class CategoryClass {
-  @prop({ required: true, trim: true })
-  public name!: string;
+    @prop({ required: true, trim: true })
+    public name!: string;
 }
 
 // const categorySchema = new Schema({

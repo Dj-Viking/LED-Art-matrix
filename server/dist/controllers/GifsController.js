@@ -20,41 +20,93 @@ const utils_2 = require("../utils");
 (0, utils_2.readEnv)();
 const { API_KEY } = process.env;
 exports.GifsController = {
-    getGifsAndOrUpdate: function (_, res) {
+    getGifs: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
-            const gifInfo = yield (0, node_fetch_1.default)(gifLink);
-            const gifJson = yield gifInfo.json();
-            const gifDB = yield models_1.Gif.find();
-            let newGif = {};
-            let gifsArr = [];
-            if (gifDB[0] === undefined) {
+            try {
+                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
+                const gifInfo = yield (0, node_fetch_1.default)(gifLink);
+                const gifJson = yield gifInfo.json();
+                let gifSrcs = [];
+                let gif = {};
                 for (let i = 0; i < gifJson.data.length; i++) {
-                    newGif = {
-                        gifSrc: gifJson.data[i].images.original.url,
-                        gifCategory: "trippy",
-                        limit: "10",
-                    };
-                    gifsArr.push(newGif);
+                    gifSrcs.push(gifJson.data[i].images.original.url);
                 }
-                const newGifs = yield models_1.Gif.insertMany(gifsArr);
-                return res.status(200).json({ gifs: newGifs });
+                gif = {
+                    listOwner: "nobody",
+                    listName: "free",
+                    gifSrcs,
+                };
+                return res.status(200).json({ gifs: gif });
             }
-            if (typeof gifDB[0] === "object") {
-                if (!!gifDB[0]._id) {
-                    gifsArr = [];
-                    yield models_1.Gif.deleteMany();
+            catch (error) {
+                return res.status(500).json({ error: "error in getGifs" + error.message });
+            }
+        });
+    },
+    getMyGifs: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = models_1.User.findOne({ _id: req.user._id });
+                return res.status(200).json({ gifs: user.gifs });
+            }
+            catch (error) {
+                console.error(error);
+                return res.status(500).json({ error: "error during getGifs" + error.message });
+            }
+        });
+    },
+    makeNewCollection: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
+                const gifInfo = yield (0, node_fetch_1.default)(gifLink);
+                const gifJson = yield gifInfo.json();
+                const { listName } = req.body;
+                const gifDB = yield models_1.Gif.find();
+                let newGif = {};
+                let gifSrcs = [];
+                if (gifDB[0] === undefined) {
                     for (let i = 0; i < gifJson.data.length; i++) {
-                        newGif = {
-                            gifSrc: gifJson.data[i].images.original.url,
-                            gifCategory: "trippy",
-                            limit: "10",
-                        };
-                        gifsArr.push(newGif);
+                        gifSrcs.push(gifJson.data[i].images.original.url);
                     }
-                    const newGifs = yield models_1.Gif.insertMany(gifsArr);
-                    return res.status(200).json({ gifs: newGifs });
+                    newGif = {
+                        listOwner: req.user._id,
+                        listName,
+                        gifSrcs,
+                    };
+                    const mongoGif = yield models_1.Gif.create(newGif);
+                    const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                        $push: {
+                            gifs: mongoGif,
+                        },
+                    });
+                    return res.status(200).json({ gifs: user.gifs });
                 }
+                if (typeof gifDB[0] === "object") {
+                    if (!!gifDB[0]._id) {
+                        gifSrcs = [];
+                        yield models_1.Gif.deleteMany();
+                        for (let i = 0; i < gifJson.data.length; i++) {
+                            gifSrcs.push(gifJson.data[i].images.original.url);
+                        }
+                        newGif = {
+                            listOwner: req.user._id,
+                            listName,
+                            gifSrcs,
+                        };
+                        const mongoGif = yield models_1.Gif.insertMany(newGif);
+                        const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                            $push: {
+                                gifs: mongoGif,
+                            },
+                        }, { new: true });
+                        return res.status(200).json({ gifs: user.gifs });
+                    }
+                }
+            }
+            catch (error) {
+                console.error(error);
+                return res.status(500).json({ error: error });
             }
         });
     },

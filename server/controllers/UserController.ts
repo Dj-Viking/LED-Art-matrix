@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { User } from "../models";
+import { Gif, User } from "../models";
 import { signToken, sendEmail, verifyTokenAsync, readEnv } from "../utils";
 import bcrypt from "bcryptjs";
 import { APP_DOMAIN_PREFIX, INITIAL_PRESETS } from "../constants";
-import { Express } from "../types";
+import { Express, IGif } from "../types";
 import { Response } from "express";
 import { PresetClass } from "../models/PresetClass";
 import { UserClass } from "../models/User";
@@ -12,268 +12,310 @@ const uuid = require("uuid");
 readEnv();
 const { RESET_EXPIRATION, SALT } = process.env;
 export const UserController = {
-  signup: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const { username, email, password } = req.body;
-      if (!Boolean(username && email && password))
-        return res.status(400).json({
-          error: "missing username, email, or password in the signup request.",
-        });
-      const newUser = await User.create({ ...req.body });
+    createGifCollection: async function (req: Express.MyRequest, res: Response): Promise<Response> {
+        try {
+            const { gifs } = req.body as { gifs: IGif[] };
+            console.log("gifs in test", gifs);
+            const promises = gifs.map((gif) => Gif.create(gif));
+            const mongoGifs = await Promise.all(promises);
+            const user = await User.findOneAndUpdate(
+                { _id: req.user!._id },
+                {
+                    $addToSet: {
+                        gifs: mongoGifs,
+                    },
+                },
+                { new: true }
+            );
+            return res.status(200).json({ gifs: user!.gifs });
+        } catch (error) {
+            console.error(error);
+            const err = error as Error;
+            return res.status(500).json({
+                error:
+                    "an error occured during createGifCollection" + err.message + `\n${err.stack}`,
+            });
+        }
+    },
+    signup: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+        try {
+            const { username, email, password } = req.body;
+            if (!Boolean(username && email && password))
+                return res.status(400).json({
+                    error: "missing username, email, or password in the signup request.",
+                });
+            const newUser = await User.create({ ...req.body });
 
-      const token = signToken({
-        username: newUser.username,
-        email: newUser.email,
-        uuid: uuid.v4(),
-        _id: newUser._id,
-      });
+            const token = signToken({
+                username: newUser.username,
+                email: newUser.email,
+                uuid: uuid.v4(),
+                _id: newUser._id,
+            });
 
-      //set the default preset as the empty string one
+            //set the default preset as the empty string one
 
-      await User.findOneAndUpdate(
-        { _id: newUser._id },
-        {
-          $set: {
-            presets: INITIAL_PRESETS,
-          },
-          token,
-          defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
-        },
-        { new: true }
-      ).select("-password");
-      return res.status(201).json({ token, _id: newUser._id });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-  deleteUserPreset: async function (
-    req: Express.MyRequest,
-    res: Response
-  ): Promise<Response | void> {
-    const { _id } = req.body;
+            await User.findOneAndUpdate(
+                { _id: newUser._id },
+                {
+                    $set: {
+                        presets: INITIAL_PRESETS,
+                    },
+                    token,
+                    defaultPreset: {
+                        presetName: "waves",
+                        animVarCoeff: "64",
+                        displayName: "waves",
+                    },
+                },
+                { new: true }
+            ).select("-password");
+            return res.status(201).json({ token, _id: newUser._id });
+        } catch (error) {
+            console.error("error during user signup", error);
+            return res.status(500).json({ error: error.message });
+        }
+    },
+    deleteUserPreset: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        const { _id } = req.body;
 
-    //get the default and check if the id matches the one in the req.body
-    const user: UserClass = (await User.findOne({ email: req!.user!.email })) as UserClass;
+        //get the default and check if the id matches the one in the req.body
+        const user: UserClass = (await User.findOne({ email: req!.user!.email })) as UserClass;
 
-    // @ts-ignore have to use toHexString in the endpoint
-    // somehow in the test it comes back as a string but straight from the database
-    // it is still a type of object as ObjectId("_id")
-    const defId = user!.defaultPreset!._id.toHexString();
+        // @ts-ignore have to use toHexString in the endpoint
+        // somehow in the test it comes back as a string but straight from the database
+        // it is still a type of object as ObjectId("_id")
+        const defId = user!.defaultPreset!._id.toHexString();
 
-    const updateOptions = ((bodyId: string, defId: string) => {
-      if (bodyId === defId) {
-        return {
-          //initialize the default preset to something blank if the preset being deleted is the default one
-          $set: {
-            defaultPreset: {
-              presetName: "",
-              animVarCoeff: "64",
-              displayName: "",
-            },
-          },
-          $pull: {
-            presets: { _id: bodyId },
-          },
-        };
-      }
-      return {
-        $pull: {
-          presets: { _id: bodyId },
-        },
-      };
-    })(_id, defId);
+        const updateOptions = ((bodyId: string, defId: string) => {
+            if (bodyId === defId) {
+                return {
+                    //initialize the default preset to something blank if the preset being deleted is the default one
+                    $set: {
+                        defaultPreset: {
+                            presetName: "",
+                            animVarCoeff: "64",
+                            displayName: "",
+                        },
+                    },
+                    $pull: {
+                        presets: { _id: bodyId },
+                    },
+                };
+            }
+            return {
+                $pull: {
+                    presets: { _id: bodyId },
+                },
+            };
+        })(_id, defId);
 
-    await User.findOneAndUpdate({ email: req!.user!.email }, updateOptions);
-    res.status(200).json({ message: "deleted the preset" });
-  },
-  addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const { presetName, animVarCoeff, displayName } = req.body;
-      const updated = await User.findOneAndUpdate(
-        { email: req.user!.email },
-        {
-          $push: {
-            presets: { presetName, animVarCoeff, displayName },
-          },
-        },
-        { new: true }
-      ).select("-password");
-      return res.status(200).json({ presets: updated!.presets });
-    } catch (error) {}
-  },
-  getUserPresets: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const user = await User.findOne({ email: req!.user!.email });
-      return res.status(200).json({ presets: user!.presets });
-    } catch (error) {}
-  },
-  getUserDefaultPreset: async function (
-    req: Express.MyRequest,
-    res: Response
-  ): Promise<Response | void> {
-    try {
-      const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
-      return res.status(200).json({
-        preset: {
-          displayName: foundUser!.defaultPreset?.displayName,
-          presetName: foundUser!.defaultPreset?.presetName,
-          animVarCoeff: foundUser!.defaultPreset?.animVarCoeff,
-          _id: foundUser!.defaultPreset?._id,
-        },
-      });
-    } catch (error) {
-      return res.status(500).json({ error: error.message });
-    }
-  },
-  //TODO: when updating, push this preset into the user's preset collection
-  // make sure to gather the animVarCoeff or whatever parameters on the preset
-  // as part of the default preset prop and include it in the update, (change both default and the preset in the collection)
-  updateDefaultPreset: async function (
-    req: Express.MyRequest,
-    res: Response
-  ): Promise<Response | void> {
-    try {
-      const { defaultPreset, animVarCoeff, displayName, _id } = req.body;
-      //have to check if type of string because an empty string preset name is the rainbow test....
-      // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
-      if (typeof defaultPreset !== "string")
-        return res.status(400).json({ error: "missing preset name in request" });
-      const foundUser = await User.findOneAndUpdate(
-        { _id: req!.user!._id },
-        {
-          $set: {
-            defaultPreset: {
-              _id,
-              presetName: defaultPreset,
-              displayName,
-              animVarCoeff,
-            },
-          },
-        },
-        { new: true }
-      ).select("-password");
-      return res.status(200).json({
-        preset: {
-          _id: foundUser!.defaultPreset!._id,
-          displayName: foundUser!.defaultPreset!.displayName,
-          presetName: foundUser!.defaultPreset!.presetName,
-          animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
-        },
-      });
-    } catch (error) {}
-  },
-  login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const {
-        usernameOrEmail: { username, email },
-        password,
-      } = req.body;
+        await User.findOneAndUpdate({ email: req!.user!.email }, updateOptions);
+        res.status(200).json({ message: "deleted the preset" });
+    },
+    addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+        try {
+            const { presetName, animVarCoeff, displayName } = req.body;
+            const updated = await User.findOneAndUpdate(
+                { email: req.user!.email },
+                {
+                    $push: {
+                        presets: { presetName, animVarCoeff, displayName },
+                    },
+                },
+                { new: true }
+            ).select("-password");
+            return res.status(200).json({ presets: updated!.presets });
+        } catch (error) {}
+    },
+    getUserPresets: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const user = await User.findOne({ email: req!.user!.email });
+            return res.status(200).json({ presets: user!.presets });
+        } catch (error) {}
+    },
+    getUserDefaultPreset: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const foundUser = await User.findOne({ email: req.user!.email }).select("-password");
+            return res.status(200).json({
+                preset: {
+                    displayName: foundUser!.defaultPreset?.displayName,
+                    presetName: foundUser!.defaultPreset?.presetName,
+                    animVarCoeff: foundUser!.defaultPreset?.animVarCoeff,
+                    _id: foundUser!.defaultPreset?._id,
+                },
+            });
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
+    },
+    //TODO: when updating, push this preset into the user's preset collection
+    // make sure to gather the animVarCoeff or whatever parameters on the preset
+    // as part of the default preset prop and include it in the update, (change both default and the preset in the collection)
+    updateDefaultPreset: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const { defaultPreset, animVarCoeff, displayName, _id } = req.body;
+            //have to check if type of string because an empty string preset name is the rainbow test....
+            // don't feel like changing the class name on 32 files so just doing this assertion.. it's weird i know....
+            if (typeof defaultPreset !== "string")
+                return res.status(400).json({ error: "missing preset name in request" });
+            const foundUser = await User.findOneAndUpdate(
+                { _id: req!.user!._id },
+                {
+                    $set: {
+                        defaultPreset: {
+                            _id,
+                            presetName: defaultPreset,
+                            displayName,
+                            animVarCoeff,
+                        },
+                    },
+                },
+                { new: true }
+            ).select("-password");
+            return res.status(200).json({
+                preset: {
+                    _id: foundUser!.defaultPreset!._id,
+                    displayName: foundUser!.defaultPreset!.displayName,
+                    presetName: foundUser!.defaultPreset!.presetName,
+                    animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
+                },
+            });
+        } catch (error) {}
+    },
+    login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
+        try {
+            const {
+                usernameOrEmail: { username, email },
+                password,
+            } = req.body;
 
-      let foundUser = null;
-      if (username) {
-        foundUser = await User.findOne({ username });
-      }
-      if (email) {
-        foundUser = await User.findOne({ email });
-      }
+            let foundUser = null;
+            if (username) {
+                foundUser = await User.findOne({ username });
+            }
+            if (email) {
+                foundUser = await User.findOne({ email });
+            }
 
-      if (foundUser === null) {
-        return res.status(400).json({ error: "Incorrect Credentials" });
-      }
+            if (foundUser === null) {
+                return res.status(400).json({ error: "Incorrect Credentials" });
+            }
 
-      const validPass = await foundUser!.isCorrectPassword(password);
-      if (!validPass) {
-        return res.status(400).json({ error: "Incorrect Credentials" });
-      }
+            const validPass = await foundUser!.isCorrectPassword(password);
+            if (!validPass) {
+                return res.status(400).json({ error: "Incorrect Credentials" });
+            }
 
-      const token = signToken({
-        username: foundUser!.username as string,
-        email: foundUser!.email as string,
-        uuid: uuid.v4(),
-        _id: foundUser!._id,
-      });
+            const token = signToken({
+                username: foundUser!.username as string,
+                email: foundUser!.email as string,
+                uuid: uuid.v4(),
+                _id: foundUser!._id,
+            });
 
-      if (username) {
-        foundUser = await User.findOneAndUpdate({ username }, { token }, { new: true }).select(
-          "-password"
-        );
-      }
-      if (email) {
-        foundUser = await User.findOneAndUpdate({ email }, { token }, { new: true }).select(
-          "-password"
-        );
-      }
+            if (username) {
+                foundUser = await User.findOneAndUpdate(
+                    { username },
+                    { token },
+                    { new: true }
+                ).select("-password");
+            }
+            if (email) {
+                foundUser = await User.findOneAndUpdate({ email }, { token }, { new: true }).select(
+                    "-password"
+                );
+            }
 
-      const returnUser = {
-        _id: foundUser!._id,
-        defaultPreset: foundUser!.defaultPreset as PresetClass,
-        token: foundUser!.token as string,
-      };
-      return res.status(200).json({ user: returnUser });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: error.message });
-    }
-  },
-  forgotPassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const { email } = req.body;
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      //silently dont send the email if the email wasn't the right format
-      if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
-      const user = await User.findOne({ email }).select("-password");
+            const returnUser = {
+                _id: foundUser!._id,
+                defaultPreset: foundUser!.defaultPreset as PresetClass,
+                token: foundUser!.token as string,
+            };
+            return res.status(200).json({ user: returnUser });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: error.message });
+        }
+    },
+    forgotPassword: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const { email } = req.body;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            //silently dont send the email if the email wasn't the right format
+            if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
+            const user = await User.findOne({ email }).select("-password");
 
-      //dont return anything else just a 204 status code which will not carry a response body
-      if (user === null) return res.status(200).json({ message: "success" });
+            //dont return anything else just a 204 status code which will not carry a response body
+            if (user === null) return res.status(200).json({ message: "success" });
 
-      const resetUuid = uuid.v4();
-      const token = signToken({
-        uuid: resetUuid,
-        resetEmail: email,
-        exp: RESET_EXPIRATION as string,
-      });
+            const resetUuid = uuid.v4();
+            const token = signToken({
+                uuid: resetUuid,
+                resetEmail: email,
+                exp: RESET_EXPIRATION as string,
+            });
 
-      const sendEmailArgs = {
-        fromHeader: "Password Reset",
-        subject: "Password Reset Request",
-        mailTo: email,
-        mailHtml: `
+            const sendEmailArgs = {
+                fromHeader: "Password Reset",
+                subject: "Password Reset Request",
+                mailTo: email,
+                mailHtml: `
           <span>We were made aware that you request your password to be reset</span>
           <p>If this wasn't you. Then please disregard this email. Thank you!</p>
           <h2>This Request will expire after 5 minutes.</h2>
           <a href="${APP_DOMAIN_PREFIX}/changePassword/${token}">Reset your password</a>   
         `,
-      };
+            };
 
-      await sendEmail(sendEmailArgs);
+            await sendEmail(sendEmailArgs);
 
-      return res.status(200).json({ message: "success" });
-    } catch (error) {}
-  },
-  changePassword: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
-    try {
-      const { password, token } = req.body;
-      const decoded = await verifyTokenAsync(token);
-      if (decoded instanceof Error) return res.status(403).json({ error: decoded });
+            return res.status(200).json({ message: "success" });
+        } catch (error) {}
+    },
+    changePassword: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const { password, token } = req.body;
+            const decoded = await verifyTokenAsync(token);
+            if (decoded instanceof Error) return res.status(403).json({ error: decoded });
 
-      const hashed = await bcrypt.hash(password, Number(SALT));
-      const user = await User.findOneAndUpdate(
-        { email: decoded!.resetEmail },
-        {
-          password: hashed,
-        },
-        { new: true }
-      ).select("-password");
-      if (user === null) return res.status(400).json({ error: "unable to complete this request" });
+            const hashed = await bcrypt.hash(password, Number(SALT));
+            const user = await User.findOneAndUpdate(
+                { email: decoded!.resetEmail },
+                {
+                    password: hashed,
+                },
+                { new: true }
+            ).select("-password");
+            if (user === null)
+                return res.status(400).json({ error: "unable to complete this request" });
 
-      const newToken = signToken({
-        username: user.username,
-        email: user.email,
-        _id: user._id,
-        uuid: uuid.v4(),
-      });
+            const newToken = signToken({
+                username: user.username,
+                email: user.email,
+                _id: user._id,
+                uuid: uuid.v4(),
+            });
 
-      return res.status(200).json({ done: true, token: newToken });
-    } catch (error) {}
-  },
+            return res.status(200).json({ done: true, token: newToken });
+        } catch (error) {}
+    },
 };

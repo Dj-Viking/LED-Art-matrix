@@ -21,6 +21,29 @@ const uuid = require("uuid");
 (0, utils_1.readEnv)();
 const { RESET_EXPIRATION, SALT } = process.env;
 exports.UserController = {
+    createGifCollection: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { gifs } = req.body;
+                console.log("gifs in test", gifs);
+                const promises = gifs.map((gif) => models_1.Gif.create(gif));
+                const mongoGifs = yield Promise.all(promises);
+                const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                    $addToSet: {
+                        gifs: mongoGifs,
+                    },
+                }, { new: true });
+                return res.status(200).json({ gifs: user.gifs });
+            }
+            catch (error) {
+                console.error(error);
+                const err = error;
+                return res.status(500).json({
+                    error: "an error occured during createGifCollection" + err.message + `\n${err.stack}`,
+                });
+            }
+        });
+    },
     signup: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -41,11 +64,16 @@ exports.UserController = {
                         presets: constants_1.INITIAL_PRESETS,
                     },
                     token,
-                    defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
+                    defaultPreset: {
+                        presetName: "waves",
+                        animVarCoeff: "64",
+                        displayName: "waves",
+                    },
                 }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
             catch (error) {
+                console.error("error during user signup", error);
                 return res.status(500).json({ error: error.message });
             }
         });
