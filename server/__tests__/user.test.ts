@@ -310,7 +310,6 @@ describe("test this runs through CRUD of a user entity", () => {
     });
 
     test("test that a user can set new gifs into their gifs column", async () => {
-        console.log("what is node env", process.env.NODE_ENV);
         const user = await request(app)
             .post("/user/createGifCollection")
             .set({

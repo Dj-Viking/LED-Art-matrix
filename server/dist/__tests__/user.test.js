@@ -279,7 +279,6 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(parsed.preset.displayName).toBe("");
     }));
     test("test that a user can set new gifs into their gifs column", () => __awaiter(void 0, void 0, void 0, function* () {
-        console.log("what is node env", process.env.NODE_ENV);
         const user = yield (0, supertest_1.default)(app)
             .post("/user/createGifCollection")
             .set({
