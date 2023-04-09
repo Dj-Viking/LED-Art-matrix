@@ -24,7 +24,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserClass = void 0;
 require("dotenv").config();
 const typegoose_1 = require("@typegoose/typegoose");
-const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Order_1 = require("./Order");
 const PresetClass_1 = require("./PresetClass");
@@ -38,11 +37,11 @@ let UserClass = class UserClass {
     }
 };
 __decorate([
-    (0, typegoose_1.prop)({ required: true, unique: true, trim: true }),
+    (0, typegoose_1.prop)({ required: true, trim: true }),
     __metadata("design:type", String)
 ], UserClass.prototype, "username", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ required: true, unique: true }),
+    (0, typegoose_1.prop)({ required: true }),
     __metadata("design:type", String)
 ], UserClass.prototype, "email", void 0);
 __decorate([
@@ -83,8 +82,7 @@ UserClass = __decorate([
                 this.password = yield bcryptjs_1.default.hash(this.password, Number(process.env.SALT));
             next();
         });
-    }),
-    (0, typegoose_1.plugin)(mongoose_unique_validator_1.default)
+    })
 ], UserClass);
 exports.UserClass = UserClass;
 //# sourceMappingURL=User.js.map

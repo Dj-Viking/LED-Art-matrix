@@ -6,9 +6,16 @@ import { getRandomIntLimit } from "../utils";
 import { Express, IGif } from "../types";
 import { Response } from "express";
 import { readEnv } from "../utils";
+import { handleError } from "../utils/handleApiError";
 readEnv();
 const { API_KEY } = process.env;
+
 export const GifsController = {
+    storedGifs: async function (_: Express.MyRequest, res: Response): Promise<Response> {
+        const gifs = await Gif.find();
+
+        return res.status(200).json({ gifs: gifs });
+    },
     getGifs: async function (_: Express.MyRequest, res: Response): Promise<Response> {
         try {
             const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${getRandomIntLimit(
@@ -33,18 +40,16 @@ export const GifsController = {
             };
             return res.status(200).json({ gifs: gif });
         } catch (error) {
-            return res.status(500).json({ error: "error in getGifs" + error.message });
+            return handleError("getGifs", error, res);
         }
     },
 
     getMyGifs: async function (req: Express.MyRequest, res: Response): Promise<Response> {
         try {
-            const user = User.findOne({ _id: req.user!._id });
-
-            return res.status(200).json({ gifs: user.gifs });
+            const user = await User.findOne({ _id: req.user!._id });
+            return res.status(200).json({ gifs: user!.gifs });
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: "error during getGifs" + error.message });
+            return handleError("getMyGifs", error, res);
         }
     },
     makeNewCollection: async function (
@@ -61,65 +66,33 @@ export const GifsController = {
             const gifJson = await gifInfo.json();
 
             const { listName } = req.body as { listName: string };
-            const gifDB = await Gif.find();
 
             let newGif = {} as Omit<IGif, "_id">;
             let gifSrcs = [] as string[];
 
-            if (gifDB[0] === undefined) {
-                for (let i = 0; i < gifJson.data.length; i++) {
-                    gifSrcs.push(gifJson.data[i].images.original.url);
-                }
-                newGif = {
-                    listOwner: req.user!._id,
-                    listName,
-                    gifSrcs,
-                };
-                const mongoGif = await Gif.create(newGif);
-
-                const user = await User.findOneAndUpdate(
-                    { _id: req.user!._id },
-                    {
-                        $push: {
-                            gifs: mongoGif,
-                        },
-                    }
-                );
-                return res.status(200).json({ gifs: user!.gifs });
+            for (let i = 0; i < gifJson.data.length; i++) {
+                gifSrcs.push(gifJson.data[i].images.original.url);
             }
 
-            if (typeof gifDB[0] === "object") {
-                if (!!gifDB[0]._id) {
-                    gifSrcs = [];
-                    // delete and replace
-                    await Gif.deleteMany();
+            newGif = {
+                listOwner: req.user!._id,
+                listName,
+                gifSrcs,
+            };
 
-                    for (let i = 0; i < gifJson.data.length; i++) {
-                        gifSrcs.push(gifJson.data[i].images.original.url);
-                    }
+            const mongoGif = await Gif.create(newGif);
 
-                    newGif = {
-                        listOwner: req.user!._id,
-                        listName,
-                        gifSrcs,
-                    };
-
-                    const mongoGif = await Gif.insertMany(newGif);
-                    const user = await User.findOneAndUpdate(
-                        { _id: req.user!._id },
-                        {
-                            $push: {
-                                gifs: mongoGif,
-                            },
-                        },
-                        { new: true }
-                    );
-                    return res.status(200).json({ gifs: user!.gifs });
+            const user = await User.findOneAndUpdate(
+                { _id: req.user!._id },
+                {
+                    $push: {
+                        gifs: mongoGif,
+                    },
                 }
-            }
+            );
+            return res.status(200).json({ gifs: user!.gifs });
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ error: error });
+            return handleError("makeNewCollection", error, res);
         }
     },
 };

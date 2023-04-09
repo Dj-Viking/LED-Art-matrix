@@ -8,14 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GifClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
 const User_1 = require("./User");
-const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 let GifClass = class GifClass {
 };
 __decorate([
@@ -23,7 +19,7 @@ __decorate([
     __metadata("design:type", Object)
 ], GifClass.prototype, "listOwner", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ trim: true, required: true, unique: true }),
+    (0, typegoose_1.prop)({ trim: true, required: true }),
     __metadata("design:type", String)
 ], GifClass.prototype, "listName", void 0);
 __decorate([
@@ -33,8 +29,7 @@ __decorate([
 GifClass = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: { collection: "gifs" },
-    }),
-    (0, typegoose_1.plugin)(mongoose_unique_validator_1.default)
+    })
 ], GifClass);
 exports.GifClass = GifClass;
 //# sourceMappingURL=Gif.js.map

@@ -8,33 +8,50 @@ import { Express, IGif } from "../types";
 import { Response } from "express";
 import { PresetClass } from "../models/PresetClass";
 import { UserClass } from "../models/User";
+import { handleError } from "../utils/handleApiError";
 const uuid = require("uuid");
 readEnv();
 const { RESET_EXPIRATION, SALT } = process.env;
 export const UserController = {
-    createGifCollection: async function (req: Express.MyRequest, res: Response): Promise<Response> {
+    removeGifCollection: async function (req: Express.MyRequest, res: Response): Promise<Response> {
         try {
-            const { gifs } = req.body as { gifs: IGif[] };
-            console.log("gifs in test", gifs);
-            const promises = gifs.map((gif) => Gif.create(gif));
-            const mongoGifs = await Promise.all(promises);
             const user = await User.findOneAndUpdate(
                 { _id: req.user!._id },
                 {
-                    $addToSet: {
-                        gifs: mongoGifs,
+                    $pull: {
+                        gifs: { _id: req.body._id },
                     },
                 },
                 { new: true }
             );
             return res.status(200).json({ gifs: user!.gifs });
         } catch (error) {
-            console.error(error);
-            const err = error as Error;
-            return res.status(500).json({
-                error:
-                    "an error occured during createGifCollection" + err.message + `\n${err.stack}`,
-            });
+            return handleError("removeGifCollection", error, res);
+        }
+    },
+    createGifCollection: async function (req: Express.MyRequest, res: Response): Promise<Response> {
+        try {
+            const { gif } = req.body as { gif: IGif };
+
+            gif.listOwner = req.user!._id;
+
+            console.error("gif in test", gif);
+
+            const mongoGif = await Gif.create(gif);
+
+            const user = await User.findOneAndUpdate(
+                { _id: req.user!._id },
+                {
+                    $push: {
+                        gifs: mongoGif,
+                    },
+                },
+                { new: true }
+            );
+
+            return res.status(200).json({ gifs: user!.gifs });
+        } catch (error) {
+            return handleError("createGifCollection", error, res);
         }
     },
     signup: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
@@ -72,8 +89,7 @@ export const UserController = {
             ).select("-password");
             return res.status(201).json({ token, _id: newUser._id });
         } catch (error) {
-            console.error("error during user signup", error);
-            return res.status(500).json({ error: error.message });
+            return handleError("signup", error, res);
         }
     },
     deleteUserPreset: async function (
@@ -129,7 +145,9 @@ export const UserController = {
                 { new: true }
             ).select("-password");
             return res.status(200).json({ presets: updated!.presets });
-        } catch (error) {}
+        } catch (error) {
+            return handleError("addNewPreset", error, res);
+        }
     },
     getUserPresets: async function (
         req: Express.MyRequest,
@@ -138,7 +156,9 @@ export const UserController = {
         try {
             const user = await User.findOne({ email: req!.user!.email });
             return res.status(200).json({ presets: user!.presets });
-        } catch (error) {}
+        } catch (error) {
+            return handleError("getUserPresets", error, res);
+        }
     },
     getUserDefaultPreset: async function (
         req: Express.MyRequest,
@@ -155,7 +175,7 @@ export const UserController = {
                 },
             });
         } catch (error) {
-            return res.status(500).json({ error: error.message });
+            return handleError("getUserDefaultPreset", error, res);
         }
     },
     //TODO: when updating, push this preset into the user's preset collection
@@ -193,7 +213,9 @@ export const UserController = {
                     animVarCoeff: foundUser!.defaultPreset!.animVarCoeff,
                 },
             });
-        } catch (error) {}
+        } catch (error) {
+            return handleError("updateDefaultPreset", error, res);
+        }
     },
     login: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
         try {
@@ -246,8 +268,7 @@ export const UserController = {
             };
             return res.status(200).json({ user: returnUser });
         } catch (error) {
-            console.error(error);
-            res.status(500).json({ error: error.message });
+            return handleError("login", error, res);
         }
     },
     forgotPassword: async function (
@@ -286,7 +307,9 @@ export const UserController = {
             await sendEmail(sendEmailArgs);
 
             return res.status(200).json({ message: "success" });
-        } catch (error) {}
+        } catch (error) {
+            return handleError("forgotPassword", error, res);
+        }
     },
     changePassword: async function (
         req: Express.MyRequest,
@@ -316,6 +339,8 @@ export const UserController = {
             });
 
             return res.status(200).json({ done: true, token: newToken });
-        } catch (error) {}
+        } catch (error) {
+            return handleError("changePassword", error, res);
+        }
     },
 };

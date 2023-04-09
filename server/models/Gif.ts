@@ -1,16 +1,14 @@
-import { prop, plugin, modelOptions, Severity, mongoose, Ref } from "@typegoose/typegoose";
+import { prop, modelOptions, Severity, mongoose, Ref } from "@typegoose/typegoose";
 import { UserClass } from "./User";
-import mongooseUniqueValidator from "mongoose-unique-validator";
 
 @modelOptions({
     schemaOptions: { collection: "gifs" },
 })
-@plugin(mongooseUniqueValidator)
 export class GifClass {
     @prop({ ref: () => UserClass })
     public listOwner: Ref<UserClass>;
 
-    @prop({ trim: true, required: true, unique: true })
+    @prop({ trim: true, required: true })
     public listName: string;
 
     @prop({ required: true, allowMixed: Severity.ALLOW, type: mongoose.Schema.Types.Mixed })

@@ -1,6 +1,5 @@
 require("dotenv").config();
-import { pre, prop, plugin, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
-import mongooseUniqueValidator from "mongoose-unique-validator";
+import { pre, prop, Ref, DocumentType, modelOptions } from "@typegoose/typegoose";
 
 import bcrypt from "bcryptjs";
 import { OrderClass } from "./Order";
@@ -17,12 +16,11 @@ import { GifClass } from "./Gif";
     if (this.isNew) this.password = await bcrypt.hash(this.password, Number(process.env.SALT));
     next();
 })
-@plugin(mongooseUniqueValidator)
 export class UserClass {
-    @prop({ required: true, unique: true, trim: true })
+    @prop({ required: true, trim: true })
     public username!: string;
 
-    @prop({ required: true, unique: true })
+    @prop({ required: true })
     public email!: string;
 
     @prop({ required: true })
