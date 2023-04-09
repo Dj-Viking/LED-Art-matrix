@@ -1,10 +1,10 @@
 const router = require("express").Router();
 import { GifsController } from "../controllers";
 import { authMiddleware } from "../middleware";
-const { makeNewCollection, getMyGifs, getGifs, storedGifs } = GifsController;
+const { makeNewCollection, getMyGifs, unloggedGet, storedGifs } = GifsController;
 
 // no need for auth
-router.route("/unloggedGet").get(getGifs);
+router.route("/unloggedGet").get(unloggedGet);
 
 // need auth
 router.route("/get").get(authMiddleware, getMyGifs);

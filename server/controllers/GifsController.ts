@@ -16,7 +16,7 @@ export const GifsController = {
 
         return res.status(200).json({ gifs: gifs });
     },
-    getGifs: async function (_: Express.MyRequest, res: Response): Promise<Response> {
+    unloggedGet: async function (_: Express.MyRequest, res: Response): Promise<Response> {
         try {
             const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${getRandomIntLimit(
                 10,

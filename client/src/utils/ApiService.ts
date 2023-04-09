@@ -1,7 +1,7 @@
 /* eslint-disable no-empty */
 import Auth from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
-import { API_URL } from "../constants";
+import { API_URL, IS_PROD } from "../constants";
 import { IGif, ISaveUserPresetArgs } from "../types";
 
 import { IDBPreset } from "../utils/PresetButtonsListClass";
@@ -50,6 +50,18 @@ class ApiService implements IApiService {
 
     public alive(): any {
         return this.isAlive;
+    }
+
+    private static handleError(endpoint: string, error: Error): void {
+        if (!IS_PROD) {
+            console.error(
+                `an error occurred with endpoint ${endpoint}` + error.message + `\n ${error.stack}`
+            );
+            throw error;
+        } else {
+            console.error("an error occurred with " + endpoint);
+            throw error;
+        }
     }
 
     public static async signup(args: ISignupArgs): Promise<boolean | void> {
@@ -203,9 +215,28 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async getGifs(): Promise<Array<IGif> | void> {
+    public static async getUnloggedInGifs(): Promise<IGif | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
+        try {
+            const res = await fetch(`${API_URL}/gifs/unloggedGet`, {
+                method: "GET",
+                headers,
+            });
+
+            const data = (await res.json()) as { gifs: IGif };
+
+            return data.gifs;
+        } catch (error) {
+            const err = error as Error;
+            this.handleError("getUnloggedInGifs", err);
+        }
+    }
+
+    public static async getGifs(token: string): Promise<Array<IGif> | void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+        headers = setAuthHeader(headers, token);
         try {
             const gifs = await localGifHelper.handleRequest("getAll");
             console.log("local gifs", gifs);

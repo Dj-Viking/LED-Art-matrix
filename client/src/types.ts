@@ -102,9 +102,9 @@ export interface ILedIsAnimatingAction {
 // will get the type eventually
 // eslint-disable-next-line
 export interface IGif {
-    gifCategory: string;
-    gifSrc: string;
-    limit: string;
+    listName: string;
+    gifSrcs: string[];
+    listOwner: string;
     _id: string;
 }
 export interface ISetHPosAction {

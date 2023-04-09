@@ -27,7 +27,7 @@ exports.GifsController = {
             return res.status(200).json({ gifs: gifs });
         });
     },
-    getGifs: function (_, res) {
+    unloggedGet: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;

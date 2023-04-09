@@ -18,6 +18,7 @@ import { BKeySvg } from "../lib/keySvgs";
 import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
+import AuthService from "../utils/AuthService";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -49,21 +50,30 @@ const ArtScrollerGifButtonContainer: React.FC = ({ children }) => {
     return <div className="gif-button-container">{children}</div>;
 };
 
-type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement>;
+type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement> & {
+    auth: typeof AuthService;
+};
 
-const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
+const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) => {
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
     const dispatch = useDispatch();
     const { figureOn } = getGlobalState(useSelector);
     async function handleGetGifs(event: any): Promise<void> {
         event.persist();
+
         if (figureOn === false) dispatch(setFigureOn(true));
-        const gifs = await API.getGifs();
+        let gifs = [] as IGif[] | IGif;
+        if (props.auth.loggedIn()) {
+            gifs = ((await API.getGifs(props.auth.getToken() as string)) as IGif[]) || [];
+        } else {
+            gifs = (await API.getUnloggedInGifs()) as IGif;
+        }
+        console.log("gifs", gifs);
         if (Array.isArray(gifs)) {
             if (gifs.length > 0) {
                 dispatch(setGifs(gifs));
             } else {
-                dispatch(setGifs([]));
+                dispatch(setGifs(gifs));
             }
         }
     }
@@ -82,7 +92,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
 
 type ArtScrollerToggleButtonProps = DOMAttributes<HTMLButtonElement>;
 
-const ArtScrollerToggleButton: React.FC<ArtScrollerStartButtonProps> = () => {
+const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
     const dispatch = useDispatch();
     const { figureOn } = getGlobalState(useSelector);
@@ -272,19 +282,27 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
     );
 };
 
-const Gifs: React.FC<{ gifs: IGif[] }> = (props) => {
+// TODO: adjust this so that different lists of gifs can be chosen
+const Gifs: React.FC<{ gifs: IGif[] | IGif }> = (props) => {
     const { gifs } = props;
     const { invert, animDuration, vertPos, circleWidth, hPos } = getGlobalState(useSelector);
+    let gif = {} as IGif;
+    if (Array.isArray(gifs)) {
+        gif = gifs[0];
+    } else {
+        gif = gifs;
+    }
+    console.log("gif", gif);
     return (
         <>
-            {Array.isArray(gifs) &&
-                gifs.map((gif, index) => (
+            {!!gif?.gifSrcs &&
+                gif.gifSrcs.map((src, index) => (
                     <img
-                        key={gif._id}
+                        key={src}
                         data-testid={`gif-${index}`}
-                        id={`gif-${index}`}
-                        alt={`gif-${index}`}
-                        src={gif.gifSrc}
+                        id={`gif-${src}`}
+                        alt={`gif-${src}`}
+                        src={src}
                         style={{
                             position: "absolute",
                             // satisfies type export type ZIndex = Globals | "auto" | (number & {});

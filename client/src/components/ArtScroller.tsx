@@ -20,6 +20,7 @@ import {
     ArtScrollerVerticalPositionSlider,
     ArtScrollerVerticalPositionSliderLabel,
 } from "./ArtScroller.style";
+import AuthService from "../utils/AuthService";
 
 const ArtScroller: React.FC = (): JSX.Element => {
     return (
@@ -30,7 +31,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     <ArtScrollerTitle />
                     {/* gif buttons */}
                     <ArtScrollerGifButtonContainer>
-                        <ArtScrollerStartButton />
+                        <ArtScrollerStartButton auth={AuthService} />
                         <ArtScrollerToggleButton />
                     </ArtScrollerGifButtonContainer>
                     {/* sliders */}
