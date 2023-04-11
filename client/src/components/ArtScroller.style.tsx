@@ -67,13 +67,15 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
         event.persist();
 
         if (figureOn === false) dispatch(setFigureOn(true));
+
         let gifs = [] as IGif[] | IGif;
+
         if (props.auth.loggedIn()) {
-            gifs = ((await API.getGifs(props.auth.getToken() as string)) as IGif[]) || [];
+            gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
         } else {
             gifs = (await API.getUnloggedInGifs()) as IGif[];
         }
-        console.log("gifs", gifs);
+
         if (Array.isArray(gifs)) {
             if (gifs.length > 0) {
                 dispatch(setGifs(gifs));
@@ -357,17 +359,34 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
 };
 
 // TODO: adjust this so that different lists of gifs can be chosen
-const Gifs: React.FC<{ gifs: IGif[] | IGif }> = (props) => {
-    const { gifs } = props;
-    const { invert, animDuration, vertPos, circleWidth, hPos } = getGlobalState(useSelector);
+const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
+    const { gifs, invert, animDuration, vertPos, circleWidth, hPos, listName } =
+        getGlobalState(useSelector);
 
-    // TODO: choose which set of gifs to use
+    const dispatch = useDispatch();
+
+    let _gifs = gifs.filter((gif) => gif.listName === listName);
+
+    React.useEffect(() => {
+        (async () => {
+            if (props.auth.loggedIn()) {
+                const userGifs = (await API.getGifs(
+                    props.auth.getToken() as string,
+                    true
+                )) as IGif[];
+                dispatch(setGifs(userGifs));
+            } else {
+                const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
+                dispatch(setGifs(freeGifs));
+            }
+        })();
+    }, [dispatch, props.auth]);
 
     return (
         <>
-            {Array.isArray(gifs) &&
-                !!gifs[0]?.gifSrcs &&
-                gifs[0].gifSrcs.map((src, index) => (
+            {Array.isArray(_gifs) &&
+                !!_gifs[0]?.gifSrcs &&
+                _gifs[0].gifSrcs.map((src, index) => (
                     <img
                         key={src}
                         data-testid={`gif-${index}`}
@@ -400,8 +419,8 @@ const Gifs: React.FC<{ gifs: IGif[] | IGif }> = (props) => {
     );
 };
 
-const ArtScrollerGifs: React.FC = () => {
-    const { figureOn, gifs } = getGlobalState(useSelector);
+const ArtScrollerGifs: React.FC<{ auth: typeof AuthService }> = (props) => {
+    const { figureOn } = getGlobalState(useSelector);
     return (
         <figure
             data-testid="gifs-container"
@@ -411,7 +430,7 @@ const ArtScrollerGifs: React.FC = () => {
             }}
             className="figure-transition-style"
         >
-            <Gifs gifs={gifs} />
+            <Gifs auth={props.auth} />
         </figure>
     );
 };

@@ -12,18 +12,6 @@ import accessRecordReducer from "./accessRecordReducer";
 import { GlobalState, MyRootState } from "../types";
 import { useSelector } from "react-redux";
 
-type State =
-    | "presetButtonsListState"
-    | "ledState"
-    | "loggedInState"
-    | "ledStyleTagState"
-    | "loginFormState"
-    | "signupFormState"
-    | "artScrollerState"
-    | "deleteModalState"
-    | "saveModalState"
-    | "accessRecordState";
-
 const reducers = {
     presetButtonsListState: presetButtonsListReducer,
     ledState: ledReducer,
@@ -53,5 +41,4 @@ function getGlobalState(selectorFn: typeof useSelector): GlobalState {
 
 const combinedReducers = combineReducers(reducers);
 
-export type { State };
 export { combinedReducers, reducers, getGlobalState };

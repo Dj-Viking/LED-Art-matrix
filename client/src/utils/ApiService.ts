@@ -233,7 +233,11 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async getGifs(token: string): Promise<Array<IGif> | void> {
+    // TODO:
+    // fetch my gifs on start
+    // fetch new gifs on button click
+
+    public static async getGifs(token: string, getNew: boolean): Promise<Array<IGif> | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         headers = setAuthHeader(headers, token);
@@ -243,13 +247,15 @@ class ApiService implements IApiService {
 
             const haveLocalGifs = Array.isArray(gifs) && gifs.length;
 
-            if (haveLocalGifs) {
+            if (haveLocalGifs && !getNew) {
                 return gifs;
             }
 
             // TODO: if requesting new set that is in the user's column of preferred gifs
             // delete all from the idb and store the new ones that are stored in the user's preferred gifs
-            // await localGifHelper.handleRequest("deleteAll");
+            if (getNew) {
+                await localGifHelper.handleRequest("deleteAll");
+            }
 
             const res = await fetch(`${API_URL}/gifs/get`, {
                 method: "GET",

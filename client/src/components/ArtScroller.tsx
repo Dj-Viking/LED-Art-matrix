@@ -52,7 +52,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                         <ArtScrollerSpeedSlider />
                     </ArtScrollerSliderContainer>
                     {/* gifs */}
-                    <ArtScrollerGifs />
+                    <ArtScrollerGifs auth={AuthService} />
                 </ArtScrollerSection>
             </ArtScrollerMainContainer>
         </>
