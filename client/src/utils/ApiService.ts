@@ -215,7 +215,7 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async getUnloggedInGifs(): Promise<IGif | void> {
+    public static async getUnloggedInGifs(): Promise<IGif[] | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         try {
@@ -224,7 +224,7 @@ class ApiService implements IApiService {
                 headers,
             });
 
-            const data = (await res.json()) as { gifs: IGif };
+            const data = (await res.json()) as { gifs: IGif[] };
 
             return data.gifs;
         } catch (error) {

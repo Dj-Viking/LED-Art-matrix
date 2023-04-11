@@ -4,12 +4,14 @@ import {
     ArtScrollerCircleWidthLabel,
     ArtScrollerCircleWidthSlider,
     ArtScrollerGifButtonContainer,
+    ArtScrollerGifListSelector,
     ArtScrollerGifs,
     ArtScrollerHorizontalPositionSlider,
     ArtScrollerHorizontalPositionSliderLabel,
     ArtScrollerInvertColorsSlider,
     ArtScrollerInvertColorsSliderLabel,
     ArtScrollerMainContainer,
+    ArtScrollerMakeNewGifCollection,
     ArtScrollerSection,
     ArtScrollerSliderContainer,
     ArtScrollerSpeedSlider,
@@ -33,9 +35,11 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     <ArtScrollerGifButtonContainer>
                         <ArtScrollerStartButton auth={AuthService} />
                         <ArtScrollerToggleButton />
+                        <ArtScrollerMakeNewGifCollection auth={AuthService} />
                     </ArtScrollerGifButtonContainer>
                     {/* sliders */}
                     <ArtScrollerSliderContainer>
+                        <ArtScrollerGifListSelector />
                         <ArtScrollerCircleWidthLabel />
                         <ArtScrollerCircleWidthSlider />
                         <ArtScrollerVerticalPositionSliderLabel />

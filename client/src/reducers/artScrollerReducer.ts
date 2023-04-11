@@ -13,6 +13,7 @@ import {
 const artScrollerReducer = (
     state: IArtScrollerState = {
         gifs: [],
+        listName: "",
         animDuration: "30",
         vertPos: "111",
         hPos: "33",
@@ -23,6 +24,11 @@ const artScrollerReducer = (
     action: IArtScrollerAction
 ): IArtScrollerState => {
     switch (action.type) {
+        case "SET_LIST_NAME":
+            return {
+                ...state,
+                listName: action.payload as string,
+            };
         case "SET_GIFS":
             return {
                 ...state,

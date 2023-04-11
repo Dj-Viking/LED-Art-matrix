@@ -7,6 +7,7 @@ import { Express, IGif } from "../types";
 import { Response } from "express";
 import { readEnv } from "../utils";
 import { handleError } from "../utils/handleApiError";
+const uuid = require("uuid");
 readEnv();
 const { API_KEY } = process.env;
 
@@ -34,11 +35,12 @@ export const GifsController = {
             }
 
             gif = {
+                _id: uuid.v4(),
                 listOwner: "nobody",
                 listName: "free",
                 gifSrcs,
-            };
-            return res.status(200).json({ gifs: gif });
+            } as IGif;
+            return res.status(200).json({ gifs: [gif] });
         } catch (error) {
             return handleError("getGifs", error, res);
         }

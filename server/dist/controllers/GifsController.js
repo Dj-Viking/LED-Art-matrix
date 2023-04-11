@@ -18,6 +18,7 @@ const models_1 = require("../models");
 const utils_1 = require("../utils");
 const utils_2 = require("../utils");
 const handleApiError_1 = require("../utils/handleApiError");
+const uuid = require("uuid");
 (0, utils_2.readEnv)();
 const { API_KEY } = process.env;
 exports.GifsController = {
@@ -39,11 +40,12 @@ exports.GifsController = {
                     gifSrcs.push(gifJson.data[i].images.original.url);
                 }
                 gif = {
+                    _id: uuid.v4(),
                     listOwner: "nobody",
                     listName: "free",
                     gifSrcs,
                 };
-                return res.status(200).json({ gifs: gif });
+                return res.status(200).json({ gifs: [gif] });
             }
             catch (error) {
                 return (0, handleApiError_1.handleError)("getGifs", error, res);

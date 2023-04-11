@@ -1,7 +1,11 @@
 import React, { DOMAttributes } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
-import { _leftInitButtonSpring, _scrollerOnOffButtonSpring } from "./SpringButtons";
+import {
+    _leftInitButtonSpring,
+    _scrollerOnOffButtonSpring,
+    _scrollerSaveGifsButtonSpring,
+} from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { getGlobalState } from "../reducers";
 import API from "../utils/ApiService";
@@ -13,6 +17,7 @@ import {
     setHPos,
     setInvert,
     setAnimDuration,
+    setListName,
 } from "../actions/art-scroller-actions";
 import { BKeySvg } from "../lib/keySvgs";
 import { IGif } from "../types";
@@ -66,7 +71,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
         if (props.auth.loggedIn()) {
             gifs = ((await API.getGifs(props.auth.getToken() as string)) as IGif[]) || [];
         } else {
-            gifs = (await API.getUnloggedInGifs()) as IGif;
+            gifs = (await API.getUnloggedInGifs()) as IGif[];
         }
         console.log("gifs", gifs);
         if (Array.isArray(gifs)) {
@@ -122,6 +127,39 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     );
 };
 
+type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElement> & {
+    auth: typeof AuthService;
+};
+
+const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = (props) => {
+    const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
+    const { gifs } = getGlobalState(useSelector);
+    const onClick = (event: any): void => {
+        if (!props.auth.loggedIn() || gifs.length === 0) {
+            return;
+        }
+        event.preventDefault();
+        (async () => {
+            // call to save gifs to user's collection of gifs
+        })();
+    };
+    return (
+        <>
+            <animated.button
+                role="button"
+                disabled={!props.auth.loggedIn()}
+                data-testid="save-gifs"
+                style={scrollerSaveGifsButtonSpring}
+                onClick={onClick}
+                type="button"
+                className={props.auth.loggedIn() ? "gif-save-button" : "gif-save-button-disabled"}
+            >
+                Save Scroller Gifs
+            </animated.button>
+        </>
+    );
+};
+
 const ArtScrollerSliderContainer: React.FC = ({ children }) => {
     return <div className="slider-container">{children}</div>;
 };
@@ -132,6 +170,40 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
         <label htmlFor="scroller-circle-width" style={{ color: "white" }}>
             Scroller Circle Width: {circleWidth}
         </label>
+    );
+};
+
+const ArtScrollerGifListSelector: React.FC = () => {
+    const { gifs, listName } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    return (
+        <div style={{ margin: "0 auto", width: "70%" }}>
+            <select
+                value={listName || "Choose a gif list"}
+                name="gif-list-selector"
+                id="gif-list-selector"
+                style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
+                onChange={(event: any) => {
+                    dispatch(setListName(event.target.value));
+                }}
+            >
+                <option value="Choose a gif list">Choose a gif list</option>
+                {Array.isArray(gifs) &&
+                    gifs.length > 0 &&
+                    gifs.map((gif) => {
+                        return (
+                            <option
+                                key={gif._id}
+                                id={gif._id + "-" + gif.listOwner}
+                                data-testid={gif._id + "-" + gif.listOwner}
+                                value={gif.listName}
+                            >
+                                {gif.listName}
+                            </option>
+                        );
+                    })}
+            </select>
+        </div>
     );
 };
 
@@ -286,17 +358,14 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
 const Gifs: React.FC<{ gifs: IGif[] | IGif }> = (props) => {
     const { gifs } = props;
     const { invert, animDuration, vertPos, circleWidth, hPos } = getGlobalState(useSelector);
-    let gif = {} as IGif;
-    if (Array.isArray(gifs)) {
-        gif = gifs[0];
-    } else {
-        gif = gifs;
-    }
-    console.log("gif", gif);
+
+    // TODO: choose which set of gifs to use
+
     return (
         <>
-            {!!gif?.gifSrcs &&
-                gif.gifSrcs.map((src, index) => (
+            {Array.isArray(gifs) &&
+                !!gifs[0]?.gifSrcs &&
+                gifs[0].gifSrcs.map((src, index) => (
                     <img
                         key={src}
                         data-testid={`gif-${index}`}
@@ -352,6 +421,7 @@ export type {
     ArtScrollerVerticalPositionSliderProps,
     ArtScrollerHorizontalPositionSliderProps,
     ArtScrollerInvertColorsSliderProps,
+    ArtScrollerMakeNewGifCollectionProps,
 };
 export {
     ArtScrollerMainContainer,
@@ -373,4 +443,6 @@ export {
     ArtScrollerSpeedSliderLabel,
     ArtScrollerSpeedSlider,
     ArtScrollerGifs,
+    ArtScrollerMakeNewGifCollection,
+    ArtScrollerGifListSelector,
 };

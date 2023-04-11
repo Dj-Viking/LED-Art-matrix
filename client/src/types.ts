@@ -131,6 +131,11 @@ export interface ISetAnimDurationAction {
     type: "SET_ANIM_DUR";
     payload: string;
 }
+export interface ISetListNameAction {
+    type: "SET_LIST_NAME";
+    payload: string;
+}
+
 export interface ISetGifsAction {
     type: "SET_GIFS";
     payload: Array<IGif>;
@@ -198,6 +203,7 @@ export interface ISignupPasswordChangeAction {
 
 export interface IArtScrollerState {
     gifs: Array<IGif>;
+    listName: string;
     animDuration: string;
     vertPos: string;
     hPos: string;
@@ -207,6 +213,7 @@ export interface IArtScrollerState {
 }
 
 export type IArtScrollerActionTypes =
+    | ISetListNameAction["type"]
     | ISetGifsAction["type"]
     | ISetAnimDurationAction["type"]
     | ISetVertPosAction["type"]
@@ -216,6 +223,7 @@ export type IArtScrollerActionTypes =
     | ISetFigureOnAction["type"];
 
 export type IArtScrollerPayloads =
+    | ISetListNameAction["payload"]
     | ISetGifsAction["payload"]
     | ISetAnimDurationAction["payload"]
     | ISetVertPosAction["payload"]

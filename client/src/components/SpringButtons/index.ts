@@ -101,6 +101,19 @@ export const _leftInitButtonSpring = {
     },
 };
 
+export const _scrollerSaveGifsButtonSpring = {
+    config: config.wobbly,
+    delay: 0,
+    from: {
+        opacity: 0,
+        top: 1000,
+    },
+    to: {
+        opacity: 1,
+        top: 0,
+    },
+};
+
 // scroller on/off button spring
 export const _scrollerOnOffButtonSpring = {
     config: config.wobbly,
