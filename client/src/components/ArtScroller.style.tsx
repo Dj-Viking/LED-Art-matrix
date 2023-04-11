@@ -187,7 +187,9 @@ const ArtScrollerGifListSelector: React.FC = () => {
                     dispatch(setListName(event.target.value));
                 }}
             >
-                <option value="Choose a gif list">Choose a gif list</option>
+                <option disabled value="Choose a gif list">
+                    Choose a gif list
+                </option>
                 {Array.isArray(gifs) &&
                     gifs.length > 0 &&
                     gifs.map((gif) => {
