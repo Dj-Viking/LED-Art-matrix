@@ -243,11 +243,11 @@ class ApiService implements IApiService {
         headers = setAuthHeader(headers, token);
         try {
             const gifs = await localGifHelper.handleRequest("getAll");
-            console.log("local gifs", gifs);
 
-            const haveLocalGifs = Array.isArray(gifs) && gifs.length;
+            let haveLocalGifs = Array.isArray(gifs) && gifs.length;
 
             if (haveLocalGifs && !getNew) {
+                haveLocalGifs = false;
                 return gifs;
             }
 
