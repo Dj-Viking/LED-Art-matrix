@@ -76,13 +76,8 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
             gifs = (await API.getUnloggedInGifs()) as IGif[];
         }
 
-        if (Array.isArray(gifs)) {
-            if (gifs.length > 0) {
-                dispatch(setGifs(gifs));
-            } else {
-                dispatch(setGifs(gifs));
-            }
-        }
+        dispatch(setGifs(gifs));
+        dispatch(setListName(gifs[0].listName));
     }
     return (
         <animated.button
@@ -375,9 +370,11 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
                     true
                 )) as IGif[];
                 dispatch(setGifs(userGifs));
+                dispatch(setListName(userGifs[0].listName));
             } else {
                 const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
                 dispatch(setGifs(freeGifs));
+                dispatch(setListName(freeGifs[0].listName));
             }
         })();
     }, [dispatch, props.auth]);
