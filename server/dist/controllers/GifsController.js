@@ -85,7 +85,7 @@ exports.GifsController = {
                     $push: {
                         gifs: mongoGif,
                     },
-                });
+                }, { new: true });
                 return res.status(200).json({ gifs: user.gifs });
             }
             catch (error) {
