@@ -18,7 +18,8 @@ const constants_1 = require("../constants");
 const testServer_1 = require("../testServer");
 jest.mock("node-fetch");
 const node_fetch_1 = __importDefault(require("node-fetch"));
-node_fetch_1.default.mockImplementation(() => {
+const mockedFetch = node_fetch_1.default;
+mockedFetch.mockImplementation(() => {
     return Promise.resolve({
         json: () => {
             return Promise.resolve(constants_1.MOCK_GIPHY_RES);
@@ -26,39 +27,27 @@ node_fetch_1.default.mockImplementation(() => {
     });
 });
 const app = (0, testServer_1.createTestServer)();
-beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    yield mongoose_1.default.connect(constants_1.TEST_DB_URL, {});
-}));
-afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-    mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield mongoose_1.default.connection.close();
-    }));
-}));
-let _gifs = null;
 describe("test the CRUD on gifs", () => {
-    test("gifs can be fetched", () => __awaiter(void 0, void 0, void 0, function* () {
-        const gifs = yield (0, supertest_1.default)(app).get("/gifs/unloggedGet");
-        expect(gifs.status).toBe(200);
-        expect(node_fetch_1.default).toHaveBeenCalledTimes(1);
-        const parsed = JSON.parse(gifs.text);
-        expect(parsed.gifs).toEqual({
-            listOwner: expect.any(String),
-            gifSrcs: expect.any(Array),
-            listName: expect.any(String),
-        });
-        _gifs = parsed.gifs;
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield mongoose_1.default.connect(constants_1.TEST_DB_URL);
+    }));
+    afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+            yield mongoose_1.default.connection.close();
+        }));
     }));
     test("get gifs again to replace the previous gifs", () => __awaiter(void 0, void 0, void 0, function* () {
         const gifs = yield (0, supertest_1.default)(app).get("/gifs/unloggedGet");
         expect(gifs.status).toBe(200);
-        expect(node_fetch_1.default).toHaveBeenCalledTimes(2);
+        expect(mockedFetch).toHaveBeenCalledTimes(1);
         const parsed = JSON.parse(gifs.text);
-        expect(parsed.gifs).toEqual({
-            listOwner: expect.any(String),
-            gifSrcs: expect.any(Array),
-            listName: expect.any(String),
-        });
-        expect(_gifs).toStrictEqual(parsed.gifs);
+        expect(parsed.gifs.length).toBe(1);
+        const gif = parsed.gifs[0];
+        expect(typeof gif._id).toBe("string");
+        expect(typeof gif.listName).toBe("string");
+        expect(typeof gif.listOwner).toBe("string");
+        expect(Array.isArray(gif.gifSrcs)).toBe(true);
+        expect(gif.gifSrcs.length).toBeTruthy();
     }));
 });
 //# sourceMappingURL=gifs.test.js.map

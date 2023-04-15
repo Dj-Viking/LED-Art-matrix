@@ -1,5 +1,18 @@
 /* istanbul ignore file */
 
+const os = require("os");
+
+const ignorePrettierNewLineErrors = ((platform) => {
+    switch (platform) {
+        case "win32":
+            return "crlf";
+        case "darwin":
+            return "lf";
+        default:
+            return "lf";
+    }
+})(os.platform());
+
 module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
@@ -23,7 +36,7 @@ module.exports = {
             //or whatever plugin that is causing the clash
             "error",
             {
-                endOfLine: "crlf",
+                endOfLine: ignorePrettierNewLineErrors,
                 tabWidth: 4,
             },
         ],
