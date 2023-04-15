@@ -41,9 +41,12 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob } = getGlobalState(useSelector);
     const buttonIdsInState = useSelector((state: MyRootState) =>
-        state.presetButtonsListState.presetButtons.map((btn) => btn.id)
+        state.presetButtonsListState?.presetButtons?.map((btn) => btn?.id)
     );
-    const buttonIds = JSON.parse(JSON.stringify(buttonIdsInState));
+    let buttonIds: string[] = [];
+    if (buttonIdsInState) {
+        buttonIds = JSON.parse(JSON.stringify(buttonIdsInState));
+    }
 
     const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");

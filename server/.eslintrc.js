@@ -23,6 +23,7 @@ module.exports = {
             //or whatever plugin that is causing the clash
             "error",
             {
+                endOfLine: "crlf",
                 tabWidth: 4,
             },
         ],

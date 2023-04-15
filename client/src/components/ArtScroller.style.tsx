@@ -69,15 +69,9 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
 
         let gifs: IGif[] = [];
 
-        if (props.auth.loggedIn()) {
-            gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
-            dispatch(setGifs(gifs));
-            dispatch(setListName(gifs[0].listName));
-        } else {
-            gifs = (await API.getUnloggedInGifs(true)) as IGif[];
-            dispatch(setGifs(gifs));
-            dispatch(setListName("free"));
-        }
+        gifs = (await API.getUnloggedInGifs(true)) as IGif[];
+        dispatch(setGifs(gifs));
+        dispatch(setListName(gifs[0]?.listName));
     }
 
     async function handleClick(): Promise<void> {
@@ -88,7 +82,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
         if (props.auth.loggedIn()) {
             gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
             dispatch(setGifs(gifs));
-            dispatch(setListName(gifs[0].listName));
+            dispatch(setListName(gifs[0]?.listName));
         } else {
             gifs = (await API.getUnloggedInGifs()) as IGif[];
             dispatch(setGifs(gifs));
@@ -159,12 +153,13 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
     const { gifs } = getGlobalState(useSelector);
     const onClick = (event: any): void => {
+        event.preventDefault();
         if (!props.auth.loggedIn() || gifs.length === 0) {
             return;
         }
-        event.preventDefault();
         (async () => {
             // call to save gifs to user's collection of gifs
+            await API.createGifs(props.auth.getToken() as string, gifs);
         })();
     };
     return (
@@ -386,8 +381,7 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
         getGlobalState(useSelector);
 
     const dispatch = useDispatch();
-
-    let _gifs = gifs.filter((gif) => gif.listName === listName);
+    let _gifs = gifs?.filter((gif) => gif.listName === listName);
 
     React.useEffect(() => {
         (async () => {
@@ -397,7 +391,7 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
                     true
                 )) as IGif[];
                 dispatch(setGifs(userGifs));
-                dispatch(setListName(userGifs[0].listName));
+                dispatch(setListName(userGifs[0]?.listName || "test"));
             } else {
                 const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
                 dispatch(setGifs(freeGifs));

@@ -226,6 +226,8 @@ class ApiService implements IApiService {
                 if (gifs.length > 0) {
                     return gifs;
                 }
+            } else {
+                await localGifHelper.handleRequest("deleteAll");
             }
 
             const res = await fetch(`${API_URL}/gifs/unloggedGet`, {
@@ -248,9 +250,22 @@ class ApiService implements IApiService {
         }
     }
 
-    // TODO:
-    // fetch my gifs on start
-    // fetch new gifs on button click
+    public static async createGifs(token: string, gifs: IGif[]): Promise<void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+        headers = setAuthHeader(headers, token);
+        try {
+            const res = await fetch(`${API_URL}/gifs/createNewCollection`, {
+                method: "POST",
+                body: JSON.stringify({ gifs, listName: gifs[0].listName }),
+                headers,
+            });
+            console.log("res from create gif", res);
+        } catch (error) {
+            const err = error as Error;
+            ApiService.handleError("createGifs", err);
+        }
+    }
 
     public static async getGifs(token: string, getNew: boolean): Promise<Array<IGif> | void> {
         headers = clearHeaders(headers);
