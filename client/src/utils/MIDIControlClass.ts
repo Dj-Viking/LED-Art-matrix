@@ -10,7 +10,7 @@ import {
 import { animVarCoeffChange } from "../actions/led-actions";
 import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
-import { setMidiMode } from "../actions/preset-button-actions";
+import { setActiveButton, setMidiMode } from "../actions/preset-button-actions";
 import { PresetButtonsList } from "./PresetButtonsListClass";
 
 /**
@@ -247,7 +247,8 @@ class MIDIController implements IMIDIController {
         _setChannel: (channel: number) => void,
         _setIntensity: (intensity: number) => void,
         _dispatchcb: React.Dispatch<any>,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+        _buttonIds: string[]
     ): void {
         clearTimeout(timeoutRef.current);
         const midi_intensity = midi_event.data[2];
@@ -273,6 +274,7 @@ class MIDIController implements IMIDIController {
                     // and not what we are passing into this handler because passing state stuff in here
                     // while it is changing causes memory leaks
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[0]));
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "rainbowTest",
@@ -284,6 +286,7 @@ class MIDIController implements IMIDIController {
             case "1_b_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[1]));
                         PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
                     }
                 }, 20);
@@ -378,7 +381,8 @@ class MIDIController implements IMIDIController {
         _setSize: (size: number) => void,
         _setChannel: (channel: number) => void,
         _setIntensity: (intensity: number) => void,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+        _buttonIds: string[]
     ): Promise<void> {
         return new Promise<void>((resolve) => {
             (async () => {
@@ -406,7 +410,8 @@ class MIDIController implements IMIDIController {
                                         _setChannel,
                                         _setIntensity,
                                         dispatchcb,
-                                        timeoutRef
+                                        timeoutRef,
+                                        _buttonIds
                                     );
                                 }
                             };

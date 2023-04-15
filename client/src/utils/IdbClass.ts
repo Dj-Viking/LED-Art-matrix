@@ -22,28 +22,28 @@ class LocalGifHelper {
         // open a connection to the database `led-matrix` with
         // the version of 1
         this.#openConnection().then((request) => {
-            request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
-                console.info("on upgrade needed called with new version change", event);
+            request.onupgradeneeded = (_event: IDBVersionChangeEvent) => {
+                // console.info("on upgrade needed called with new version change", event);
 
                 let tempDb = request!.result;
 
                 tempDb.createObjectStore(this.#storeName, { keyPath: "_id" as keyof IGif });
             };
-            request.onerror = (event: Event) => {
-                console.error("an error occurred during the open request", event);
+            request.onerror = (_event: Event) => {
+                // console.error("an error occurred during the open request", event);
             };
         });
     }
 
     async #openConnection(): Promise<IDBOpenDBRequest> {
-        console.info("opening connection for a transaction to idb");
+        // console.info("opening connection for a transaction to idb");
         return new Promise((res) => {
             res(window.indexedDB.open(this.#dbName, this.version));
         });
     }
 
     #openStore(reqResult: IDBRequest): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
-        console.info("indexed db open request succeeded");
+        // console.info("indexed db open request succeeded");
         return new Promise((res) => {
             // start saving references to the database to the `db` variable
             const tempDb = reqResult.result;
@@ -102,7 +102,7 @@ class LocalGifHelper {
                         }
 
                         transaction.oncomplete = () => {
-                            console.info("transaction complete closing connection");
+                            // console.info("transaction complete closing connection");
                             db.close();
                         };
                     });

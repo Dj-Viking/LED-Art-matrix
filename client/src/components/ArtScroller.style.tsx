@@ -100,7 +100,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
             <animated.button
                 style={leftInitButtonSpring}
                 role="button"
-                data-testid="start-art"
+                data-testid="get-new"
                 className="scroller-fetch-button"
                 onClick={() => (async () => handleGetNew())()}
             >

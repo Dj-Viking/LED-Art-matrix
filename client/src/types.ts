@@ -273,6 +273,12 @@ export interface ISetPresetButtonsListAction {
     payload: IPresetButton[];
 }
 
+export type SetActiveButtonAction = (id: string) => ISetActiveButtonAction;
+
+export interface ISetActiveButtonAction {
+    type: "SET_ACTIVE_BUTTON";
+    payload: string;
+}
 export type ITogglePresetButtonMidiMode = () => {
     type: "TOGGLE_MIDI_MODE";
     payload: null;
@@ -290,6 +296,7 @@ export interface IPresetButtonsAction {
 }
 export type IPresetButtonListActionTypes =
     | ISetPresetButtonsListAction["type"]
+    | ISetActiveButtonAction["type"]
     | "TOGGLE_MIDI_MODE"
     | "CHECK_BUTTONS_ACTIVE"
     | "SET_ALL_INACTIVE"
@@ -298,6 +305,7 @@ export type IPresetButtonListActionTypes =
 
 export type IPresetButtonListActionPayloads =
     | ISetPresetButtonsListAction["payload"]
+    | ISetActiveButtonAction["payload"]
     | boolean
     | IPresetButton[];
 
@@ -314,12 +322,6 @@ export interface IPresetButton {
     classList?: string;
     clickHandler: React.MouseEventHandler<HTMLElement>;
 }
-export interface ILoggedinAction {
-    type: ILoggedInActionTypes;
-    payload: ILoggedInActionPayloads;
-}
-
-export type ILoggedInActionTypes = "LOG_IN" | "LOG_OUT";
 
 export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
     type: "SET_ALL_INACTIVE";
@@ -329,6 +331,13 @@ export type IToggleDeleteModeAction = (on: boolean) => {
     type: "TOGGLE_DELETE_MODE";
     payload: boolean;
 };
+
+export interface ILoggedinAction {
+    type: ILoggedInActionTypes;
+    payload: ILoggedInActionPayloads;
+}
+
+export type ILoggedInActionTypes = "LOG_IN" | "LOG_OUT";
 
 export type ILoggedInActionPayloads = ILoginAction["payload"] | ILogoutAction["payload"];
 export interface ILoginAction {

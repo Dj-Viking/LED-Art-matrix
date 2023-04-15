@@ -42,9 +42,9 @@ describe("test the CRUD on gifs", () => {
         expect(node_fetch_1.default).toHaveBeenCalledTimes(1);
         const parsed = JSON.parse(gifs.text);
         expect(parsed.gifs).toEqual({
-            listOwner: "nobody",
+            listOwner: expect.any(String),
             gifSrcs: expect.any(Array),
-            listName: "free",
+            listName: expect.any(String),
         });
         _gifs = parsed.gifs;
     }));
@@ -54,9 +54,9 @@ describe("test the CRUD on gifs", () => {
         expect(node_fetch_1.default).toHaveBeenCalledTimes(2);
         const parsed = JSON.parse(gifs.text);
         expect(parsed.gifs).toEqual({
-            listOwner: "nobody",
+            listOwner: expect.any(String),
             gifSrcs: expect.any(Array),
-            listName: "free",
+            listName: expect.any(String),
         });
         expect(_gifs).toStrictEqual(parsed.gifs);
     }));

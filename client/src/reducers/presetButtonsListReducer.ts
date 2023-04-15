@@ -8,6 +8,19 @@ const presetButtonsListReducer = (
     action: IPresetButtonsAction
 ): IPresetButtonsListState => {
     switch (action.type) {
+        case "SET_ACTIVE_BUTTON":
+            return {
+                ...state,
+                presetButtons: state.presetButtons.map((button) => {
+                    if (!button.isActive && button.id === (action.payload as string)) {
+                        button.isActive = true;
+                        return button;
+                    } else {
+                        button.isActive = false;
+                        return button;
+                    }
+                }),
+            };
         case "TOGGLE_MIDI_MODE":
             return {
                 ...state,
