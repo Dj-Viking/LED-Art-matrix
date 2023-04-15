@@ -250,14 +250,14 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async createGifs(token: string, gifs: IGif[]): Promise<void> {
+    public static async createGifs(token: string, gif: IGif, listName: string): Promise<void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         headers = setAuthHeader(headers, token);
         try {
             const res = await fetch(`${API_URL}/gifs/createNewCollection`, {
                 method: "POST",
-                body: JSON.stringify({ gifs, listName: gifs[0].listName }),
+                body: JSON.stringify({ gif, listName }),
                 headers,
             });
             console.log("res from create gif", res);

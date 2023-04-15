@@ -31,9 +31,10 @@ export const UserController = {
     },
     createGifCollection: async function (req: Express.MyRequest, res: Response): Promise<Response> {
         try {
-            const { gif } = req.body as { gif: IGif };
+            const { gif, listName } = req.body as { gif: IGif; listName: string };
 
             gif.listOwner = req.user!._id;
+            gif.listName = listName;
 
             const mongoGif = await Gif.create(gif);
 
