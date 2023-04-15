@@ -63,32 +63,59 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
     const dispatch = useDispatch();
     const { figureOn } = getGlobalState(useSelector);
-    async function handleGetGifs(event: any): Promise<void> {
-        event.persist();
 
+    async function handleGetNew(): Promise<void> {
+        if (!figureOn) dispatch(setFigureOn(true));
+
+        let gifs: IGif[] = [];
+
+        if (props.auth.loggedIn()) {
+            gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
+            dispatch(setGifs(gifs));
+            dispatch(setListName(gifs[0].listName));
+        } else {
+            gifs = (await API.getUnloggedInGifs(true)) as IGif[];
+            dispatch(setGifs(gifs));
+            dispatch(setListName("free"));
+        }
+    }
+
+    async function handleClick(): Promise<void> {
         if (figureOn === false) dispatch(setFigureOn(true));
 
         let gifs = [] as IGif[] | IGif;
 
         if (props.auth.loggedIn()) {
             gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
+            dispatch(setGifs(gifs));
+            dispatch(setListName(gifs[0].listName));
         } else {
             gifs = (await API.getUnloggedInGifs()) as IGif[];
+            dispatch(setGifs(gifs));
+            dispatch(setListName("free"));
         }
-
-        dispatch(setGifs(gifs));
-        dispatch(setListName(gifs[0].listName));
     }
     return (
-        <animated.button
-            style={leftInitButtonSpring}
-            role="button"
-            data-testid="start-art"
-            className="scroller-fetch-button"
-            onClick={handleGetGifs}
-        >
-            Start Art Scroller!
-        </animated.button>
+        <>
+            <animated.button
+                style={leftInitButtonSpring}
+                role="button"
+                data-testid="start-art"
+                className="scroller-fetch-button"
+                onClick={() => (async () => handleGetNew())()}
+            >
+                Get New GIFs
+            </animated.button>
+            <animated.button
+                style={leftInitButtonSpring}
+                role="button"
+                data-testid="start-art"
+                className="scroller-fetch-button"
+                onClick={() => (async () => handleClick())()}
+            >
+                Start Art Scroller!
+            </animated.button>
+        </>
     );
 };
 
@@ -374,7 +401,7 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
             } else {
                 const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
                 dispatch(setGifs(freeGifs));
-                dispatch(setListName(freeGifs[0].listName));
+                dispatch(setListName("free"));
             }
         })();
     }, [dispatch, props.auth]);

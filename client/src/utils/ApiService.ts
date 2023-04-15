@@ -215,21 +215,36 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async getUnloggedInGifs(): Promise<IGif[] | void> {
+    public static async getUnloggedInGifs(getNew = false): Promise<IGif[] | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         try {
+            let gifs: IGif[] = [];
+
+            if (!getNew) {
+                gifs = (await localGifHelper.handleRequest("getAll")) as IGif[];
+                if (gifs.length > 0) {
+                    return gifs;
+                }
+            }
+
             const res = await fetch(`${API_URL}/gifs/unloggedGet`, {
                 method: "GET",
                 headers,
             });
 
+            // always has a length of 1 coming from db if request was made by unlogged-in user
             const data = (await res.json()) as { gifs: IGif[] };
 
-            return data.gifs;
+            // put that instance in the store
+            await localGifHelper.handleRequest("put", data.gifs[0]);
+
+            gifs = data.gifs;
+
+            return gifs;
         } catch (error) {
             const err = error as Error;
-            this.handleError("getUnloggedInGifs", err);
+            ApiService.handleError("getUnloggedInGifs", err);
         }
     }
 
