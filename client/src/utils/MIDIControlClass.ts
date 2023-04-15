@@ -294,6 +294,7 @@ class MIDIController implements IMIDIController {
             case "1_c_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[2]));
                         PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
                     }
                 }, 20);
@@ -301,6 +302,7 @@ class MIDIController implements IMIDIController {
             case "1_d_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[3]));
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "spiral",
@@ -312,6 +314,7 @@ class MIDIController implements IMIDIController {
             case "2_e_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[4]));
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "fourSpirals",
@@ -323,6 +326,7 @@ class MIDIController implements IMIDIController {
             case "2_f_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
+                        _dispatchcb(setActiveButton(_buttonIds[5]));
                         PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
                     }
                 }, 20);
