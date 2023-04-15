@@ -37,20 +37,28 @@ afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
 let _gifs = null;
 describe("test the CRUD on gifs", () => {
     test("gifs can be fetched", () => __awaiter(void 0, void 0, void 0, function* () {
-        const gifs = yield (0, supertest_1.default)(app).get("/gifs/get");
+        const gifs = yield (0, supertest_1.default)(app).get("/gifs/unloggedGet");
         expect(gifs.status).toBe(200);
         expect(node_fetch_1.default).toHaveBeenCalledTimes(1);
         const parsed = JSON.parse(gifs.text);
-        expect(parsed.gifs.length > 0).toBe(true);
+        expect(parsed.gifs).toEqual({
+            listOwner: expect.any(String),
+            gifSrcs: expect.any(Array),
+            listName: expect.any(String),
+        });
         _gifs = parsed.gifs;
     }));
     test("get gifs again to replace the previous gifs", () => __awaiter(void 0, void 0, void 0, function* () {
-        const gifs = yield (0, supertest_1.default)(app).get("/gifs/get");
+        const gifs = yield (0, supertest_1.default)(app).get("/gifs/unloggedGet");
         expect(gifs.status).toBe(200);
         expect(node_fetch_1.default).toHaveBeenCalledTimes(2);
         const parsed = JSON.parse(gifs.text);
-        expect(parsed.gifs.length > 0).toBe(true);
-        expect(_gifs).not.toStrictEqual(parsed.gifs);
+        expect(parsed.gifs).toEqual({
+            listOwner: expect.any(String),
+            gifSrcs: expect.any(Array),
+            listName: expect.any(String),
+        });
+        expect(_gifs).toStrictEqual(parsed.gifs);
     }));
 });
 //# sourceMappingURL=gifs.test.js.map

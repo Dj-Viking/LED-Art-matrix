@@ -6,178 +6,179 @@ import * as typegoose from "@typegoose/typegoose";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
-  _id: string;
-  username: string;
-  email: string;
-  uuid?: string;
-  adminUuid: string;
-  role: "user" | "admin";
-  resetEmail?: string;
-  iat?: number;
-  exp?: number;
+    _id: string;
+    username: string;
+    email: string;
+    uuid?: string;
+    adminUuid: string;
+    role: "user" | "admin";
+    resetEmail?: string;
+    iat?: number;
+    exp?: number;
 }
 
 export interface SignLoginRegisterMeTokenArgs {
-  _id: typegoose.mongoose.Types.ObjectId | string;
-  username: string;
-  email: string;
-  role?: string;
-  uuid?: string;
+    _id: typegoose.mongoose.Types.ObjectId | string;
+    username: string;
+    email: string;
+    role?: string;
+    uuid?: string;
 }
 export interface SignResetPasswordTokenArgs {
-  resetEmail: string;
-  uuid: string;
-  exp: string;
+    resetEmail: string;
+    uuid: string;
+    exp: string;
 }
 export interface AdminTokenArgs {
-  adminUuid: string;
+    adminUuid: string;
 }
 
 declare global {
-  namespace NodeJS {
-    interface ProcessEnv {
-      readonly NODE_ENV: "development" | "production" | "test";
-      readonly PORT?: string;
-      readonly EXPIRED_TOKEN?: string;
-      readonly INVALID_SIGNATURE?: string;
-      readonly SECRET?: string;
-      readonly EXPIRATION?: string;
-      readonly RESET_EXPIRATION?: string;
-      readonly NODEMAILER_AUTH_EMAIL?: string;
-      readonly NODEMAILER_AUTH_PASS?: string;
-      readonly OTHER_NODEMAILER_AUTH_PASS?: string;
-      readonly SUPER_SECRET?: string;
-      readonly ENV_TXT?: string;
-      readonly TEST_ADMIN_ENDPOINT?: string;
+    namespace NodeJS {
+        interface ProcessEnv {
+            readonly NODE_ENV: "development" | "production" | "test";
+            readonly PORT?: string;
+            readonly EXPIRED_TOKEN?: string;
+            readonly INVALID_SIGNATURE?: string;
+            readonly SECRET?: string;
+            readonly EXPIRATION?: string;
+            readonly RESET_EXPIRATION?: string;
+            readonly NODEMAILER_AUTH_EMAIL?: string;
+            readonly NODEMAILER_AUTH_PASS?: string;
+            readonly OTHER_NODEMAILER_AUTH_PASS?: string;
+            readonly SUPER_SECRET?: string;
+            readonly ENV_TXT?: string;
+            readonly TEST_ADMIN_ENDPOINT?: string;
+        }
     }
-  }
 }
 //declaration merging with express request
 export namespace Express {
-  export type MyRequest = Request & {
-    user?: MyJwtData | null;
-  };
+    export type MyRequest = Request & {
+        user?: MyJwtData | null;
+    };
 }
 
 export interface MySendEmailOptions {
-  mailTo: string;
-  mailHtml: string;
-  fromHeader?: string;
-  subject?: string;
+    mailTo: string;
+    mailHtml: string;
+    fromHeader?: string;
+    subject?: string;
 }
 export interface ICreateUserPayload {
-  username?: string;
-  password?: string;
-  email?: string;
+    username?: string;
+    password?: string;
+    email?: string;
 }
 export interface IGif {
-  gifCategory: string;
-  gifSrc: string | URL;
-  limit: string;
-  _id: string;
+    listOwner: string;
+    listName: string;
+    gifSrcs: string[];
+    _id: string;
 }
 
 export interface IAddPresetResponse {
-  presets: IPreset[];
+    presets: IPreset[];
 }
 export interface IGetUserPresetResponse {
-  presets: IPreset[];
+    presets: IPreset[];
 }
 export interface IGetUserDefaultPresetResponse {
-  preset: IPreset;
+    preset: IPreset;
 }
 
 export interface IUser {
-  username: string;
-  email: string;
-  token?: string;
-  orders?: Array<IOrder>;
-  preset?: Array<IPreset>;
-  defaultPreset?: IPreset;
-  userSearchTerm?: ISearchTerm;
-  isCorrectPassword: (this: DocumentType<UserClass>, plainPass: string) => Promise<boolean>;
+    gifs: string[];
+    username: string;
+    email: string;
+    token?: string;
+    orders?: Array<IOrder>;
+    preset?: Array<IPreset>;
+    defaultPreset?: IPreset;
+    userSearchTerm?: ISearchTerm;
+    isCorrectPassword: (this: DocumentType<UserClass>, plainPass: string) => Promise<boolean>;
 }
 export interface ISearchTerm {
-  termText?: string;
-  termCategory?: string;
-  limit?: string;
+    termText?: string;
+    termCategory?: string;
+    limit?: string;
 }
 export interface IOrder {
-  purchaseDate?: Date;
-  products: Array<IProduct>;
+    purchaseDate?: Date;
+    products: Array<IProduct>;
 }
 export interface IProduct {
-  name: string;
-  description?: string;
-  image?: string;
-  price: number;
-  quantity?: number;
-  category: ICategory;
+    name: string;
+    description?: string;
+    image?: string;
+    price: number;
+    quantity?: number;
+    category: ICategory;
 }
 export interface ICategory {
-  name: string;
+    name: string;
 }
 export interface IGetGifsResponse {
-  gifs: Array<IGif>;
+    gifs: Array<IGif>;
 }
 export interface ICreateUserResponse {
-  _id: string;
-  token: string;
+    _id: string;
+    token: string;
 }
 
 export interface IPreset {
-  _id: string;
-  presetName: string;
-  displayName: string;
-  animVarCoeff: string;
+    _id: string;
+    presetName: string;
+    displayName: string;
+    animVarCoeff: string;
 }
 
 export interface ILoginPayload {
-  usernameOrEmail: {
-    username?: string | void;
-    email?: string | void;
-  };
-  password: string;
+    usernameOrEmail: {
+        username?: string | void;
+        email?: string | void;
+    };
+    password: string;
 }
 
 export interface ILoginResponse {
-  user: {
-    username: string;
-    email: string;
-    password?: string;
-    token: string;
-    defaultPreset: IPreset;
-  };
+    user: {
+        username: string;
+        email: string;
+        password?: string;
+        token: string;
+        defaultPreset: IPreset;
+    };
 }
 
 export interface IUpdateUserPresetPayload {
-  _id: string;
-  displayName: string;
-  defaultPreset: string;
-  animVarCoeff: string;
+    _id: string;
+    displayName: string;
+    defaultPreset: string;
+    animVarCoeff: string;
 }
 
 export interface IUpdateUserPresetResponse {
-  preset: IPreset;
+    preset: IPreset;
 }
 
 export interface IInvalidSigError {
-  error: {
-    name: string;
-    message: string;
-  };
+    error: {
+        name: string;
+        message: string;
+    };
 }
 export interface IExpiredTokenError {
-  error: {
-    name: string;
-    message: string;
-  };
+    error: {
+        name: string;
+        message: string;
+    };
 }
 
 export interface IForgotPasswordResponse {
-  message: string;
+    message: string;
 }
 
 export interface IDeletePresetResponse {
-  message: string;
+    message: string;
 }

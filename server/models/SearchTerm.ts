@@ -1,17 +1,17 @@
 import { prop, modelOptions } from "@typegoose/typegoose";
 
 @modelOptions({
-  schemaOptions: { collection: "searchTerms" },
+    schemaOptions: { collection: "searchTerms" },
 })
 export class SearchTermClass {
-  @prop({ trim: true })
-  public termText?: string;
+    @prop({ trim: true })
+    public termText?: string;
 
-  @prop({ trim: true })
-  termCategory?: string;
+    @prop({ trim: true })
+    termCategory?: string;
 
-  @prop({ default: "15" })
-  public limit?: string;
+    @prop({ default: "15" })
+    public limit?: string;
 }
 
 // const searchTermSchema = new Schema({

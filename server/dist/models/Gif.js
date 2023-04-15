@@ -11,20 +11,21 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GifClass = void 0;
 const typegoose_1 = require("@typegoose/typegoose");
+const User_1 = require("./User");
 let GifClass = class GifClass {
 };
 __decorate([
-    (0, typegoose_1.prop)({ trim: true }),
-    __metadata("design:type", String)
-], GifClass.prototype, "gifCategory", void 0);
+    (0, typegoose_1.prop)({ ref: () => User_1.UserClass }),
+    __metadata("design:type", Object)
+], GifClass.prototype, "listOwner", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ trim: true }),
+    (0, typegoose_1.prop)({ trim: true, required: true }),
     __metadata("design:type", String)
-], GifClass.prototype, "gifSrc", void 0);
+], GifClass.prototype, "listName", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ trim: true, default: "15" }),
-    __metadata("design:type", String)
-], GifClass.prototype, "limit", void 0);
+    (0, typegoose_1.prop)({ required: true, allowMixed: typegoose_1.Severity.ALLOW, type: typegoose_1.mongoose.Schema.Types.Mixed }),
+    __metadata("design:type", Array)
+], GifClass.prototype, "gifSrcs", void 0);
 GifClass = __decorate([
     (0, typegoose_1.modelOptions)({
         schemaOptions: { collection: "gifs" },

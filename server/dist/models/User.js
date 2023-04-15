@@ -24,11 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserClass = void 0;
 require("dotenv").config();
 const typegoose_1 = require("@typegoose/typegoose");
-const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const Order_1 = require("./Order");
 const PresetClass_1 = require("./PresetClass");
 const SearchTerm_1 = require("./SearchTerm");
+const Gif_1 = require("./Gif");
+const mongoose_unique_validator_1 = __importDefault(require("mongoose-unique-validator"));
 let UserClass = class UserClass {
     isCorrectPassword(plainPass) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37,11 +38,11 @@ let UserClass = class UserClass {
     }
 };
 __decorate([
-    (0, typegoose_1.prop)({ required: true, unique: true, trim: true }),
+    (0, typegoose_1.prop)({ required: true, trim: true }),
     __metadata("design:type", String)
 ], UserClass.prototype, "username", void 0);
 __decorate([
-    (0, typegoose_1.prop)({ required: true, unique: true }),
+    (0, typegoose_1.prop)({ required: true, trim: true, unique: true }),
     __metadata("design:type", String)
 ], UserClass.prototype, "email", void 0);
 __decorate([
@@ -56,6 +57,10 @@ __decorate([
     (0, typegoose_1.prop)({ ref: () => Order_1.OrderClass }),
     __metadata("design:type", Array)
 ], UserClass.prototype, "orders", void 0);
+__decorate([
+    (0, typegoose_1.prop)({ type: () => Gif_1.GifClass, default: [] }),
+    __metadata("design:type", Array)
+], UserClass.prototype, "gifs", void 0);
 __decorate([
     (0, typegoose_1.prop)({ type: () => PresetClass_1.PresetClass, default: [] }),
     __metadata("design:type", Array)

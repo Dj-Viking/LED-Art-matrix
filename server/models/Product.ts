@@ -2,26 +2,26 @@ import { prop, Ref, modelOptions } from "@typegoose/typegoose";
 import { CategoryClass } from "./Category";
 
 @modelOptions({
-  schemaOptions: { collection: "products" },
+    schemaOptions: { collection: "products" },
 })
 export class ProductClass {
-  @prop({ required: true, trim: true })
-  public name!: string;
+    @prop({ required: true, trim: true })
+    public name!: string;
 
-  @prop()
-  public description?: string;
+    @prop()
+    public description?: string;
 
-  @prop()
-  public image?: string;
+    @prop()
+    public image?: string;
 
-  @prop({ required: true, min: 0.99 })
-  public price!: number;
+    @prop({ required: true, min: 0.99 })
+    public price!: number;
 
-  @prop({ default: 0, min: 0 })
-  public quantity?: number;
+    @prop({ default: 0, min: 0 })
+    public quantity?: number;
 
-  @prop({ ref: () => CategoryClass, required: true })
-  public category: Ref<CategoryClass>;
+    @prop({ ref: () => CategoryClass, required: true })
+    public category: Ref<CategoryClass>;
 }
 
 // const productSchema = new Schema({

@@ -24,6 +24,31 @@ window.HTMLMediaElement.prototype.addTextTrack = () => {
 
 window.open = () => null;
 
+// @ts-ignore
+window.indexedDB = {
+    // @ts-ignore
+    open: async () =>
+        // @ts-ignore
+        new Promise<IDBOpenDBRequest>((res) =>
+            // @ts-ignore
+            res({
+                onblocked: null,
+                onupgradeneeded: function (this: IDBOpenDBRequest, _ev: Event) {
+                    return {};
+                },
+                addEventListener: function () {
+                    return {};
+                },
+                removeEventListener: function () {
+                    return {};
+                },
+                onsuccess: function () {
+                    return void 0;
+                },
+            })
+        ),
+};
+
 export async function MyConfig(): Promise<Config.InitialOptions> {
     return {
         verbose: true,

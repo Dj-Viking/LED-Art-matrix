@@ -5,6 +5,7 @@ import {
     ISetAllInactiveAction,
     IDeletePresetAction,
     ITogglePresetButtonMidiMode,
+    SetActiveButtonAction,
 } from "../types";
 
 export const setPresetButtonsList = (
@@ -13,6 +14,13 @@ export const setPresetButtonsList = (
     type: "SET_BUTTONS_LIST",
     payload: buttons,
 });
+
+export const setActiveButton: SetActiveButtonAction = (id) => {
+    return {
+        type: "SET_ACTIVE_BUTTON",
+        payload: id,
+    };
+};
 
 export const setMidiMode: ITogglePresetButtonMidiMode = () => {
     return {

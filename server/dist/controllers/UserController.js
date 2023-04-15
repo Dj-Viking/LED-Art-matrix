@@ -17,10 +17,44 @@ const models_1 = require("../models");
 const utils_1 = require("../utils");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const constants_1 = require("../constants");
+const handleApiError_1 = require("../utils/handleApiError");
 const uuid = require("uuid");
 (0, utils_1.readEnv)();
 const { RESET_EXPIRATION, SALT } = process.env;
 exports.UserController = {
+    removeGifCollection: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                    $pull: {
+                        gifs: { _id: req.body._id },
+                    },
+                }, { new: true });
+                return res.status(200).json({ gifs: user.gifs });
+            }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("removeGifCollection", error, res);
+            }
+        });
+    },
+    createGifCollection: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const { gif } = req.body;
+                gif.listOwner = req.user._id;
+                const mongoGif = yield models_1.Gif.create(gif);
+                const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                    $push: {
+                        gifs: mongoGif,
+                    },
+                }, { new: true });
+                return res.status(200).json({ gifs: user.gifs });
+            }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("createGifCollection", error, res);
+            }
+        });
+    },
     signup: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -41,12 +75,16 @@ exports.UserController = {
                         presets: constants_1.INITIAL_PRESETS,
                     },
                     token,
-                    defaultPreset: { presetName: "waves", animVarCoeff: "64", displayName: "waves" },
+                    defaultPreset: {
+                        presetName: "waves",
+                        animVarCoeff: "64",
+                        displayName: "waves",
+                    },
                 }, { new: true }).select("-password");
                 return res.status(201).json({ token, _id: newUser._id });
             }
             catch (error) {
-                return res.status(500).json({ error: error.message });
+                return (0, handleApiError_1.handleError)("signup", error, res);
             }
         });
     },
@@ -91,7 +129,9 @@ exports.UserController = {
                 }, { new: true }).select("-password");
                 return res.status(200).json({ presets: updated.presets });
             }
-            catch (error) { }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("addNewPreset", error, res);
+            }
         });
     },
     getUserPresets: function (req, res) {
@@ -100,7 +140,9 @@ exports.UserController = {
                 const user = yield models_1.User.findOne({ email: req.user.email });
                 return res.status(200).json({ presets: user.presets });
             }
-            catch (error) { }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("getUserPresets", error, res);
+            }
         });
     },
     getUserDefaultPreset: function (req, res) {
@@ -118,7 +160,7 @@ exports.UserController = {
                 });
             }
             catch (error) {
-                return res.status(500).json({ error: error.message });
+                return (0, handleApiError_1.handleError)("getUserDefaultPreset", error, res);
             }
         });
     },
@@ -147,7 +189,9 @@ exports.UserController = {
                     },
                 });
             }
-            catch (error) { }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("updateDefaultPreset", error, res);
+            }
         });
     },
     login: function (req, res) {
@@ -188,8 +232,7 @@ exports.UserController = {
                 return res.status(200).json({ user: returnUser });
             }
             catch (error) {
-                console.error(error);
-                res.status(500).json({ error: error.message });
+                return (0, handleApiError_1.handleError)("login", error, res);
             }
         });
     },
@@ -223,7 +266,9 @@ exports.UserController = {
                 yield (0, utils_1.sendEmail)(sendEmailArgs);
                 return res.status(200).json({ message: "success" });
             }
-            catch (error) { }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("forgotPassword", error, res);
+            }
         });
     },
     changePassword: function (req, res) {
@@ -247,7 +292,9 @@ exports.UserController = {
                 });
                 return res.status(200).json({ done: true, token: newToken });
             }
-            catch (error) { }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("changePassword", error, res);
+            }
         });
     },
 };

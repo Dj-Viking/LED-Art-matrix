@@ -1,17 +1,18 @@
-import { prop, modelOptions } from "@typegoose/typegoose";
+import { prop, modelOptions, Severity, mongoose, Ref } from "@typegoose/typegoose";
+import { UserClass } from "./User";
 
 @modelOptions({
-  schemaOptions: { collection: "gifs" },
+    schemaOptions: { collection: "gifs" },
 })
 export class GifClass {
-  @prop({ trim: true })
-  public gifCategory?: string;
+    @prop({ ref: () => UserClass })
+    public listOwner: Ref<UserClass>;
 
-  @prop({ trim: true })
-  public gifSrc?: string;
+    @prop({ trim: true, required: true })
+    public listName: string;
 
-  @prop({ trim: true, default: "15" })
-  public limit?: string;
+    @prop({ required: true, allowMixed: Severity.ALLOW, type: mongoose.Schema.Types.Mixed })
+    public gifSrcs: string[];
 }
 
 // const gifSchema = new Schema({

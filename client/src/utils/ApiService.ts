@@ -1,10 +1,11 @@
 /* eslint-disable no-empty */
 import Auth from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
-import { API_URL } from "../constants";
+import { API_URL, IS_PROD } from "../constants";
 import { IGif, ISaveUserPresetArgs } from "../types";
 
 import { IDBPreset } from "../utils/PresetButtonsListClass";
+import { localGifHelper } from "./IdbClass";
 
 let headers = {};
 interface ISignupArgs {
@@ -49,6 +50,18 @@ class ApiService implements IApiService {
 
     public alive(): any {
         return this.isAlive;
+    }
+
+    private static handleError(endpoint: string, error: Error): void {
+        if (!IS_PROD) {
+            console.error(
+                `an error occurred with endpoint ${endpoint}` + error.message + `\n ${error.stack}`
+            );
+            throw error;
+        } else {
+            console.error("an error occurred with " + endpoint);
+            throw error;
+        }
     }
 
     public static async signup(args: ISignupArgs): Promise<boolean | void> {
@@ -202,15 +215,90 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async getGifs(): Promise<Array<IGif> | void> {
+    public static async getUnloggedInGifs(getNew = false): Promise<IGif[] | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         try {
+            let gifs: IGif[] = [];
+
+            if (!getNew) {
+                gifs = (await localGifHelper.handleRequest("getAll")) as IGif[];
+                if (gifs.length > 0) {
+                    return gifs;
+                }
+            } else {
+                await localGifHelper.handleRequest("deleteAll");
+            }
+
+            const res = await fetch(`${API_URL}/gifs/unloggedGet`, {
+                method: "GET",
+                headers,
+            });
+
+            // always has a length of 1 coming from db if request was made by unlogged-in user
+            const data = (await res.json()) as { gifs: IGif[] };
+
+            // put that instance in the store
+            await localGifHelper.handleRequest("put", data.gifs[0]);
+
+            gifs = data.gifs;
+
+            return gifs;
+        } catch (error) {
+            const err = error as Error;
+            ApiService.handleError("getUnloggedInGifs", err);
+        }
+    }
+
+    public static async createGifs(token: string, gifs: IGif[]): Promise<void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+        headers = setAuthHeader(headers, token);
+        try {
+            const res = await fetch(`${API_URL}/gifs/createNewCollection`, {
+                method: "POST",
+                body: JSON.stringify({ gifs, listName: gifs[0].listName }),
+                headers,
+            });
+            console.log("res from create gif", res);
+        } catch (error) {
+            const err = error as Error;
+            ApiService.handleError("createGifs", err);
+        }
+    }
+
+    public static async getGifs(token: string, getNew: boolean): Promise<Array<IGif> | void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+        headers = setAuthHeader(headers, token);
+        try {
+            const gifs = await localGifHelper.handleRequest("getAll");
+
+            let haveLocalGifs = Array.isArray(gifs) && gifs.length;
+
+            if (haveLocalGifs && !getNew) {
+                haveLocalGifs = false;
+                return gifs;
+            }
+
+            // TODO: if requesting new set that is in the user's column of preferred gifs
+            // delete all from the idb and store the new ones that are stored in the user's preferred gifs
+            if (getNew) {
+                await localGifHelper.handleRequest("deleteAll");
+            }
+
             const res = await fetch(`${API_URL}/gifs/get`, {
                 method: "GET",
                 headers,
             });
-            const data = await res.json();
+
+            const data = (await res.json()) as { gifs: IGif[] };
+
+            if (!haveLocalGifs) {
+                const promises = data.gifs.map((gif) => localGifHelper.handleRequest("put", gif));
+                await Promise.all(promises);
+            }
+
             return data.gifs;
         } catch (error) {}
     }

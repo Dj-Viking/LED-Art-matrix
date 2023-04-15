@@ -278,6 +278,25 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(parsed.preset.presetName).toBe("");
         expect(parsed.preset.displayName).toBe("");
     }));
+    test("test that a user can set new gifs into their gifs column", () => __awaiter(void 0, void 0, void 0, function* () {
+        const user = yield (0, supertest_1.default)(app)
+            .post("/user/createGifCollection")
+            .set({
+            authorization: `Bearer ${newUserToken}`,
+        })
+            .send({
+            gif: {
+                gifSrcs: ["", "123", "123"],
+                listName: "something",
+                listOwner: "",
+            },
+        });
+        expect(user.status).toBe(200);
+        const parsed = JSON.parse(user.text);
+        expect(parsed).toEqual({
+            gifs: expect.any(Array),
+        });
+    }));
     test("deletes the user we just made", () => __awaiter(void 0, void 0, void 0, function* () {
         yield models_1.User.deleteOne({ _id: newUserId });
     }));

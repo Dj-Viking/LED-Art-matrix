@@ -10,9 +10,14 @@ import {
     ISetGifsAction,
     IGif,
     ISetAnimDurationAction,
+    ISetListNameAction,
 } from "../types";
 
 // ACTIVATE ON THE RETURN OF API QUERY DATA
+export const setListName = (name: string): ISetListNameAction => ({
+    type: "SET_LIST_NAME",
+    payload: name,
+});
 export const setGifs = (data: Array<IGif>): ISetGifsAction => ({
     type: "SET_GIFS",
     payload: data,

@@ -2,7 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const router = require("express").Router();
 const controllers_1 = require("../controllers");
-const { getGifsAndOrUpdate } = controllers_1.GifsController;
-router.route("/get").get(getGifsAndOrUpdate);
+const middleware_1 = require("../middleware");
+const { makeNewCollection, getMyGifs, unloggedGet, storedGifs } = controllers_1.GifsController;
+router.route("/unloggedGet").get(unloggedGet);
+router.route("/get").get(middleware_1.authMiddleware, getMyGifs);
+router.route("/storedGifs").get(middleware_1.authMiddleware, storedGifs);
+router.route("/createNewCollection").post(middleware_1.authMiddleware, makeNewCollection);
 exports.default = router;
 //# sourceMappingURL=gifRoutes.js.map

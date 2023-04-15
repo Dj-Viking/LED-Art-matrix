@@ -102,9 +102,9 @@ export interface ILedIsAnimatingAction {
 // will get the type eventually
 // eslint-disable-next-line
 export interface IGif {
-    gifCategory: string;
-    gifSrc: string;
-    limit: string;
+    listName: string;
+    gifSrcs: string[];
+    listOwner: string;
     _id: string;
 }
 export interface ISetHPosAction {
@@ -131,6 +131,11 @@ export interface ISetAnimDurationAction {
     type: "SET_ANIM_DUR";
     payload: string;
 }
+export interface ISetListNameAction {
+    type: "SET_LIST_NAME";
+    payload: string;
+}
+
 export interface ISetGifsAction {
     type: "SET_GIFS";
     payload: Array<IGif>;
@@ -198,6 +203,7 @@ export interface ISignupPasswordChangeAction {
 
 export interface IArtScrollerState {
     gifs: Array<IGif>;
+    listName: string;
     animDuration: string;
     vertPos: string;
     hPos: string;
@@ -207,6 +213,7 @@ export interface IArtScrollerState {
 }
 
 export type IArtScrollerActionTypes =
+    | ISetListNameAction["type"]
     | ISetGifsAction["type"]
     | ISetAnimDurationAction["type"]
     | ISetVertPosAction["type"]
@@ -216,6 +223,7 @@ export type IArtScrollerActionTypes =
     | ISetFigureOnAction["type"];
 
 export type IArtScrollerPayloads =
+    | ISetListNameAction["payload"]
     | ISetGifsAction["payload"]
     | ISetAnimDurationAction["payload"]
     | ISetVertPosAction["payload"]
@@ -265,6 +273,12 @@ export interface ISetPresetButtonsListAction {
     payload: IPresetButton[];
 }
 
+export type SetActiveButtonAction = (id: string) => ISetActiveButtonAction;
+
+export interface ISetActiveButtonAction {
+    type: "SET_ACTIVE_BUTTON";
+    payload: string;
+}
 export type ITogglePresetButtonMidiMode = () => {
     type: "TOGGLE_MIDI_MODE";
     payload: null;
@@ -282,6 +296,7 @@ export interface IPresetButtonsAction {
 }
 export type IPresetButtonListActionTypes =
     | ISetPresetButtonsListAction["type"]
+    | ISetActiveButtonAction["type"]
     | "TOGGLE_MIDI_MODE"
     | "CHECK_BUTTONS_ACTIVE"
     | "SET_ALL_INACTIVE"
@@ -290,6 +305,7 @@ export type IPresetButtonListActionTypes =
 
 export type IPresetButtonListActionPayloads =
     | ISetPresetButtonsListAction["payload"]
+    | ISetActiveButtonAction["payload"]
     | boolean
     | IPresetButton[];
 
@@ -306,12 +322,6 @@ export interface IPresetButton {
     classList?: string;
     clickHandler: React.MouseEventHandler<HTMLElement>;
 }
-export interface ILoggedinAction {
-    type: ILoggedInActionTypes;
-    payload: ILoggedInActionPayloads;
-}
-
-export type ILoggedInActionTypes = "LOG_IN" | "LOG_OUT";
 
 export type ISetAllInactiveAction = (buttons: IPresetButton[]) => {
     type: "SET_ALL_INACTIVE";
@@ -321,6 +331,13 @@ export type IToggleDeleteModeAction = (on: boolean) => {
     type: "TOGGLE_DELETE_MODE";
     payload: boolean;
 };
+
+export interface ILoggedinAction {
+    type: ILoggedInActionTypes;
+    payload: ILoggedInActionPayloads;
+}
+
+export type ILoggedInActionTypes = "LOG_IN" | "LOG_OUT";
 
 export type ILoggedInActionPayloads = ILoginAction["payload"] | ILogoutAction["payload"];
 export interface ILoginAction {
