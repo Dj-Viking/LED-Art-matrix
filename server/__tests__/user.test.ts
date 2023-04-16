@@ -316,9 +316,10 @@ describe("test this runs through CRUD of a user entity", () => {
                 authorization: `Bearer ${newUserToken}`,
             })
             .send({
+                listName: "something",
                 gif: {
                     gifSrcs: ["", "123", "123"],
-                    listName: "something",
+                    listName: "",
                     listOwner: "",
                 } as IGif,
             });
