@@ -350,6 +350,7 @@ export interface ILogoutAction {
 }
 
 export type GlobalState = IAccessRecordState &
+    INewGifsModalState &
     ISaveModalState &
     IDeleteModalState &
     ILedState &
@@ -363,6 +364,7 @@ export type GlobalState = IAccessRecordState &
 export interface MyRootState {
     accessRecordState: IAccessRecordState;
     saveModalState: ISaveModalState;
+    gifsModalState: INewGifsModalState;
     deleteModalState: IDeleteModalState;
     ledState: ILedState;
     presetButtonsListState: IPresetButtonsListState;
@@ -436,6 +438,29 @@ export interface ISetSaveModalContextAction {
 export interface ISetSaveModalIsOpenAction {
     type: "SET_SAVE_MODAL_OPEN";
     payload: boolean;
+}
+export type INewGifsModalActionTypes = "SET_GIFS_MODAL_OPEN" | "SET_GIFS_MODAL_CONTEXT";
+export type INewGifsModalActionPayloads = boolean | { listName: string; gif: IGif };
+export type SetGifsModalContextAction = (ctx: {
+    listName: string;
+    gif: IGif;
+}) => ISetGifsModalContextAction;
+export type SetGifsModalIsOpen = (isOpen: boolean) => ISetGifsModalIsOpenAction;
+export interface ISetGifsModalContextAction {
+    type: "SET_GIFS_MODAL_CONTEXT";
+    payload: { listName: string; gif: IGif };
+}
+export interface ISetGifsModalIsOpenAction {
+    type: "SET_GIFS_MODAL_OPEN";
+    payload: boolean;
+}
+export interface INewGifsModalAction {
+    type: INewGifsModalActionTypes;
+    payload: INewGifsModalActionPayloads;
+}
+export interface INewGifsModalState {
+    gifsModalIsOpen: boolean;
+    gifsModalContext: { listName: string; gif: IGif };
 }
 export interface ISaveModalState {
     saveModalIsOpen: boolean;

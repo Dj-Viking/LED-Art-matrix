@@ -24,6 +24,7 @@ import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
+import { setGifModalContext, setGifModalIsOpen } from "../actions/gif-modal-actions";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -150,17 +151,19 @@ type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElemen
 };
 
 const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = (props) => {
+    const dispatch = useDispatch();
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
     const { gifs } = getGlobalState(useSelector);
     const onClick = (event: any): void => {
         event.preventDefault();
-        if (!props.auth.loggedIn() || gifs.length === 0) {
-            return;
-        }
-        (async () => {
-            // call to save gifs to user's collection of gifs
-            await API.createGifs(props.auth.getToken() as string, gifs);
-        })();
+
+        dispatch(setGifModalIsOpen(true));
+        dispatch(
+            setGifModalContext({
+                listName: gifs[0].listName,
+                gif: gifs[0],
+            })
+        );
     };
     return (
         <>
@@ -392,10 +395,22 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
                 )) as IGif[];
                 dispatch(setGifs(userGifs));
                 dispatch(setListName(userGifs[0]?.listName || "test"));
+                dispatch(
+                    setGifModalContext({
+                        listName: userGifs[0].listName,
+                        gif: userGifs[0],
+                    })
+                );
             } else {
                 const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
                 dispatch(setGifs(freeGifs));
                 dispatch(setListName("free"));
+                dispatch(
+                    setGifModalContext({
+                        listName: "free",
+                        gif: freeGifs[0],
+                    })
+                );
             }
         })();
     }, [dispatch, props.auth]);

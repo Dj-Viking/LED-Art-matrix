@@ -9,12 +9,14 @@ import signupFormReducer from "./signupFormReducer";
 import artScrollerReducer from "./artScrollerReducer";
 import presetButtonsListReducer from "./presetButtonsListReducer";
 import accessRecordReducer from "./accessRecordReducer";
+import newGifsModalReducers from "./newGifsModalReducers";
 import { GlobalState, MyRootState } from "../types";
 import { useSelector } from "react-redux";
 
 const reducers = {
     presetButtonsListState: presetButtonsListReducer,
     ledState: ledReducer,
+    gifsModalState: newGifsModalReducers,
     loggedInState: loggedInReducer,
     ledStyleTagState: styleTagReducer,
     loginFormState: loginFormReducer,

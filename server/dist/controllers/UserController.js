@@ -40,8 +40,9 @@ exports.UserController = {
     createGifCollection: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { gif } = req.body;
+                const { gif, listName } = req.body;
                 gif.listOwner = req.user._id;
+                gif.listName = listName;
                 const mongoGif = yield models_1.Gif.create(gif);
                 const user = yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
                     $push: {

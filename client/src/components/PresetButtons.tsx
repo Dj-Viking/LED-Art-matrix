@@ -6,7 +6,7 @@ import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { IPresetButton } from "../types";
-import Modal from "./Modal/ModalBase";
+import { Modal } from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
 import { setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
