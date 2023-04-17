@@ -40,13 +40,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const dispatch = useDispatch();
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob } = getGlobalState(useSelector);
-    const buttonIdsInState = useSelector((state: MyRootState) =>
-        state.presetButtonsListState?.presetButtons?.map((btn) => btn?.id)
+    const presetButtons = useSelector((state: MyRootState) =>
+        state.presetButtonsListState?.presetButtons
     );
-    let buttonIds: string[] = [];
-    if (buttonIdsInState) {
-        buttonIds = JSON.parse(JSON.stringify(buttonIdsInState));
-    }
+    
+    console.log("buttons", presetButtons);
 
     const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");
@@ -63,6 +61,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
     React.useMemo(() => {
         (async () => {
+            const buttonIds = presetButtons.map(btn => btn.id);
             await MIDIController.setupMIDI(
                 dispatch,
                 size,
@@ -73,14 +72,14 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 buttonIds
             );
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dispatch, size, _setChannel, _setIntensity, _setSize, buttonIds.length]);
+    }, [dispatch, size, _setChannel, _setIntensity, _setSize, presetButtons]);
     useEffect(() => {
         // NOTE: be careful of what values are passed here - potential memory leaks
         // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
         // and then are used as input values in a different dispatch action. something happens
         // with a reference counter and is not able to clean up things quick enough and freezes up the app
         (async () => {
+            const buttonIds = presetButtons.map(btn => btn.id);
             await MIDIController.setupMIDI(
                 dispatch,
                 size,
@@ -91,8 +90,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 buttonIds
             );
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [size]);
+    }, [size, dispatch, _setChannel, _setIntensity, presetButtons, _setSize]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find((item) => item.name === option)?.name || "Not Found";
