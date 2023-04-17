@@ -44,8 +44,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         state.presetButtonsListState?.presetButtons
     );
     
-    console.log("buttons", presetButtons);
-
     const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     const [channel, setChannel] = useState<number>(0);
