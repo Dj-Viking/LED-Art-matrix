@@ -23,6 +23,7 @@ import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../reducers";
+import { collectGarbageAccess } from "../actions/midi-access-actions";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -39,11 +40,11 @@ export interface MIDIListenerWrapperProps {
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
     const dispatch = useDispatch();
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
-    const { usingFader, usingKnob } = getGlobalState(useSelector);
-    const presetButtons = useSelector((state: MyRootState) =>
-        state.presetButtonsListState?.presetButtons
+    const { usingFader, usingKnob, midiEditMode } = getGlobalState(useSelector);
+    const presetButtons = useSelector(
+        (state: MyRootState) => state.presetButtonsListState?.presetButtons
     );
-    
+
     const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     const [channel, setChannel] = useState<number>(0);
@@ -57,38 +58,38 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         intensityRef.current = intensity;
     }, []);
 
-    React.useMemo(() => {
-        (async () => {
-            const buttonIds = presetButtons.map(btn => btn.id);
-            await MIDIController.setupMIDI(
-                dispatch,
-                size,
-                _setSize,
-                _setChannel,
-                _setIntensity,
-                filterTimeoutRef,
-                buttonIds
-            );
-        })();
-    }, [dispatch, size, _setChannel, _setIntensity, _setSize, presetButtons]);
     useEffect(() => {
+        let controller: MIDIController = null as any;
         // NOTE: be careful of what values are passed here - potential memory leaks
         // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
         // and then are used as input values in a different dispatch action. something happens
         // with a reference counter and is not able to clean up things quick enough and freezes up the app
         (async () => {
-            const buttonIds = presetButtons.map(btn => btn.id);
-            await MIDIController.setupMIDI(
+            const buttonIds = presetButtons.map((btn) => btn.id);
+            const editMode = midiEditMode;
+            const browserMIDIAccessRecord = await MIDIController.requestMIDIAccess();
+            // this has a memory leak. new references to MIDI controller are created and not destroyed in the store
+            controller = await new MIDIController().setupMIDI(
                 dispatch,
                 size,
                 _setSize,
                 _setChannel,
                 _setIntensity,
                 filterTimeoutRef,
-                buttonIds
+                buttonIds,
+                editMode,
+                browserMIDIAccessRecord
             );
+            console.log("controller in useeffect", controller);
         })();
-    }, [size, dispatch, _setChannel, _setIntensity, presetButtons, _setSize]);
+        return () => {
+            console.log("unmount controller", controller);
+            // @ts-ignore
+            controller = null;
+            console.log("unmount controller", controller);
+            // dispatch(collectGarbageAccess());
+        };
+    }, [size, dispatch, _setChannel, _setIntensity, presetButtons, _setSize, midiEditMode]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs.find((item) => item.name === option)?.name || "Not Found";

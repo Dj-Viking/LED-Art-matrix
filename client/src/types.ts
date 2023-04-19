@@ -528,11 +528,16 @@ export interface ISetAccessRecordAction {
     type: "SET_ACCESS";
     payload: IAccessRecordState;
 }
-export interface ISetMIDIEditMode {
+export interface ISetMIDIEditModeAction {
     type: "SET_MIDI_EDIT_MODE";
     payload: boolean;
 }
-export type SetMIDIEditMode = (mode: boolean) => ISetMIDIEditMode;
+export type SetMIDIEditModeAction = (mode: boolean) => ISetMIDIEditModeAction;
+export type CollectGarbageAccessAction = () => ICollectGarbageAccessAction;
+export interface ICollectGarbageAccessAction {
+    type: "COLLECT_GARBAGE_ACCESS";
+    payload: IAccessRecordState; //initial state
+}
 
 export type SetAccessRecordAction = (
     access: MIDIController,
@@ -547,7 +552,9 @@ export interface IDetermineDeviceControlAction {
 
 export type AccessRecordActionPayloads =
     | IDetermineDeviceControlAction["payload"]
-    | ISetAccessRecordAction["payload"];
+    | ICollectGarbageAccessAction["payload"]
+    | ISetAccessRecordAction["payload"]
+    | ISetMIDIEditModeAction["payload"];
 
 export interface IAccessRecordAction {
     type: UAccessRecordActionTypes;

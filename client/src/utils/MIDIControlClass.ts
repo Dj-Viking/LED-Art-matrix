@@ -150,6 +150,7 @@ interface IMIDIController {
 }
 
 class MIDIController implements IMIDIController {
+    private changeEvent: MIDIConnectionEvent = null as any;
     public access = null as MIDIAccessRecord | null;
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
@@ -169,7 +170,7 @@ class MIDIController implements IMIDIController {
         }
     }
 
-    public async requestMIDIAccess(): Promise<MIDIAccessRecord> {
+    public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
         // @ts-ignore because for some reason in vscode
         // this method doesn't exist on the navigator I guess..
         // only supported in chrome mostly for now
@@ -383,37 +384,49 @@ class MIDIController implements IMIDIController {
         }
     }
 
-    public static async setupMIDI(
+    public async setupMIDI(
         dispatchcb: React.Dispatch<any>,
         size: number,
         _setSize: (size: number) => void,
         _setChannel: (channel: number) => void,
         _setIntensity: (intensity: number) => void,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
-        _buttonIds: string[]
-    ): Promise<void> {
-        return new Promise<void>((resolve) => {
+        _buttonIds: string[],
+        _midiEditMode: boolean,
+        _access: MIDIAccessRecord
+    ): Promise<MIDIController> {
+        return new Promise<MIDIController>((resolve) => {
             (async () => {
                 if ("navigator" in window) {
-                    // request access from browser
-                    const access = new MIDIController(
-                        await new MIDIController().requestMIDIAccess()
-                    ).getAccess();
-                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                    // const access = new MIDIController(_access).getAccess();
+                    // dispatchcb(setAccess(new MIDIController(access).getInstance()));
                     // set size of inputs to re-render component at this moment of time
-                    _setSize(access.inputs.size);
+                    _setSize(_access.inputs.size);
                     //at this moment the promise resolves with access if size changed at some point
                     if (size > 0) {
-                        dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                        // dispatchcb(setAccess(new MIDIController(access).getInstance()));
                         // define onstatechange callback to not be a function to execute when state changes later
-                        access.onstatechange = function (_event: MIDIConnectionEvent): void {
-                            const onstatechangeAccess = new MIDIController(
-                                _event.target
-                            ).getInstance();
+                        let onstatechangeAccess: any = null;
+                        let midicb: any = null;
+                        let onstatechangecb: any = null;
+                        let event: any = null;
+                        _access.onstatechange = (_event: MIDIConnectionEvent): void => {
+                            event = _event;
+                            console.log("ON STATE CHANGE CALLED!!!!", onstatechangeAccess, _access);
+                            console.log(_event, "event in on state change");
+                            if (_event) {
+                                onstatechangeAccess = new MIDIController(
+                                    _event.target
+                                ).getInstance();
+                            }
 
-                            const midicb = function (midi_event: MIDIMessageEvent): void {
+                            midicb = function (midi_event: MIDIMessageEvent): void {
+                                console.log("midi edit mode", _midiEditMode);
+                                if (_midiEditMode) {
+                                    return MIDIController.mapMIDIChannelToController(midi_event);
+                                }
                                 if (midi_event.currentTarget.name.includes("XONE:K2")) {
-                                    MIDIController.handleXONEK2MIDIMessage(
+                                    return MIDIController.handleXONEK2MIDIMessage(
                                         midi_event,
                                         _setChannel,
                                         _setIntensity,
@@ -424,19 +437,28 @@ class MIDIController implements IMIDIController {
                                 }
                             };
 
-                            const onstatechangecb = function (
+                            onstatechangecb = function (
                                 _connection_event: MIDIConnectionEvent
                             ): void {
                                 // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
                             };
 
-                            dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
+                            // resolve(onstatechangeAccess);
                         }; // end onstatechange def
+                        console.log(
+                            "am i here outside onstatechange callback def",
+                            onstatechangeAccess,
+                            _access
+                        );
+                        if (_access) {
+                            console.log("got access", _access);
+                            // _access.onstatechange(event as any);
+                        }
+                        // dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
                     } // endif size > 0
                     // accessState dead zone
                 } // endif "navigator" in window
             })();
-            resolve();
         });
     }
 }

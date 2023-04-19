@@ -1,4 +1,10 @@
-import { IAccessRecordState, IAccessRecordAction } from "../types";
+import {
+    IAccessRecordState,
+    IAccessRecordAction,
+    ISetMIDIEditModeAction,
+    IDetermineDeviceControlAction,
+    ISetAccessRecordAction,
+} from "../types";
 import {
     MIDIAccessRecord,
     MIDIConnectionEvent,
@@ -26,18 +32,22 @@ const accessRecordReducer = (
     action: IAccessRecordAction
 ): IAccessRecordState => {
     switch (action.type) {
-        case "DETERMINE_DEVICE_CONTROL": {
-            const payload = action.payload as {
-                usingKnob: boolean;
-                usingFader: boolean;
+        case "SET_MIDI_EDIT_MODE": {
+            const payload = action.payload as ISetMIDIEditModeAction["payload"];
+            return {
+                ...state,
+                midiEditMode: payload,
             };
+        }
+        case "DETERMINE_DEVICE_CONTROL": {
+            const payload = action.payload as IDetermineDeviceControlAction["payload"];
             return {
                 ...state,
                 ...payload,
             };
         }
         case "SET_ACCESS": {
-            const payload = action.payload as IAccessRecordState;
+            const payload = action.payload as ISetAccessRecordAction["payload"];
             return {
                 ...state,
                 ...payload,

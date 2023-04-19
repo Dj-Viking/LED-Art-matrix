@@ -25,8 +25,10 @@ import {
     PresetLabelTitle,
     SaveDefaultButton,
     SavePresetButton,
+    ToggleMIDIMapEditModeButton,
 } from "./PresetButton.style";
 import { clearStyle } from "../actions/style-actions";
+import { setMIDIEditMode } from "../actions/midi-access-actions";
 
 export interface IPresetButtonsProps {
     children?: any;
@@ -44,6 +46,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalIsOpen,
         saveModalContext,
         presetButtons,
+        midiEditMode,
     } = getGlobalState(useSelector);
 
     async function handleSaveDefault(event: any): Promise<void> {
@@ -64,6 +67,14 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             });
         }
     }
+
+    const toggleMIDIMapEditMode = React.useCallback(
+        (event: any): void => {
+            event.preventDefault();
+            dispatch(setMIDIEditMode(!midiEditMode));
+        },
+        [midiEditMode, dispatch]
+    );
 
     function handleOpenNewWindow(event: any): void {
         event.preventDefault();
@@ -175,6 +186,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <SavePresetButton auth={Auth} />
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
                 <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
+                <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
             </PresetControlButtonsContainer>
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>

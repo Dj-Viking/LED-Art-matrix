@@ -6,6 +6,7 @@ import {
     _clear,
     _saveNewPresetButtonSpring,
     _openNewWindow,
+    _toggleMIDIMapEditModeButton,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
@@ -166,6 +167,29 @@ const OpenNewWindowButton: React.FC<OpenNewWindowButtonProps> = (props) => {
     );
 };
 
+interface ToggleMIDIMapEditModeButtonProps {
+    toggleMIDIMapEditMode: (event: any) => void;
+}
+
+const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = (props) => {
+    const toggleMIDIMapEditModeButton = useSpring(_toggleMIDIMapEditModeButton);
+    const { midiEditMode } = getGlobalState(useSelector);
+    return (
+        <animated.button
+            role="button"
+            data-testid="openNewWindow"
+            style={{
+                ...toggleMIDIMapEditModeButton,
+                backgroundColor: `${midiEditMode ? "purple" : "black"}`,
+            }}
+            className="preset-button"
+            onClick={props.toggleMIDIMapEditMode}
+        >
+            {"Toggle MIDI Map Edit Mode"}
+        </animated.button>
+    );
+};
+
 const PresetControlButtonsContainer: React.FC<{
     children: React.ReactNode | React.ReactNode[];
 }> = ({ children }) => {
@@ -179,6 +203,7 @@ export type {
     SaveDefaultButtonProps,
     ClearButtonProps,
     OpenNewWindowButtonProps,
+    ToggleMIDIMapEditModeButtonProps,
 };
 export {
     SavePresetButton,
@@ -188,4 +213,5 @@ export {
     SaveDefaultButton,
     DeleteButton,
     OpenNewWindowButton,
+    ToggleMIDIMapEditModeButton,
 };

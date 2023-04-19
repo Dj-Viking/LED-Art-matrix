@@ -152,3 +152,13 @@ export const _openNewWindow = {
         opacity: 1,
     },
 };
+
+export const _toggleMIDIMapEditModeButton = {
+    delay: 0,
+    from: {
+        opacity: 0,
+    },
+    to: {
+        opacity: 1,
+    },
+};
