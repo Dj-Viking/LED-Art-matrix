@@ -8,6 +8,7 @@ import {
 
 const accessRecordReducer = (
     state: IAccessRecordState = {
+        midiEditMode: false,
         usingFader: false,
         usingKnob: false,
         inputs: [] as Array<MIDIInput>,
@@ -26,16 +27,22 @@ const accessRecordReducer = (
 ): IAccessRecordState => {
     switch (action.type) {
         case "DETERMINE_DEVICE_CONTROL": {
+            const payload = action.payload as {
+                usingKnob: boolean;
+                usingFader: boolean;
+            };
             return {
                 ...state,
-                ...action.payload,
+                ...payload,
             };
         }
-        case "SET_ACCESS":
+        case "SET_ACCESS": {
+            const payload = action.payload as IAccessRecordState;
             return {
                 ...state,
-                ...action.payload,
+                ...payload,
             };
+        }
         default:
             return state;
     }

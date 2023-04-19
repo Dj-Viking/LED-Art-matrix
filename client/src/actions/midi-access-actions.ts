@@ -1,27 +1,24 @@
-import { ISetAccessRecordAction, IDetermineDeviceControlAction } from "../types";
-import { MIDIConnectionEvent, MIDIController, MIDIMessageEvent } from "../utils/MIDIControlClass";
+import { SetAccessRecordAction, IDetermineDeviceControlAction } from "../types";
+import { MIDIController } from "../utils/MIDIControlClass";
 
-// @ts-ignore
-export const setAccess: ISetAccessRecordAction = (
-    access: MIDIController,
-    onmidicb: (event: MIDIMessageEvent) => unknown,
-    onstatechangecb: (event: MIDIConnectionEvent) => unknown
-) => {
+export const setAccess: SetAccessRecordAction = (access, onmidicb, onstatechangecb) => {
     if (!access.inputs?.length) {
         return {
             type: "SET_ACCESS",
-            payload: { ...new MIDIController(access.getAccess()) },
+            // as any because whatever - typescript is too strict with my types right now
+            // I dont have a good type inference system set up yet
+            payload: { ...new MIDIController(access.getAccess()) } as any,
+        };
+    } else {
+        const a = access;
+        a.setInputCbs(onmidicb, onstatechangecb);
+        a.setOutputCbs();
+
+        return {
+            type: "SET_ACCESS",
+            payload: a,
         };
     }
-
-    const a = access;
-    a.setInputCbs(onmidicb, onstatechangecb);
-    a.setOutputCbs();
-
-    return {
-        type: "SET_ACCESS",
-        payload: a as MIDIController | unknown,
-    };
 };
 
 export const determineDeviceControl = (using: {

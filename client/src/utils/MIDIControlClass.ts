@@ -242,6 +242,10 @@ class MIDIController implements IMIDIController {
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
+    public static mapMIDIChannelToController(midi_event: MIDIMessageEvent): void {
+        console.log("midi event", midi_event);
+    }
+
     public static handleXONEK2MIDIMessage(
         midi_event: MIDIMessageEvent,
         _setChannel: (channel: number) => void,

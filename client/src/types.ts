@@ -503,6 +503,7 @@ export interface IDeletePresetAction {
 }
 
 export type IAccessRecordState = {
+    midiEditMode: boolean;
     usingFader: boolean;
     usingKnob: boolean;
     inputs: Array<MIDIInput>;
@@ -518,29 +519,37 @@ export type IAccessRecordState = {
     sysexEnabled: boolean;
 };
 
-export type UAccessRecordActionTypes = "SET_ACCESS" | "DETERMINE_DEVICE_CONTROL";
+export type UAccessRecordActionTypes =
+    | "SET_ACCESS"
+    | "DETERMINE_DEVICE_CONTROL"
+    | "SET_MIDI_EDIT_MODE";
 
-export interface ISetAccessRecordActionObj {
+export interface ISetAccessRecordAction {
     type: "SET_ACCESS";
     payload: IAccessRecordState;
 }
+export interface ISetMIDIEditMode {
+    type: "SET_MIDI_EDIT_MODE";
+    payload: boolean;
+}
+export type SetMIDIEditMode = (mode: boolean) => ISetMIDIEditMode;
 
-export type ISetAccessRecordAction = (
+export type SetAccessRecordAction = (
     access: MIDIController,
     onmidicb?: (event: MIDIMessageEvent) => void,
     onstatechangecb?: (event: MIDIConnectionEvent) => void
-) => MIDIController;
+) => Partial<ISetAccessRecordAction>;
 
 export interface IDetermineDeviceControlAction {
     type: "DETERMINE_DEVICE_CONTROL";
     payload: { usingFader: boolean; usingKnob: boolean };
 }
 
-export type UAccessRecordActionPayloads =
-    | ISetAccessRecordActionObj["payload"]
-    | IDetermineDeviceControlAction["payload"];
+export type AccessRecordActionPayloads =
+    | IDetermineDeviceControlAction["payload"]
+    | ISetAccessRecordAction["payload"];
 
 export interface IAccessRecordAction {
     type: UAccessRecordActionTypes;
-    payload: UAccessRecordActionPayloads;
+    payload: AccessRecordActionPayloads;
 }
