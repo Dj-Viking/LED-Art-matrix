@@ -15,7 +15,12 @@ export const ledSlice = createSlice({
     name: "ledSlice",
     initialState,
     reducers: {
-        setLedStyleHtml: (state: ILedState, action: PayloadAction<string>) => {
+        clearStyle: (state: ILedState) => {
+            return produce(state, (draft) => {
+                draft.html = "";
+            });
+        },
+        setLedStyle: (state: ILedState, action: PayloadAction<string>) => {
             return produce(state, (draft) => {
                 draft.html = action.payload;
             });

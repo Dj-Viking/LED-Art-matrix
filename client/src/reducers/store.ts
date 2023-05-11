@@ -3,6 +3,7 @@ import { midiSlice } from "./midiSlice";
 import { loggedInSlice } from "./loggedInSlice";
 import { ledSlice } from "./ledSlice";
 import { modalSlice } from "./modalSlice";
+import { formSlice } from "./formSlice";
 import { presetButtonsListSlice } from "./presetButtonListSlice";
 
 export const toolkitStore = configureStore({
@@ -11,6 +12,7 @@ export const toolkitStore = configureStore({
         loggedInState: loggedInSlice.reducer,
         ledState: ledSlice.reducer,
         modalState: modalSlice.reducer,
+        formState: formSlice.reducer,
         presetButtonsListState: presetButtonsListSlice.reducer,
     },
 });

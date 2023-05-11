@@ -143,10 +143,10 @@ export interface ISetGifsAction {
 }
 
 export interface ILoginFormState {
-    usernameOrEmail: string;
-    emailIsComplete: boolean;
-    password: string;
-    passwordIsComplete: boolean;
+    loginUsernameOrEmail: string;
+    loginEmailIsComplete: boolean;
+    loginPassword: string;
+    loginPasswordIsComplete: boolean;
 }
 export type ILoginFormActionTypes = "LOGIN_EMAIL_OR_USERNAME_CHANGE" | "LOGIN_PASSWORD_CHANGE";
 
@@ -167,12 +167,12 @@ export interface ILoginPasswordChangeAction {
     payload: string;
 }
 export interface ISignupFormState {
-    username: string;
-    usernameIsComplete: boolean;
-    email: string;
-    emailIsComplete: boolean;
-    password: string;
-    passwordIsComplete: boolean;
+    signupUsername: string;
+    signupUsernameIsComplete: boolean;
+    signupEmail: string;
+    signupEmailIsComplete: boolean;
+    signupPassword: string;
+    signupPasswordIsComplete: boolean;
 }
 export type ISignupFormActionTypes =
     | "SIGNUP_USERNAME_CHANGE"
