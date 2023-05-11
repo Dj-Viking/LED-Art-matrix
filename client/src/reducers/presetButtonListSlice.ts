@@ -11,6 +11,14 @@ export const presetButtonsListSlice = createSlice({
     name: "presetButtonsListSlice",
     initialState,
     reducers: {
+        setPresetButtonsList: (
+            state: IPresetButtonsListState,
+            action: PayloadAction<IPresetButton[]>
+        ) => {
+            return produce(state, (draft) => {
+                draft.presetButtons = action.payload;
+            });
+        },
         toggleMidiMode: (state: IPresetButtonsListState) => {
             return produce(state, (draft) => {
                 draft.midiMode = !state.midiMode;

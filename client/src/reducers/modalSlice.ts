@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IDeleteModalState, INewGifsModalState, ISaveModalState } from "../types";
+import { IDeleteModalState, IGif, INewGifsModalState, ISaveModalState } from "../types";
 import { produce } from "immer";
 
 export type CombinedModalState = ISaveModalState & IDeleteModalState & INewGifsModalState;
@@ -27,7 +27,35 @@ export const modalSlice = createSlice({
     name: "modalSlice",
     initialState,
     reducers: {
-        setDeleteModeIsActive: (state: CombinedModalState, action: PayloadAction<boolean>) => {
+        setGifModalIsOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
+            return produce(state, (draft) => {
+                draft.gifsModalIsOpen = action.payload;
+            });
+        },
+        setGifModalContext: (
+            state: CombinedModalState,
+            action: PayloadAction<{ listName: string; gif: IGif }>
+        ) => {
+            return produce(state, (draft) => {
+                draft.gifsModalContext.gif = action.payload.gif;
+                draft.gifsModalContext.listName = action.payload.listName;
+            });
+        },
+        setDeleteModalOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
+            return produce(state, (draft) => {
+                draft.deleteModalIsOpen = action.payload;
+            });
+        },
+        setDeleteModalContext: (
+            state: CombinedModalState,
+            action: PayloadAction<{ btnId: string; displayName: string }>
+        ) => {
+            return produce(state, (draft) => {
+                draft.deleteModalContext.btnId = action.payload.btnId;
+                draft.deleteModalContext.displayName = action.payload.displayName;
+            });
+        },
+        toggleDeleteMode: (state: CombinedModalState, action: PayloadAction<boolean>) => {
             return produce(state, (draft) => {
                 draft.deleteModeActive = action.payload;
             });
