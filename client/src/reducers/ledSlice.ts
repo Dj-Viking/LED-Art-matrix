@@ -16,17 +16,17 @@ export const ledSlice = createSlice({
     initialState,
     reducers: {
         setLedStyleHtml: (state: ILedState, action: PayloadAction<string>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.html = action.payload;
             });
         },
         setAnimVarCoeff: (state: ILedState, action: PayloadAction<string>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.animVarCoeff = action.payload;
             });
         },
         setPresetName: (state: ILedState, action: PayloadAction<string>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.presetName = action.payload;
             });
         },

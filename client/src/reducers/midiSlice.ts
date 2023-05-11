@@ -33,7 +33,7 @@ export const midiSlice = createSlice({
     initialState,
     reducers: {
         setOnline: (state: MIDISliceState, action: PayloadAction<boolean>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 const onlineStatebefore = selectMIDIOnlineState(state);
                 console.log("online state before", onlineStatebefore);
                 draft.online = action.payload;

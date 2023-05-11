@@ -15,12 +15,12 @@ export const loginFormSlice = createSlice({
     initialState,
     reducers: {
         loginEmailChange: (state: ILoginFormState, action: PayloadAction<string>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.usernameOrEmail = action.payload;
             });
         },
         loginPasswordChange: (state: ILoginFormState, action: PayloadAction<string>) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.password = action.payload;
             });
         },

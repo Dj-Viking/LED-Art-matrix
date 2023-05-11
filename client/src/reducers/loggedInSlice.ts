@@ -11,12 +11,12 @@ export const loggedInSlice = createSlice({
     initialState,
     reducers: {
         login: (state: ILoggedInState) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.loggedIn = true;
             });
         },
         logout: (state: ILoggedInState) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.loggedIn = false;
             });
         },

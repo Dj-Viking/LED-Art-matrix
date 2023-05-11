@@ -2,7 +2,9 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IDeleteModalState, INewGifsModalState, ISaveModalState } from "../types";
 import { produce } from "immer";
 
-const initialState: ISaveModalState & IDeleteModalState & INewGifsModalState = {
+export type CombinedModalState = ISaveModalState & IDeleteModalState & INewGifsModalState;
+
+const initialState: CombinedModalState = {
     gifsModalContext: {
         gif: {} as any,
         listName: "",
@@ -25,21 +27,21 @@ export const modalSlice = createSlice({
     name: "modalSlice",
     initialState,
     reducers: {
-        setDeleteModeIsActive: (state: IDeleteModalState, action: PayloadAction<boolean>) => {
-            produce(state, (draft) => {
+        setDeleteModeIsActive: (state: CombinedModalState, action: PayloadAction<boolean>) => {
+            return produce(state, (draft) => {
                 draft.deleteModeActive = action.payload;
             });
         },
-        setSaveModalIsOpen: (state: ISaveModalState, action: PayloadAction<boolean>) => {
-            produce(state, (draft) => {
+        setSaveModalIsOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
+            return produce(state, (draft) => {
                 draft.saveModalIsOpen = action.payload;
             });
         },
         setSaveModalContext: (
-            state: ISaveModalState,
+            state: CombinedModalState,
             action: PayloadAction<ISaveModalState["saveModalContext"]>
         ) => {
-            produce(state, (draft) => {
+            return produce(state, (draft) => {
                 draft.saveModalContext = action.payload;
             });
         },
