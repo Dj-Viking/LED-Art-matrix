@@ -12,6 +12,7 @@ const ledChangeReducer = (
         animationDurationState: "4s",
         animVarCoeff: "64",
         isInverted: false,
+        html: "",
     },
     action: ILedAction
 ): ILedState => {

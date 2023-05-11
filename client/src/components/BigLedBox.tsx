@@ -10,15 +10,15 @@ import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
 import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
-import { MyRootState } from "../types";
 import PresetButtons from "./PresetButtons";
 import { setLedStyle } from "../actions/style-actions";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
 import { isLedWindow } from "../App";
+import { ToolkitRootState } from "../reducers/store";
 
 const BigLedBox: React.FC = (): JSX.Element => {
-    const { presetName, animVarCoeff } = useSelector((state: MyRootState) => state.ledState);
+    const { presetName, animVarCoeff } = useSelector((state: ToolkitRootState) => state.ledState);
     const dispatch = useDispatch();
     const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
     const styleHTMLRef = useRef<string>("");

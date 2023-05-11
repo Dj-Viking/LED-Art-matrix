@@ -384,7 +384,7 @@ class MIDIController implements IMIDIController {
         }
     }
 
-    public async setupMIDI(
+    public static async setupMIDI(
         dispatchcb: React.Dispatch<any>,
         size: number,
         _setSize: (size: number) => void,
@@ -398,29 +398,21 @@ class MIDIController implements IMIDIController {
         return new Promise<MIDIController>((resolve) => {
             (async () => {
                 if ("navigator" in window) {
-                    // const access = new MIDIController(_access).getAccess();
-                    // dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                    console.log("access", _access);
+                    const access = new MIDIController(_access).getAccess();
+                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
                     // set size of inputs to re-render component at this moment of time
                     _setSize(_access.inputs.size);
                     //at this moment the promise resolves with access if size changed at some point
                     if (size > 0) {
-                        // dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                        dispatchcb(setAccess(new MIDIController(access).getInstance()));
                         // define onstatechange callback to not be a function to execute when state changes later
-                        let onstatechangeAccess: any = null;
-                        let midicb: any = null;
-                        let onstatechangecb: any = null;
-                        let event: any = null;
                         _access.onstatechange = (_event: MIDIConnectionEvent): void => {
-                            event = _event;
-                            console.log("ON STATE CHANGE CALLED!!!!", onstatechangeAccess, _access);
-                            console.log(_event, "event in on state change");
-                            if (_event) {
-                                onstatechangeAccess = new MIDIController(
-                                    _event.target
-                                ).getInstance();
-                            }
+                            const onstatechangeAccess = new MIDIController(
+                                _event.target
+                            ).getInstance();
 
-                            midicb = function (midi_event: MIDIMessageEvent): void {
+                            const midicb = function (midi_event: MIDIMessageEvent): void {
                                 console.log("midi edit mode", _midiEditMode);
                                 if (_midiEditMode) {
                                     return MIDIController.mapMIDIChannelToController(midi_event);
@@ -437,24 +429,15 @@ class MIDIController implements IMIDIController {
                                 }
                             };
 
-                            onstatechangecb = function (
+                            const onstatechangecb = function (
                                 _connection_event: MIDIConnectionEvent
                             ): void {
                                 // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
                             };
 
-                            // resolve(onstatechangeAccess);
+                            dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
+                            resolve(onstatechangeAccess);
                         }; // end onstatechange def
-                        console.log(
-                            "am i here outside onstatechange callback def",
-                            onstatechangeAccess,
-                            _access
-                        );
-                        if (_access) {
-                            console.log("got access", _access);
-                            // _access.onstatechange(event as any);
-                        }
-                        // dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
                     } // endif size > 0
                     // accessState dead zone
                 } // endif "navigator" in window

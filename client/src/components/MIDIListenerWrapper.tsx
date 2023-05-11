@@ -23,7 +23,6 @@ import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../reducers";
-import { collectGarbageAccess } from "../actions/midi-access-actions";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -38,61 +37,56 @@ export interface MIDIListenerWrapperProps {
 }
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob, midiEditMode } = getGlobalState(useSelector);
-    const presetButtons = useSelector(
-        (state: MyRootState) => state.presetButtonsListState?.presetButtons
-    );
+    // const presetButtons = useSelector(
+    //     (state: MyRootState) => state.presetButtonsListState?.presetButtons
+    // );
 
-    const [size, setSize] = useState<number>(0);
+    // const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     const [channel, setChannel] = useState<number>(0);
 
     const intensityRef = useRef<number>(0);
-    const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
+    // const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
 
-    const _setChannel = React.useCallback((channel: number): void => setChannel(channel), []);
-    const _setSize = React.useCallback((size: number): void => setSize(size), []);
-    const _setIntensity = React.useCallback((intensity: number): void => {
-        intensityRef.current = intensity;
-    }, []);
+    // const _setChannel = React.useCallback((channel: number): void => setChannel(channel), []);
+    // const _setSize = React.useCallback((size: number): void => setSize(size), []);
+    // const _setIntensity = React.useCallback((intensity: number): void => {
+    //     intensityRef.current = intensity;
+    // }, []);
 
-    useEffect(() => {
-        let controller: MIDIController = null as any;
-        // NOTE: be careful of what values are passed here - potential memory leaks
-        // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
-        // and then are used as input values in a different dispatch action. something happens
-        // with a reference counter and is not able to clean up things quick enough and freezes up the app
-        (async () => {
-            const buttonIds = presetButtons.map((btn) => btn.id);
-            const editMode = midiEditMode;
-            const browserMIDIAccessRecord = await MIDIController.requestMIDIAccess();
-            // this has a memory leak. new references to MIDI controller are created and not destroyed in the store
-            controller = await new MIDIController().setupMIDI(
-                dispatch,
-                size,
-                _setSize,
-                _setChannel,
-                _setIntensity,
-                filterTimeoutRef,
-                buttonIds,
-                editMode,
-                browserMIDIAccessRecord
-            );
-            console.log("controller in useeffect", controller);
-        })();
-        return () => {
-            console.log("unmount controller", controller);
-            // @ts-ignore
-            controller = null;
-            console.log("unmount controller", controller);
-            // dispatch(collectGarbageAccess());
-        };
-    }, [size, dispatch, _setChannel, _setIntensity, presetButtons, _setSize, midiEditMode]);
+    // useEffect(() => {
+    //     console.log("init midi");
+
+    //     let controller: MIDIController = null as any;
+    //     // NOTE: be careful of what values are passed here - potential memory leaks
+    //     // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
+    //     // and then are used as input values in a different dispatch action. something happens
+    //     // with a reference counter and is not able to clean up things quick enough and freezes up the app
+    //     (async () => {
+    //         const buttonIds = presetButtons.map((btn) => btn.id);
+    //         const editMode = midiEditMode;
+    //         const browserMIDIAccessRecord = await MIDIController.requestMIDIAccess();
+    //         // this has a memory leak. new references to MIDI controller are created and not destroyed in the store
+    //         controller = await MIDIController.setupMIDI(
+    //             dispatch,
+    //             size,
+    //             _setSize,
+    //             _setChannel,
+    //             _setIntensity,
+    //             filterTimeoutRef,
+    //             buttonIds,
+    //             editMode,
+    //             browserMIDIAccessRecord
+    //         );
+    //         console.log("controller in useeffect", controller);
+    //     })();
+    // }, []);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
-        return all_inputs.find((item) => item.name === option)?.name || "Not Found";
+        return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
     }
 
     function getStrippedInputName(name: string): MIDIInputName {
@@ -100,7 +94,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     }
 
     function getInput(all_inputs: MIDIInput[], option: string): MIDIInput {
-        return all_inputs.find((item) => item.name === option)!;
+        return all_inputs?.find((item) => item?.name === option)!;
     }
 
     function getControlName(inputname: MIDIInputName, channel: number): string {
@@ -122,25 +116,27 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 }}
             >
                 <TestMIDI testid="test-midi" midi_access={accessState} />
-                <MIDIWrapperHeader heading={accessState.online ? "MIDI Devices" : "MIDI OFFLINE"} />
+                <MIDIWrapperHeader
+                    heading={accessState?.online ? "MIDI Devices" : "MIDI OFFLINE"}
+                />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
                         <MIDISelect
                             setOption={setOption}
                             option={option}
-                            midi_inputs={accessState.inputs}
+                            midi_inputs={accessState?.inputs}
                         />
                     </MIDISelectContainer>
                     {option && (
                         <DeviceInterfaceContainer
                             statename={
-                                getInput(accessState.inputs, option)?.state || "disconnected"
+                                getInput(accessState?.inputs, option)?.state || "disconnected"
                             }
                             controllerName={getStrippedInputName(
-                                getInputName(accessState.inputs, option)
+                                getInputName(accessState?.inputs, option)
                             )}
                         >
-                            <InputName name={getInputName(accessState.inputs, option)} />
+                            <InputName name={getInputName(accessState?.inputs, option)} />
                             <DeviceSvgContainer>
                                 <ControlSvg
                                     usings={{ usingFader, usingKnob }}
@@ -152,7 +148,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                 <ChannelNumber channel={channel || 0} />
                                 <MIDIChannelControl
                                     name={getControlName(
-                                        getInputName(accessState.inputs, option),
+                                        getInputName(accessState?.inputs, option),
                                         channel
                                     )}
                                 />

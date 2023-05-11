@@ -1,14 +1,14 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { logout } from "../actions/logged-in-actions";
-import { MyRootState } from "../types";
+import { loggedInActions } from "../reducers/loggedInSlice";
 import Auth from "../utils/AuthService";
 import "./aux-styles/navStyles.css";
+import { ToolkitRootState } from "../reducers/store";
 
 const Nav: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
-    const { loggedIn } = useSelector((state: MyRootState) => state.loggedInState);
+    const { loggedIn } = useSelector((state: ToolkitRootState) => state.loggedInState);
 
     return (
         <>
@@ -52,7 +52,7 @@ const Nav: React.FC = (): JSX.Element => {
                                 className="nav-button"
                                 onClick={() => {
                                     Auth.logout();
-                                    dispatch(logout());
+                                    dispatch(loggedInActions.logout());
                                 }}
                             >
                                 Logout

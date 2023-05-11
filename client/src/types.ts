@@ -37,6 +37,7 @@ export interface ILedState {
     animationDurationState: string;
     isInverted: boolean;
     animVarCoeff: string;
+    html: string;
 }
 export type ILedActionTypes =
     | "LOAD_USER_SPLASH_CONFIG"
@@ -533,11 +534,6 @@ export interface ISetMIDIEditModeAction {
     payload: boolean;
 }
 export type SetMIDIEditModeAction = (mode: boolean) => ISetMIDIEditModeAction;
-export type CollectGarbageAccessAction = () => ICollectGarbageAccessAction;
-export interface ICollectGarbageAccessAction {
-    type: "COLLECT_GARBAGE_ACCESS";
-    payload: IAccessRecordState; //initial state
-}
 
 export type SetAccessRecordAction = (
     access: MIDIController,
@@ -552,7 +548,6 @@ export interface IDetermineDeviceControlAction {
 
 export type AccessRecordActionPayloads =
     | IDetermineDeviceControlAction["payload"]
-    | ICollectGarbageAccessAction["payload"]
     | ISetAccessRecordAction["payload"]
     | ISetMIDIEditModeAction["payload"];
 

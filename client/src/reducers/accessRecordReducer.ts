@@ -11,6 +11,7 @@ import {
     MIDIInput,
     MIDIOutput,
 } from "../utils/MIDIControlClass";
+import { deepCopy } from "../utils/deepCopy";
 
 const accessRecordReducer = (
     state: IAccessRecordState = {
@@ -41,17 +42,14 @@ const accessRecordReducer = (
         }
         case "DETERMINE_DEVICE_CONTROL": {
             const payload = action.payload as IDetermineDeviceControlAction["payload"];
-            return {
-                ...state,
-                ...payload,
-            };
+            const newState = Object.assign({}, state, deepCopy(state), { ...payload });
+            return newState;
         }
         case "SET_ACCESS": {
+            if (action.payload === null) return state;
             const payload = action.payload as ISetAccessRecordAction["payload"];
-            return {
-                ...state,
-                ...payload,
-            };
+            const newState = Object.assign(state, deepCopy(state), { ...payload });
+            return newState;
         }
         default:
             return state;
