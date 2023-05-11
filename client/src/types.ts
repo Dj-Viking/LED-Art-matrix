@@ -203,14 +203,16 @@ export interface ISignupPasswordChangeAction {
 }
 
 export interface IArtScrollerState {
+    figureOn: boolean;
     gifs: Array<IGif>;
     listName: string;
-    animDuration: string;
-    vertPos: string;
-    hPos: string;
-    circleWidth: string;
-    invert: string;
-    figureOn: boolean;
+    slider: {
+        animDuration: string;
+        vertPos: string;
+        hPos: string;
+        circleWidth: string;
+        invert: string;
+    };
 }
 
 export type IArtScrollerActionTypes =
