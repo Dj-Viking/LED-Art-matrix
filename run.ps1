@@ -1,3 +1,7 @@
+param(
+    [switch]$prettier = $false
+)
+
 $Env:MY_OS = $Env:OS
 $filepath = ".\env.txt"
 
@@ -15,7 +19,7 @@ else {
 [String]$clientArgs = "node .\client\scripts\start.js"
 [String]$tswatchArgs = "node tswatch.js"
 
-if ($args[0] -eq "prettier") {
+if ($prettier) {
     Write-Host "[INFO]: running prettier and lint before start for formatting standards" -ForegroundColor Cyan
     $prettierArgs = "node .\client\node_modules\prettier\bin-prettier --write `"./**/*.{ts,tsx}`" && node .\client\node_modules\eslint\bin\eslint.js --fix `"./**/*.{ts,tsx}`" &&"
 }
