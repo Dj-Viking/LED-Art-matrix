@@ -13,7 +13,6 @@ const Home: React.FC = (): JSX.Element => {
     const history = useHistory();
 
     useEffect(() => {
-        console.log("what is logged in", Auth.loggedIn());
         Auth.loggedIn() ? dispatch(loggedInActions.login()) : dispatch(loggedInActions.logout());
     }, [history, dispatch]);
 
