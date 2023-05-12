@@ -7,24 +7,16 @@ import {
     _scrollerSaveGifsButtonSpring,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { getGlobalState } from "../reducers";
+import { getGlobalState } from "../reducers/store";
 import API from "../utils/ApiService";
-import {
-    setGifs,
-    setFigureOn,
-    setCircleWidth,
-    setVertPos,
-    setHPos,
-    setInvert,
-    setAnimDuration,
-    setListName,
-} from "../actions/art-scroller-actions";
+
+import { artScrollerActions } from "../reducers/artScrollerSlice";
 import { BKeySvg } from "../lib/keySvgs";
 import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
-import { setGifModalContext, setGifModalIsOpen } from "../actions/gif-modal-actions";
+import { modalActions } from "../reducers/modalSlice";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -66,28 +58,28 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
     const { figureOn } = getGlobalState(useSelector);
 
     async function handleGetNew(): Promise<void> {
-        if (!figureOn) dispatch(setFigureOn(true));
+        if (!figureOn) dispatch(artScrollerActions.setFigureOn(true));
 
         let gifs: IGif[] = [];
 
         gifs = (await API.getUnloggedInGifs(true)) as IGif[];
-        dispatch(setGifs(gifs));
-        dispatch(setListName(gifs[0]?.listName));
+        dispatch(artScrollerActions.setGifs(gifs));
+        dispatch(artScrollerActions.setListName(gifs[0]?.listName));
     }
 
     async function handleClick(): Promise<void> {
-        if (figureOn === false) dispatch(setFigureOn(true));
+        if (figureOn === false) dispatch(artScrollerActions.setFigureOn(true));
 
         let gifs = [] as IGif[] | IGif;
 
         if (props.auth.loggedIn()) {
             gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
-            dispatch(setGifs(gifs));
-            dispatch(setListName(gifs[0]?.listName));
+            dispatch(artScrollerActions.setGifs(gifs));
+            dispatch(artScrollerActions.setListName(gifs[0]?.listName));
         } else {
             gifs = (await API.getUnloggedInGifs()) as IGif[];
-            dispatch(setGifs(gifs));
-            dispatch(setListName("free"));
+            dispatch(artScrollerActions.setGifs(gifs));
+            dispatch(artScrollerActions.setListName("free"));
         }
     }
     return (
@@ -128,7 +120,7 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
             className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
             onClick={(event: any) => {
                 event.preventDefault();
-                dispatch(setFigureOn(!figureOn));
+                dispatch(artScrollerActions.setFigureOn(!figureOn));
             }}
         >
             {figureOn ? (
@@ -157,9 +149,9 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
     const onClick = (event: any): void => {
         event.preventDefault();
 
-        dispatch(setGifModalIsOpen(true));
+        dispatch(modalActions.setGifModalIsOpen(true));
         dispatch(
-            setGifModalContext({
+            modalActions.setGifModalContext({
                 listName: gifs[0].listName,
                 gif: gifs[0],
             })
@@ -187,7 +179,9 @@ const ArtScrollerSliderContainer: React.FC = ({ children }) => {
 };
 
 const ArtScrollerCircleWidthLabel: React.FC = () => {
-    const { circleWidth } = getGlobalState(useSelector);
+    const {
+        slider: { circleWidth },
+    } = getGlobalState(useSelector);
     return (
         <label htmlFor="scroller-circle-width" style={{ color: "white" }}>
             Scroller Circle Width: {circleWidth}
@@ -206,7 +200,7 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 id="gif-list-selector"
                 style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
                 onChange={(event: any) => {
-                    dispatch(setListName(event.target.value));
+                    dispatch(artScrollerActions.setListName(event.target.value));
                 }}
             >
                 <option disabled value="Choose a gif list">
@@ -234,7 +228,9 @@ const ArtScrollerGifListSelector: React.FC = () => {
 type ArtScrollerCircleWidthSliderProps = DOMAttributes<HTMLInputElement>;
 
 const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> = () => {
-    const { circleWidth } = getGlobalState(useSelector);
+    const {
+        slider: { circleWidth },
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
         <input
@@ -247,14 +243,21 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             value={circleWidth}
             onChange={(event) => {
                 event.preventDefault();
-                dispatch(setCircleWidth(event.target.value));
+                dispatch(
+                    artScrollerActions.setSlider({
+                        control: "circleWidth",
+                        value: event.target.value,
+                    })
+                );
             }}
         />
     );
 };
 
 const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
-    const { vertPos } = getGlobalState(useSelector);
+    const {
+        slider: { vertPos },
+    } = getGlobalState(useSelector);
     return (
         <label htmlFor="vertical-positioning" style={{ color: "white" }}>
             Scroller Vert Positioning: {vertPos}
@@ -264,7 +267,9 @@ const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
 type ArtScrollerVerticalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 
 const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSliderProps> = () => {
-    const { vertPos } = getGlobalState(useSelector);
+    const {
+        slider: { vertPos },
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
         <input
@@ -277,14 +282,21 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
             value={vertPos}
             onChange={(event) => {
                 event.preventDefault();
-                dispatch(setVertPos(event.target.value));
+                dispatch(
+                    artScrollerActions.setSlider({
+                        control: "vertPos",
+                        value: event.target.value,
+                    })
+                );
             }}
         />
     );
 };
 
 const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
-    const { hPos } = getGlobalState(useSelector);
+    const {
+        slider: { hPos },
+    } = getGlobalState(useSelector);
     return (
         <label htmlFor="horizontal-positioning" style={{ color: "white" }}>
             Scroller Horizontal Positioning: {Number(hPos) / 1000}
@@ -297,7 +309,9 @@ type ArtScrollerHorizontalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 const ArtScrollerHorizontalPositionSlider: React.FC<
     ArtScrollerHorizontalPositionSliderProps
 > = () => {
-    const { hPos } = getGlobalState(useSelector);
+    const {
+        slider: { hPos },
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
         <input
@@ -310,14 +324,21 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
             value={hPos}
             onChange={(event) => {
                 event.preventDefault();
-                dispatch(setHPos(event.target.value));
+                dispatch(
+                    artScrollerActions.setSlider({
+                        control: "hPos",
+                        value: event.target.value,
+                    })
+                );
             }}
         />
     );
 };
 
 const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
-    const { invert } = getGlobalState(useSelector);
+    const {
+        slider: { invert },
+    } = getGlobalState(useSelector);
     return (
         <label htmlFor="invert" style={{ color: "white" }}>
             Invert Colors: {Number(invert) / 100}
@@ -328,7 +349,9 @@ const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
 type ArtScrollerInvertColorsSliderProps = DOMAttributes<HTMLInputElement>;
 
 const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps> = () => {
-    const { invert } = getGlobalState(useSelector);
+    const {
+        slider: { invert },
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
         <input
@@ -341,14 +364,21 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
             value={invert}
             onChange={(event) => {
                 event.preventDefault();
-                dispatch(setInvert(event.target.value));
+                dispatch(
+                    artScrollerActions.setSlider({
+                        control: "invert",
+                        value: event.target.value,
+                    })
+                );
             }}
         />
     );
 };
 
 const ArtScrollerSpeedSliderLabel: React.FC = () => {
-    const { animDuration } = getGlobalState(useSelector);
+    const {
+        slider: { animDuration },
+    } = getGlobalState(useSelector);
     return (
         <label htmlFor="animation-duration" style={{ color: "white" }}>
             Scroll Speed: {Number(animDuration) / 100}
@@ -359,7 +389,9 @@ const ArtScrollerSpeedSliderLabel: React.FC = () => {
 type ArtScrollerSpeedSliderProps = DOMAttributes<HTMLInputElement>;
 
 const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
-    const { animDuration } = getGlobalState(useSelector);
+    const {
+        slider: { animDuration },
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
         <input
@@ -372,7 +404,12 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
             value={animDuration}
             onChange={(event) => {
                 event.preventDefault();
-                dispatch(setAnimDuration(event.target.value));
+                dispatch(
+                    artScrollerActions.setSlider({
+                        control: "animDuration",
+                        value: event.target.value,
+                    })
+                );
             }}
         />
     );
@@ -380,8 +417,11 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
 
 // TODO: adjust this so that different lists of gifs can be chosen
 const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
-    const { gifs, invert, animDuration, vertPos, circleWidth, hPos, listName } =
-        getGlobalState(useSelector);
+    const {
+        gifs,
+        slider: { invert, animDuration, vertPos, circleWidth, hPos },
+        listName,
+    } = getGlobalState(useSelector);
 
     const dispatch = useDispatch();
     let _gifs = gifs?.filter((gif) => gif.listName === listName);
@@ -393,20 +433,20 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
                     props.auth.getToken() as string,
                     true
                 )) as IGif[];
-                dispatch(setGifs(userGifs));
-                dispatch(setListName(userGifs[0]?.listName || "test"));
+                dispatch(artScrollerActions.setGifs(userGifs));
+                dispatch(artScrollerActions.setListName(userGifs[0]?.listName || "test"));
                 dispatch(
-                    setGifModalContext({
+                    modalActions.setGifModalContext({
                         listName: userGifs[0].listName,
                         gif: userGifs[0],
                     })
                 );
             } else {
                 const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
-                dispatch(setGifs(freeGifs));
-                dispatch(setListName("free"));
+                dispatch(artScrollerActions.setGifs(freeGifs));
+                dispatch(artScrollerActions.setListName("free"));
                 dispatch(
-                    setGifModalContext({
+                    modalActions.setGifModalContext({
                         listName: "free",
                         gif: freeGifs[0],
                     })
