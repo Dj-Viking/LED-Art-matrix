@@ -279,6 +279,14 @@ export const nanoKontrol2_MIDI_CHANNEL_TABLE: nanoKontrol2_MIDIChannelTable = {
     3: "not implemented yet",
 };
 
+export type TouchOscBridgeControlNames = "something" | "else" | "not implemented yet";
+export type TouchOscBridgeControlChannelTable = Record<number, TouchOscBridgeControlNames>;
+export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
+    1: "something",
+    2: "else",
+    3: "not implemented yet",
+};
+
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
     /** UNIMPLEMENTED */
 };
@@ -293,15 +301,19 @@ export type ControllerName =
     | "XONE:K2 MIDI"
     | "nanoKontrol2"
     | "UltraLite mk3 Hybrid MIDI Port"
+    | "TouchOSC Bridge"
     | "UltraLite mk3 Hybrid Sync Port";
+
 export type MIDIInputName = string & keyof ControllerLookup<ControllerName>;
 export type ControllerLookup<Name extends ControllerName> = Record<
     Name,
-    Name extends "XONE:K2 MIDI" //--------------// if
-        ? Nullable<XONEK2_MIDIChannelTable> //--// then
-        : Name extends "nanoKontrol2" //--------// else if
-        ? nanoKontrol2_MIDIChannelTable //------// then
-        : Nullable<Record<number, string>> //---// else
+    Name extends "XONE:K2 MIDI" //-------------------// if
+        ? XONEK2_MIDIChannelTable //-----------------// then
+        : Name extends "TouchOSC Bridge" //----------// else if
+        ? TouchOscBridgeControlChannelTable //------// then
+        : Name extends "nanoKontrol2" //-------------// else if
+        ? nanoKontrol2_MIDIChannelTable //-----------// then
+        : Nullable<Record<number, string>> //--------// else
 >;
 
 export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
@@ -311,4 +323,5 @@ export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
+    "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
 };

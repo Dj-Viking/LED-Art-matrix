@@ -3,7 +3,7 @@ import { escape } from "he";
 import API from "../../utils/ApiService";
 import Auth from "../../utils/AuthService";
 import { useDispatch } from "react-redux";
-import { presetButtonsListActions } from "../../reducers/presetButtonListSlice";
+import { presetButtonsListActions } from "../../store/presetButtonListSlice";
 interface DeletePresetConfirmModalProps {
     context: { btnId: string; displayName: string };
     onConfirm: React.MouseEventHandler<HTMLElement>;

@@ -7,16 +7,16 @@ import {
     _scrollerSaveGifsButtonSpring,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
-import { getGlobalState } from "../reducers/store";
+import { getGlobalState } from "../store/store";
 import API from "../utils/ApiService";
 
-import { artScrollerActions } from "../reducers/artScrollerSlice";
+import { artScrollerActions } from "../store/artScrollerSlice";
 import { BKeySvg } from "../lib/keySvgs";
 import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
-import { modalActions } from "../reducers/modalSlice";
+import { modalActions } from "../store/modalSlice";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;

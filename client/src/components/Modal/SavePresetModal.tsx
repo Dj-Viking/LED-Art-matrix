@@ -4,7 +4,7 @@ import API from "../../utils/ApiService";
 import Auth from "../../utils/AuthService";
 import { useDispatch } from "react-redux";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
-import { presetButtonsListActions } from "../../reducers/presetButtonListSlice";
+import { presetButtonsListActions } from "../../store/presetButtonListSlice";
 interface SavePresetModalProps {
     onClose: React.MouseEventHandler<HTMLElement>;
     context: { animVarCoeff: string; presetName: string };

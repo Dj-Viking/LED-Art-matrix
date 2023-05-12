@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
-import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { Spinner } from "../components/Spinner";
-import { getGlobalState } from "../reducers/store";
-import { loggedInActions } from "../reducers/loggedInSlice";
-import { formActions } from "../reducers/formSlice";
+import { getGlobalState } from "../store/store";
+import { loggedInActions } from "../store/loggedInSlice";
+import { formActions } from "../store/formSlice";
 
 const Login: React.FC = (): JSX.Element => {
     const history = useHistory();

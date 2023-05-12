@@ -1,11 +1,11 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { artScrollerActions } from "../reducers/artScrollerSlice";
-import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
-import { ledActions } from "../reducers/ledSlice";
+import { artScrollerActions } from "../store/artScrollerSlice";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
+import { ledActions } from "../store/ledSlice";
 import { IPresetButton } from "../types";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
-import { getGlobalState } from "../reducers/store";
+import { getGlobalState } from "../store/store";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();

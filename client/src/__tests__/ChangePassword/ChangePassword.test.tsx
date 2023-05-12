@@ -1,7 +1,7 @@
 // @ts-ignore
 import React from "react";
 import ChangePassword from "../../pages/ChangePassword";
-import { combinedReducers } from "../../reducers";
+import { combinedReducers } from "../../store";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";

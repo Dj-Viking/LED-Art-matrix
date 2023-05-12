@@ -2,10 +2,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { KeyIcon } from "./KeyIcon";
-import { modalActions } from "../reducers/modalSlice";
+import { modalActions } from "../store/modalSlice";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
-import { getGlobalState } from "../reducers/store";
-import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
+import { getGlobalState } from "../store/store";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 
 interface PresetButtonProps {
     button: {

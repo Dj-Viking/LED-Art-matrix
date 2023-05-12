@@ -5,7 +5,7 @@ import Auth from "../utils/AuthService";
 import AudioPlayerComponent from "../components/AudioPlayer";
 import BigLedBox from "../components/BigLedBox";
 import { useHistory } from "react-router-dom";
-import { loggedInActions } from "../reducers/loggedInSlice";
+import { loggedInActions } from "../store/loggedInSlice";
 
 // audio player and big led box
 const Home: React.FC = (): JSX.Element => {

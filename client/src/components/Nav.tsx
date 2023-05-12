@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { loggedInActions } from "../reducers/loggedInSlice";
+import { loggedInActions } from "../store/loggedInSlice";
 import Auth from "../utils/AuthService";
 import "./aux-styles/navStyles.css";
-import { ToolkitRootState } from "../reducers/store";
+import { ToolkitRootState } from "../store/store";
 
 const Nav: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();

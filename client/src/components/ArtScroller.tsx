@@ -26,8 +26,8 @@ import AuthService from "../utils/AuthService";
 import { Modal } from "./Modal/ModalBase";
 import { useDispatch, useSelector } from "react-redux";
 import { SaveGifsModal } from "./Modal/SaveGifsModal";
-import { modalActions } from "../reducers/modalSlice";
-import { getGlobalState } from "../reducers/store";
+import { modalActions } from "../store/modalSlice";
+import { getGlobalState } from "../store/store";
 
 const ArtScroller: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();

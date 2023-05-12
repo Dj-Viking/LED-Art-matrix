@@ -2,7 +2,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
+import { combinedReducers } from "../../store";
 import { mount, ReactWrapper } from "enzyme";
 import { createStore } from "redux";
 import { Provider } from "react-redux";

@@ -10,8 +10,8 @@ import {
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
-import { modalActions } from "../reducers/modalSlice";
-import { getGlobalState } from "../reducers/store";
+import { modalActions } from "../store/modalSlice";
+import { getGlobalState } from "../store/store";
 
 interface PresetLabelTitleProps {
     auth: typeof AuthService;

@@ -22,11 +22,11 @@ import {
     SavePresetButton,
     ToggleMIDIMapEditModeButton,
 } from "./PresetButton.style";
-import { ledActions } from "../reducers/ledSlice";
-import { getGlobalState } from "../reducers/store";
-import { modalActions } from "../reducers/modalSlice";
-import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
-import { midiActions } from "../reducers/midiSlice";
+import { ledActions } from "../store/ledSlice";
+import { getGlobalState } from "../store/store";
+import { modalActions } from "../store/modalSlice";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
+import { midiActions } from "../store/midiSlice";
 
 export interface IPresetButtonsProps {
     children?: any;

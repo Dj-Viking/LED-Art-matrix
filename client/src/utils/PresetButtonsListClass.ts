@@ -1,7 +1,7 @@
 import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { LedStyleEngine } from "./LedStyleEngineClass";
-import { ledActions } from "../reducers/ledSlice";
+import { ledActions } from "../store/ledSlice";
 
 export interface IDBPreset {
     _id: string;

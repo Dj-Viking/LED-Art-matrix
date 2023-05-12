@@ -1,7 +1,8 @@
-import { createSlice, createDraftSafeSelector } from "@reduxjs/toolkit";
+import React, { Dispatch } from "react";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IAccessRecordState } from "../types";
-import { Draft, produce } from "immer";
+import { produce } from "immer";
 import {
     MIDIAccessRecord,
     MIDIInput,
@@ -14,31 +15,12 @@ import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
 
 export type MIDISliceState = IAccessRecordState;
 
-// const midicb = function (midi_event: MIDIMessageEvent): void {
-//     console.log("midi edit mode", _midiEditMode);
-//     if (_midiEditMode) {
-//         return MIDIController.mapMIDIChannelToController(midi_event);
-//     }
-//     if (midi_event.currentTarget.name.includes("XONE:K2")) {
-//         return MIDIController.handleXONEK2MIDIMessage(
-//             midi_event,
-//             _setChannel,
-//             _setIntensity,
-//             dispatchcb,
-//             timeoutRef,
-//             _buttonIds
-//         );
-//     }
-// };
-
-const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
-    // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
-};
-
 const initialState: MIDISliceState = {
     midiEditMode: false,
     usingFader: false,
     usingKnob: false,
+    intensity: 0,
+    channel: 0,
     inputs: [] as Array<MIDIInput>,
     outputs: [] as Array<MIDIOutput>,
     online: false,
@@ -48,7 +30,6 @@ const initialState: MIDISliceState = {
         sysexEnabled: false,
         onstatechange: (_event: MIDIConnectionEvent) => void 0,
     } as MIDIAccessRecord,
-    sysexEnabled: false,
 };
 
 const getMIDIAccess = buildMIDIAccessGetter;
@@ -57,19 +38,28 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState,
     reducers: {
+        determineDeviceControl: (
+            state: MIDISliceState,
+            action: PayloadAction<{ usingFader: boolean; usingKnob: boolean }>
+        ) => {
+            return produce(state, () => {
+                state.usingFader = action.payload.usingFader;
+                state.usingKnob = action.payload.usingKnob;
+            });
+        },
+        setChannel: (state: MIDISliceState, action: PayloadAction<number>) => {
+            return produce(state, () => {
+                state.channel = action.payload;
+            });
+        },
+        setIntensity: (state: MIDISliceState, action: PayloadAction<number>) => {
+            return produce(state, () => {
+                state.intensity = action.payload;
+            });
+        },
         toggleMidiEditMode: (state: MIDISliceState) => {
             return produce(state, () => {
                 state.midiEditMode = !state.midiEditMode;
-            });
-        },
-        setOnline: (state: MIDISliceState, action: PayloadAction<boolean>) => {
-            return produce(state, () => {
-                const onlineStatebefore = selectMIDIOnlineState(state);
-                console.log("online state before", onlineStatebefore);
-                state.online = action.payload;
-
-                const onlineStateafter = selectMIDIOnlineState(state);
-                console.log("online state after", onlineStateafter);
             });
         },
     },
@@ -80,13 +70,13 @@ export const midiSlice = createSlice({
             getMIDIAccess.fulfilled,
             (state: MIDISliceState, action: PayloadAction<MIDIController>) => {
                 return produce(state, () => {
-                    console.log("action in produce midi state", action.payload);
                     // Map interface is not serializable in redux toolkit for whatever reason
                     // but i can still put it into state
                     state.access = action.payload.access;
                     state.inputs = action.payload.inputs;
+                    state.outputs = action.payload.outputs;
                     state.online = true;
-                    console.log("state access");
+                    console.log("state access", action.payload);
                 });
             }
         );
@@ -101,10 +91,3 @@ export const midiActions = {
     ...midiSlice.actions,
     getMIDIAccess,
 };
-
-export const midiSliceState = (state: MIDISliceState): MIDISliceState => state;
-
-export const selectMIDIOnlineState = createDraftSafeSelector(
-    midiSliceState,
-    (state: MIDISliceState) => state.online
-);

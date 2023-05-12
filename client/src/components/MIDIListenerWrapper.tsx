@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 //
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -18,12 +18,12 @@ import {
     MIDISelect,
     ControlSvg,
 } from "./MIDIListenerWrapper.style";
-import { IAccessRecordState, MyRootState } from "../types";
+import { IAccessRecordState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
-import { getGlobalState } from "../reducers/store";
-import { midiActions } from "../reducers/midiSlice";
+import { getGlobalState } from "../store/store";
+import { midiActions } from "../store/midiSlice";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -44,23 +44,14 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         online: accessOnline,
         inputs: accessInputs,
         outputs: accessOutputs,
-        sysexEnabled,
         midiEditMode,
         usingFader,
         usingKnob,
+        channel,
+        intensity,
     } = getGlobalState(useSelector);
 
     const [option, setOption] = useState<string>("");
-    const [channel, setChannel] = useState<number>(0);
-
-    const intensityRef = useRef<number>(0);
-    // const filterTimeoutRef = useRef<NodeJS.Timeout>(setTimeout(() => void 0, 500));
-
-    // const _setChannel = React.useCallback((channel: number): void => setChannel(channel), []);
-    // const _setSize = React.useCallback((size: number): void => setSize(size), []);
-    // const _setIntensity = React.useCallback((intensity: number): void => {
-    //     intensityRef.current = intensity;
-    // }, []);
 
     useEffect(() => {
         dispatch(midiActions.getMIDIAccess());
@@ -108,9 +99,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         outputs: accessOutputs,
                         midiEditMode,
                         online: accessOnline,
-                        sysexEnabled,
                         usingFader,
                         usingKnob,
+                        channel,
+                        intensity,
                     }}
                 />
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
@@ -133,10 +125,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             <DeviceSvgContainer>
                                 <ControlSvg
                                     usings={{ usingFader, usingKnob }}
-                                    intensity_input={intensityRef.current}
+                                    intensity_input={intensity}
                                 />
                             </DeviceSvgContainer>
-                            <IntensityBar intensity={intensityRef.current || 0} />
+                            <IntensityBar intensity={intensity || 0} />
                             <ControlNameContainer>
                                 <ChannelNumber channel={channel || 0} />
                                 <MIDIChannelControl

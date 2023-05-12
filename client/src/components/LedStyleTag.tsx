@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { MyRootState } from "../types";
 import he from "he";
-import { ToolkitRootState } from "../reducers/store";
+import { ToolkitRootState } from "../store/store";
 const LedStyleTag: React.FC = () => {
     const escapeHTML = he.escape;
     const { html } = useSelector((state: ToolkitRootState) => state.ledState);

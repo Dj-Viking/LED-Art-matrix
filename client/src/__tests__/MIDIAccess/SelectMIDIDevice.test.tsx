@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 //@ts-ignore
 import React from "react";
-import { combinedReducers } from "../../reducers";
+import { combinedReducers } from "../../store";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { fireEvent, render, screen } from "@testing-library/react";

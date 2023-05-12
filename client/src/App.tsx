@@ -12,7 +12,7 @@ import ChangePassword from "./pages/ChangePassword";
 import { Provider } from "react-redux";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
 import { LedWindow } from "./pages/LedWindow";
-import { toolkitStore } from "./reducers/store";
+import { toolkitStore } from "./store/store";
 
 // const store = createStore(
 //     combinedReducers,

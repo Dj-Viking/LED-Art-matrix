@@ -9,6 +9,7 @@ import {
 } from "../constants";
 export class LedStyleEngine {
     private preset!: string;
+    public static readonly LED_AMOUNT = 32;
 
     constructor(preset: string) {
         this.preset = preset;
@@ -71,8 +72,8 @@ export class LedStyleEngine {
 
     private createLedClass(coeff: string): string {
         let ledClass = "";
-        for (let row = 1; row < 34; row++) {
-            for (let led = 1; led < 34; led++) {
+        for (let row = 1; row < LedStyleEngine.LED_AMOUNT; row++) {
+            for (let led = 1; led < LedStyleEngine.LED_AMOUNT; led++) {
                 ledClass += this.generateLedClass(led, row, coeff); //appending with += because this is procedural for each column and row
             }
         }

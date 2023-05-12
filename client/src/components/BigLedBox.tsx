@@ -9,12 +9,12 @@ import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
-import { ledActions } from "../reducers/ledSlice";
+import { ledActions } from "../store/ledSlice";
 import PresetButtons from "./PresetButtons";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
 import { isLedWindow } from "../App";
-import { ToolkitRootState } from "../reducers/store";
+import { ToolkitRootState } from "../store/store";
 
 const BigLedBox: React.FC = (): JSX.Element => {
     const { presetName, animVarCoeff } = useSelector((state: ToolkitRootState) => state.ledState);
@@ -54,8 +54,19 @@ const BigLedBox: React.FC = (): JSX.Element => {
 
     //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
     useEffect(() => {
-        styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
-        dispatch(ledActions.setLedStyle(styleHTMLRef.current));
+        (async () => {
+            return new Promise<any>((resolve) => {
+                const cb = (): void => {
+                    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(
+                        animVarCoeff
+                    );
+                    dispatch(ledActions.setLedStyle(styleHTMLRef.current));
+                };
+                setTimeout(() => {
+                    resolve(cb());
+                }, 10);
+            });
+        })();
     }, [animVarCoeff, presetName, dispatch]);
 
     const leds: Array<{ ledNumber: number }> = [];
@@ -72,8 +83,8 @@ const BigLedBox: React.FC = (): JSX.Element => {
         }
     }
 
-    createLedObjectsArray(34);
-    createLedRowsArray(34);
+    createLedObjectsArray(LedStyleEngine.LED_AMOUNT);
+    createLedRowsArray(LedStyleEngine.LED_AMOUNT);
 
     return (
         <>

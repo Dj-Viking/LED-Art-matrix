@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
 import { Spinner } from "../components/Spinner";
-import { loggedInActions } from "../reducers/loggedInSlice";
-import { formActions } from "../reducers/formSlice";
+import { loggedInActions } from "../store/loggedInSlice";
+import { formActions } from "../store/formSlice";
 import { useHistory } from "react-router-dom";
-import { getGlobalState } from "../reducers/store";
+import { getGlobalState } from "../store/store";
 
 const Signup: React.FC = (): JSX.Element => {
     const history = useHistory();

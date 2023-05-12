@@ -8,8 +8,8 @@ import {
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
-import { CombinedFormState } from "./reducers/formSlice";
-import { CombinedModalState } from "./reducers/modalSlice";
+import { CombinedFormState } from "./store/formSlice";
+import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 
 type RecordKey = string | number | symbol;
@@ -513,6 +513,8 @@ export type IAccessRecordState = {
     midiEditMode: boolean;
     usingFader: boolean;
     usingKnob: boolean;
+    channel: number;
+    intensity: number;
     inputs: Array<MIDIInput>;
     outputs: Array<MIDIOutput>;
     online: boolean;
@@ -522,7 +524,6 @@ export type IAccessRecordState = {
         sysexEnabled: boolean;
         onstatechange: onstatechangeHandler | null;
     };
-    sysexEnabled: boolean;
 };
 
 export type UAccessRecordActionTypes =
