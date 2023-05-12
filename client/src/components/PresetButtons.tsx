@@ -4,19 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import PresetButton from "./PresetButton";
 import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
-import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { setAllInactive, setPresetButtonsList } from "../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
-import { setDeleteModalOpen, toggleDeleteMode } from "../actions/delete-modal-actions";
-import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
 import { keyGen } from "../utils/keyGen";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
-import { getGlobalState } from "../reducers";
 import {
     ClearButton,
     DeleteButton,
@@ -27,8 +22,11 @@ import {
     SavePresetButton,
     ToggleMIDIMapEditModeButton,
 } from "./PresetButton.style";
-import { clearStyle } from "../actions/style-actions";
 import { setMIDIEditMode } from "../actions/midi-access-actions";
+import { ledActions } from "../reducers/ledSlice";
+import { getGlobalState } from "../reducers/store";
+import { modalActions } from "../reducers/modalSlice";
+import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
 
 export interface IPresetButtonsProps {
     children?: any;
@@ -84,14 +82,14 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
     function deleteButtonClickHandler(event: any): void {
         event.preventDefault();
-        dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+        dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
     }
 
     function clearButtonClickHandler(event: any): void {
         event.preventDefault();
-        dispatch(presetSwitch(""));
-        dispatch(clearStyle());
-        dispatch(setAllInactive(presetButtons));
+        dispatch(ledActions.setPresetName(""));
+        dispatch(ledActions.clearStyle());
+        dispatch(presetButtonsListActions.setAllInactive(presetButtons));
     }
 
     const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
@@ -124,7 +122,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     event.preventDefault();
                 }, tempPresets).getList() as IPresetButton[];
 
-                dispatch(setPresetButtonsList(tempButtons));
+                dispatch(presetButtonsListActions.setPresetButtonsList(tempButtons));
             } else {
                 (async (): Promise<void> => {
                     const presets = (await getPresets()) as IDBPreset[];
@@ -140,7 +138,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                         activePreset && activePreset._id ? activePreset._id : void 0
                     ).getList() as IPresetButton[];
 
-                    dispatch(setPresetButtonsList(buttons));
+                    dispatch(presetButtonsListActions.setPresetButtonsList(buttons));
                 })();
             }
         }
@@ -157,7 +155,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     context={saveModalContext}
                     onClose={(event) => {
                         event.preventDefault();
-                        dispatch(setSaveModalIsOpen(false));
+                        dispatch(modalActions.setSaveModalIsOpen(false));
                     }}
                 />
             </Modal>
@@ -167,13 +165,13 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     context={deleteModalContext}
                     onCancel={(event: any) => {
                         event.preventDefault();
-                        dispatch(setDeleteModalOpen(false));
-                        dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+                        dispatch(modalActions.setDeleteModalOpen(false));
+                        dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
                     }}
                     onConfirm={(event: any) => {
                         event.preventDefault();
-                        dispatch(setDeleteModalOpen(false));
-                        dispatch(toggleDeleteMode(deleteModeActive ? false : true));
+                        dispatch(modalActions.setDeleteModalOpen(false));
+                        dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
                     }}
                 />
             </Modal>
@@ -207,9 +205,10 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                             inputValueState={animVarCoeff}
                             handleChange={(event) => {
                                 event.preventDefault();
-                                dispatch(animVarCoeffChange(event.target.value));
+                                dispatch(ledActions.setAnimVarCoeff(event.target.value));
                                 dispatch(
-                                    setSaveModalContext({
+                                    modalActions.setSaveModalContext({
+                                        presetName: presetName,
                                         animVarCoeff: event.target.value,
                                     })
                                 );
