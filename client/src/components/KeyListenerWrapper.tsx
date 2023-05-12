@@ -1,12 +1,11 @@
 import React, { useEffect, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setFigureOn } from "../actions/art-scroller-actions";
-import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
-import { checkPresetButtonsActive, setAllInactive } from "../actions/preset-button-actions";
-import { clearStyle, setLedStyle } from "../actions/style-actions";
+import { artScrollerActions } from "../reducers/artScrollerSlice";
+import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
+import { ledActions } from "../reducers/ledSlice";
 import { IPresetButton } from "../types";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
-import { getGlobalState } from "../reducers";
+import { getGlobalState } from "../reducers/store";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
@@ -15,11 +14,16 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
 
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
-            dispatch(presetSwitch(preset.presetName));
-            dispatch(checkPresetButtonsActive(presetButtons, preset.id));
-            dispatch(animVarCoeffChange(preset.animVarCoeff));
+            dispatch(ledActions.setPresetName(preset.presetName));
             dispatch(
-                setLedStyle(
+                presetButtonsListActions.checkPresetButtonsActive({
+                    buttons: presetButtons,
+                    id: preset.id,
+                })
+            );
+            dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff));
+            dispatch(
+                ledActions.setLedStyle(
                     new LedStyleEngine(preset.presetName).createStyleSheet(preset.animVarCoeff)
                 )
             );
@@ -35,13 +39,13 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             //clear led screen
             // TODO: change the LED styles to still have the dimensions of being empty but no color as to not remove the dimensional grid from the DOM
             if (event.key === "c" || event.key === "C") {
-                dispatch(presetSwitch(""));
-                dispatch(clearStyle());
-                dispatch(setAllInactive(presetButtons));
+                dispatch(ledActions.setPresetName(""));
+                dispatch(ledActions.clearStyle());
+                dispatch(presetButtonsListActions.setAllInactive(presetButtons));
             }
 
             if (event.key === "b" || event.key === "B") {
-                dispatch(setFigureOn(figureOn ? false : true));
+                dispatch(artScrollerActions.setFigureOn(figureOn ? false : true));
             }
 
             const preset = presetButtons.filter(

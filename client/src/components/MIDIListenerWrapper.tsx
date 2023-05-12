@@ -22,7 +22,7 @@ import { IAccessRecordState, MyRootState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
-import { getGlobalState } from "../reducers";
+import { getGlobalState } from "../reducers/store";
 
 export interface ITestMIDIProps {
     testid: string;
