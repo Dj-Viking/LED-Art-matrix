@@ -8,5 +8,8 @@ if (!(Test-Path -Path ".\node_modules")) {
     powershell -File install.ps1
 }
 Write-Host "[INFO]: Running Application in Development mode..." -ForegroundColor Cyan
-
-powershell -File run.ps1 -prettier $prettier
+if ($prettier) {
+    powershell -File run.ps1 -prettier
+} else {
+    powershell -File run.ps1
+}
