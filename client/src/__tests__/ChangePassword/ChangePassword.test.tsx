@@ -1,8 +1,6 @@
 // @ts-ignore
 import React from "react";
 import ChangePassword from "../../pages/ChangePassword";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
@@ -20,12 +18,7 @@ import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { HiddenLocationDisplay } from "../../App";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -73,7 +66,7 @@ describe("test that the fake window location pathname works with the jest test",
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <ChangePassword />
                         <HiddenLocationDisplay />
@@ -128,7 +121,7 @@ describe("test that the fake window location pathname works with the jest test",
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <ChangePassword />
                         <HiddenLocationDisplay />
@@ -183,7 +176,7 @@ describe("test that the fake window location pathname works with the jest test",
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <ChangePassword />
                         <HiddenLocationDisplay />

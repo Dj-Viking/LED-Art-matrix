@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
@@ -21,6 +19,7 @@ import {
 } from "../../utils/mocks";
 import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -33,12 +32,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 const originalFetch = global.fetch;
 beforeEach(() => {
@@ -77,7 +70,7 @@ it("tests the led styles change to rainbowTest when rainbow button is clicked", 
 
     const { container } = render(
         <>
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>

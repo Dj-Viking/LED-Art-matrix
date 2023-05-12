@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, screen, fireEvent } from "@testing-library/react";
@@ -19,6 +17,7 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -31,12 +30,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     } as MIDIAccessRecord);
 };
 
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-
 it("shows login error message", async () => {
     // @ts-ignore
     global.fetch = jest.fn(() => {
@@ -48,7 +41,7 @@ it("shows login error message", async () => {
     const history = createMemoryHistory();
     render(
         <>
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>

@@ -2,8 +2,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 //@ts-ignore
 import React from "react";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { fireEvent, render, screen } from "@testing-library/react";
 //@ts-ignore
@@ -17,12 +15,7 @@ import MIDIListenerWrapper from "../../components/MIDIListenerWrapper";
 import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { MOCK_MIDI_ACCESS_RECORD } from "../../utils/mocks";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -37,7 +30,7 @@ describe("test selecting midi device toggles which device shows", () => {
         const history = createMemoryHistory();
 
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <MIDIListenerWrapper />
                 </Router>

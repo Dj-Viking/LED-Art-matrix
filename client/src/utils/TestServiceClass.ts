@@ -166,22 +166,18 @@ export class TestService implements ITestService {
                     });
                     return this;
                 };
-                this.requestMIDIAccess = async function () {
-                    return Promise.resolve({
-                        ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
-                    });
-                };
-                this.getAccess = jest.fn().mockImplementation(function () {
-                    return {
-                        ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
-                        onstatechange: onstatechangefn,
-                    };
-                    // return MOCK_MIDI_ACCESS_RECORD;
-                });
+
                 this.getInstance = jest.fn().mockImplementation(() => {
                     return this;
                 });
                 return this;
+            };
+
+            // static members on the function prototype
+            MockMIDIControllerConstructor.requestMIDIAccess = async function () {
+                return Promise.resolve({
+                    ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
+                });
             };
 
             //MOCK MODULE OF MIDI UTILS FILE

@@ -2,9 +2,7 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
 import { mount, ReactWrapper } from "enzyme";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, RenderResult, screen } from "@testing-library/react";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
@@ -22,12 +20,7 @@ import {
 import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
 import { ITestMIDIProps, TestMIDI } from "../../components/MIDIListenerWrapper";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 const MOCK_MIDI_ACCESS_RECORD = {
     inputs: MOCK_ACCESS_INPUTS,
@@ -53,7 +46,7 @@ describe("faking navigator for midiaccess testing", () => {
             await new Promise<RenderResult>((resolve) =>
                 resolve(
                     render(
-                        <Provider store={store}>
+                        <Provider store={toolkitStore}>
                             <Router history={history}>
                                 <App />
                             </Router>
@@ -76,7 +69,7 @@ describe("faking navigator for midiaccess testing", () => {
             app = await new Promise<ReactWrapper<any>>((resolve) =>
                 resolve(
                     mount(
-                        <Provider store={store}>
+                        <Provider store={toolkitStore}>
                             <Router history={history}>
                                 <App />
                             </Router>

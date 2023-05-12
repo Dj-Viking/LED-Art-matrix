@@ -2,8 +2,6 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { act, render, screen } from "@testing-library/react";
 import "@types/jest";
@@ -15,6 +13,7 @@ import { Router } from "react-router-dom";
 import { keyGen } from "../../utils/keyGen";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
+import { toolkitStore } from "../../store/store";
 const uuid = require("uuid");
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -31,13 +30,8 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 describe("moving this to a separate file to avoid the leaky mocks that dont get cleared from the previous test", () => {
     it("tests that the api didn't send an array with items, buttons should not render", async () => {
         expect(screen.queryByTestId("waves")).not.toBeInTheDocument();
-        const store = createStore(
-            combinedReducers,
-            // @ts-expect-error this will exist in the browser
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-        );
 
-        expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
+        expect(toolkitStore.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
         expect(localStorage.getItem("id_token")).toBe(null);
         localStorage.setItem(
@@ -84,7 +78,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         global.fetch = mockFetch;
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>
@@ -94,7 +88,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         await act(async () => {
             return void 0;
         });
-        expect(store.getState().presetButtonsListState.presetButtons).toHaveLength(0);
+        expect(toolkitStore.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
         expect(fetch).toHaveBeenCalledTimes(3);
         // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");

@@ -271,12 +271,41 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     44: "1_middle_button",
     48: "1_upper_button",
 };
+
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
+
 export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;
+
 export const nanoKontrol2_MIDI_CHANNEL_TABLE: nanoKontrol2_MIDIChannelTable = {
     1: "something",
     2: "else",
     3: "not implemented yet",
+};
+
+export type TouchOscBridgeControlNames =
+    | "fader_1"
+    | "fader_2"
+    | "fader_3"
+    | "fader_4"
+    | "button_1"
+    | "button_2"
+    | "button_3"
+    | "button_4"
+    | "top_fader";
+
+export type TouchOscBridgeControlChannelTable = Record<number, TouchOscBridgeControlNames>;
+
+// Simple touch osc layout channel table
+export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
+    0: "fader_1",
+    1: "fader_2",
+    2: "fader_3",
+    3: "fader_4",
+    4: "top_fader",
+    5: "button_1",
+    6: "button_2",
+    7: "button_3",
+    8: "button_4",
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
@@ -293,15 +322,19 @@ export type ControllerName =
     | "XONE:K2 MIDI"
     | "nanoKontrol2"
     | "UltraLite mk3 Hybrid MIDI Port"
+    | "TouchOSC Bridge"
     | "UltraLite mk3 Hybrid Sync Port";
+
 export type MIDIInputName = string & keyof ControllerLookup<ControllerName>;
 export type ControllerLookup<Name extends ControllerName> = Record<
     Name,
-    Name extends "XONE:K2 MIDI" //--------------// if
-        ? Nullable<XONEK2_MIDIChannelTable> //--// then
-        : Name extends "nanoKontrol2" //--------// else if
-        ? nanoKontrol2_MIDIChannelTable //------// then
-        : Nullable<Record<number, string>> //---// else
+    Name extends "XONE:K2 MIDI" //-------------------// if
+        ? XONEK2_MIDIChannelTable //-----------------// then
+        : Name extends "TouchOSC Bridge" //----------// else if
+        ? TouchOscBridgeControlChannelTable //------// then
+        : Name extends "nanoKontrol2" //-------------// else if
+        ? nanoKontrol2_MIDIChannelTable //-----------// then
+        : Nullable<Record<number, string>> //--------// else
 >;
 
 export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
@@ -311,4 +344,5 @@ export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
+    "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
 };

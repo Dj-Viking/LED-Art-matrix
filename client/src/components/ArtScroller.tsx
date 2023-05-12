@@ -24,10 +24,10 @@ import {
 } from "./ArtScroller.style";
 import AuthService from "../utils/AuthService";
 import { Modal } from "./Modal/ModalBase";
-import { getGlobalState } from "../reducers";
 import { useDispatch, useSelector } from "react-redux";
 import { SaveGifsModal } from "./Modal/SaveGifsModal";
-import { setGifModalIsOpen } from "../actions/gif-modal-actions";
+import { modalActions } from "../store/modalSlice";
+import { getGlobalState } from "../store/store";
 
 const ArtScroller: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
             <ArtScrollerMainContainer>
                 <Modal isOpen={gifsModalIsOpen || false}>
                     <SaveGifsModal
-                        onClose={() => dispatch(setGifModalIsOpen(false))}
+                        onClose={() => dispatch(modalActions.setGifModalIsOpen(false))}
                         context={gifsModalContext || {}}
                     />
                 </Modal>

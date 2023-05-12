@@ -8,6 +8,9 @@ import {
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
+import { CombinedFormState } from "./store/formSlice";
+import { CombinedModalState } from "./store/modalSlice";
+import { Action } from "@reduxjs/toolkit";
 
 type RecordKey = string | number | symbol;
 declare global {
@@ -16,6 +19,10 @@ declare global {
         entries<K extends RecordKey, V>(o: Record<K, V> | ArrayLike<V>): [K, V][];
         keys<O = object>(o: O): Array<keyof O>;
         values<O = object>(o: O): Array<O[keyof O]>;
+    }
+    interface TypedActionCreator<T extends string> {
+        (...args: any[]): Action<T>;
+        type: T;
     }
 }
 
@@ -37,6 +44,7 @@ export interface ILedState {
     animationDurationState: string;
     isInverted: boolean;
     animVarCoeff: string;
+    html: string;
 }
 export type ILedActionTypes =
     | "LOAD_USER_SPLASH_CONFIG"
@@ -142,10 +150,10 @@ export interface ISetGifsAction {
 }
 
 export interface ILoginFormState {
-    usernameOrEmail: string;
-    emailIsComplete: boolean;
-    password: string;
-    passwordIsComplete: boolean;
+    loginUsernameOrEmail: string;
+    loginEmailIsComplete: boolean;
+    loginPassword: string;
+    loginPasswordIsComplete: boolean;
 }
 export type ILoginFormActionTypes = "LOGIN_EMAIL_OR_USERNAME_CHANGE" | "LOGIN_PASSWORD_CHANGE";
 
@@ -166,12 +174,12 @@ export interface ILoginPasswordChangeAction {
     payload: string;
 }
 export interface ISignupFormState {
-    username: string;
-    usernameIsComplete: boolean;
-    email: string;
-    emailIsComplete: boolean;
-    password: string;
-    passwordIsComplete: boolean;
+    signupUsername: string;
+    signupUsernameIsComplete: boolean;
+    signupEmail: string;
+    signupEmailIsComplete: boolean;
+    signupPassword: string;
+    signupPasswordIsComplete: boolean;
 }
 export type ISignupFormActionTypes =
     | "SIGNUP_USERNAME_CHANGE"
@@ -202,14 +210,16 @@ export interface ISignupPasswordChangeAction {
 }
 
 export interface IArtScrollerState {
+    figureOn: boolean;
     gifs: Array<IGif>;
     listName: string;
-    animDuration: string;
-    vertPos: string;
-    hPos: string;
-    circleWidth: string;
-    invert: string;
-    figureOn: boolean;
+    slider: {
+        animDuration: string;
+        vertPos: string;
+        hPos: string;
+        circleWidth: string;
+        invert: string;
+    };
 }
 
 export type IArtScrollerActionTypes =
@@ -350,15 +360,12 @@ export interface ILogoutAction {
 }
 
 export type GlobalState = IAccessRecordState &
-    INewGifsModalState &
-    ISaveModalState &
-    IDeleteModalState &
+    CombinedFormState &
+    CombinedModalState &
     ILedState &
     IPresetButtonsListState &
     ILoggedInState &
     ILedStyleTagState &
-    ILoginFormState &
-    ISignupFormState &
     IArtScrollerState;
 
 export interface MyRootState {
@@ -506,6 +513,8 @@ export type IAccessRecordState = {
     midiEditMode: boolean;
     usingFader: boolean;
     usingKnob: boolean;
+    channel: number;
+    intensity: number;
     inputs: Array<MIDIInput>;
     outputs: Array<MIDIOutput>;
     online: boolean;
@@ -515,8 +524,6 @@ export type IAccessRecordState = {
         sysexEnabled: boolean;
         onstatechange: onstatechangeHandler | null;
     };
-    onstatechange: onstatechangeHandler | null;
-    sysexEnabled: boolean;
 };
 
 export type UAccessRecordActionTypes =
@@ -528,11 +535,11 @@ export interface ISetAccessRecordAction {
     type: "SET_ACCESS";
     payload: IAccessRecordState;
 }
-export interface ISetMIDIEditMode {
+export interface ISetMIDIEditModeAction {
     type: "SET_MIDI_EDIT_MODE";
     payload: boolean;
 }
-export type SetMIDIEditMode = (mode: boolean) => ISetMIDIEditMode;
+export type SetMIDIEditModeAction = (mode: boolean) => ISetMIDIEditModeAction;
 
 export type SetAccessRecordAction = (
     access: MIDIController,
@@ -547,7 +554,8 @@ export interface IDetermineDeviceControlAction {
 
 export type AccessRecordActionPayloads =
     | IDetermineDeviceControlAction["payload"]
-    | ISetAccessRecordAction["payload"];
+    | ISetAccessRecordAction["payload"]
+    | ISetMIDIEditModeAction["payload"];
 
 export interface IAccessRecordAction {
     type: UAccessRecordActionTypes;

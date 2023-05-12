@@ -1,23 +1,17 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
-import {
-    signupUsernameChange,
-    signupEmailChange,
-    signupPasswordChange,
-} from "../actions/signup-form-actions";
 import { Spinner } from "../components/Spinner";
-import { MyRootState } from "../types";
+import { loggedInActions } from "../store/loggedInSlice";
+import { formActions } from "../store/formSlice";
 import { useHistory } from "react-router-dom";
-import { login } from "../actions/logged-in-actions";
+import { getGlobalState } from "../store/store";
 
 const Signup: React.FC = (): JSX.Element => {
     const history = useHistory();
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
-    const { username, email, password } = useSelector(
-        (state: MyRootState) => state.signupFormState
-    );
+    const { signupUsername, signupEmail, signupPassword } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
     async function handleSubmit(event: any): Promise<void> {
@@ -25,8 +19,12 @@ const Signup: React.FC = (): JSX.Element => {
         setLoading(true);
         try {
             if (window.navigator.onLine) {
-                await API.signup({ username, email, password });
-                dispatch(login());
+                await API.signup({
+                    username: signupUsername,
+                    email: signupEmail,
+                    password: signupPassword,
+                });
+                dispatch(loggedInActions.login());
                 setLoading(false);
                 history.push("/");
             } else {
@@ -41,13 +39,13 @@ const Signup: React.FC = (): JSX.Element => {
 
     function handleChange(event: any): void {
         if (event.target.type === "text") {
-            dispatch(signupUsernameChange(event.target.value));
+            dispatch(formActions.signupUsernameChange(event.target.value));
         }
         if (event.target.type === "email") {
-            dispatch(signupEmailChange(event.target.value));
+            dispatch(formActions.signupEmailChange(event.target.value));
         }
         if (event.target.type === "password") {
-            dispatch(signupPasswordChange(event.target.value));
+            dispatch(formActions.signupPasswordChange(event.target.value));
         }
     }
 

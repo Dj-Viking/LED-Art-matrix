@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
@@ -15,6 +13,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -28,14 +27,12 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
     } as MIDIAccessRecord);
 };
 
-const store = createStore(combinedReducers);
-
 describe("test the preset buttons are becoming active and inactive and clearing active status when clear button clicked", () => {
     it("tests page renders", () => {
         const history = createMemoryHistory();
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>

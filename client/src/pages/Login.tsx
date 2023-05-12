@@ -2,28 +2,29 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
-import { loginEmailChange, loginPasswordChange } from "../actions/login-form-actions";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { Spinner } from "../components/Spinner";
-import { MyRootState } from "../types";
-import { login } from "../actions/logged-in-actions";
-import { setPresetButtonsList } from "../actions/preset-button-actions";
+import { getGlobalState } from "../store/store";
+import { loggedInActions } from "../store/loggedInSlice";
+import { formActions } from "../store/formSlice";
 
 const Login: React.FC = (): JSX.Element => {
     const history = useHistory();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
-    const { usernameOrEmail, password } = useSelector((state: MyRootState) => state.loginFormState);
+    const { loginUsernameOrEmail, loginPassword } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
     function handleChange(event: any): void {
         if (event.target.type === "text") {
-            dispatch(loginEmailChange(event.target.value));
+            dispatch(formActions.loginEmailChange(event.target.value));
         }
         if (event.target.type === "password") {
-            dispatch(loginPasswordChange(event.target.value));
+            dispatch(formActions.loginPasswordChange(event.target.value));
         }
     }
 
+    // TODO: make async thunks out of logging in and signing up
     async function handleSubmit(event: any): Promise<void> {
         event.preventDefault();
         setLoading(true);
@@ -31,12 +32,15 @@ const Login: React.FC = (): JSX.Element => {
         try {
             let booleanOrError;
             if (window.navigator.onLine) {
-                booleanOrError = await API.login({ usernameOrEmail, password });
+                booleanOrError = await API.login({
+                    usernameOrEmail: loginUsernameOrEmail,
+                    password: loginPassword,
+                });
                 if (!(booleanOrError instanceof Error)) {
                     setLoading(false);
                     setError("");
-                    dispatch(setPresetButtonsList([]));
-                    dispatch(login());
+                    dispatch(presetButtonsListActions.setPresetButtonsList([]));
+                    dispatch(loggedInActions.login());
                     history.push("/");
                 }
                 setLoading(false);

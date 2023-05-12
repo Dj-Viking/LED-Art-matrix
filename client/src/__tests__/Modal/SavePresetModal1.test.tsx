@@ -3,8 +3,6 @@
 //@ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen, fireEvent } from "@testing-library/react";
 import "@types/jest";
@@ -21,6 +19,7 @@ import {
     MOCK_SIGN_TOKEN_ARGS,
 } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -81,18 +80,12 @@ describe("test the save modal functionality", () => {
         global.fetch = mockFetch;
         const history = createMemoryHistory();
 
-        const store = createStore(
-            combinedReducers,
-            // @ts-expect-error this will exist in the browser
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-        );
-
         expect(localStorage.getItem("id_token")).toBe(null);
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
         expect(typeof localStorage.getItem("id_token")).toBe("string");
 
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>

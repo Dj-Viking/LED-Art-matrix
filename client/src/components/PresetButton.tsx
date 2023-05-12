@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkPresetButtonsActive } from "../actions/preset-button-actions";
-import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
 import { KeyIcon } from "./KeyIcon";
+import { modalActions } from "../store/modalSlice";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
-import { getGlobalState } from "../reducers";
+import { getGlobalState } from "../store/store";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 
 interface PresetButtonProps {
     button: {
@@ -35,7 +35,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
         keyBinding,
     } = button;
     const dispatch = useDispatch();
-    const { presetButtons, deleteModeActive, midiMode } = getGlobalState(useSelector);
+    const { deleteModeActive, midiMode } = getGlobalState(useSelector);
 
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
         switch (true) {
@@ -68,11 +68,15 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                 onClick={(event: any) => {
                     clickHandler(event);
                     if (!deleteModeActive) {
-                        dispatch(checkPresetButtonsActive(presetButtons, id));
+                        dispatch(
+                            presetButtonsListActions.checkPresetButtonsActive({
+                                id,
+                            })
+                        );
                         PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
                     } else {
-                        dispatch(setDeleteModalOpen(true));
-                        dispatch(setDeleteModalContext({ btnId: id, displayName }));
+                        dispatch(modalActions.setDeleteModalOpen(true));
+                        dispatch(modalActions.setDeleteModalContext({ btnId: id, displayName }));
                     }
                 }}
             >

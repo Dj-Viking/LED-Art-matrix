@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../reducers";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
@@ -31,7 +29,8 @@ import {
     SaveDefaultButton,
 } from "../../components/PresetButton.style";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
-import { setPresetButtonsList } from "../../actions/preset-button-actions";
+import { presetButtonsListActions } from "../../store/presetButtonListSlice";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -43,12 +42,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
@@ -92,7 +85,7 @@ describe("test logging in and checking buttons are there", () => {
 
         const history = createMemoryHistory();
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -187,7 +180,7 @@ describe("test logging in and checking buttons are there", () => {
 
         const history = createMemoryHistory();
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -280,7 +273,7 @@ describe("test logging in and checking buttons are there", () => {
 
         const history = createMemoryHistory();
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -370,7 +363,7 @@ describe("test logging in and checking buttons are there", () => {
 
         const history = createMemoryHistory();
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -461,7 +454,7 @@ describe("test logging in and checking buttons are there", () => {
 
         const history = createMemoryHistory();
         const { container } = render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -544,7 +537,7 @@ describe("test logging in and checking buttons are there", () => {
 
     it("covers clicking the open new window button and calls the handler that opens the new window in the browser", () => {
         const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <PresetButtons />
             </Provider>
         );
@@ -555,7 +548,7 @@ describe("test logging in and checking buttons are there", () => {
     });
     it("covers clicking the clear button click handler", () => {
         const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <PresetButtons />
             </Provider>
         );
@@ -567,7 +560,7 @@ describe("test logging in and checking buttons are there", () => {
 
     it("covers clicking the save default button click handler", () => {
         const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <PresetButtons />
             </Provider>
         );
@@ -630,8 +623,8 @@ describe("test logging in and checking buttons are there", () => {
         global.fetch = mockFetch;
 
         // set an active preset in the store
-        store.dispatch(
-            setPresetButtonsList(
+        toolkitStore.dispatch(
+            presetButtonsListActions.setPresetButtonsList(
                 new PresetButtonsList(
                     () => null,
                     [
@@ -648,7 +641,7 @@ describe("test logging in and checking buttons are there", () => {
         );
 
         const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <PresetButtons />
             </Provider>
         );

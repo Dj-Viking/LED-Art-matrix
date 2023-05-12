@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Auth from "../utils/AuthService";
-import { login, logout } from "../actions/logged-in-actions";
 // components
 import AudioPlayerComponent from "../components/AudioPlayer";
 import BigLedBox from "../components/BigLedBox";
 import { useHistory } from "react-router-dom";
+import { loggedInActions } from "../store/loggedInSlice";
 
 // audio player and big led box
 const Home: React.FC = (): JSX.Element => {
@@ -13,7 +13,7 @@ const Home: React.FC = (): JSX.Element => {
     const history = useHistory();
 
     useEffect(() => {
-        Auth.loggedIn() ? dispatch(login()) : dispatch(logout());
+        Auth.loggedIn() ? dispatch(loggedInActions.login()) : dispatch(loggedInActions.logout());
     }, [history, dispatch]);
 
     return (

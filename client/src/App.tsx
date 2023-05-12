@@ -10,16 +10,15 @@ import Signup from "./pages/Signup";
 import ForgotPassword from "./pages/ForgotPassword";
 import ChangePassword from "./pages/ChangePassword";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { combinedReducers } from "./reducers";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
 import { LedWindow } from "./pages/LedWindow";
+import { toolkitStore } from "./store/store";
 
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+// const store = createStore(
+//     combinedReducers,
+//     // @ts-expect-error this will exist in the browser
+//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+// );
 
 export const HiddenLocationDisplay = (): JSX.Element => {
     const location = useLocation();
@@ -41,7 +40,7 @@ const App: React.FC = (): JSX.Element => {
     const history = createBrowserHistory();
     return (
         <>
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <BrowserRouter>
                         <KeyListenerWrapper>

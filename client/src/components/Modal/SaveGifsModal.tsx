@@ -4,8 +4,8 @@ import AuthService from "../../utils/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { INewGifsModalState } from "../../types";
 import styled from "styled-components";
-import { setGifModalContext, setGifModalIsOpen } from "../../actions/gif-modal-actions";
-import { getGlobalState } from "../../reducers";
+import { modalActions } from "../../store/modalSlice";
+import { getGlobalState } from "../../store/store";
 
 const StyledModalCloseButton = styled.button`
     & {
@@ -182,8 +182,8 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
             try {
                 await API.createGifs(AuthService.getToken() as string, gif, input);
 
-                dispatch(setGifModalIsOpen(false));
-                dispatch(setGifModalContext({ listName: listName, gif: {} as any }));
+                dispatch(modalActions.setGifModalIsOpen(false));
+                dispatch(modalActions.setGifModalContext({ listName: listName, gif: {} as any }));
 
                 return void 0;
             } catch (error) {

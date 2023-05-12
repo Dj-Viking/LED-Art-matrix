@@ -3,8 +3,8 @@ import { escape } from "he";
 import API from "../../utils/ApiService";
 import Auth from "../../utils/AuthService";
 import { useDispatch } from "react-redux";
-import { setPresetButtonsList } from "../../actions/preset-button-actions";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
+import { presetButtonsListActions } from "../../store/presetButtonListSlice";
 interface SavePresetModalProps {
     onClose: React.MouseEventHandler<HTMLElement>;
     context: { animVarCoeff: string; presetName: string };
@@ -39,7 +39,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
                     event.preventDefault();
                 }, dbPresets).getList();
 
-                dispatch(setPresetButtonsList(presets));
+                dispatch(presetButtonsListActions.setPresetButtonsList(presets));
 
                 onClose(event);
                 setInput("");

@@ -1,17 +1,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
+import { artScrollerActions } from "../store/artScrollerSlice";
+import { ledActions } from "../store/ledSlice";
 import {
-    setAnimDuration,
-    setCircleWidth,
-    setHPos,
-    setInvert,
-    setVertPos,
-} from "../actions/art-scroller-actions";
-import { animVarCoeffChange } from "../actions/led-actions";
-import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
-import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
-import { setActiveButton, setMidiMode } from "../actions/preset-button-actions";
+    MIDIInputName,
+    XONEK2_MIDI_CHANNEL_TABLE,
+    touchOsc_MIDI_CHANNEL_TABLE,
+} from "../constants";
 import { PresetButtonsList } from "./PresetButtonsListClass";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
+import { midiActions } from "../store/midiSlice";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -98,10 +96,6 @@ interface MIDIMessageEvent {
     type: "midimessage";
 }
 
-// type MIDIEventHandlers  =
-//     null | ((event: MIDIMessageEvent) => unknown) |
-//     null | ((event: MIDIConnectionEvent) => unknown) | undefined | unknown;
-
 type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
 interface MIDIInput {
     id: string;
@@ -146,30 +140,26 @@ interface IMIDIController {
     outputs?: Array<MIDIOutput>;
     online?: boolean;
     getInstance: () => this;
-    getAccess: () => MIDIAccessRecord;
 }
 
 class MIDIController implements IMIDIController {
-    public access = null as MIDIAccessRecord | null;
-    public inputs = [] as Array<MIDIInput> | undefined;
+    public access = {} as MIDIAccessRecord;
+    public inputs = [] as Array<MIDIInput>;
     public inputs_size = 0;
     public outputs_size = 0;
-    public outputs = [] as Array<MIDIOutput> | undefined;
+    public outputs = [] as Array<MIDIOutput>;
     public online = false;
 
-    public constructor(access?: MIDIAccessRecord) {
-        if (access) this.access = access;
-
-        if (!!this.access && !!this.access.inputs.size) {
-            this.online = true;
-            this.inputs_size = access!.inputs.size;
-            this.outputs_size = access!.outputs.size;
-            this._setInputs(access!.inputs);
-            this._setOutputs(access!.outputs);
-        }
+    public constructor(access: MIDIAccessRecord) {
+        this.access = access;
+        this.online = true;
+        this.inputs_size = access!.inputs.size;
+        this.outputs_size = access!.outputs.size;
+        this._setInputs(access!.inputs);
+        this._setOutputs(access!.outputs);
     }
 
-    public async requestMIDIAccess(): Promise<MIDIAccessRecord> {
+    public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
         // @ts-ignore because for some reason in vscode
         // this method doesn't exist on the navigator I guess..
         // only supported in chrome mostly for now
@@ -178,10 +168,6 @@ class MIDIController implements IMIDIController {
 
     public getInstance(): this {
         return this;
-    }
-
-    public getAccess(): MIDIAccessRecord {
-        return this.access as MIDIAccessRecord;
     }
 
     public setOutputCbs(): this {
@@ -242,202 +228,168 @@ class MIDIController implements IMIDIController {
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
-    public static mapMIDIChannelToController(midi_event: MIDIMessageEvent): void {
-        console.log("midi event", midi_event);
+    public static mapMIDIChannelToInterface(_midi_event: MIDIMessageEvent): void {
+        // console.log("midi event reached edit mode", _midi_event);
     }
 
-    public static handleXONEK2MIDIMessage(
+    public static handleTouchOSCMessage(
         midi_event: MIDIMessageEvent,
-        _setChannel: (channel: number) => void,
-        _setIntensity: (intensity: number) => void,
-        _dispatchcb: React.Dispatch<any>,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
-        _buttonIds: string[]
+        _dispatchcb: React.Dispatch<any>
     ): void {
-        clearTimeout(timeoutRef.current);
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
 
-        _setChannel(midi_channel);
-        _setIntensity(midi_intensity);
+        _dispatchcb(midiActions.setChannel(midi_channel));
+        _dispatchcb(midiActions.setIntensity(midi_intensity));
 
-        const is_fader = /fader/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
-        const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
+        // TODO render svgs for showing it's touch osc
+        // touch osc logo?
 
-        _dispatchcb(
-            determineDeviceControl({
-                usingFader: is_fader,
-                usingKnob: is_knob,
-            })
-        );
-
-        switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
-            case "1_a_button":
-                timeoutRef.current = setTimeout(() => {
-                    // TODO: when redux toolkit is in - we set styling based on our access to the whole state tree
-                    // and not what we are passing into this handler because passing state stuff in here
-                    // while it is changing causes memory leaks
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[0]));
-                        PresetButtonsList.setStyle(
-                            _dispatchcb,
-                            "rainbowTest",
-                            midi_intensity.toString()
-                        );
-                    }
-                }, 20);
-                break;
-            case "1_b_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[1]));
-                        PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
-                    }
-                }, 20);
-                break;
-            case "1_c_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[2]));
-                        PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
-                    }
-                }, 20);
-                break;
-            case "1_d_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[3]));
-                        PresetButtonsList.setStyle(
-                            _dispatchcb,
-                            "spiral",
-                            midi_intensity.toString()
-                        );
-                    }
-                }, 20);
-                break;
-            case "2_e_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[4]));
-                        PresetButtonsList.setStyle(
-                            _dispatchcb,
-                            "fourSpirals",
-                            midi_intensity.toString()
-                        );
-                    }
-                }, 20);
-                break;
-            case "2_f_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[5]));
-                        PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
-                    }
-                }, 20);
-                break;
-            case "1_lower_button":
-                timeoutRef.current = setTimeout(() => {
-                    if (midi_intensity === 127) {
-                        _dispatchcb(setMidiMode());
-                    }
-                }, 20);
-                break;
-            case "1_upper_knob":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setCircleWidth(midi_intensity.toString()));
-                }, 20);
-                break;
-            case "1_middle_knob":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setVertPos(midi_intensity.toString()));
-                }, 20);
-                break;
-            case "1_lower_knob":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setHPos(midi_intensity.toString()));
-                }, 20);
-                break;
-            case "2_upper_knob":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setInvert(midi_intensity.toString()));
-                }, 20);
-                break;
-            case "2_middle_knob":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(
-                        setAnimDuration(midi_intensity <= 0 ? "1" : midi_intensity.toString())
-                    );
-                }, 20);
-                break;
-            case "1_fader":
-                timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(
-                        animVarCoeffChange(
-                            (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
-                        )
-                    );
-                }, 10);
+        switch (touchOsc_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "fader_1":
+                _dispatchcb(
+                    ledActions.setAnimVarCoeff(
+                        (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
+                    )
+                );
                 break;
             default:
                 break;
         }
     }
 
-    public static async setupMIDI(
-        dispatchcb: React.Dispatch<any>,
-        size: number,
-        _setSize: (size: number) => void,
-        _setChannel: (channel: number) => void,
-        _setIntensity: (intensity: number) => void,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+    public static handleXONEK2MIDIMessage(
+        midi_event: MIDIMessageEvent,
+        _dispatchcb: React.Dispatch<any>,
         _buttonIds: string[]
-    ): Promise<void> {
-        return new Promise<void>((resolve) => {
-            (async () => {
-                if ("navigator" in window) {
-                    // request access from browser
-                    const access = new MIDIController(
-                        await new MIDIController().requestMIDIAccess()
-                    ).getAccess();
-                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
-                    // set size of inputs to re-render component at this moment of time
-                    _setSize(access.inputs.size);
-                    //at this moment the promise resolves with access if size changed at some point
-                    if (size > 0) {
-                        dispatchcb(setAccess(new MIDIController(access).getInstance()));
-                        // define onstatechange callback to not be a function to execute when state changes later
-                        access.onstatechange = function (_event: MIDIConnectionEvent): void {
-                            const onstatechangeAccess = new MIDIController(
-                                _event.target
-                            ).getInstance();
+    ): void {
+        const midi_intensity = midi_event.data[2];
+        const midi_channel = midi_event.data[1];
 
-                            const midicb = function (midi_event: MIDIMessageEvent): void {
-                                if (midi_event.currentTarget.name.includes("XONE:K2")) {
-                                    MIDIController.handleXONEK2MIDIMessage(
-                                        midi_event,
-                                        _setChannel,
-                                        _setIntensity,
-                                        dispatchcb,
-                                        timeoutRef,
-                                        _buttonIds
-                                    );
-                                }
-                            };
+        _dispatchcb(midiActions.setChannel(midi_channel));
+        _dispatchcb(midiActions.setIntensity(midi_intensity));
 
-                            const onstatechangecb = function (
-                                _connection_event: MIDIConnectionEvent
-                            ): void {
-                                // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
-                            };
+        const is_fader = /fader/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
+        const is_knob = /knob/g.test(XONEK2_MIDI_CHANNEL_TABLE[midi_channel]);
 
-                            dispatchcb(setAccess(onstatechangeAccess, midicb, onstatechangecb));
-                        }; // end onstatechange def
-                    } // endif size > 0
-                    // accessState dead zone
-                } // endif "navigator" in window
-            })();
-            resolve();
-        });
+        _dispatchcb(
+            midiActions.determineDeviceControl({
+                usingFader: is_fader,
+                usingKnob: is_knob,
+            })
+        );
+
+        // TODO: when redux toolkit is in - we set styling based on our access to the whole state tree
+        // and not what we are passing into this handler because passing state stuff in here
+        // while it is changing causes memory leaks
+        switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "1_a_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[0]));
+
+                    PresetButtonsList.setStyle(
+                        _dispatchcb,
+                        "rainbowTest",
+                        midi_intensity.toString()
+                    );
+                }
+                break;
+            case "1_b_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[1]));
+
+                    PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
+                }
+                break;
+            case "1_c_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[2]));
+
+                    PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
+                }
+                break;
+            case "1_d_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[3]));
+
+                    PresetButtonsList.setStyle(_dispatchcb, "spiral", midi_intensity.toString());
+                }
+                break;
+            case "2_e_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
+
+                    PresetButtonsList.setStyle(
+                        _dispatchcb,
+                        "fourSpirals",
+                        midi_intensity.toString()
+                    );
+                }
+                break;
+            case "2_f_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[5]));
+
+                    PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
+                }
+                break;
+            case "1_lower_button":
+                if (midi_intensity === 127) {
+                    _dispatchcb(presetButtonsListActions.toggleMidiMode());
+                    _dispatchcb(midiActions.toggleMidiEditMode());
+                }
+                break;
+            case "1_upper_knob":
+                _dispatchcb(
+                    artScrollerActions.setSlider({
+                        control: "circleWidth",
+                        value: midi_intensity.toString(),
+                    })
+                );
+                break;
+            case "1_middle_knob":
+                _dispatchcb(
+                    artScrollerActions.setSlider({
+                        control: "vertPos",
+                        value: midi_intensity.toString(),
+                    })
+                );
+                break;
+            case "1_lower_knob":
+                _dispatchcb(
+                    artScrollerActions.setSlider({
+                        control: "hPos",
+                        value: midi_intensity.toString(),
+                    })
+                );
+                break;
+            case "2_upper_knob":
+                _dispatchcb(
+                    artScrollerActions.setSlider({
+                        control: "invert",
+                        value: midi_intensity.toString(),
+                    })
+                );
+                break;
+            case "2_middle_knob":
+                _dispatchcb(
+                    artScrollerActions.setSlider({
+                        control: "animDuration",
+                        value: midi_intensity <= 0 ? "1" : midi_intensity.toString(),
+                    })
+                );
+                break;
+            case "1_fader":
+                // debounce? not sure if this helps...
+                _dispatchcb(
+                    ledActions.setAnimVarCoeff(
+                        (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
+                    )
+                );
+                break;
+            default:
+                break;
+        }
     }
 }
 
