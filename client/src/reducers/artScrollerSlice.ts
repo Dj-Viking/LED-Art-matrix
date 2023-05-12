@@ -20,27 +20,27 @@ export const artScrollerSlice = createSlice({
     initialState,
     reducers: {
         setListName: (state: IArtScrollerState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                // draft.listName = action.payload;
+            return produce(state, () => {
+                state.listName = action.payload;
             });
         },
         setGifs: (state: IArtScrollerState, action: PayloadAction<IGif[]>) => {
-            return produce(state, (draft) => {
-                // draft.gifs = action.payload;
+            return produce(state, () => {
+                state.gifs = action.payload;
             });
         },
         setFigureOn: (state: IArtScrollerState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
-                // draft.figureOn = action.payload;
+            return produce(state, () => {
+                state.figureOn = action.payload;
             });
         },
         setSlider: (
             state: IArtScrollerState,
             action: PayloadAction<{ control: keyof IArtScrollerState["slider"]; value: string }>
         ) => {
-            return produce(state, (draft) => {
-                // const { control, value } = action.payload;
-                // draft.slider[control] = value;
+            return produce(state, () => {
+                const { control, value } = action.payload;
+                state.slider[control] = value;
             });
         },
     },
