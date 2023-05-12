@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { checkPresetButtonsActive } from "../actions/preset-button-actions";
-import { setDeleteModalOpen, setDeleteModalContext } from "../actions/delete-modal-actions";
 import { KeyIcon } from "./KeyIcon";
+import { modalActions } from "../reducers/modalSlice";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
-import { getGlobalState } from "../reducers";
+import { getGlobalState } from "../reducers/store";
+import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
 
 interface PresetButtonProps {
     button: {
@@ -68,11 +68,16 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                 onClick={(event: any) => {
                     clickHandler(event);
                     if (!deleteModeActive) {
-                        dispatch(checkPresetButtonsActive(presetButtons, id));
+                        dispatch(
+                            presetButtonsListActions.checkPresetButtonsActive({
+                                buttons: presetButtons,
+                                id,
+                            })
+                        );
                         PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
                     } else {
-                        dispatch(setDeleteModalOpen(true));
-                        dispatch(setDeleteModalContext({ btnId: id, displayName }));
+                        dispatch(modalActions.setDeleteModalOpen(true));
+                        dispatch(modalActions.setDeleteModalContext({ btnId: id, displayName }));
                     }
                 }}
             >
