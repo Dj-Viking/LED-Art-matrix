@@ -23,6 +23,7 @@ import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../reducers/store";
+import { midiActions } from "../reducers/midiSlice";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -37,7 +38,7 @@ export interface MIDIListenerWrapperProps {
 }
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
     const accessState = useSelector((state: MyRootState) => state.accessRecordState);
     const { usingFader, usingKnob, midiEditMode } = getGlobalState(useSelector);
     // const presetButtons = useSelector(
@@ -57,33 +58,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     //     intensityRef.current = intensity;
     // }, []);
 
-    // useEffect(() => {
-    //     console.log("init midi");
-
-    //     let controller: MIDIController = null as any;
-    //     // NOTE: be careful of what values are passed here - potential memory leaks
-    //     // could happen for example passing state values that are derived from redux (animVarCoeff or presetButtons)
-    //     // and then are used as input values in a different dispatch action. something happens
-    //     // with a reference counter and is not able to clean up things quick enough and freezes up the app
-    //     (async () => {
-    //         const buttonIds = presetButtons.map((btn) => btn.id);
-    //         const editMode = midiEditMode;
-    //         const browserMIDIAccessRecord = await MIDIController.requestMIDIAccess();
-    //         // this has a memory leak. new references to MIDI controller are created and not destroyed in the store
-    //         controller = await MIDIController.setupMIDI(
-    //             dispatch,
-    //             size,
-    //             _setSize,
-    //             _setChannel,
-    //             _setIntensity,
-    //             filterTimeoutRef,
-    //             buttonIds,
-    //             editMode,
-    //             browserMIDIAccessRecord
-    //         );
-    //         console.log("controller in useeffect", controller);
-    //     })();
-    // }, []);
+    useEffect(() => {
+        dispatch(midiActions.getMIDIAccess());
+    }, [dispatch]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
@@ -121,11 +98,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
-                        <MIDISelect
+                        {/* <MIDISelect
                             setOption={setOption}
                             option={option}
                             midi_inputs={accessState?.inputs}
-                        />
+                        /> */}
                     </MIDISelectContainer>
                     {option && (
                         <DeviceInterfaceContainer

@@ -10,6 +10,7 @@ import {
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./reducers/formSlice";
 import { CombinedModalState } from "./reducers/modalSlice";
+import { Action } from "@reduxjs/toolkit";
 
 type RecordKey = string | number | symbol;
 declare global {
@@ -18,6 +19,10 @@ declare global {
         entries<K extends RecordKey, V>(o: Record<K, V> | ArrayLike<V>): [K, V][];
         keys<O = object>(o: O): Array<keyof O>;
         values<O = object>(o: O): Array<O[keyof O]>;
+    }
+    interface TypedActionCreator<T extends string> {
+        (...args: any[]): Action<T>;
+        type: T;
     }
 }
 

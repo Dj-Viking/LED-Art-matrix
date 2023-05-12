@@ -1,13 +1,15 @@
 import { createSlice, createDraftSafeSelector } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IAccessRecordState } from "../types";
-import { produce } from "immer";
+import { Draft, produce } from "immer";
 import {
     MIDIAccessRecord,
     MIDIInput,
     MIDIOutput,
     MIDIConnectionEvent,
 } from "../utils/MIDIControlClass";
+import { newReducer } from "../utils/addReducer";
+import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
 
 export type MIDISliceState = IAccessRecordState;
 
@@ -28,6 +30,8 @@ const initialState: MIDISliceState = {
     sysexEnabled: false,
 };
 
+const getMIDIAccess = buildMIDIAccessGetter;
+
 export const midiSlice = createSlice({
     name: "midiSlice",
     initialState,
@@ -43,10 +47,24 @@ export const midiSlice = createSlice({
             });
         },
     },
+    extraReducers(builder) {
+        // set midi state after access is given by the browser
+        newReducer(
+            builder,
+            getMIDIAccess.fulfilled,
+            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIAccessRecord>) => {
+                //
+                const { inputs, outputs, sysexEnabled, onstatechange } = action.payload;
+
+                console.log("got some access stuff", inputs, outputs, sysexEnabled, onstatechange);
+            })
+        );
+    },
 });
 
 export const midiActions = {
     ...midiSlice.actions,
+    getMIDIAccess,
 };
 
 export const midiSliceState = (state: MIDISliceState): MIDISliceState => state;
