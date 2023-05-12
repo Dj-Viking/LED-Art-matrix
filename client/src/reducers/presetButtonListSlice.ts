@@ -89,18 +89,15 @@ export const presetButtonsListSlice = createSlice({
                 state.presetButtons = newList;
             });
         },
-        deletePreset: (
-            state: IPresetButtonsListState,
-            action: PayloadAction<{ buttons: IPresetButton[]; id: string }>
-        ) => {
-            return produce(state, (draft) => {
+        deletePreset: (state: IPresetButtonsListState, action: PayloadAction<{ id: string }>) => {
+            return produce(state, () => {
                 let newList = [];
 
-                const { buttons, id } = action.payload;
+                const { id } = action.payload;
 
-                newList = buttons.filter((btn) => btn.id !== id);
+                newList = state.presetButtons.filter((btn) => btn.id !== id);
 
-                draft.presetButtons = newList;
+                state.presetButtons = newList;
             });
         },
     },

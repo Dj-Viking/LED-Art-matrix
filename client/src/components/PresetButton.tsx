@@ -35,7 +35,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
         keyBinding,
     } = button;
     const dispatch = useDispatch();
-    const { presetButtons, deleteModeActive, midiMode } = getGlobalState(useSelector);
+    const { deleteModeActive, midiMode } = getGlobalState(useSelector);
 
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
         switch (true) {

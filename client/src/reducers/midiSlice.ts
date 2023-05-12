@@ -79,7 +79,7 @@ export const midiSlice = createSlice({
             builder,
             getMIDIAccess.fulfilled,
             (state: MIDISliceState, action: PayloadAction<MIDIController>) => {
-                return produce(state, (draft) => {
+                return produce(state, () => {
                     console.log("action in produce midi state", action.payload);
                     // Map interface is not serializable in redux toolkit for whatever reason
                     // but i can still put it into state
@@ -91,14 +91,9 @@ export const midiSlice = createSlice({
             }
         );
 
-        newReducer(
-            builder,
-            getMIDIAccess.pending,
-            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIController>) => {
-                //
-                console.log(new Date(), "requesting access");
-            })
-        );
+        newReducer(builder, getMIDIAccess.pending, (state: MIDISliceState) => {
+            state.online = false;
+        });
     },
 });
 
