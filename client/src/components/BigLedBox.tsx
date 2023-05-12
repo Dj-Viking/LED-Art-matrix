@@ -9,9 +9,8 @@ import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
-import { animVarCoeffChange, presetSwitch } from "../actions/led-actions";
+import { ledActions } from "../reducers/ledSlice";
 import PresetButtons from "./PresetButtons";
-import { setLedStyle } from "../actions/style-actions";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
 import { isLedWindow } from "../App";
@@ -40,13 +39,13 @@ const BigLedBox: React.FC = (): JSX.Element => {
             if (Auth.loggedIn()) {
                 const preset = (await getDefaultPreset()) as IDBPreset;
                 if (typeof preset?.presetName === "string") {
-                    dispatch(animVarCoeffChange(preset.animVarCoeff as string));
-                    dispatch(presetSwitch(preset.presetName));
+                    dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff as string));
+                    dispatch(ledActions.setPresetName(preset.presetName));
                     LedEngineRef.current = new LedStyleEngine(preset.presetName);
                     styleHTMLRef.current = LedEngineRef.current.createStyleSheet(
                         preset.animVarCoeff as string
                     );
-                    dispatch(setLedStyle(styleHTMLRef.current));
+                    dispatch(ledActions.setLedStyle(styleHTMLRef.current));
                 }
             }
         })();
@@ -56,7 +55,7 @@ const BigLedBox: React.FC = (): JSX.Element => {
     //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
     useEffect(() => {
         styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
-        dispatch(setLedStyle(styleHTMLRef.current));
+        dispatch(ledActions.setLedStyle(styleHTMLRef.current));
     }, [animVarCoeff, presetName, dispatch]);
 
     const leds: Array<{ ledNumber: number }> = [];
