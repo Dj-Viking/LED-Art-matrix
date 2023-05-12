@@ -2,7 +2,11 @@
 import React from "react";
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { ledActions } from "../store/ledSlice";
-import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
+import {
+    MIDIInputName,
+    XONEK2_MIDI_CHANNEL_TABLE,
+    touchOsc_MIDI_CHANNEL_TABLE,
+} from "../constants";
 import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
@@ -224,8 +228,34 @@ class MIDIController implements IMIDIController {
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
-    public static mapMIDIChannelToInterface(midi_event: MIDIMessageEvent): void {
-        // console.log("midi event reached edit mode", midi_event);
+    public static mapMIDIChannelToInterface(_midi_event: MIDIMessageEvent): void {
+        // console.log("midi event reached edit mode", _midi_event);
+    }
+
+    public static handleTouchOSCMessage(
+        midi_event: MIDIMessageEvent,
+        _dispatchcb: React.Dispatch<any>
+    ): void {
+        const midi_intensity = midi_event.data[2];
+        const midi_channel = midi_event.data[1];
+
+        _dispatchcb(midiActions.setChannel(midi_channel));
+        _dispatchcb(midiActions.setIntensity(midi_intensity));
+
+        // TODO render svgs for showing it's touch osc
+        // touch osc logo?
+
+        switch (touchOsc_MIDI_CHANNEL_TABLE[midi_channel]) {
+            case "fader_1":
+                _dispatchcb(
+                    ledActions.setAnimVarCoeff(
+                        (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
+                    )
+                );
+                break;
+            default:
+                break;
+        }
     }
 
     public static handleXONEK2MIDIMessage(
@@ -351,19 +381,6 @@ class MIDIController implements IMIDIController {
                 break;
             case "1_fader":
                 // debounce? not sure if this helps...
-                // (async () => {
-                //     return new Promise<any>((resolve) => {
-                //         setTimeout(() => {
-                //             resolve(
-                //                 _dispatchcb(
-                //                     ledActions.setAnimVarCoeff(
-                //                         (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
-                //                     )
-                //                 )
-                //             );
-                //         }, 10);
-                //     });
-                // })();
                 _dispatchcb(
                     ledActions.setAnimVarCoeff(
                         (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()

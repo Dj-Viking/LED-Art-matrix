@@ -19,15 +19,25 @@ export const buildMIDIAccessGetter = createAsyncThunk<
         if (isEditMode) {
             MIDIController.mapMIDIChannelToInterface(midi_event);
         }
-        if (midi_event.currentTarget.name.includes("XONE:K2")) {
-            MIDIController.handleXONEK2MIDIMessage(midi_event, _thunkAPI.dispatch, _buttonIds);
-        } else {
-            console.log(
-                "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
-                midi_event.currentTarget.name,
-                "\n",
-                midi_event
-            );
+
+        switch (true) {
+            case midi_event.currentTarget.name.includes("TouchOSC Bridge"):
+                MIDIController.handleTouchOSCMessage(midi_event, _thunkAPI.dispatch);
+                break;
+            case midi_event.currentTarget.name.includes("XONE"): // the browser appends some number and a dash for whatever reason
+                MIDIController.handleXONEK2MIDIMessage(midi_event, _thunkAPI.dispatch, _buttonIds);
+                break;
+            default: {
+                const channel = midi_event.data[1];
+                console.log(
+                    "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
+                    midi_event.currentTarget.name,
+                    "\n",
+                    midi_event,
+                    "\n channel",
+                    channel
+                );
+            }
         }
     };
     const onstatechangecb = (event: MIDIConnectionEvent): void => {
