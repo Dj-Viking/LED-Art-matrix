@@ -7,11 +7,11 @@ const initialState: IArtScrollerState = {
     gifs: [],
     listName: "",
     slider: {
-        animDuration: "",
-        circleWidth: "",
-        hPos: "",
-        vertPos: "",
-        invert: "",
+        animDuration: "30",
+        circleWidth: "30",
+        hPos: "33",
+        vertPos: "111",
+        invert: "0",
     },
 };
 
