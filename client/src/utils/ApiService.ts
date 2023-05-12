@@ -260,7 +260,8 @@ class ApiService implements IApiService {
                 body: JSON.stringify({ gif, listName }),
                 headers,
             });
-            console.log("res from create gif", res);
+            const data = await res.json();
+            console.log("res from create gif", data);
         } catch (error) {
             const err = error as Error;
             ApiService.handleError("createGifs", err);

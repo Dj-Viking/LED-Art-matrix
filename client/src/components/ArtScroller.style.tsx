@@ -428,30 +428,7 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
 
     React.useEffect(() => {
         (async () => {
-            if (props.auth.loggedIn()) {
-                const userGifs = (await API.getGifs(
-                    props.auth.getToken() as string,
-                    true
-                )) as IGif[];
-                dispatch(artScrollerActions.setGifs(userGifs));
-                dispatch(artScrollerActions.setListName(userGifs[0]?.listName || "test"));
-                dispatch(
-                    modalActions.setGifModalContext({
-                        listName: userGifs[0].listName,
-                        gif: userGifs[0],
-                    })
-                );
-            } else {
-                const freeGifs = (await API.getUnloggedInGifs()) as IGif[];
-                dispatch(artScrollerActions.setGifs(freeGifs));
-                dispatch(artScrollerActions.setListName("free"));
-                dispatch(
-                    modalActions.setGifModalContext({
-                        listName: "free",
-                        gif: freeGifs[0],
-                    })
-                );
-            }
+            dispatch(artScrollerActions.getGifsAsync());
         })();
     }, [dispatch, props.auth]);
 
