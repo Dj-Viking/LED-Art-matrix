@@ -14,7 +14,6 @@ export const buildGetGifsAction = createAsyncThunk<
     { state: ToolkitRootState; dispatch: ToolkitDispatch }
 >(moduleName + "/midiAccess", async (_params, _thunkAPI) => {
     let gifs: IGif[] = [];
-    console.log("what is logged in", _thunkAPI.getState().loggedInState.loggedIn);
     if (AuthService.loggedIn()) {
         const userGifs = (await ApiService.getGifs(
             AuthService.getToken() as string,
