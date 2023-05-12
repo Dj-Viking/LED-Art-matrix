@@ -7,6 +7,7 @@ import {
     MIDIInput,
     MIDIOutput,
     MIDIConnectionEvent,
+    MIDIController,
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
@@ -52,11 +53,19 @@ export const midiSlice = createSlice({
         newReducer(
             builder,
             getMIDIAccess.fulfilled,
-            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIAccessRecord>) => {
+            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIController>) => {
                 //
-                const { inputs, outputs, sysexEnabled, onstatechange } = action.payload;
+                console.log(new Date(), "made a midi controller in the thunk", action.payload);
+                draft.access = action.payload.access;
+            })
+        );
 
-                console.log("got some access stuff", inputs, outputs, sysexEnabled, onstatechange);
+        newReducer(
+            builder,
+            getMIDIAccess.pending,
+            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIController>) => {
+                //
+                console.log(new Date(), "requesting access");
             })
         );
     },

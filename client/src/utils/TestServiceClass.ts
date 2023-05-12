@@ -167,13 +167,6 @@ export class TestService implements ITestService {
                     return this;
                 };
 
-                this.getAccess = jest.fn().mockImplementation(function () {
-                    return {
-                        ...JSON.parse(JSON.stringify(MOCK_MIDI_ACCESS_RECORD)),
-                        onstatechange: onstatechangefn,
-                    };
-                    // return MOCK_MIDI_ACCESS_RECORD;
-                });
                 this.getInstance = jest.fn().mockImplementation(() => {
                     return this;
                 });

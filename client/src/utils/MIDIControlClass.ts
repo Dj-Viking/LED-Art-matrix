@@ -92,10 +92,6 @@ interface MIDIMessageEvent {
     type: "midimessage";
 }
 
-// type MIDIEventHandlers  =
-//     null | ((event: MIDIMessageEvent) => unknown) |
-//     null | ((event: MIDIConnectionEvent) => unknown) | undefined | unknown;
-
 type onstatechangeHandler = null | ((event: MIDIConnectionEvent) => unknown);
 interface MIDIInput {
     id: string;
@@ -140,28 +136,23 @@ interface IMIDIController {
     outputs?: Array<MIDIOutput>;
     online?: boolean;
     getInstance: () => this;
-    getAccess: () => MIDIAccessRecord;
 }
 
 class MIDIController implements IMIDIController {
-    private changeEvent: MIDIConnectionEvent = null as any;
-    public access = null as MIDIAccessRecord | null;
+    public access = {} as MIDIAccessRecord;
     public inputs = [] as Array<MIDIInput> | undefined;
     public inputs_size = 0;
     public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput> | undefined;
     public online = false;
 
-    public constructor(access?: MIDIAccessRecord) {
-        if (access) this.access = access;
-
-        if (!!this.access && !!this.access.inputs.size) {
-            this.online = true;
-            this.inputs_size = access!.inputs.size;
-            this.outputs_size = access!.outputs.size;
-            this._setInputs(access!.inputs);
-            this._setOutputs(access!.outputs);
-        }
+    public constructor(access: MIDIAccessRecord) {
+        this.access = access;
+        this.online = true;
+        this.inputs_size = access!.inputs.size;
+        this.outputs_size = access!.outputs.size;
+        this._setInputs(access!.inputs);
+        this._setOutputs(access!.outputs);
     }
 
     public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
@@ -173,10 +164,6 @@ class MIDIController implements IMIDIController {
 
     public getInstance(): this {
         return this;
-    }
-
-    public getAccess(): MIDIAccessRecord {
-        return this.access as MIDIAccessRecord;
     }
 
     public setOutputCbs(): this {
@@ -414,13 +401,12 @@ class MIDIController implements IMIDIController {
             (async () => {
                 if ("navigator" in window) {
                     console.log("access", _access);
-                    const access = new MIDIController(_access).getAccess();
-                    dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                    // dispatchcb(setAccess(new MIDIController(access).getInstance()));
                     // set size of inputs to re-render component at this moment of time
                     _setSize(_access.inputs.size);
                     //at this moment the promise resolves with access if size changed at some point
                     if (size > 0) {
-                        dispatchcb(setAccess(new MIDIController(access).getInstance()));
+                        // dispatchcb(setAccess(new MIDIController(access).getInstance()));
                         // define onstatechange callback to not be a function to execute when state changes later
                         _access.onstatechange = (_event: MIDIConnectionEvent): void => {
                             const onstatechangeAccess = new MIDIController(
