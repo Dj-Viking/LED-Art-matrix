@@ -10,8 +10,8 @@ import {
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
-import { getGlobalState } from "../reducers";
-import { setSaveModalContext, setSaveModalIsOpen } from "../actions/save-modal-actions";
+import { modalActions } from "../reducers/modalSlice";
+import { getGlobalState } from "../reducers/store";
 
 interface PresetLabelTitleProps {
     auth: typeof AuthService;
@@ -105,9 +105,9 @@ const SavePresetButton: React.FC<SavePresetButtonProps> = (props) => {
             disabled={!props.auth.loggedIn()} // enable if logged in
             onClick={(event: any) => {
                 event.preventDefault();
-                dispatch(setSaveModalIsOpen(true));
+                dispatch(modalActions.setSaveModalIsOpen(true));
                 dispatch(
-                    setSaveModalContext({
+                    modalActions.setSaveModalContext({
                         animVarCoeff,
                         presetName,
                     })
