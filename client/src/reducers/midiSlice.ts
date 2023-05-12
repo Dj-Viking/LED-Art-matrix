@@ -8,7 +8,7 @@ import {
     MIDIOutput,
     MIDIConnectionEvent,
 } from "../utils/MIDIControlClass";
-import { newReducer } from "../utils/addReducer";
+import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
 
 export type MIDISliceState = IAccessRecordState;
