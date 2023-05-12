@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
@@ -22,6 +20,7 @@ import "@testing-library/jest-dom/extend-expect";
 import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -34,12 +33,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 describe("Tests network error message", () => {
     const originalFetch = global.fetch;
@@ -60,7 +53,7 @@ describe("Tests network error message", () => {
         const history = createMemoryHistory();
 
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -134,7 +127,7 @@ describe("need to impl window.location.assign()", () => {
         const history = createMemoryHistory();
 
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -211,7 +204,7 @@ describe("error signup", () => {
         const history = createMemoryHistory();
 
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>

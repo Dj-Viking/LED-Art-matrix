@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen } from "@testing-library/react";
 import "@types/jest";
@@ -15,12 +13,7 @@ import { Router } from "react-router-dom";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -41,7 +34,7 @@ describe("test rendering the app and snapshot", () => {
     it("tests the app renders (simulating index.tsx I suppose)", async () => {
         const history = createMemoryHistory();
         render(
-            <Provider store={store}>
+            <Provider store={toolkitStore}>
                 <Router history={history}>
                     <App />
                 </Router>
@@ -73,7 +66,7 @@ describe("test rendering the app and snapshot", () => {
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>

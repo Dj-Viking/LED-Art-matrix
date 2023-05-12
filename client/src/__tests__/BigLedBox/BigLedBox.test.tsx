@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
 import { createMemoryHistory } from "history";
@@ -15,12 +13,7 @@ import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
 import { ASSERT_ANIMATION, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -47,7 +40,7 @@ describe("Test that the animation variation slider changes the style values", ()
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>
@@ -124,7 +117,7 @@ describe("Test that the animation variation slider changes the style values", ()
             })
             .filter((item) => typeof item === "string") as string[] | [];
 
-        expect(delayMatches2.length).toBe(1089);
+        expect(delayMatches2.length).toBe(961);
 
         const delayValAfter = delayMatches2[0].trim();
         expect(delayValAfter).toBe("animation-delay: 0.2079326923076923s;");

@@ -3,8 +3,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen, fireEvent } from "@testing-library/react";
 import user from "@testing-library/user-event";
@@ -22,12 +20,7 @@ import {
     MOCK_SIGN_TOKEN_ARGS,
 } from "../../utils/mocks";
 import { MIDIAccessRecord } from "../../utils/MIDIControlClass";
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
+import { toolkitStore } from "../../store/store";
 
 // stub the keydown event because jest test will not work properly with the react app containing window.eventListener("keyup") listener callbacks
 const map = {} as Record<any, any>;
@@ -86,7 +79,7 @@ describe("Adding a preset error", () => {
                 resolve(
                     render(
                         <>
-                            <Provider store={store}>
+                            <Provider store={toolkitStore}>
                                 <Router history={history}>
                                     <App />
                                 </Router>

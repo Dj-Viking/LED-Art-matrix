@@ -3,21 +3,17 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { render, cleanup, screen, fireEvent } from "@testing-library/react";
+import { render, cleanup, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
-
-const store = createStore(combinedReducers);
+import { toolkitStore } from "../../store/store";
 
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
@@ -65,7 +61,7 @@ describe("test art scroller turning on with gifs", () => {
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>
@@ -95,7 +91,7 @@ describe("test art scroller turning on with gifs", () => {
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>
@@ -223,7 +219,7 @@ describe("test art scroller turning on with gifs", () => {
 
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>

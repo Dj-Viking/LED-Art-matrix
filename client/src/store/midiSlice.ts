@@ -1,4 +1,3 @@
-import React, { Dispatch } from "react";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IAccessRecordState } from "../types";
@@ -76,7 +75,6 @@ export const midiSlice = createSlice({
                     state.inputs = action.payload.inputs;
                     state.outputs = action.payload.outputs;
                     state.online = true;
-                    console.log("state access", action.payload);
                 });
             }
         );

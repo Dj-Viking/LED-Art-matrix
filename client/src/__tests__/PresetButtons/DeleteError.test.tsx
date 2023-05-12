@@ -3,8 +3,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
@@ -21,6 +19,7 @@ import {
     MOCK_SIGN_TOKEN_ARGS,
 } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -32,8 +31,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
-
-const store = createStore(combinedReducers);
 
 describe("test deleting a preset from the user's preset button list", () => {
     it.only("enables a delete function to allow clicking a preset that deletes it, checks if user wants to delete the preset first", async () => {
@@ -90,7 +87,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         global.fetch = mockFetch;
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>

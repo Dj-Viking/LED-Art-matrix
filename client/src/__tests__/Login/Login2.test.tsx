@@ -2,8 +2,6 @@
 // @ts-ignore
 import React from "react";
 import App from "../../App";
-import { combinedReducers } from "../../store";
-import { createStore } from "redux";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
@@ -23,6 +21,7 @@ import { createMemoryHistory } from "history";
 // did not have this method implemented by default during the test
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { LOCATION_DISPLAY_ID } from "../../constants";
+import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -34,12 +33,6 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
-
-const store = createStore(
-    combinedReducers,
-    // @ts-expect-error this will exist in the browser
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
 
 let mockFetch: jest.Mock<any, any>;
 
@@ -79,7 +72,7 @@ describe("test signup functionality with token", () => {
         const history = createMemoryHistory();
         render(
             <>
-                <Provider store={store}>
+                <Provider store={toolkitStore}>
                     <Router history={history}>
                         <App />
                     </Router>
