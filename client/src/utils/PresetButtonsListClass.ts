@@ -2,7 +2,6 @@ import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { LedStyleEngine } from "./LedStyleEngineClass";
 import { ledActions } from "../reducers/ledSlice";
-import { artScrollerActions } from "../reducers/artScrollerSlice";
 
 export interface IDBPreset {
     _id: string;
@@ -44,12 +43,7 @@ class PresetButtonsList {
         animVarCoeff: string
     ): void {
         const styleHTML = new LedStyleEngine(preset).createStyleSheet(animVarCoeff);
-        dispatchcb(
-            artScrollerActions.setSlider({
-                control: "animDuration",
-                value: animVarCoeff,
-            })
-        );
+        dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
         dispatchcb(ledActions.setPresetName(preset));
         dispatchcb(ledActions.setLedStyle(styleHTML));
     }
