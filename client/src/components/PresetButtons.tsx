@@ -22,11 +22,11 @@ import {
     SavePresetButton,
     ToggleMIDIMapEditModeButton,
 } from "./PresetButton.style";
-import { setMIDIEditMode } from "../actions/midi-access-actions";
 import { ledActions } from "../reducers/ledSlice";
 import { getGlobalState } from "../reducers/store";
 import { modalActions } from "../reducers/modalSlice";
 import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
+import { midiActions } from "../reducers/midiSlice";
 
 export interface IPresetButtonsProps {
     children?: any;
@@ -44,7 +44,6 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalIsOpen,
         saveModalContext,
         presetButtons,
-        midiEditMode,
     } = getGlobalState(useSelector);
 
     async function handleSaveDefault(event: any): Promise<void> {
@@ -69,9 +68,10 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const toggleMIDIMapEditMode = React.useCallback(
         (event: any): void => {
             event.preventDefault();
-            dispatch(setMIDIEditMode(!midiEditMode));
+            dispatch(presetButtonsListActions.toggleMidiMode());
+            dispatch(midiActions.toggleMidiEditMode());
         },
-        [midiEditMode, dispatch]
+        [dispatch]
     );
 
     function handleOpenNewWindow(event: any): void {
@@ -89,7 +89,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         event.preventDefault();
         dispatch(ledActions.setPresetName(""));
         dispatch(ledActions.clearStyle());
-        dispatch(presetButtonsListActions.setAllInactive(presetButtons));
+        dispatch(presetButtonsListActions.setAllInactive());
     }
 
     const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {

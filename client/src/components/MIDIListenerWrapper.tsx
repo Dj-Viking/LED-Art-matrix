@@ -39,13 +39,17 @@ export interface MIDIListenerWrapperProps {
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
     const dispatch = useDispatch();
-    const accessState = useSelector((state: MyRootState) => state.accessRecordState);
-    const { usingFader, usingKnob, midiEditMode } = getGlobalState(useSelector);
-    // const presetButtons = useSelector(
-    //     (state: MyRootState) => state.presetButtonsListState?.presetButtons
-    // );
+    const {
+        access: accessState,
+        online: accessOnline,
+        inputs: accessInputs,
+        outputs: accessOutputs,
+        sysexEnabled,
+        midiEditMode,
+        usingFader,
+        usingKnob,
+    } = getGlobalState(useSelector);
 
-    // const [size, setSize] = useState<number>(0);
     const [option, setOption] = useState<string>("");
     const [channel, setChannel] = useState<number>(0);
 
@@ -63,8 +67,8 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     }, [dispatch]);
 
     useEffect(() => {
-        console.log("input length changed", accessState?.inputs?.length);
-    }, [accessState?.inputs?.length]);
+        console.log("input length changed", accessInputs?.length);
+    }, [accessInputs?.length]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
@@ -96,28 +100,36 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     height: isLedWindow() ? "0px" : "auto",
                 }}
             >
-                <TestMIDI testid="test-midi" midi_access={accessState} />
-                <MIDIWrapperHeader
-                    heading={accessState?.online ? "MIDI Devices" : "MIDI OFFLINE"}
+                <TestMIDI
+                    testid="test-midi"
+                    midi_access={{
+                        access: accessState,
+                        inputs: accessInputs,
+                        outputs: accessOutputs,
+                        midiEditMode,
+                        online: accessOnline,
+                        sysexEnabled,
+                        usingFader,
+                        usingKnob,
+                    }}
                 />
+                <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
-                        {/* <MIDISelect
+                        <MIDISelect
                             setOption={setOption}
                             option={option}
-                            midi_inputs={accessState?.inputs}
-                        /> */}
+                            midi_inputs={accessInputs}
+                        />
                     </MIDISelectContainer>
                     {option && (
                         <DeviceInterfaceContainer
-                            statename={
-                                getInput(accessState?.inputs, option)?.state || "disconnected"
-                            }
+                            statename={getInput(accessInputs, option)?.state || "disconnected"}
                             controllerName={getStrippedInputName(
-                                getInputName(accessState?.inputs, option)
+                                getInputName(accessInputs, option)
                             )}
                         >
-                            <InputName name={getInputName(accessState?.inputs, option)} />
+                            <InputName name={getInputName(accessInputs, option)} />
                             <DeviceSvgContainer>
                                 <ControlSvg
                                     usings={{ usingFader, usingKnob }}
@@ -129,7 +141,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                                 <ChannelNumber channel={channel || 0} />
                                 <MIDIChannelControl
                                     name={getControlName(
-                                        getInputName(accessState?.inputs, option),
+                                        getInputName(accessInputs, option),
                                         channel
                                     )}
                                 />

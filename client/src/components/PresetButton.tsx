@@ -70,7 +70,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                     if (!deleteModeActive) {
                         dispatch(
                             presetButtonsListActions.checkPresetButtonsActive({
-                                buttons: presetButtons,
                                 id,
                             })
                         );

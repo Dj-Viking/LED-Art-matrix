@@ -28,49 +28,49 @@ export const modalSlice = createSlice({
     initialState,
     reducers: {
         setGifModalIsOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
-                draft.gifsModalIsOpen = action.payload;
+            return produce(state, () => {
+                state.gifsModalIsOpen = action.payload;
             });
         },
         setGifModalContext: (
             state: CombinedModalState,
             action: PayloadAction<{ listName: string; gif: IGif }>
         ) => {
-            return produce(state, (draft) => {
-                draft.gifsModalContext.gif = action.payload.gif;
-                draft.gifsModalContext.listName = action.payload.listName;
+            return produce(state, () => {
+                state.gifsModalContext.gif = action.payload.gif;
+                state.gifsModalContext.listName = action.payload.listName;
             });
         },
         setDeleteModalOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
-                draft.deleteModalIsOpen = action.payload;
+            return produce(state, () => {
+                state.deleteModalIsOpen = action.payload;
             });
         },
         setDeleteModalContext: (
             state: CombinedModalState,
             action: PayloadAction<{ btnId: string; displayName: string }>
         ) => {
-            return produce(state, (draft) => {
-                draft.deleteModalContext.btnId = action.payload.btnId;
-                draft.deleteModalContext.displayName = action.payload.displayName;
+            return produce(state, () => {
+                state.deleteModalContext.btnId = action.payload.btnId;
+                state.deleteModalContext.displayName = action.payload.displayName;
             });
         },
         toggleDeleteMode: (state: CombinedModalState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
-                draft.deleteModeActive = action.payload;
+            return produce(state, () => {
+                state.deleteModeActive = action.payload;
             });
         },
         setSaveModalIsOpen: (state: CombinedModalState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
-                draft.saveModalIsOpen = action.payload;
+            return produce(state, () => {
+                state.saveModalIsOpen = action.payload;
             });
         },
         setSaveModalContext: (
             state: CombinedModalState,
             action: PayloadAction<ISaveModalState["saveModalContext"]>
         ) => {
-            return produce(state, (draft) => {
-                draft.saveModalContext = action.payload;
+            return produce(state, () => {
+                state.saveModalContext = action.payload;
             });
         },
     },

@@ -27,7 +27,6 @@ const accessRecordReducer = (
             sysexEnabled: false,
             onstatechange: (_event: MIDIConnectionEvent) => void 0,
         } as MIDIAccessRecord,
-        onstatechange: (_event: MIDIConnectionEvent) => void 0,
         sysexEnabled: false,
     },
     action: IAccessRecordAction

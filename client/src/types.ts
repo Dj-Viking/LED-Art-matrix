@@ -522,7 +522,6 @@ export type IAccessRecordState = {
         sysexEnabled: boolean;
         onstatechange: onstatechangeHandler | null;
     };
-    onstatechange: onstatechangeHandler | null;
     sysexEnabled: boolean;
 };
 

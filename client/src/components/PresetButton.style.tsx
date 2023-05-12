@@ -173,14 +173,14 @@ interface ToggleMIDIMapEditModeButtonProps {
 
 const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = (props) => {
     const toggleMIDIMapEditModeButton = useSpring(_toggleMIDIMapEditModeButton);
-    const { midiEditMode } = getGlobalState(useSelector);
+    const { midiMode } = getGlobalState(useSelector);
     return (
         <animated.button
             role="button"
-            data-testid="openNewWindow"
+            data-testid="toggleMidiMode"
             style={{
                 ...toggleMIDIMapEditModeButton,
-                backgroundColor: `${midiEditMode ? "purple" : "black"}`,
+                backgroundColor: `${midiMode ? "purple" : "black"}`,
             }}
             className="preset-button"
             onClick={props.toggleMIDIMapEditMode}

@@ -10,6 +10,12 @@ import { GlobalState, MyRootState } from "../types";
 import { useSelector } from "react-redux";
 
 export const toolkitStore = configureStore({
+    // silence the non-serializable errors because I just don't care about it.
+    middleware(getDefaultMiddleware) {
+        return getDefaultMiddleware({
+            serializableCheck: false,
+        });
+    },
     reducer: {
         midiState: midiSlice.reducer,
         loggedInState: loggedInSlice.reducer,

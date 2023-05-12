@@ -21,17 +21,17 @@ export const artScrollerSlice = createSlice({
     reducers: {
         setListName: (state: IArtScrollerState, action: PayloadAction<string>) => {
             return produce(state, (draft) => {
-                draft.listName = action.payload;
+                // draft.listName = action.payload;
             });
         },
         setGifs: (state: IArtScrollerState, action: PayloadAction<IGif[]>) => {
             return produce(state, (draft) => {
-                draft.gifs = action.payload;
+                // draft.gifs = action.payload;
             });
         },
         setFigureOn: (state: IArtScrollerState, action: PayloadAction<boolean>) => {
             return produce(state, (draft) => {
-                draft.figureOn = action.payload;
+                // draft.figureOn = action.payload;
             });
         },
         setSlider: (
@@ -39,8 +39,8 @@ export const artScrollerSlice = createSlice({
             action: PayloadAction<{ control: keyof IArtScrollerState["slider"]; value: string }>
         ) => {
             return produce(state, (draft) => {
-                const { control, value } = action.payload;
-                draft.slider[control] = value;
+                // const { control, value } = action.payload;
+                // draft.slider[control] = value;
             });
         },
     },

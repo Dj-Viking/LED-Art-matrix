@@ -23,28 +23,28 @@ export const formSlice = createSlice({
     initialState,
     reducers: {
         signupPasswordChange: (state: CombinedFormState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                draft.signupPassword = action.payload;
+            return produce(state, () => {
+                state.signupPassword = action.payload;
             });
         },
         signupEmailChange: (state: CombinedFormState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                draft.signupEmail = action.payload;
+            return produce(state, () => {
+                state.signupEmail = action.payload;
             });
         },
         signupUsernameChange: (state: CombinedFormState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                draft.signupUsername = action.payload;
+            return produce(state, () => {
+                state.signupUsername = action.payload;
             });
         },
         loginEmailChange: (state: CombinedFormState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                draft.loginUsernameOrEmail = action.payload;
+            return produce(state, () => {
+                state.loginUsernameOrEmail = action.payload;
             });
         },
         loginPasswordChange: (state: CombinedFormState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
-                draft.loginPassword = action.payload;
+            return produce(state, () => {
+                state.loginPassword = action.payload;
             });
         },
     },

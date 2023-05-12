@@ -15,78 +15,78 @@ export const presetButtonsListSlice = createSlice({
             state: IPresetButtonsListState,
             action: PayloadAction<IPresetButton[]>
         ) => {
-            return produce(state, (draft) => {
-                draft.presetButtons = action.payload;
+            return produce(state, () => {
+                state.presetButtons = action.payload;
             });
         },
         toggleMidiMode: (state: IPresetButtonsListState) => {
-            return produce(state, (draft) => {
-                draft.midiMode = !state.midiMode;
+            return produce(state, () => {
+                state.midiMode = !state.midiMode;
             });
         },
         setActiveButton: (state: IPresetButtonsListState, action: PayloadAction<string>) => {
-            return produce(state, (draft) => {
+            return produce(state, () => {
                 let newList = [];
 
                 const id = action.payload;
 
                 newList = state.presetButtons.map((btn) => {
-                    if (btn.id === id) {
-                        btn.isActive = true;
-                        return btn;
+                    const _btn = btn;
+                    if (_btn.id === id) {
+                        _btn.isActive = true;
+                        return _btn;
                     } else {
-                        btn.isActive = false;
-                        return btn;
+                        _btn.isActive = false;
+                        return _btn;
                     }
                 });
 
-                draft.presetButtons = newList;
+                state.presetButtons = newList;
             });
         },
         checkPresetButtonsActive: (
             state: IPresetButtonsListState,
-            action: PayloadAction<{ buttons: IPresetButton[]; id: string }>
+            action: PayloadAction<{ id: string }>
         ) => {
-            return produce(state, (draft) => {
+            return produce(state, () => {
                 let newList = [];
 
-                const { buttons, id } = action.payload;
+                const { id } = action.payload;
 
-                newList = buttons.map((btn) => {
+                newList = state.presetButtons.map((btn) => {
+                    const _btn = btn;
                     switch (true) {
-                        case btn.id === id && btn.isActive: {
-                            btn.isActive = true;
-                            return btn;
+                        case _btn.id === id && _btn.isActive: {
+                            _btn.isActive = true;
+                            return _btn;
                         }
-                        case btn.isActive && btn.id !== id: {
-                            btn.isActive = false;
-                            return btn;
+                        case _btn.isActive && _btn.id !== id: {
+                            _btn.isActive = false;
+                            return _btn;
                         }
-                        case !btn.isActive && btn.id === id: {
-                            btn.isActive = true;
-                            return btn;
+                        case !_btn.isActive && _btn.id === id: {
+                            _btn.isActive = true;
+                            return _btn;
                         }
                         default:
-                            return btn;
+                            return _btn;
                     }
                 });
 
-                draft.presetButtons = newList;
+                state.presetButtons = newList;
             });
         },
-        setAllInactive: (
-            state: IPresetButtonsListState,
-            action: PayloadAction<IPresetButton[]>
-        ) => {
-            return produce(state, (draft) => {
+        setAllInactive: (state: IPresetButtonsListState) => {
+            return produce(state, () => {
                 let newList = [];
 
-                newList = action.payload.map((btn) => {
-                    btn.isActive = false;
-                    return btn;
+                newList = state.presetButtons.map((btn) => {
+                    const _btn = btn;
+                    _btn.isActive = false;
+                    return _btn;
                 });
 
-                draft.presetButtons = newList;
+                state.presetButtons = newList;
             });
         },
         deletePreset: (

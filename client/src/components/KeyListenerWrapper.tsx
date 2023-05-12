@@ -17,7 +17,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             dispatch(ledActions.setPresetName(preset.presetName));
             dispatch(
                 presetButtonsListActions.checkPresetButtonsActive({
-                    buttons: presetButtons,
                     id: preset.id,
                 })
             );
@@ -28,7 +27,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 )
             );
         },
-        [dispatch, presetButtons]
+        [dispatch]
     );
 
     const handleKeyPress = useCallback(
@@ -41,7 +40,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             if (event.key === "c" || event.key === "C") {
                 dispatch(ledActions.setPresetName(""));
                 dispatch(ledActions.clearStyle());
-                dispatch(presetButtonsListActions.setAllInactive(presetButtons));
+                dispatch(presetButtonsListActions.setAllInactive());
             }
 
             if (event.key === "b" || event.key === "B") {

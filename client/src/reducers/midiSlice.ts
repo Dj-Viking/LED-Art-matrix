@@ -48,7 +48,6 @@ const initialState: MIDISliceState = {
         sysexEnabled: false,
         onstatechange: (_event: MIDIConnectionEvent) => void 0,
     } as MIDIAccessRecord,
-    onstatechange: (_event: MIDIConnectionEvent) => void 0,
     sysexEnabled: false,
 };
 
@@ -58,31 +57,38 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState,
     reducers: {
+        toggleMidiEditMode: (state: MIDISliceState) => {
+            return produce(state, () => {
+                state.midiEditMode = !state.midiEditMode;
+            });
+        },
         setOnline: (state: MIDISliceState, action: PayloadAction<boolean>) => {
-            return produce(state, (draft) => {
+            return produce(state, () => {
                 const onlineStatebefore = selectMIDIOnlineState(state);
                 console.log("online state before", onlineStatebefore);
-                draft.online = action.payload;
+                state.online = action.payload;
 
                 const onlineStateafter = selectMIDIOnlineState(state);
                 console.log("online state after", onlineStateafter);
             });
         },
     },
-    extraReducers(builder) {
+    extraReducers: (builder) => {
         // set midi state after access is given by the browser
         newReducer(
             builder,
             getMIDIAccess.fulfilled,
-            produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIController>) => {
-                //
-                console.log(new Date(), "made a midi controller in the thunk", action.payload);
-                const mc = action.payload;
-                draft.access = action.payload.access;
-                draft.inputs = action.payload.inputs;
-
-                draft.outputs = action.payload.outputs;
-            })
+            (state: MIDISliceState, action: PayloadAction<MIDIController>) => {
+                return produce(state, (draft) => {
+                    console.log("action in produce midi state", action.payload);
+                    // Map interface is not serializable in redux toolkit for whatever reason
+                    // but i can still put it into state
+                    state.access = action.payload.access;
+                    state.inputs = action.payload.inputs;
+                    state.online = true;
+                    console.log("state access");
+                });
+            }
         );
 
         newReducer(
