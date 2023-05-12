@@ -14,6 +14,27 @@ import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
 
 export type MIDISliceState = IAccessRecordState;
 
+// const midicb = function (midi_event: MIDIMessageEvent): void {
+//     console.log("midi edit mode", _midiEditMode);
+//     if (_midiEditMode) {
+//         return MIDIController.mapMIDIChannelToController(midi_event);
+//     }
+//     if (midi_event.currentTarget.name.includes("XONE:K2")) {
+//         return MIDIController.handleXONEK2MIDIMessage(
+//             midi_event,
+//             _setChannel,
+//             _setIntensity,
+//             dispatchcb,
+//             timeoutRef,
+//             _buttonIds
+//         );
+//     }
+// };
+
+const onstatechangecb = function (_connection_event: MIDIConnectionEvent): void {
+    // console.log("CONNECTION EVENT SET INPUT CB CALLBACK", _connection_event);
+};
+
 const initialState: MIDISliceState = {
     midiEditMode: false,
     usingFader: false,
@@ -56,7 +77,11 @@ export const midiSlice = createSlice({
             produce((draft: Draft<MIDISliceState>, action: PayloadAction<MIDIController>) => {
                 //
                 console.log(new Date(), "made a midi controller in the thunk", action.payload);
+                const mc = action.payload;
                 draft.access = action.payload.access;
+                draft.inputs = action.payload.inputs;
+
+                draft.outputs = action.payload.outputs;
             })
         );
 

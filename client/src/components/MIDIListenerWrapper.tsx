@@ -62,6 +62,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         dispatch(midiActions.getMIDIAccess());
     }, [dispatch]);
 
+    useEffect(() => {
+        console.log("input length changed", accessState?.inputs?.length);
+    }, [accessState?.inputs?.length]);
+
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
     }
