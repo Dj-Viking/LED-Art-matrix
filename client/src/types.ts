@@ -8,6 +8,8 @@ import {
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
+import { CombinedFormState } from "./reducers/formSlice";
+import { CombinedModalState } from "./reducers/modalSlice";
 
 type RecordKey = string | number | symbol;
 declare global {
@@ -353,15 +355,12 @@ export interface ILogoutAction {
 }
 
 export type GlobalState = IAccessRecordState &
-    INewGifsModalState &
-    ISaveModalState &
-    IDeleteModalState &
+    CombinedFormState &
+    CombinedModalState &
     ILedState &
     IPresetButtonsListState &
     ILoggedInState &
     ILedStyleTagState &
-    ILoginFormState &
-    ISignupFormState &
     IArtScrollerState;
 
 export interface MyRootState {

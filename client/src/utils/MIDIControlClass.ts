@@ -1,17 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
-import {
-    setAnimDuration,
-    setCircleWidth,
-    setHPos,
-    setInvert,
-    setVertPos,
-} from "../actions/art-scroller-actions";
-import { animVarCoeffChange } from "../actions/led-actions";
+import { artScrollerActions } from "../reducers/artScrollerSlice";
+import { ledActions } from "../reducers/ledSlice";
 import { determineDeviceControl, setAccess } from "../actions/midi-access-actions";
 import { MIDIInputName, XONEK2_MIDI_CHANNEL_TABLE } from "../constants";
-import { setActiveButton, setMidiMode } from "../actions/preset-button-actions";
 import { PresetButtonsList } from "./PresetButtonsListClass";
+import { presetButtonsListActions } from "../reducers/presetButtonListSlice";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -279,7 +273,8 @@ class MIDIController implements IMIDIController {
                     // and not what we are passing into this handler because passing state stuff in here
                     // while it is changing causes memory leaks
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[0]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[0]));
+
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "rainbowTest",
@@ -291,7 +286,8 @@ class MIDIController implements IMIDIController {
             case "1_b_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[1]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[1]));
+
                         PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
                     }
                 }, 20);
@@ -299,7 +295,8 @@ class MIDIController implements IMIDIController {
             case "1_c_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[2]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[2]));
+
                         PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
                     }
                 }, 20);
@@ -307,7 +304,8 @@ class MIDIController implements IMIDIController {
             case "1_d_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[3]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[3]));
+
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "spiral",
@@ -319,7 +317,8 @@ class MIDIController implements IMIDIController {
             case "2_e_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[4]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
+
                         PresetButtonsList.setStyle(
                             _dispatchcb,
                             "fourSpirals",
@@ -331,7 +330,8 @@ class MIDIController implements IMIDIController {
             case "2_f_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setActiveButton(_buttonIds[5]));
+                        _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[5]));
+
                         PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
                     }
                 }, 20);
@@ -339,41 +339,56 @@ class MIDIController implements IMIDIController {
             case "1_lower_button":
                 timeoutRef.current = setTimeout(() => {
                     if (midi_intensity === 127) {
-                        _dispatchcb(setMidiMode());
+                        _dispatchcb(presetButtonsListActions.toggleMidiMode());
                     }
                 }, 20);
                 break;
             case "1_upper_knob":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setCircleWidth(midi_intensity.toString()));
+                    artScrollerActions.setSlider({
+                        control: "circleWidth",
+                        value: midi_intensity.toString(),
+                    });
                 }, 20);
                 break;
             case "1_middle_knob":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setVertPos(midi_intensity.toString()));
+                    artScrollerActions.setSlider({
+                        control: "vertPos",
+                        value: midi_intensity.toString(),
+                    });
                 }, 20);
                 break;
             case "1_lower_knob":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setHPos(midi_intensity.toString()));
+                    artScrollerActions.setSlider({
+                        control: "hPos",
+                        value: midi_intensity.toString(),
+                    });
                 }, 20);
                 break;
             case "2_upper_knob":
                 timeoutRef.current = setTimeout(() => {
-                    _dispatchcb(setInvert(midi_intensity.toString()));
+                    artScrollerActions.setSlider({
+                        control: "invert",
+                        value: midi_intensity.toString(),
+                    });
                 }, 20);
                 break;
             case "2_middle_knob":
                 timeoutRef.current = setTimeout(() => {
                     _dispatchcb(
-                        setAnimDuration(midi_intensity <= 0 ? "1" : midi_intensity.toString())
+                        artScrollerActions.setSlider({
+                            control: "animDuration",
+                            value: midi_intensity <= 0 ? "1" : midi_intensity.toString(),
+                        })
                     );
                 }, 20);
                 break;
             case "1_fader":
                 timeoutRef.current = setTimeout(() => {
                     _dispatchcb(
-                        animVarCoeffChange(
+                        ledActions.setAnimVarCoeff(
                             (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
                         )
                     );
