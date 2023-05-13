@@ -179,7 +179,6 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
 
 const ArtScrollerGifListSelector: React.FC = () => {
     const { gifs, listName } = getGlobalState(useSelector);
-    console.log("gifs in the gif selector", gifs, "listname", listName);
     const dispatch = useDispatch();
     // useEffect(() => {
     //     //
