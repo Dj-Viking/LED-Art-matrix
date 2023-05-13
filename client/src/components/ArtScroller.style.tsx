@@ -179,10 +179,9 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
 
 const ArtScrollerGifListSelector: React.FC = () => {
     const { gifs, listName } = getGlobalState(useSelector);
+
     const dispatch = useDispatch();
-    // useEffect(() => {
-    //     //
-    // }, [gifs.length]);
+
     return (
         <div style={{ margin: "0 auto", width: "70%" }}>
             <select
