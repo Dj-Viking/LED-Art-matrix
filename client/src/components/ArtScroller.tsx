@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import * as S from "./ArtScroller.style";
-import AuthService from "../utils/AuthService";
 import { Modal } from "./Modal/ModalBase";
 import { useDispatch, useSelector } from "react-redux";
 import { SaveGifsModal } from "./Modal/SaveGifsModal";
@@ -31,9 +30,9 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     <S.ArtScrollerTitle />
                     {/* gif buttons */}
                     <S.ArtScrollerGifButtonContainer>
-                        <S.ArtScrollerStartButton auth={AuthService} />
+                        <S.ArtScrollerStartButton />
                         <S.ArtScrollerToggleButton />
-                        <S.ArtScrollerMakeNewGifCollection auth={AuthService} />
+                        <S.ArtScrollerMakeNewGifCollection />
                     </S.ArtScrollerGifButtonContainer>
                     {/* sliders */}
                     <S.ArtScrollerSliderContainer>

@@ -46,9 +46,7 @@ const ArtScrollerGifButtonContainer: React.FC = ({ children }) => {
     return <div className="gif-button-container">{children}</div>;
 };
 
-type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement> & {
-    auth: typeof AuthService;
-};
+type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement>;
 
 const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
@@ -124,11 +122,9 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     );
 };
 
-type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElement> & {
-    auth: typeof AuthService;
-};
+type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElement>;
 
-const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = (props) => {
+const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = () => {
     const dispatch = useDispatch();
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
     const { gifs, listName } = getGlobalState(useSelector);
@@ -149,12 +145,12 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
         <>
             <animated.button
                 role="button"
-                disabled={!props.auth.loggedIn()}
+                disabled={!AuthService.loggedIn()}
                 data-testid="save-gifs"
                 style={scrollerSaveGifsButtonSpring}
                 onClick={onClick}
                 type="button"
-                className={props.auth.loggedIn() ? "gif-save-button" : "gif-save-button-disabled"}
+                className={AuthService.loggedIn() ? "gif-save-button" : "gif-save-button-disabled"}
             >
                 Save Scroller Gifs
             </animated.button>
