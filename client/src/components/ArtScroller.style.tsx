@@ -8,11 +8,9 @@ import {
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { getGlobalState } from "../store/store";
-import API from "../utils/ApiService";
 
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { BKeySvg } from "../lib/keySvgs";
-import { IGif } from "../types";
 import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
@@ -52,34 +50,22 @@ type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement> & {
     auth: typeof AuthService;
 };
 
-const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) => {
+const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
     const dispatch = useDispatch();
     const { figureOn } = getGlobalState(useSelector);
 
     async function handleGetNew(): Promise<void> {
-        if (!figureOn) dispatch(artScrollerActions.setFigureOn(true));
+        if (!figureOn) {
+            dispatch(artScrollerActions.setFigureOn(true));
+        }
 
-        let gifs: IGif[] = [];
-
-        gifs = (await API.getUnloggedInGifs(true)) as IGif[];
-        dispatch(artScrollerActions.setGifs(gifs));
-        dispatch(artScrollerActions.setListName(gifs[0]?.listName));
+        dispatch(artScrollerActions.getGifsAsync({ getNew: true }));
     }
 
     async function handleClick(): Promise<void> {
-        if (figureOn === false) dispatch(artScrollerActions.setFigureOn(true));
-
-        let gifs = [] as IGif[] | IGif;
-
-        if (props.auth.loggedIn()) {
-            gifs = ((await API.getGifs(props.auth.getToken() as string, true)) as IGif[]) || [];
-            dispatch(artScrollerActions.setGifs(gifs));
-            dispatch(artScrollerActions.setListName(gifs[0]?.listName));
-        } else {
-            gifs = (await API.getUnloggedInGifs()) as IGif[];
-            dispatch(artScrollerActions.setGifs(gifs));
-            dispatch(artScrollerActions.setListName("free"));
+        if (figureOn === false) {
+            dispatch(artScrollerActions.setFigureOn(true));
         }
     }
     return (
@@ -89,7 +75,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
                 role="button"
                 data-testid="get-new"
                 className="scroller-fetch-button"
-                onClick={() => (async () => handleGetNew())()}
+                onClick={handleGetNew}
             >
                 Get New GIFs
             </animated.button>
@@ -98,7 +84,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = (props) =>
                 role="button"
                 data-testid="start-art"
                 className="scroller-fetch-button"
-                onClick={() => (async () => handleClick())()}
+                onClick={handleClick}
             >
                 Start Art Scroller!
             </animated.button>
@@ -145,18 +131,20 @@ type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElemen
 const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = (props) => {
     const dispatch = useDispatch();
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
-    const { gifs } = getGlobalState(useSelector);
+    const { gifs, listName } = getGlobalState(useSelector);
+
     const onClick = (event: any): void => {
         event.preventDefault();
 
         dispatch(modalActions.setGifModalIsOpen(true));
         dispatch(
             modalActions.setGifModalContext({
-                listName: gifs[0].listName,
-                gif: gifs[0],
+                listName: listName,
+                gif: gifs.filter((gif) => gif.listName === listName)[0],
             })
         );
     };
+
     return (
         <>
             <animated.button
@@ -191,7 +179,11 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
 
 const ArtScrollerGifListSelector: React.FC = () => {
     const { gifs, listName } = getGlobalState(useSelector);
+    console.log("gifs in the gif selector", gifs, "listname", listName);
     const dispatch = useDispatch();
+    // useEffect(() => {
+    //     //
+    // }, [gifs.length]);
     return (
         <div style={{ margin: "0 auto", width: "70%" }}>
             <select
@@ -416,21 +408,14 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
 };
 
 // TODO: adjust this so that different lists of gifs can be chosen
-const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
+const Gifs: React.FC = () => {
     const {
-        gifs,
         slider: { invert, animDuration, vertPos, circleWidth, hPos },
         listName,
+        gifs,
     } = getGlobalState(useSelector);
 
-    const dispatch = useDispatch();
     let _gifs = gifs?.filter((gif) => gif.listName === listName);
-
-    React.useEffect(() => {
-        (async () => {
-            dispatch(artScrollerActions.getGifsAsync());
-        })();
-    }, [dispatch, props.auth]);
 
     return (
         <>
@@ -469,7 +454,7 @@ const Gifs: React.FC<{ auth: typeof AuthService }> = (props) => {
     );
 };
 
-const ArtScrollerGifs: React.FC<{ auth: typeof AuthService }> = (props) => {
+const ArtScrollerGifs: React.FC = () => {
     const { figureOn } = getGlobalState(useSelector);
     return (
         <figure
@@ -480,7 +465,7 @@ const ArtScrollerGifs: React.FC<{ auth: typeof AuthService }> = (props) => {
             }}
             className="figure-transition-style"
         >
-            <Gifs auth={props.auth} />
+            <Gifs />
         </figure>
     );
 };

@@ -1,73 +1,58 @@
-import React from "react";
-import {
-    ArtScrollerBorderTop,
-    ArtScrollerCircleWidthLabel,
-    ArtScrollerCircleWidthSlider,
-    ArtScrollerGifButtonContainer,
-    ArtScrollerGifListSelector,
-    ArtScrollerGifs,
-    ArtScrollerHorizontalPositionSlider,
-    ArtScrollerHorizontalPositionSliderLabel,
-    ArtScrollerInvertColorsSlider,
-    ArtScrollerInvertColorsSliderLabel,
-    ArtScrollerMainContainer,
-    ArtScrollerMakeNewGifCollection,
-    ArtScrollerSection,
-    ArtScrollerSliderContainer,
-    ArtScrollerSpeedSlider,
-    ArtScrollerSpeedSliderLabel,
-    ArtScrollerStartButton,
-    ArtScrollerTitle,
-    ArtScrollerToggleButton,
-    ArtScrollerVerticalPositionSlider,
-    ArtScrollerVerticalPositionSliderLabel,
-} from "./ArtScroller.style";
+import React, { useEffect } from "react";
+import * as S from "./ArtScroller.style";
 import AuthService from "../utils/AuthService";
 import { Modal } from "./Modal/ModalBase";
 import { useDispatch, useSelector } from "react-redux";
 import { SaveGifsModal } from "./Modal/SaveGifsModal";
 import { modalActions } from "../store/modalSlice";
 import { getGlobalState } from "../store/store";
+import { artScrollerActions } from "../store/artScrollerSlice";
 
 const ArtScroller: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
+
     const { gifsModalIsOpen, gifsModalContext } = getGlobalState(useSelector);
+
+    useEffect(() => {
+        dispatch(artScrollerActions.getGifsAsync({ getNew: false }));
+    }, [dispatch]);
+
     return (
         <>
-            <ArtScrollerMainContainer>
+            <S.ArtScrollerMainContainer>
                 <Modal isOpen={gifsModalIsOpen || false}>
                     <SaveGifsModal
                         onClose={() => dispatch(modalActions.setGifModalIsOpen(false))}
                         context={gifsModalContext || {}}
                     />
                 </Modal>
-                <ArtScrollerSection>
-                    <ArtScrollerBorderTop />
-                    <ArtScrollerTitle />
+                <S.ArtScrollerSection>
+                    <S.ArtScrollerBorderTop />
+                    <S.ArtScrollerTitle />
                     {/* gif buttons */}
-                    <ArtScrollerGifButtonContainer>
-                        <ArtScrollerStartButton auth={AuthService} />
-                        <ArtScrollerToggleButton />
-                        <ArtScrollerMakeNewGifCollection auth={AuthService} />
-                    </ArtScrollerGifButtonContainer>
+                    <S.ArtScrollerGifButtonContainer>
+                        <S.ArtScrollerStartButton auth={AuthService} />
+                        <S.ArtScrollerToggleButton />
+                        <S.ArtScrollerMakeNewGifCollection auth={AuthService} />
+                    </S.ArtScrollerGifButtonContainer>
                     {/* sliders */}
-                    <ArtScrollerSliderContainer>
-                        <ArtScrollerGifListSelector />
-                        <ArtScrollerCircleWidthLabel />
-                        <ArtScrollerCircleWidthSlider />
-                        <ArtScrollerVerticalPositionSliderLabel />
-                        <ArtScrollerVerticalPositionSlider />
-                        <ArtScrollerHorizontalPositionSliderLabel />
-                        <ArtScrollerHorizontalPositionSlider />
-                        <ArtScrollerInvertColorsSliderLabel />
-                        <ArtScrollerInvertColorsSlider />
-                        <ArtScrollerSpeedSliderLabel />
-                        <ArtScrollerSpeedSlider />
-                    </ArtScrollerSliderContainer>
+                    <S.ArtScrollerSliderContainer>
+                        <S.ArtScrollerGifListSelector />
+                        <S.ArtScrollerCircleWidthLabel />
+                        <S.ArtScrollerCircleWidthSlider />
+                        <S.ArtScrollerVerticalPositionSliderLabel />
+                        <S.ArtScrollerVerticalPositionSlider />
+                        <S.ArtScrollerHorizontalPositionSliderLabel />
+                        <S.ArtScrollerHorizontalPositionSlider />
+                        <S.ArtScrollerInvertColorsSliderLabel />
+                        <S.ArtScrollerInvertColorsSlider />
+                        <S.ArtScrollerSpeedSliderLabel />
+                        <S.ArtScrollerSpeedSlider />
+                    </S.ArtScrollerSliderContainer>
                     {/* gifs */}
-                    <ArtScrollerGifs auth={AuthService} />
-                </ArtScrollerSection>
-            </ArtScrollerMainContainer>
+                    <S.ArtScrollerGifs />
+                </S.ArtScrollerSection>
+            </S.ArtScrollerMainContainer>
         </>
     );
 };

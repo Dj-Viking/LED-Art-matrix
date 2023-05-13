@@ -250,7 +250,11 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async createGifs(token: string, gif: IGif, listName: string): Promise<void> {
+    public static async createGifs(
+        token: string,
+        gif: IGif,
+        listName: string
+    ): Promise<IGif[] | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         headers = setAuthHeader(headers, token);
@@ -260,8 +264,8 @@ class ApiService implements IApiService {
                 body: JSON.stringify({ gif, listName }),
                 headers,
             });
-            const data = await res.json();
-            console.log("res from create gif", data);
+            const data = (await res.json()) as { gifs: IGif[] };
+            return data.gifs;
         } catch (error) {
             const err = error as Error;
             ApiService.handleError("createGifs", err);

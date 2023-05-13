@@ -1,7 +1,12 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IArtScrollerState, IGif } from "../types";
 import { produce } from "immer";
-import { buildGetGifsAction } from "../actions/gifActionCreators";
+import {
+    GetGifsResult,
+    SaveGifsResult,
+    buildCreateGifsAction,
+    buildGetGifsAction,
+} from "../actions/gifActionCreators";
 import { newReducer } from "../utils/newReducer";
 
 const initialState: IArtScrollerState = {
@@ -16,7 +21,11 @@ const initialState: IArtScrollerState = {
         invert: "0",
     },
 };
+
 const getGifsAsync = buildGetGifsAction;
+
+const createGifCollectionAsync = buildCreateGifsAction;
+
 export const artScrollerSlice = createSlice({
     name: "artScrollerSlice",
     initialState,
@@ -50,8 +59,18 @@ export const artScrollerSlice = createSlice({
         newReducer(
             builder,
             getGifsAsync.fulfilled,
-            (_state: IArtScrollerState, _action: PayloadAction<IGif>) => {
-                console.log("fulfilled gifs!", _action.payload);
+            (state: IArtScrollerState, action: PayloadAction<GetGifsResult>) => {
+                state.gifs = action.payload.gifs;
+                state.listName = action.payload.newListName;
+            }
+        );
+
+        newReducer(
+            builder,
+            createGifCollectionAsync.fulfilled,
+            (state: IArtScrollerState, action: PayloadAction<SaveGifsResult>) => {
+                state.gifs = action.payload.gifs;
+                state.listName = action.payload.newListName;
             }
         );
     },
@@ -60,4 +79,5 @@ export const artScrollerSlice = createSlice({
 export const artScrollerActions = {
     ...artScrollerSlice.actions,
     getGifsAsync,
+    createGifCollectionAsync,
 };

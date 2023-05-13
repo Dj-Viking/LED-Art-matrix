@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import API from "../../utils/ApiService";
-import AuthService from "../../utils/AuthService";
 import { useDispatch, useSelector } from "react-redux";
 import { INewGifsModalState } from "../../types";
 import styled from "styled-components";
-import { modalActions } from "../../store/modalSlice";
 import { getGlobalState } from "../../store/store";
+import { artScrollerActions } from "../../store/artScrollerSlice";
 
 const StyledModalCloseButton = styled.button`
     & {
@@ -180,19 +178,17 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
         async (event: any): Promise<void> => {
             event.preventDefault();
             try {
-                await API.createGifs(AuthService.getToken() as string, gif, input);
-
-                dispatch(modalActions.setGifModalIsOpen(false));
-                dispatch(modalActions.setGifModalContext({ listName: listName, gif: {} as any }));
+                dispatch(artScrollerActions.createGifCollectionAsync({ gif, listName: input }));
 
                 return void 0;
             } catch (error) {
+                // TODO: create global error handler!
                 const err = error as Error;
                 setError(`Oops! ${err.message}`);
                 return void 0;
             }
         },
-        [dispatch, gif, input, listName]
+        [dispatch, gif, input]
     );
 
     return (
