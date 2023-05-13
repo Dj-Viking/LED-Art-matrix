@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { MyRootState } from "../types";
 import he from "he";
 import { ToolkitRootState } from "../store/store";
 const LedStyleTag: React.FC = () => {
