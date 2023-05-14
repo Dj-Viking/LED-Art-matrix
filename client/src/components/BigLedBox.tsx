@@ -1,17 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-empty */
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "./aux-styles/ledLayoutStyle.css";
 import { ledRowStyle } from "./ledStyles";
 import ArtScroller from "./ArtScroller";
-import Auth from "../utils/AuthService";
-import API from "../utils/ApiService";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import LedStyleTag from "./LedStyleTag";
 import { ledActions } from "../store/ledSlice";
 import PresetButtons from "./PresetButtons";
-import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { keyGen } from "../utils/keyGen";
 import { isLedWindow } from "../App";
 import { ToolkitRootState } from "../store/store";
@@ -19,55 +16,13 @@ import { ToolkitRootState } from "../store/store";
 const BigLedBox: React.FC = (): JSX.Element => {
     const { presetName, animVarCoeff } = useSelector((state: ToolkitRootState) => state.ledState);
     const dispatch = useDispatch();
-    const LedEngineRef = useRef<LedStyleEngine>(new LedStyleEngine("rainbowTestAllAnim"));
     const styleHTMLRef = useRef<string>("");
-
-    // @ts-ignore
-    const getDefaultPreset = useCallback(async () => {
-        try {
-            const preset = (await API.getDefaultPreset(Auth.getToken() as string)) as IDBPreset;
-            return preset;
-            // console.error(`preset returned was not a string! it's value was ${preset}`);
-        } catch (error) {}
-    }, []);
-
-    // function that sets the starting preset name of the user logging on
-    // conditionally render whether they are logged on => load with that default preset
-    // : else load the blank preset name
-    useEffect(() => {
-        (async (): Promise<void> => {
-            if (Auth.loggedIn()) {
-                const preset = (await getDefaultPreset()) as IDBPreset;
-                if (typeof preset?.presetName === "string") {
-                    dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff as string));
-                    dispatch(ledActions.setPresetName(preset.presetName));
-                    LedEngineRef.current = new LedStyleEngine(preset.presetName);
-                    styleHTMLRef.current = LedEngineRef.current.createStyleSheet(
-                        preset.animVarCoeff as string
-                    );
-                    dispatch(ledActions.setLedStyle(styleHTMLRef.current));
-                }
-            }
-        })();
-        return () => {
-            // do nothing on unmount
-        };
-    }, [getDefaultPreset, dispatch]);
 
     //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
     useEffect(() => {
         (async () => {
-            return new Promise<any>((resolve) => {
-                const cb = (): void => {
-                    styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(
-                        animVarCoeff
-                    );
-                    dispatch(ledActions.setLedStyle(styleHTMLRef.current));
-                };
-                setTimeout(() => {
-                    resolve(cb());
-                }, 10);
-            });
+            styleHTMLRef.current = new LedStyleEngine(presetName).createStyleSheet(animVarCoeff);
+            dispatch(ledActions.setLedStyle(styleHTMLRef.current));
         })();
     }, [animVarCoeff, presetName, dispatch]);
 

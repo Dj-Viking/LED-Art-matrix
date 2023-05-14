@@ -64,22 +64,18 @@ export const midiSlice = createSlice({
     },
     extraReducers: (builder) => {
         // set midi state after access is given by the browser
-        newReducer(
-            builder,
-            getMIDIAccess.fulfilled,
-            (state: MIDISliceState, action: PayloadAction<MIDIController>) => {
-                return produce(state, () => {
-                    // Map interface is not serializable in redux toolkit for whatever reason
-                    // but i can still put it into state
-                    state.access = action.payload.access;
-                    state.inputs = action.payload.inputs;
-                    state.outputs = action.payload.outputs;
-                    state.online = true;
-                });
-            }
-        );
+        newReducer(builder, getMIDIAccess.fulfilled, (state, action) => {
+            return produce(state, () => {
+                // Map interface is not serializable in redux toolkit for whatever reason
+                // but i can still put it into state
+                state.access = action.payload.access;
+                state.inputs = action.payload.inputs;
+                state.outputs = action.payload.outputs;
+                state.online = true;
+            });
+        });
 
-        newReducer(builder, getMIDIAccess.pending, (state: MIDISliceState) => {
+        newReducer(builder, getMIDIAccess.pending, (state) => {
             state.online = false;
         });
     },

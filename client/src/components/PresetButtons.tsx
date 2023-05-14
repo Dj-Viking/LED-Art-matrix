@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PresetButton from "./PresetButton";
 import Auth from "../utils/AuthService";
@@ -7,10 +7,9 @@ import API from "../utils/ApiService";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
-import { keyGen } from "../utils/keyGen";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
 import {
     ClearButton,
@@ -92,61 +91,12 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         dispatch(presetButtonsListActions.setAllInactive());
     }
 
-    const getPresets = useCallback(async (): Promise<IDBPreset[] | void> => {
-        try {
-            const presets = await API.getUserPresets(Auth.getToken() as string);
-            if (Array.isArray(presets)) return presets;
-        } catch (error) {}
-    }, []);
-
-    const getDefaultForActiveStatus = useCallback(async (): Promise<IDBPreset | void> => {
-        const preset = (await API.getDefaultPreset(Auth.getToken() as string)) as IDBPreset;
-        return preset;
-    }, []);
-
     useEffect(() => {
-        if (presetButtons?.length === 0) {
-            if (!Auth.loggedIn()) {
-                const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
-
-                const tempPresets = presetNames.map((name) => {
-                    return {
-                        _id: keyGen(),
-                        presetName: name,
-                        displayName: name,
-                        animVarCoeff: "64",
-                    } as IDBPreset;
-                });
-
-                const tempButtons = new PresetButtonsList((event: any) => {
-                    event.preventDefault();
-                }, tempPresets).getList() as IPresetButton[];
-
-                dispatch(presetButtonsListActions.setPresetButtonsList(tempButtons));
-            } else {
-                (async (): Promise<void> => {
-                    const presets = (await getPresets()) as IDBPreset[];
-                    const activePreset = (await getDefaultForActiveStatus()) as IDBPreset;
-
-                    const buttons = new PresetButtonsList(
-                        (event: any) => {
-                            //click handler
-                            event.preventDefault();
-                        },
-                        presets,
-                        //default active on page load if logged in
-                        activePreset && activePreset._id ? activePreset._id : void 0
-                    ).getList() as IPresetButton[];
-
-                    dispatch(presetButtonsListActions.setPresetButtonsList(buttons));
-                })();
-            }
-        }
-
+        dispatch(presetButtonsListActions.getPresetsAsync());
         return () => {
             /*do nothing on unmount */
         };
-    }, [dispatch, getPresets, getDefaultForActiveStatus, presetButtons?.length]);
+    }, [dispatch]);
 
     return (
         <>
@@ -175,7 +125,6 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     }}
                 />
             </Modal>
-
             <PresetLabelTitle auth={Auth} />
 
             <PresetControlButtonsContainer>
@@ -189,10 +138,9 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
                 {/* preset style toggle buttons */}
-                {Array.isArray(presetButtons) &&
-                    presetButtons.map((button) => {
-                        return <PresetButton key={button.key} button={{ ...button }} />;
-                    })}
+                {presetButtons?.map?.((button) => {
+                    return <PresetButton key={button.id} button={{ ...button }} />;
+                })}
 
                 <MIDIListenerWrapper />
 

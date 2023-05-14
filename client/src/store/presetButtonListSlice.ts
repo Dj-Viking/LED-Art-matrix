@@ -1,11 +1,19 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IPresetButton, IPresetButtonsListState } from "../types";
 import { produce } from "immer";
+import {
+    buildGetDefaultPresetAction,
+    buildGetPresetButtonsAction,
+} from "./actions/presetButtonsActionCreators";
+import { newReducer } from "../utils/newReducer";
 
 const initialState: IPresetButtonsListState = {
     midiMode: false,
     presetButtons: [],
 };
+
+const getDefaultPresetAsync = buildGetDefaultPresetAction;
+const getPresetsAsync = buildGetPresetButtonsAction;
 
 export const presetButtonsListSlice = createSlice({
     name: "presetButtonsListSlice",
@@ -29,6 +37,7 @@ export const presetButtonsListSlice = createSlice({
                 let newList = [];
 
                 const id = action.payload;
+                console.log("calling this", id);
 
                 newList = state.presetButtons.map((btn) => {
                     const _btn = btn;
@@ -101,8 +110,15 @@ export const presetButtonsListSlice = createSlice({
             });
         },
     },
+    extraReducers: (builder) => {
+        newReducer(builder, getPresetsAsync.fulfilled, (state, action) => {
+            state.presetButtons = action.payload.presetButtons;
+        });
+    },
 });
 
 export const presetButtonsListActions = {
     ...presetButtonsListSlice.actions,
+    getDefaultPresetAsync,
+    getPresetsAsync,
 };

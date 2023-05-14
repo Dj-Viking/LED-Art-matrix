@@ -34,6 +34,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
         clickHandler,
         keyBinding,
     } = button;
+
     const dispatch = useDispatch();
     const { deleteModeActive, midiMode } = getGlobalState(useSelector);
 

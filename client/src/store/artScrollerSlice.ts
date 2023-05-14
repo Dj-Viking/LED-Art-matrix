@@ -56,23 +56,15 @@ export const artScrollerSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        newReducer(
-            builder,
-            getGifsAsync.fulfilled,
-            (state: IArtScrollerState, action: PayloadAction<GetGifsResult>) => {
-                state.gifs = action.payload.gifs;
-                state.listName = action.payload.newListName;
-            }
-        );
+        newReducer(builder, getGifsAsync.fulfilled, (state, action) => {
+            state.gifs = action.payload.gifs;
+            state.listName = action.payload.newListName;
+        });
 
-        newReducer(
-            builder,
-            createGifCollectionAsync.fulfilled,
-            (state: IArtScrollerState, action: PayloadAction<SaveGifsResult>) => {
-                state.gifs = action.payload.gifs;
-                state.listName = action.payload.newListName;
-            }
-        );
+        newReducer(builder, createGifCollectionAsync.fulfilled, (state, action) => {
+            state.gifs = action.payload.gifs;
+            state.listName = action.payload.newListName;
+        });
     },
 });
 

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import API from "../utils/ApiService";
-import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { Spinner } from "../components/Spinner";
 import { getGlobalState } from "../store/store";
 import { loggedInActions } from "../store/loggedInSlice";
@@ -39,7 +38,6 @@ const Login: React.FC = (): JSX.Element => {
                 if (!(booleanOrError instanceof Error)) {
                     setLoading(false);
                     setError("");
-                    dispatch(presetButtonsListActions.setPresetButtonsList([]));
                     dispatch(loggedInActions.login());
                     history.push("/");
                 }
