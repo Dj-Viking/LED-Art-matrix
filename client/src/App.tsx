@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import KeyListenerWrapper from "./components/KeyListenerWrapper";
 import { LedWindow } from "./pages/LedWindow";
 import { toolkitStore } from "./store/store";
+import { Test } from "./pages/test";
 
 // const store = createStore(
 //     combinedReducers,
@@ -49,6 +50,7 @@ const App: React.FC = (): JSX.Element => {
                             <Route exact path="/login" component={Login} />
                             <Route exact path="/signup" component={Signup} />
                             <Route exact path="/forgotPassword" component={ForgotPassword} />
+                            <Route exact path="/test" component={Test} />
                             <Route exact path="/ledWindow" component={LedWindow} />
                             <Route
                                 exact

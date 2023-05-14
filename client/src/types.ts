@@ -28,6 +28,9 @@ declare global {
     interface Navigator {
         requestMIDIAccess(): Promise<MIDIAccessRecord>;
     }
+    interface EventTarget {
+        value: any;
+    }
 }
 
 export type MyJwtData = IJwtData;
