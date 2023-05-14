@@ -1,6 +1,6 @@
 import React from "react";
-import { LedSVG } from "../lib/led";
+import { LedSVGGrid } from "../lib/led";
 
 export const Test: React.FC = () => {
-    return <LedSVG />;
+    return <LedSVGGrid />;
 };

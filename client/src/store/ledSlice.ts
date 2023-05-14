@@ -3,10 +3,8 @@ import { ILedState } from "../types";
 import { produce } from "immer";
 
 const initialState: ILedState = {
-    alpha: "",
-    animVarCoeff: "",
+    animVarCoeff: "1",
     animationDurationState: "",
-    isInverted: false,
     presetName: "",
     html: "",
 };

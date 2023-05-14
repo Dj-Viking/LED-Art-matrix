@@ -46,10 +46,8 @@ export interface IJwtData extends jwt.JwtPayload {
     exp?: number;
 }
 export interface ILedState {
-    alpha: string;
     presetName: string;
     animationDurationState: string;
-    isInverted: boolean;
     animVarCoeff: string;
     html: string;
 }
