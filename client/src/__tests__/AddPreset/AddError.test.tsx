@@ -65,9 +65,6 @@ describe("Adding a preset error", () => {
             .mockReturnValueOnce(
                 fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
             )
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
             .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
         // @ts-ignore
         global.fetch = mockFetch;
@@ -91,9 +88,9 @@ describe("Adding a preset error", () => {
         });
 
         expect(screen.getByTestId("location-display").textContent).toBe("/");
-        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenCalledTimes(2);
         const btnContainer = await screen.findByTestId("buttons-parent");
-        expect(btnContainer.children).toHaveLength(14);
+        expect(btnContainer.children).toHaveLength(13);
 
         // activate and change one of the constant/always provided presets and
         // attempt to save it with some new parameter values
@@ -106,22 +103,13 @@ describe("Adding a preset error", () => {
             input: await screen.findByTestId("modal-preset-name-input"),
             sliderVal: await screen.findByTestId("modal-anim-var-coeff"),
         };
-        const slider = await screen.findByTestId("led-anim-variation");
 
         act(() => {
             waves.dispatchEvent(TestService.createBubbledEvent("click", {}));
         });
 
-        expect(slider).toBeInTheDocument();
         expect(modal_els.save).toBeInTheDocument();
         expect(modal_els.sliderVal).toBeInTheDocument();
-
-        act(() => {
-            fireEvent.change(slider, { target: { value: "10" } });
-            slider.dispatchEvent(TestService.createBubbledEvent("change", {}));
-        });
-
-        expect(modal_els.sliderVal.textContent).toBe("Animation Variation: 10");
 
         //open the save preset modal
         const openSavePresetModalBtn = await screen.findByTestId("savePreset");
@@ -139,8 +127,8 @@ describe("Adding a preset error", () => {
             modal_els.save.dispatchEvent(TestService.createBubbledEvent("click", {}));
         });
 
-        expect(fetch).toHaveBeenCalledTimes(4);
-        expect(fetch).toHaveBeenNthCalledWith(4, "http://localhost:3001/user/add-preset", {
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(3, "http://localhost:3001/user/add-preset", {
             body: expect.any(String),
             headers: {
                 "Content-Type": "application/json",

@@ -9,6 +9,16 @@ import { presetButtonsListSlice } from "./presetButtonListSlice";
 import { GlobalState, MyRootState } from "../types";
 import { useSelector } from "react-redux";
 
+export const toolkitReducer = {
+    midiState: midiSlice.reducer,
+    loggedInState: loggedInSlice.reducer,
+    ledState: ledSlice.reducer,
+    modalState: modalSlice.reducer,
+    formState: formSlice.reducer,
+    artScrollerState: artScrollerSlice.reducer,
+    presetButtonsListState: presetButtonsListSlice.reducer,
+};
+
 export const toolkitStore = configureStore({
     // silence the non-serializable errors because I just don't care about it.
     middleware(getDefaultMiddleware) {
@@ -16,15 +26,7 @@ export const toolkitStore = configureStore({
             serializableCheck: false,
         });
     },
-    reducer: {
-        midiState: midiSlice.reducer,
-        loggedInState: loggedInSlice.reducer,
-        ledState: ledSlice.reducer,
-        modalState: modalSlice.reducer,
-        formState: formSlice.reducer,
-        artScrollerState: artScrollerSlice.reducer,
-        presetButtonsListState: presetButtonsListSlice.reducer,
-    },
+    reducer: toolkitReducer,
 });
 
 export function getGlobalState(selectorFn: typeof useSelector): GlobalState {

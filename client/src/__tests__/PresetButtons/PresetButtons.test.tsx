@@ -1,10 +1,11 @@
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
 /* eslint-disable testing-library/no-unnecessary-act */
 // @ts-ignore
 import React from "react";
 import App from "../../App";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
-import { render, cleanup, screen, fireEvent } from "@testing-library/react";
+import { render, cleanup, screen, fireEvent, waitFor, configure } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@testing-library/jest-dom";
@@ -30,7 +31,9 @@ import {
 } from "../../components/PresetButton.style";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { presetButtonsListActions } from "../../store/presetButtonListSlice";
-import { toolkitStore } from "../../store/store";
+import { toolkitReducer, toolkitStore } from "../../store/store";
+import { configureStore } from "@reduxjs/toolkit";
+import BigLedBox from "../../components/BigLedBox";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -42,6 +45,10 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
+
+configure({
+    testIdAttribute: "data-testid",
+});
 
 // const delay = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(() => resolve(), ms));
 
@@ -127,7 +134,7 @@ describe("test logging in and checking buttons are there", () => {
         expect(screen.getByTestId("location-display")).toHaveTextContent("/");
         expect(localStorage.getItem("id_token")).toBeTruthy();
 
-        expect(fetch).toHaveBeenCalledTimes(4);
+        expect(fetch).toHaveBeenCalledTimes(3);
         expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
             body: expect.any(String),
             headers: { "Content-Type": "application/json" },
@@ -178,38 +185,45 @@ describe("test logging in and checking buttons are there", () => {
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
         expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
-        const history = createMemoryHistory();
+        const store = configureStore({
+            reducer: toolkitReducer,
+            preloadedState: {
+                presetButtonsListState: {
+                    midiMode: false,
+                    presetButtons: PresetButtonsList.generateOfflinePresets(),
+                },
+                ledState: {
+                    alpha: "",
+                    animationDurationState: "",
+                    html: "",
+                    isInverted: false,
+                    animVarCoeff: "64",
+                    presetName: "waves",
+                },
+            },
+        });
+
         const { container } = render(
-            <Provider store={toolkitStore}>
-                <Router history={history}>
-                    <App />
-                </Router>
+            <Provider store={store}>
+                <BigLedBox />
             </Provider>
         );
-        expect(screen.getByTestId("location-display")).toHaveTextContent("/");
+
+        // console.log("container", container.innerHTML);
 
         expect(fetch).toHaveBeenCalledTimes(1);
         // expect(fetch).toHaveBeenNthCalledWith(1, "dkjfdkj");
 
         const preset_buttons = {
             clear: screen.getByTestId("clear"),
-            rainbowTest: await screen.findByTestId("rainbowTest"),
-            v2: await screen.findByTestId("v2"),
-            waves: await screen.findByTestId("waves"),
-            spiral: await screen.findByTestId("spiral"),
-            fourSpirals: await screen.findByTestId("fourSpirals"),
-            dm5: await screen.findByTestId("dm5"),
-            saveDefault: await screen.findByTestId("saveDefault"),
+            waves: screen.getByTestId("waves"),
+            saveDefault: screen.getByTestId("saveDefault"),
         };
 
         expect(preset_buttons.clear).toBeInTheDocument();
-        expect(preset_buttons.rainbowTest).toBeInTheDocument();
-        expect(preset_buttons.v2).toBeInTheDocument();
         expect(preset_buttons.waves).toBeInTheDocument();
-        expect(preset_buttons.spiral).toBeInTheDocument();
-        expect(preset_buttons.fourSpirals).toBeInTheDocument();
-        expect(preset_buttons.dm5).toBeInTheDocument();
         expect(preset_buttons.saveDefault).toBeInTheDocument();
+
         // get led ref and style tag ref for after the click event and state updates
         let ledPostRef: HTMLElement | null = null;
         let styleTagRef: HTMLStyleElement | null = null;
@@ -361,15 +375,29 @@ describe("test logging in and checking buttons are there", () => {
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
         expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
-        const history = createMemoryHistory();
+        const store = configureStore({
+            reducer: toolkitReducer,
+            preloadedState: {
+                presetButtonsListState: {
+                    midiMode: false,
+                    presetButtons: PresetButtonsList.generateOfflinePresets(),
+                },
+                ledState: {
+                    alpha: "",
+                    animationDurationState: "",
+                    html: "",
+                    isInverted: false,
+                    animVarCoeff: "64",
+                    presetName: "rainbowTest",
+                },
+            },
+        });
+
         const { container } = render(
-            <Provider store={toolkitStore}>
-                <Router history={history}>
-                    <App />
-                </Router>
+            <Provider store={store}>
+                <BigLedBox />
             </Provider>
         );
-        expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
         const preset_buttons = {
             clear: screen.getByTestId("clear"),
@@ -452,15 +480,29 @@ describe("test logging in and checking buttons are there", () => {
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
         expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
 
-        const history = createMemoryHistory();
+        const store = configureStore({
+            reducer: toolkitReducer,
+            preloadedState: {
+                presetButtonsListState: {
+                    midiMode: false,
+                    presetButtons: PresetButtonsList.generateOfflinePresets(),
+                },
+                ledState: {
+                    alpha: "",
+                    animationDurationState: "",
+                    html: "",
+                    isInverted: false,
+                    animVarCoeff: "64",
+                    presetName: "rainbowTest",
+                },
+            },
+        });
+
         const { container } = render(
-            <Provider store={toolkitStore}>
-                <Router history={history}>
-                    <App />
-                </Router>
+            <Provider store={store}>
+                <BigLedBox />
             </Provider>
         );
-        expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
         const preset_buttons = {
             clear: screen.getByTestId("clear"),

@@ -186,7 +186,7 @@ describe("need to impl window.location.assign()", () => {
             formEls.btn.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
 
-        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(3);
         // expect(fetch).toHaveBeenNthCalledWith(2, "dkjfkdfj");
 
         expect(screen.getByTestId("location-display")).toHaveTextContent("/");

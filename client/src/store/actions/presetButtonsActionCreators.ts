@@ -6,7 +6,6 @@ import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass
 import { ledActions } from "../ledSlice";
 import { LedStyleEngine } from "../../utils/LedStyleEngineClass";
 import { presetButtonsListActions } from "../presetButtonListSlice";
-import { keyGen } from "../../utils/keyGen";
 
 const moduleName = "presetButtonListSlice";
 
@@ -16,34 +15,21 @@ export const buildGetPresetButtonsAction = createAsyncThunk<
     MyThunkConfig
 >(moduleName + "/getPresets", async (_params, _thunkAPI) => {
     let buttons: IPresetButton[] = [];
-    if (AuthService.loggedIn()) {
-        const dbButtons = (await ApiService.getUserPresets(
-            AuthService.getToken() as string
-        )) as IDBPreset[];
-        const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
-        buttons = new PresetButtonsList(
-            (event: any) => {
-                event.preventDefault();
-            },
-            dbButtons,
-            defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
-        ).getList();
-    } else {
-        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
 
-        const tempPresets = presetNames.map((name) => {
-            return {
-                _id: keyGen(),
-                presetName: name,
-                displayName: name,
-                animVarCoeff: "64",
-            } as IDBPreset;
-        });
+    const dbButtons = (await ApiService.getUserPresets(
+        AuthService.getToken() as string
+    )) as IDBPreset[];
 
-        buttons = new PresetButtonsList((event: any) => {
+    const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
+
+    buttons = new PresetButtonsList(
+        (event: any) => {
             event.preventDefault();
-        }, tempPresets).getList() as IPresetButton[];
-    }
+        },
+        dbButtons,
+        defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
+    ).getList();
+
     return {
         presetButtons: buttons,
     };

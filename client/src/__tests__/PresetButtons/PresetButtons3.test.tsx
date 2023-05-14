@@ -79,7 +79,7 @@ it("tests the led styles change to rainbowTest when rainbow button is clicked", 
     );
     expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
-    expect(fetch).toHaveBeenCalledTimes(2);
+    expect(fetch).toHaveBeenCalledTimes(1);
 
     const ledPreRef = screen.getByTestId("led1-1") as HTMLElement;
     expect(ledPreRef).toBeInTheDocument();

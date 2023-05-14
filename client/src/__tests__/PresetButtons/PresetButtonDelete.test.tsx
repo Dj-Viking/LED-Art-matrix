@@ -73,9 +73,9 @@ describe("test deleting a preset from the user's preset button list", () => {
             </>
         );
         expect(screen.getByTestId("location-display").textContent).toBe("/");
-        expect(fetch).toHaveBeenCalledTimes(2); // /user/presets first /user second
+        expect(fetch).toHaveBeenCalledTimes(1); // /user/presets first /user second
 
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(14);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(13);
 
         const deleteBtn = await screen.findByTestId("deletePreset");
 
@@ -85,7 +85,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         });
         expect(deleteBtn.textContent).toBe("Don't Delete A Preset");
 
-        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenCalledTimes(2);
         // expect(fetch).toHaveBeenNthCalledWith(1, "kdjfdkj");
         const bogus = await screen.findByTestId("bogus");
 
@@ -134,8 +134,8 @@ describe("test deleting a preset from the user's preset button list", () => {
             confirm.dispatchEvent(TestService.createBubbledEvent("click"));
         });
 
-        expect(fetch).toHaveBeenCalledTimes(4);
-        expect(fetch).toHaveBeenNthCalledWith(4, "http://localhost:3001/user/delete-preset", {
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(3, "http://localhost:3001/user/delete-preset", {
             body: expect.any(String),
             headers: { "Content-Type": "application/json", authorization: expect.any(String) },
             method: "DELETE",

@@ -2,6 +2,7 @@ import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { LedStyleEngine } from "./LedStyleEngineClass";
 import { ledActions } from "../store/ledSlice";
+import { keyGen } from "./keyGen";
 
 export interface IDBPreset {
     _id: string;
@@ -71,6 +72,25 @@ class PresetButtonsList {
 
     private createKeyBinding(index: number): string {
         return MY_INDEX_TO_KEY_MAP[(index + 1) as keyof MyIndexToKeyMap];
+    }
+
+    public static generateOfflinePresets(): IPresetButton[] {
+        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
+
+        const tempPresets = presetNames.map((name) => {
+            return {
+                _id: keyGen(),
+                presetName: name,
+                displayName: name,
+                animVarCoeff: "64",
+            } as IDBPreset;
+        });
+
+        const buttons = new PresetButtonsList((event: any) => {
+            event.preventDefault();
+        }, tempPresets).getList() as IPresetButton[];
+
+        return buttons;
     }
 }
 

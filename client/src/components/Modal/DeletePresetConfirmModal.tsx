@@ -28,7 +28,7 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
             );
         } catch (error) {
             const err = error as Error;
-            setError(err.message);
+            setError(err.message || (err as any));
         }
     }
 

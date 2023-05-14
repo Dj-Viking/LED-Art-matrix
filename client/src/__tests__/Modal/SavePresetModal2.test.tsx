@@ -90,13 +90,13 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         });
         expect(toolkitStore.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
-        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenCalledTimes(2);
         // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
 
         expect(screen.getByTestId("location-display").textContent).toBe("/");
 
         //only style tag should be present since we shouldn't get an array from the fake api fetch
         const buttonsParent2 = await screen.findByTestId("buttons-parent");
-        expect(buttonsParent2.children).toHaveLength(2);
+        expect(buttonsParent2.children).toHaveLength(1);
     });
 });

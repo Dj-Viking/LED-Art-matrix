@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PresetButton from "./PresetButton";
 import Auth from "../utils/AuthService";
@@ -7,7 +7,7 @@ import API from "../utils/ApiService";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { PresetButtonsList } from "../utils/PresetButtonsListClass";
+import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
@@ -26,6 +26,7 @@ import { getGlobalState } from "../store/store";
 import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
+import { keyGen } from "../utils/keyGen";
 
 export interface IPresetButtonsProps {
     children?: any;
@@ -92,7 +93,15 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     }
 
     useEffect(() => {
-        dispatch(presetButtonsListActions.getPresetsAsync());
+        if (Auth.loggedIn()) {
+            dispatch(presetButtonsListActions.getPresetsAsync());
+        } else {
+            dispatch(
+                presetButtonsListActions.setPresetButtonsList(
+                    PresetButtonsList.generateOfflinePresets()
+                )
+            );
+        }
         return () => {
             /*do nothing on unmount */
         };

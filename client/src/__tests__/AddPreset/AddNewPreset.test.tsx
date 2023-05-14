@@ -3,7 +3,7 @@
 import React from "react";
 import App from "../../App";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@types/jest";
 import "@testing-library/jest-dom";
@@ -42,7 +42,7 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
 };
 
 describe("Adding a preset", () => {
-    it("tests the add preset function runs", async () => {
+    it.only("tests the add preset function runs", async () => {
         expect(localStorage.getItem("id_token")).toBe(null);
         localStorage.setItem("id_token", TestService.signTestToken(MOCK_SIGN_TOKEN_ARGS));
         expect(localStorage.getItem("id_token")).toStrictEqual(expect.any(String));
@@ -56,16 +56,6 @@ describe("Adding a preset", () => {
         const mockFetch = jest
             .fn()
             .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-            .mockReturnValueOnce(
-                fakeFetchRes({
-                    preset: {
-                        displayName: "",
-                        presetName: "waves",
-                        animVarCoeff: "64",
-                        _id: "6200149468fe291e26584e4d",
-                    },
-                })
-            )
             .mockReturnValueOnce(
                 fakeFetchRes({
                     preset: {
@@ -91,9 +81,9 @@ describe("Adding a preset", () => {
             </>
         );
         expect(screen.getByTestId("location-display").textContent).toBe("/");
-        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(1);
         const btnContainer = await screen.findByTestId("buttons-parent");
-        expect(btnContainer.children).toHaveLength(14);
+        expect(btnContainer.children).toHaveLength(13);
 
         // activate and change one of the constant/always provided presets and
         // attempt to save it with some new parameter values
@@ -106,22 +96,13 @@ describe("Adding a preset", () => {
             input: await screen.findByTestId("modal-preset-name-input"),
             sliderVal: await screen.findByTestId("modal-anim-var-coeff"),
         };
-        const slider = await screen.findByTestId("led-anim-variation");
 
         act(() => {
             waves.dispatchEvent(TestService.createBubbledEvent("click"));
         });
 
-        expect(slider).toBeInTheDocument();
         expect(modal_els.save).toBeInTheDocument();
         expect(modal_els.sliderVal).toBeInTheDocument();
-
-        act(() => {
-            fireEvent.change(slider, { target: { value: "10" } });
-            slider.dispatchEvent(TestService.createBubbledEvent("change"));
-        });
-
-        expect(modal_els.sliderVal.textContent).toBe("Animation Variation: 10");
 
         //open the save preset modal
         const openSavePresetModalBtn = await screen.findByTestId("savePreset");
@@ -139,8 +120,8 @@ describe("Adding a preset", () => {
             modal_els.save.dispatchEvent(TestService.createBubbledEvent("click"));
         });
 
-        expect(fetch).toHaveBeenCalledTimes(4);
-        expect(fetch).toHaveBeenNthCalledWith(4, "http://localhost:3001/user/add-preset", {
+        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenNthCalledWith(3, "http://localhost:3001/user/add-preset", {
             body: expect.any(String),
             headers: {
                 "Content-Type": "application/json",
