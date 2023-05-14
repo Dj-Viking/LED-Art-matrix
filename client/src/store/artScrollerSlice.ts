@@ -6,7 +6,7 @@ import {
     SaveGifsResult,
     buildCreateGifsAction,
     buildGetGifsAction,
-} from "../actions/gifActionCreators";
+} from "./actions/gifActionCreators";
 import { newReducer } from "../utils/newReducer";
 
 const initialState: IArtScrollerState = {

@@ -1,9 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ToolkitDispatch, ToolkitRootState } from "../store/store";
-import { IGif } from "../types";
-import { ApiService } from "../utils/ApiService";
-import AuthService from "../utils/AuthService";
-import { modalActions } from "../store/modalSlice";
+import { MyThunkConfig, IGif } from "../../types";
+import { ApiService } from "../../utils/ApiService";
+import AuthService from "../../utils/AuthService";
+import { modalActions } from "../modalSlice";
 
 const moduleName = "artScrollerSlice";
 
@@ -16,7 +15,7 @@ export type GetGifsResult = SaveGifsResult;
 export const buildCreateGifsAction = createAsyncThunk<
     { gifs: IGif[]; newListName: string },
     { gif: IGif; listName: string },
-    { state: ToolkitRootState; dispatch: ToolkitDispatch }
+    MyThunkConfig
 >(moduleName + "/createGifs", async (params, _thunkAPI) => {
     const gifs = (await ApiService.createGifs(
         AuthService.getToken() as string,
@@ -38,7 +37,7 @@ export const buildCreateGifsAction = createAsyncThunk<
 export const buildGetGifsAction = createAsyncThunk<
     GetGifsResult,
     { getNew: boolean },
-    { state: ToolkitRootState; dispatch: ToolkitDispatch }
+    MyThunkConfig
 >(moduleName + "/getGifs", async (params, _thunkAPI) => {
     let gifs: IGif[] = [];
 

@@ -10,7 +10,7 @@ import {
     MIDIController,
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
-import { buildMIDIAccessGetter } from "../actions/midiActionCreators";
+import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
 
 export type MIDISliceState = IAccessRecordState;
 

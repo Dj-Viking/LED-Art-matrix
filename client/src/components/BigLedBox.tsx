@@ -49,7 +49,9 @@ const BigLedBox: React.FC = (): JSX.Element => {
                 }
             }
         })();
-        return void 0;
+        return () => {
+            // do nothing on unmount
+        };
     }, [getDefaultPreset, dispatch]);
 
     //second use effect to re-render when the preset parameters change witht he slider and also when the preset switch happens.
