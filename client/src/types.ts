@@ -1,5 +1,10 @@
 import jwt from "jsonwebtoken";
-import { MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
+import {
+    MIDIAccessRecord,
+    MIDIInput,
+    MIDIOutput,
+    onstatechangeHandler,
+} from "./utils/MIDIControlClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
@@ -19,6 +24,9 @@ declare global {
     interface TypedActionCreator<T extends string> {
         (...args: any[]): Action<T>;
         type: T;
+    }
+    interface Navigator {
+        requestMIDIAccess(): Promise<MIDIAccessRecord>;
     }
 }
 

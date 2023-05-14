@@ -10,7 +10,6 @@ import {
 import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
-
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -160,9 +159,6 @@ class MIDIController implements IMIDIController {
     }
 
     public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
-        // @ts-ignore because for some reason in vscode
-        // this method doesn't exist on the navigator I guess..
-        // only supported in chrome mostly for now
         return window.navigator.requestMIDIAccess();
     }
 
