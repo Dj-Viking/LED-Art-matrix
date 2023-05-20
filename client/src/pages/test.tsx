@@ -5,7 +5,6 @@ import { Canvas } from "../components/Canvas";
 export const Test: React.FC = () => {
     return (
         <>
-            {/* <LedSVGGrid /> */}
             <MIDIListenerWrapper />
 
             <Canvas />
