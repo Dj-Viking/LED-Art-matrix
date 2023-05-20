@@ -1,5 +1,7 @@
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
+import { getGlobalState } from "../store/store";
+import { useSelector } from "react-redux";
 
 class LED {
     public h = 32;
@@ -17,6 +19,9 @@ class LED {
 }
 
 export const Canvas: React.FC = () => {
+    const { animVarCoeff } = getGlobalState(useSelector);
+    const [range, setRange] = useState<any>(0);
+
     const INITIAL_WIDTH = window.innerWidth;
     const CANVAS_HEIGHT_OFFSET = 153.5124969482422;
 
@@ -24,8 +29,6 @@ export const Canvas: React.FC = () => {
         height: window.innerHeight - CANVAS_HEIGHT_OFFSET,
         width: window.innerWidth,
     });
-
-    // const [];
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -55,23 +58,33 @@ export const Canvas: React.FC = () => {
                         // width offset when screen width is less than 1024
                         w = dimensions.width / w;
                     }
-                    // console.log("i", i, "vx", vx);
                     const vy = j * 32;
                     const h = 32;
-                    const intToHexString = (j * 16).toString(16);
-                    fillStyle = `#00FF${createPaddedHexString(intToHexString)}`;
-                    // fillStyle = "white";
+                    const intToHexString_column = (j * 16).toString(16);
+                    let intToHexString_row = (j * 16 * (i * 16 - Number(animVarCoeff))).toString(
+                        16
+                    );
+
+                    setRange(intToHexString_row);
+
+                    const red = "FF";
+                    const green = createPaddedHexString(intToHexString_column);
+                    const blue = createPaddedHexString(intToHexString_row);
+
+                    fillStyle = `#${red}${green}${blue}`;
+                    // console.log(fillStyle);
+                    // fillStyle = `hsl(${animVarCoeff}, 100%, 50%)`;
                     ctx.fillStyle = fillStyle;
                     ctx.strokeStyle = "black";
                     ctx.beginPath();
                     ctx.roundRect(vx, vy, w, h, radii);
                     ctx.fill();
-                    ctx.stroke();
+                    // ctx.stroke();
                 }
             }
             //
         },
-        [dimensions.width]
+        [dimensions.width, animVarCoeff]
     );
 
     // SETUP
@@ -117,7 +130,15 @@ export const Canvas: React.FC = () => {
     }, [resizeHandler, INITIAL_WIDTH, draw]);
     return (
         <>
-            <canvas ref={canvasRef} height={dimensions.height} width={dimensions.width}></canvas>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                <div style={{ margin: "0 auto" }}>anim var{animVarCoeff}</div>
+                <div style={{ margin: "0 auto" }}>range {range}</div>
+                <canvas
+                    ref={canvasRef}
+                    height={dimensions.height}
+                    width={dimensions.width}
+                ></canvas>
+            </div>
         </>
     );
 };
