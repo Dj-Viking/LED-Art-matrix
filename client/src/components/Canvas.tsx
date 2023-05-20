@@ -1,6 +1,21 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 
+class LED {
+    public h = 32;
+    public w = 0;
+    public x = 0;
+    public y = 0;
+    public fillStyle = "";
+
+    public constructor(_x: number, _y: number, _w: number, _fillStyle: string) {
+        this.x = _x;
+        this.y = _y;
+        this.w = _w;
+        this.fillStyle = _fillStyle;
+    }
+}
+
 export const Canvas: React.FC = () => {
     const INITIAL_WIDTH = window.innerWidth;
     const CANVAS_HEIGHT_OFFSET = 153.5124969482422;
@@ -14,11 +29,15 @@ export const Canvas: React.FC = () => {
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
+    const createPaddedHexString = (hexString: string): string => {
+        return parseInt(hexString, 16) <= 16 ? `0${hexString}` : hexString;
+    };
+
     const draw = useCallback(
         (ctx: CanvasRenderingContext2D) => {
             const radii = [4];
+            let fillStyle = "";
 
-            ctx.beginPath();
             // draw leds on canvas
             for (let i = 0; i < LedStyleEngine.LED_AMOUNT; i++) {
                 for (let j = 0; j < LedStyleEngine.LED_AMOUNT; j++) {
@@ -35,16 +54,17 @@ export const Canvas: React.FC = () => {
                     } else if (dimensions.width <= 1024) {
                         vx = Math.abs(i * 32);
                     }
-                    console.log("i", i, "vx", vx);
-
+                    // console.log("i", i, "vx", vx);
                     const vy = j * 32;
                     const h = 32;
-
+                    const intToHexString = (j * 16).toString(16);
+                    fillStyle = `#00FF${createPaddedHexString(intToHexString)}`;
+                    ctx.fillStyle = fillStyle;
+                    ctx.beginPath();
                     ctx.roundRect(vx, vy, w, h, radii);
+                    ctx.fill();
                 }
             }
-            ctx.fillStyle = "#00FF00";
-            ctx.fill();
             //
         },
         [dimensions.width]
