@@ -42,7 +42,6 @@ export const Canvas: React.FC = () => {
             for (let i = 0; i < LedStyleEngine.LED_AMOUNT; i++) {
                 for (let j = 0; j < LedStyleEngine.LED_AMOUNT; j++) {
                     let vx = 0;
-                    // TODO(maybe): adjust width of rects to stay close together and not get too thin when screen width is smaller
                     let w = dimensions.width / 32;
 
                     if (dimensions.width === 1024) {
@@ -53,16 +52,21 @@ export const Canvas: React.FC = () => {
                         vx = i * 32 * (dimensions.width / 1024);
                     } else if (dimensions.width <= 1024) {
                         vx = Math.abs(i * 32);
+                        // width offset when screen width is less than 1024
+                        w = dimensions.width / w;
                     }
                     // console.log("i", i, "vx", vx);
                     const vy = j * 32;
                     const h = 32;
                     const intToHexString = (j * 16).toString(16);
                     fillStyle = `#00FF${createPaddedHexString(intToHexString)}`;
+                    // fillStyle = "white";
                     ctx.fillStyle = fillStyle;
+                    ctx.strokeStyle = "black";
                     ctx.beginPath();
                     ctx.roundRect(vx, vy, w, h, radii);
                     ctx.fill();
+                    ctx.stroke();
                 }
             }
             //
