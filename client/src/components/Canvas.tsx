@@ -21,6 +21,7 @@ class LED {
 export const Canvas: React.FC = () => {
     const { animVarCoeff } = getGlobalState(useSelector);
     const [range, setRange] = useState<any>(0);
+    const [isHSL, setIsHSL] = useState(true);
 
     const INITIAL_WIDTH = window.innerWidth;
     const CANVAS_HEIGHT_OFFSET = 153.5124969482422;
@@ -33,7 +34,8 @@ export const Canvas: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     const createPaddedHexString = (hexString: string): string => {
-        return parseInt(hexString, 16) <= 16 ? `0${hexString}` : hexString;
+        const num = parseInt(hexString, 16);
+        return num <= 16 ? `0${hexString}` : hexString;
     };
 
     const draw = useCallback(
@@ -59,32 +61,43 @@ export const Canvas: React.FC = () => {
                         w = dimensions.width / w;
                     }
                     const vy = j * 32;
-                    const h = 32;
-                    const intToHexString_column = (j * 16).toString(16);
-                    let intToHexString_row = (j * 16 * (i * 16 - Number(animVarCoeff))).toString(
-                        16
-                    );
+                    // const h = 32;
 
-                    setRange(intToHexString_row);
+                    const num1 = j * 4 * i * 4 - Number(animVarCoeff);
+                    // THIS IS THE SPIRAL PATTERN!
+                    const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
+
+                    // number that wraps around when overflowed so it can loop colors
+                    const uint8_1 = new Uint8Array(1).fill(num1);
+                    const uint8_2 = new Uint8Array(1).fill(num2);
+
+                    const intToHexString_2 = uint8_1[0].toString(16);
+
+                    let intToHexString_1 = uint8_2[0].toString(16);
+
+                    const hslValue = parseInt(createPaddedHexString(intToHexString_2), 16);
+                    setRange(hslValue);
 
                     const red = "FF";
-                    const green = createPaddedHexString(intToHexString_column);
-                    const blue = createPaddedHexString(intToHexString_row);
+                    const green = createPaddedHexString(intToHexString_2);
+                    const blue = createPaddedHexString(intToHexString_1);
 
-                    fillStyle = `#${red}${green}${blue}`;
                     // console.log(fillStyle);
-                    // fillStyle = `hsl(${animVarCoeff}, 100%, 50%)`;
+                    if (isHSL) {
+                        fillStyle = `hsl(${hslValue}, 100%, 50%)`;
+                    } else {
+                        fillStyle = `#${red}${green}${blue}`;
+                    }
+
                     ctx.fillStyle = fillStyle;
-                    ctx.strokeStyle = "black";
                     ctx.beginPath();
-                    ctx.roundRect(vx, vy, w, h, radii);
+                    ctx.roundRect(vx, vy, w, 32, radii);
                     ctx.fill();
-                    // ctx.stroke();
                 }
             }
             //
         },
-        [dimensions.width, animVarCoeff]
+        [dimensions.width, animVarCoeff, isHSL]
     );
 
     // SETUP
