@@ -24,10 +24,9 @@ export const Canvas: React.FC = () => {
     const [isHSL, setIsHSL] = useState(true);
 
     const INITIAL_WIDTH = window.innerWidth;
-    const CANVAS_HEIGHT_OFFSET = 153.5124969482422;
 
     const [dimensions, setDimensions] = React.useState({
-        height: window.innerHeight - CANVAS_HEIGHT_OFFSET,
+        height: window.innerHeight,
         width: window.innerWidth,
     });
 
@@ -39,13 +38,18 @@ export const Canvas: React.FC = () => {
     };
 
     const draw = useCallback(
-        (ctx: CanvasRenderingContext2D) => {
+        (ctx: CanvasRenderingContext2D, time?: number) => {
+            if (time) {
+                console.log("drawing with time", time);
+            }
+
             const radii = [4];
             let fillStyle = "";
+            const h = 32;
 
             // draw leds on canvas
-            for (let i = 0; i < LedStyleEngine.LED_AMOUNT; i++) {
-                for (let j = 0; j < LedStyleEngine.LED_AMOUNT; j++) {
+            for (let i = 0; i < 33; i++) {
+                for (let j = 0; j < LedStyleEngine.LED_AMOUNT + 1; j++) {
                     let vx = 0;
                     let w = dimensions.width / 32;
 
@@ -61,25 +65,24 @@ export const Canvas: React.FC = () => {
                         w = dimensions.width / w;
                     }
                     const vy = j * 32;
-                    // const h = 32;
 
-                    const num1 = j * 4 * i * 4 - Number(animVarCoeff);
                     // THIS IS THE SPIRAL PATTERN!
+                    const num1 = j * 8 * i * (8 - Number(animVarCoeff) / 4);
                     const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
 
                     // number that wraps around when overflowed so it can loop colors
                     const uint8_1 = new Uint8Array(1).fill(num1);
                     const uint8_2 = new Uint8Array(1).fill(num2);
 
-                    const intToHexString_2 = uint8_1[0].toString(16);
+                    const intToHexString_1 = uint8_1[0].toString(16);
 
-                    let intToHexString_1 = uint8_2[0].toString(16);
+                    let intToHexString_2 = uint8_2[0].toString(16);
 
-                    const hslValue = parseInt(createPaddedHexString(intToHexString_2), 16);
+                    const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
                     setRange(hslValue);
 
-                    const red = "FF";
-                    const green = createPaddedHexString(intToHexString_2);
+                    const red = createPaddedHexString((50).toString(16));
+                    const green = createPaddedHexString(intToHexString_1);
                     const blue = createPaddedHexString(intToHexString_1);
 
                     // console.log(fillStyle);
@@ -91,7 +94,7 @@ export const Canvas: React.FC = () => {
 
                     ctx.fillStyle = fillStyle;
                     ctx.beginPath();
-                    ctx.roundRect(vx, vy, w, 32, radii);
+                    ctx.roundRect(vx, vy, w, h, radii);
                     ctx.fill();
                 }
             }
@@ -106,7 +109,7 @@ export const Canvas: React.FC = () => {
             const currentCanvas = canvasRef.current;
 
             const newWidth = e.target.innerWidth;
-            const newHeight = e.target.innerHeight - CANVAS_HEIGHT_OFFSET;
+            const newHeight = e.target.innerHeight + 8;
 
             setDimensions({
                 height: newHeight,
@@ -121,6 +124,23 @@ export const Canvas: React.FC = () => {
         [draw]
     );
 
+    const animate = useCallback(
+        (time: DOMHighResTimeStamp | number): void => {
+            console.log(Date.now(), "\n", "animating", time);
+
+            const currentCanvas = canvasRef.current;
+            if (currentCanvas) {
+                // const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
+                // lagging like shit here
+                // ctx.save();
+                // draw(ctx, time);
+            }
+
+            window.requestAnimationFrame(animate);
+        },
+        [draw]
+    );
+
     // initial setup and draw first render
     useEffect(() => {
         //@ts-ignore
@@ -130,7 +150,7 @@ export const Canvas: React.FC = () => {
             const currentCanvas = canvasRef.current;
             const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
 
-            currentCanvas.height = window.innerHeight - 3;
+            currentCanvas.height = window.innerHeight + 8;
             currentCanvas.width = INITIAL_WIDTH;
 
             draw(ctx);
@@ -141,6 +161,11 @@ export const Canvas: React.FC = () => {
             window.removeEventListener("resize", resizeHandler);
         };
     }, [resizeHandler, INITIAL_WIDTH, draw]);
+
+    // window.addEventListener("DOMContentLoaded", () => {
+    //     animate(0);
+    // });
+
     return (
         <>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
