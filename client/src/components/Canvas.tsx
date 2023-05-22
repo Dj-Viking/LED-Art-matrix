@@ -164,6 +164,9 @@ export const Canvas: React.FC = () => {
             currentCanvas.height = window.innerHeight - 2;
             currentCanvas.width = INITIAL_WIDTH;
 
+            /**
+             * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
+             */
             // window.requestAnimationFrame(draw);
             draw();
         }
