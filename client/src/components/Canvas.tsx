@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { current } from "immer";
+import { ledActions } from "../store/ledSlice";
 
 class LED {
     public h = 32;
@@ -22,6 +24,7 @@ export const Canvas: React.FC = () => {
     const { animVarCoeff } = getGlobalState(useSelector);
     const [range, setRange] = useState<any>(0);
     const [isHSL, setIsHSL] = useState(true);
+    const dispatch = useDispatch();
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -38,9 +41,18 @@ export const Canvas: React.FC = () => {
     };
 
     const draw = useCallback(
-        (ctx: CanvasRenderingContext2D, time?: number) => {
+        (time?: number) => {
+            const currentCanvas = canvasRef.current;
+
+            if (!currentCanvas) {
+                return;
+            }
+
+            const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
+
             if (time) {
                 console.log("drawing with time", time);
+                // ctx.save();
             }
 
             const radii = [4];
@@ -80,6 +92,7 @@ export const Canvas: React.FC = () => {
 
                     // THIS IS THE SPIRAL PATTERN!
                     const num1 = row * 8 * col * Number(animVarCoeff);
+                    // const num1 = row * 8 * col * Number(animVarCoeff);
                     // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
                     // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
 
@@ -112,6 +125,10 @@ export const Canvas: React.FC = () => {
                     ctx.fill();
                 }
             }
+            if (time) {
+                // ctx.restore();
+                // window.requestAnimationFrame(draw);
+            }
             //
         },
         [dimensions.width, animVarCoeff, isHSL]
@@ -131,26 +148,8 @@ export const Canvas: React.FC = () => {
             });
 
             if (currentCanvas) {
-                const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
-                draw(ctx);
+                draw();
             }
-        },
-        [draw]
-    );
-
-    const animate = useCallback(
-        (time: DOMHighResTimeStamp | number): void => {
-            console.log(Date.now(), "\n", "animating", time);
-
-            const currentCanvas = canvasRef.current;
-            if (currentCanvas) {
-                // const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
-                // lagging like shit here
-                // ctx.save();
-                // draw(ctx, time);
-            }
-
-            window.requestAnimationFrame(animate);
         },
         [draw]
     );
@@ -162,12 +161,12 @@ export const Canvas: React.FC = () => {
 
         if (canvasRef.current) {
             const currentCanvas = canvasRef.current;
-            const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
 
             currentCanvas.height = window.innerHeight - 2;
             currentCanvas.width = INITIAL_WIDTH;
 
-            draw(ctx);
+            // window.requestAnimationFrame(draw);
+            draw();
         }
 
         return () => {
@@ -176,14 +175,44 @@ export const Canvas: React.FC = () => {
         };
     }, [resizeHandler, INITIAL_WIDTH, draw]);
 
-    // window.addEventListener("DOMContentLoaded", () => {
-    //     animate(0);
-    // });
+    function animate(time?: number): void {
+        console.log("animating", time);
+
+        const currentCanvas = canvasRef.current;
+        if (currentCanvas) {
+            const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
+            ctx.save();
+            ctx.fillStyle = "red";
+            console.log("ctx", ctx);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // draw here????
+        window.requestAnimationFrame(animate);
+    }
+
+    window.addEventListener("DOMContentLoaded", (e) => {
+        console.log("dom content loaded", e);
+        // animate();
+    });
 
     return (
         <>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 <div style={{ margin: "0 auto" }}>anim var{animVarCoeff}</div>
+                <span>
+                    <input
+                        type="range"
+                        min="0"
+                        max="360"
+                        value={animVarCoeff}
+                        onInput={(e) => {
+                            dispatch(ledActions.setAnimVarCoeff(e.target.value));
+                        }}
+                    />
+                    change me! {animVarCoeff}
+                </span>
                 <div style={{ margin: "0 auto" }}>range {range}</div>
                 <canvas
                     ref={canvasRef}
