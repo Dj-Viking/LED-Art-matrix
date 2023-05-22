@@ -48,35 +48,49 @@ export const Canvas: React.FC = () => {
             const h = 32;
 
             // draw leds on canvas
-            for (let i = 0; i < 33; i++) {
-                for (let j = 0; j < LedStyleEngine.LED_AMOUNT + 1; j++) {
+            for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
+                for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
                     let vx = 0;
-                    let w = dimensions.width / 32;
+                    let w = dimensions.width / 64;
 
                     if (dimensions.width === 1024) {
-                        vx = Math.abs(i * 32 + (dimensions.width - 1024));
+                        //
+
+                        vx = Math.abs(col * 31 + (dimensions.width - 1024));
+                        w = dimensions.width / 33;
+
+                        //
                     } else if (dimensions.width > 1024) {
                         // move leds by column over by an X amount of window is larger than 1024 pixels
                         // to fill up the whole window
-                        vx = i * 32 * (dimensions.width / 1024);
+
+                        vx = col * 31 * (dimensions.width / 1024);
+                        w = dimensions.width / 33;
+
+                        //
                     } else if (dimensions.width <= 1024) {
-                        vx = Math.abs(i * 32);
+                        //
+                        vx = Math.abs(col * 16);
+
                         // width offset when screen width is less than 1024
                         w = dimensions.width / w;
+                        //
                     }
-                    const vy = j * 32;
+                    const vy = row * 30;
 
                     // THIS IS THE SPIRAL PATTERN!
-                    const num1 = j * 8 * i * (8 - Number(animVarCoeff) / 4);
-                    const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
+                    const num1 = row * 8 * col * Number(animVarCoeff);
+                    // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
+                    // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
 
                     // number that wraps around when overflowed so it can loop colors
                     const uint8_1 = new Uint8Array(1).fill(num1);
-                    const uint8_2 = new Uint8Array(1).fill(num2);
+
+                    // const uint8_2 = new Uint8Array(1).fill(num2);
 
                     const intToHexString_1 = uint8_1[0].toString(16);
 
-                    let intToHexString_2 = uint8_2[0].toString(16);
+                    // let intToHexString_2 = uint8_2[0].toString(16);
 
                     const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
                     setRange(hslValue);
@@ -109,7 +123,7 @@ export const Canvas: React.FC = () => {
             const currentCanvas = canvasRef.current;
 
             const newWidth = e.target.innerWidth;
-            const newHeight = e.target.innerHeight + 8;
+            const newHeight = e.target.innerHeight;
 
             setDimensions({
                 height: newHeight,
@@ -150,7 +164,7 @@ export const Canvas: React.FC = () => {
             const currentCanvas = canvasRef.current;
             const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
 
-            currentCanvas.height = window.innerHeight + 8;
+            currentCanvas.height = window.innerHeight - 2;
             currentCanvas.width = INITIAL_WIDTH;
 
             draw(ctx);
