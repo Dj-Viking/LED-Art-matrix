@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
@@ -25,6 +26,11 @@ export const Canvas: React.FC = () => {
     const [range, setRange] = useState<any>(0);
     const [isHSL, setIsHSL] = useState(true);
     const dispatch = useDispatch();
+    const [count, setCount] = useState(0);
+
+    // create reference to store the requestAnimationFrame ID when raf is called
+    const RAFRef = useRef<number>(0);
+    const timeRef = useRef<number>(0);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -166,7 +172,7 @@ export const Canvas: React.FC = () => {
              * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
              */
             // window.requestAnimationFrame(draw);
-            draw(ctx);
+            // draw(ctx);
         }
 
         return () => {
@@ -175,26 +181,123 @@ export const Canvas: React.FC = () => {
         };
     }, [resizeHandler, INITIAL_WIDTH, draw]);
 
-    // function animate(time?: number): void {
-    //     console.log("animating", time);
+    const animate = useCallback(
+        (time?: number): void => {
+            // console.log("animating", time);
 
-    //     const currentCanvas = canvasRef.current;
-    //     if (currentCanvas) {
-    //         const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
-    //         ctx.save();
-    //         ctx.fillStyle = "red";
-    //         console.log("ctx", ctx);
-    //         ctx.fill();
-    //         ctx.restore();
-    //     }
+            if (time) {
+                if (timeRef.current > 0) {
+                    const deltaTime = time - timeRef.current;
+                    // setCount(count + deltaTime * 0.01);
+                    setCount((prevCount) => prevCount + deltaTime * 0.1);
 
-    //     // draw here????
-    //     window.requestAnimationFrame(animate);
-    // }
+                    const uint8_2 = new Uint8Array(1).fill(count);
+
+                    // console.log("drawing with time", time, "delta time", deltaTime);
+
+                    const currentCanvas = canvasRef.current;
+                    if (!currentCanvas) return;
+
+                    const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
+
+                    const radii = [4];
+                    let fillStyle = "";
+                    const h = 32;
+                    // clear the canvas
+                    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+                    for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
+                        for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
+                            let vx = 0;
+                            let w = dimensions.width / 64;
+
+                            if (dimensions.width === 1024) {
+                                //
+
+                                vx = Math.abs(col * 31 + (dimensions.width - 1024));
+                                w = dimensions.width / 33;
+
+                                //
+                            } else if (dimensions.width > 1024) {
+                                // move leds by column over by an X amount of window is larger than 1024 pixels
+                                // to fill up the whole window
+
+                                vx = col * 31 * (dimensions.width / 1024);
+                                w = dimensions.width / 33;
+
+                                //
+                            } else if (dimensions.width <= 1024) {
+                                //
+                                vx = col * 31 * (dimensions.width / 1024);
+
+                                // width offset when screen width is less than 1024
+                                w = dimensions.width / w;
+                                //
+                            }
+                            const vy = row * 30;
+
+                            // // THIS IS THE SPIRAL PATTERN!
+                            const num1 = row * 8 * col * Number(animVarCoeff) + count;
+                            // // const num1 = row * 8 * col * Number(animVarCoeff);
+                            // // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
+                            // // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
+
+                            // // number that wraps around when overflowed so it can loop colors
+                            const uint8_1 = new Uint8Array(1).fill(num1);
+
+                            // // const uint8_2 = new Uint8Array(1).fill(num2);
+
+                            // const intToHexString_1 = uint8_1[0].toString(16);
+
+                            // // let intToHexString_2 = uint8_2[0].toString(16);
+
+                            // const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
+                            // setRange(hslValue);
+
+                            // const red = createPaddedHexString((50).toString(16));
+                            // const green = createPaddedHexString(intToHexString_1);
+                            // const blue = createPaddedHexString(intToHexString_1);
+
+                            // console.log(fillStyle);
+                            // if (isHSL) {
+                            //     fillStyle = `hsl(${hslValue}, 100%, 50%)`;
+                            // } else {
+                            //     fillStyle = `#${red}${green}${blue}`;
+                            // }
+
+                            if (isHSL) {
+                                fillStyle = `hsl(${uint8_1[0]}, 100%, 50%)`;
+                            } else {
+                                fillStyle = "red";
+                            }
+
+                            ctx.fillStyle = fillStyle;
+                            ctx.beginPath();
+                            ctx.roundRect(vx, vy, w, h, radii);
+                            ctx.fill();
+                            ctx.closePath();
+                        }
+                    }
+                }
+
+                RAFRef.current = window.requestAnimationFrame(animate);
+            }
+            if (time) {
+                timeRef.current = time;
+            }
+            //
+        },
+        [count, dimensions.width, isHSL, animVarCoeff]
+    );
+
+    useEffect(() => {
+        RAFRef.current = window.requestAnimationFrame(animate);
+        return () => window.cancelAnimationFrame(RAFRef.current);
+    }, [animate]);
 
     window.addEventListener("DOMContentLoaded", (e) => {
         console.log("dom content loaded", e);
-        // animate();
+        animate();
     });
 
     return (
@@ -214,6 +317,7 @@ export const Canvas: React.FC = () => {
                     change me! {animVarCoeff}
                 </span>
                 <div style={{ margin: "0 auto" }}>range {range}</div>
+                <div style={{ margin: "0 auto" }}>COUNT {Math.floor(count)}</div>
                 <canvas
                     id="canvas"
                     ref={canvasRef}
