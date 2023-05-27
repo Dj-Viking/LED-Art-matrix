@@ -26,11 +26,11 @@ export const Canvas: React.FC = () => {
     const [range, setRange] = useState<any>(0);
     const [isHSL, setIsHSL] = useState(true);
     const dispatch = useDispatch();
-    const [count, setCount] = useState(0);
 
     // create reference to store the requestAnimationFrame ID when raf is called
     const RAFRef = useRef<number>(0);
     const timeRef = useRef<number>(0);
+    const countRef = useRef<number>(0);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -46,6 +46,7 @@ export const Canvas: React.FC = () => {
         return num <= 16 ? `0${hexString}` : hexString;
     };
 
+    // maybe not needing this? because animate is drawing this on everyframe???
     const draw = useCallback(
         (ctx: CanvasRenderingContext2D, time?: number) => {
             // const currentCanvas = canvasRef.current;
@@ -155,45 +156,27 @@ export const Canvas: React.FC = () => {
         [draw]
     );
 
-    // initial setup and draw first render
+    // initial setup for di
     useEffect(() => {
-        //@ts-ignore
-        window.addEventListener("resize", resizeHandler);
-
         if (canvasRef.current) {
             const currentCanvas = canvasRef.current;
 
-            currentCanvas.height = window.innerHeight - 2;
+            // when browser is zoomed at 80% this will let the whole LED matrix take the whole window
+            currentCanvas.height = window.innerHeight + 200;
             currentCanvas.width = INITIAL_WIDTH;
-
-            const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
-
-            /**
-             * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
-             */
-            // window.requestAnimationFrame(draw);
-            // draw(ctx);
         }
-
-        return () => {
-            // @ts-ignore
-            window.removeEventListener("resize", resizeHandler);
-        };
     }, [resizeHandler, INITIAL_WIDTH, draw]);
 
     const animate = useCallback(
         (time?: number): void => {
-            // console.log("animating", time);
+            console.log("animating", time);
 
             if (time) {
                 if (timeRef.current > 0) {
                     const deltaTime = time - timeRef.current;
-                    // setCount(count + deltaTime * 0.01);
-                    setCount((prevCount) => prevCount + deltaTime * 0.1);
 
-                    const uint8_2 = new Uint8Array(1).fill(count);
-
-                    // console.log("drawing with time", time, "delta time", deltaTime);
+                    // using count ref here because re-rendering with a setCount was stopping the animations!
+                    countRef.current += deltaTime * 0.1;
 
                     const currentCanvas = canvasRef.current;
                     if (!currentCanvas) return;
@@ -237,7 +220,7 @@ export const Canvas: React.FC = () => {
                             const vy = row * 30;
 
                             // // THIS IS THE SPIRAL PATTERN!
-                            const num1 = row * 8 * col * Number(animVarCoeff) + count;
+                            const num1 = row * 8 * col * Number(animVarCoeff) + countRef.current;
                             // // const num1 = row * 8 * col * Number(animVarCoeff);
                             // // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
                             // // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
@@ -287,9 +270,12 @@ export const Canvas: React.FC = () => {
             }
             //
         },
-        [count, dimensions.width, isHSL, animVarCoeff]
+        [dimensions.width, isHSL, animVarCoeff]
     );
 
+    /**
+     * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
+     */
     useEffect(() => {
         RAFRef.current = window.requestAnimationFrame(animate);
         return () => window.cancelAnimationFrame(RAFRef.current);
@@ -317,7 +303,6 @@ export const Canvas: React.FC = () => {
                     change me! {animVarCoeff}
                 </span>
                 <div style={{ margin: "0 auto" }}>range {range}</div>
-                <div style={{ margin: "0 auto" }}>COUNT {Math.floor(count)}</div>
                 <canvas
                     id="canvas"
                     ref={canvasRef}
