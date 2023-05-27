@@ -31,6 +31,15 @@ declare global {
     interface EventTarget {
         value: any;
     }
+    interface CanvasRenderingContext2D {
+        roundRect(
+            x: number,
+            y: number,
+            w: number,
+            h: number,
+            radii?: number | DOMPointInit | (number | DOMPointInit)[] | undefined
+        ): void;
+    }
 }
 
 export type MyJwtData = IJwtData;
