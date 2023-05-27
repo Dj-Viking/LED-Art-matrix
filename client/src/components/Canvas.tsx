@@ -81,7 +81,7 @@ export const Canvas: React.FC = () => {
                         //
                     } else if (dimensions.width <= 1024) {
                         //
-                        vx = Math.abs(col * 16);
+                        vx = col * 31 * (dimensions.width / 1024);
 
                         // width offset when screen width is less than 1024
                         w = dimensions.width / w;
