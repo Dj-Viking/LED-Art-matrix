@@ -23,7 +23,6 @@ class LED {
 export const Canvas: React.FC = () => {
     const led = new LED(1, 2, 3, ""); // will use in the future
     const { animVarCoeff } = getGlobalState(useSelector);
-    const [range, setRange] = useState<any>(0);
     const [isHSL, setIsHSL] = useState(true);
     const dispatch = useDispatch();
 
@@ -34,7 +33,9 @@ export const Canvas: React.FC = () => {
 
     const INITIAL_WIDTH = window.innerWidth;
 
-    const [dimensions, setDimensions] = React.useState({
+    // not ever setting state on this - don't want to re-render and stop the animations
+    // resizing handles itself somehow
+    const [dimensions] = React.useState({
         height: window.innerHeight,
         width: window.innerWidth,
     });
@@ -46,116 +47,6 @@ export const Canvas: React.FC = () => {
         return num <= 16 ? `0${hexString}` : hexString;
     };
 
-    // maybe not needing this? because animate is drawing this on everyframe???
-    const draw = useCallback(
-        (ctx: CanvasRenderingContext2D, time?: number) => {
-            // const currentCanvas = canvasRef.current;
-
-            if (time) {
-                console.log("drawing with time", time);
-                // ctx.save();
-            }
-
-            const radii = [4];
-            let fillStyle = "";
-            const h = 32;
-
-            // draw leds on canvas
-            for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
-                for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
-                    let vx = 0;
-                    let w = dimensions.width / 64;
-
-                    if (dimensions.width === 1024) {
-                        //
-
-                        vx = Math.abs(col * 31 + (dimensions.width - 1024));
-                        w = dimensions.width / 33;
-
-                        //
-                    } else if (dimensions.width > 1024) {
-                        // move leds by column over by an X amount of window is larger than 1024 pixels
-                        // to fill up the whole window
-
-                        vx = col * 31 * (dimensions.width / 1024);
-                        w = dimensions.width / 33;
-
-                        //
-                    } else if (dimensions.width <= 1024) {
-                        //
-                        vx = col * 31 * (dimensions.width / 1024);
-
-                        // width offset when screen width is less than 1024
-                        w = dimensions.width / w;
-                        //
-                    }
-                    const vy = row * 30;
-
-                    // THIS IS THE SPIRAL PATTERN!
-                    const num1 = row * 8 * col * Number(animVarCoeff);
-                    // const num1 = row * 8 * col * Number(animVarCoeff);
-                    // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
-                    // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
-
-                    // number that wraps around when overflowed so it can loop colors
-                    const uint8_1 = new Uint8Array(1).fill(num1);
-
-                    // const uint8_2 = new Uint8Array(1).fill(num2);
-
-                    const intToHexString_1 = uint8_1[0].toString(16);
-
-                    // let intToHexString_2 = uint8_2[0].toString(16);
-
-                    const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
-                    setRange(hslValue);
-
-                    const red = createPaddedHexString((50).toString(16));
-                    const green = createPaddedHexString(intToHexString_1);
-                    const blue = createPaddedHexString(intToHexString_1);
-
-                    // console.log(fillStyle);
-                    if (isHSL) {
-                        fillStyle = `hsl(${hslValue}, 100%, 50%)`;
-                    } else {
-                        fillStyle = `#${red}${green}${blue}`;
-                    }
-
-                    ctx.fillStyle = fillStyle;
-                    ctx.beginPath();
-                    ctx.roundRect(vx, vy, w, h, radii);
-                    ctx.fill();
-                }
-            }
-            if (time) {
-                // ctx.restore();
-                // window.requestAnimationFrame(draw);
-            }
-            //
-        },
-        [dimensions.width, animVarCoeff, isHSL]
-    );
-
-    // SETUP
-    const resizeHandler = useCallback(
-        (e: { target: typeof window }): void => {
-            const currentCanvas = canvasRef.current;
-
-            const newWidth = e.target.innerWidth;
-            const newHeight = e.target.innerHeight;
-
-            setDimensions({
-                height: newHeight,
-                width: newWidth,
-            });
-
-            if (currentCanvas) {
-                const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
-                draw(ctx);
-            }
-        },
-        [draw]
-    );
-
     // initial setup for di
     useEffect(() => {
         if (canvasRef.current) {
@@ -165,18 +56,16 @@ export const Canvas: React.FC = () => {
             currentCanvas.height = window.innerHeight + 200;
             currentCanvas.width = INITIAL_WIDTH;
         }
-    }, [resizeHandler, INITIAL_WIDTH, draw]);
+    }, [INITIAL_WIDTH]);
 
     const animate = useCallback(
         (time?: number): void => {
-            console.log("animating", time);
-
             if (time) {
                 if (timeRef.current > 0) {
                     const deltaTime = time - timeRef.current;
 
                     // using count ref here because re-rendering with a setCount was stopping the animations!
-                    countRef.current += deltaTime * 0.1;
+                    countRef.current += deltaTime * 0.1 * Number(animVarCoeff);
 
                     const currentCanvas = canvasRef.current;
                     if (!currentCanvas) return;
@@ -219,39 +108,28 @@ export const Canvas: React.FC = () => {
                             }
                             const vy = row * 30;
 
-                            // // THIS IS THE SPIRAL PATTERN!
+                            // // THIS IS THE SPIRAL PATTERN! add countRef to animate!
                             const num1 = row * 8 * col * Number(animVarCoeff) + countRef.current;
-                            // // const num1 = row * 8 * col * Number(animVarCoeff);
-                            // // const num1 = j * 16 * (i * 16 - Number(animVarCoeff));
-                            // // const num2 = j * 16 * (i * 16 - Number(animVarCoeff));
 
                             // // number that wraps around when overflowed so it can loop colors
                             const uint8_1 = new Uint8Array(1).fill(num1);
 
-                            // // const uint8_2 = new Uint8Array(1).fill(num2);
+                            // const uint8_2 = new Uint8Array(1).fill(num2);
 
-                            // const intToHexString_1 = uint8_1[0].toString(16);
+                            const intToHexString_1 = uint8_1[0].toString(16);
 
-                            // // let intToHexString_2 = uint8_2[0].toString(16);
+                            // let intToHexString_2 = uint8_2[0].toString(16);
 
-                            // const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
-                            // setRange(hslValue);
+                            const hslValue = parseInt(createPaddedHexString(intToHexString_1), 16);
 
-                            // const red = createPaddedHexString((50).toString(16));
-                            // const green = createPaddedHexString(intToHexString_1);
-                            // const blue = createPaddedHexString(intToHexString_1);
-
-                            // console.log(fillStyle);
-                            // if (isHSL) {
-                            //     fillStyle = `hsl(${hslValue}, 100%, 50%)`;
-                            // } else {
-                            //     fillStyle = `#${red}${green}${blue}`;
-                            // }
+                            const red = createPaddedHexString((50).toString(16));
+                            const green = createPaddedHexString(intToHexString_1);
+                            const blue = createPaddedHexString(intToHexString_1);
 
                             if (isHSL) {
-                                fillStyle = `hsl(${uint8_1[0]}, 100%, 50%)`;
+                                fillStyle = `hsl(${hslValue}, 100%, 50%)`;
                             } else {
-                                fillStyle = "red";
+                                fillStyle = `#${red}${green}${blue}`;
                             }
 
                             ctx.fillStyle = fillStyle;
@@ -302,7 +180,6 @@ export const Canvas: React.FC = () => {
                     />
                     change me! {animVarCoeff}
                 </span>
-                <div style={{ margin: "0 auto" }}>range {range}</div>
                 <canvas
                     id="canvas"
                     ref={canvasRef}
