@@ -20,6 +20,7 @@ class LED {
 }
 
 export const Canvas: React.FC = () => {
+    const led = new LED(1, 2, 3, ""); // will use in the future
     const { animVarCoeff } = getGlobalState(useSelector);
     const [range, setRange] = useState<any>(0);
     const [isHSL, setIsHSL] = useState(true);
@@ -40,14 +41,8 @@ export const Canvas: React.FC = () => {
     };
 
     const draw = useCallback(
-        (time?: number) => {
-            const currentCanvas = canvasRef.current;
-
-            if (!currentCanvas) {
-                return;
-            }
-
-            const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
+        (ctx: CanvasRenderingContext2D, time?: number) => {
+            // const currentCanvas = canvasRef.current;
 
             if (time) {
                 console.log("drawing with time", time);
@@ -147,7 +142,8 @@ export const Canvas: React.FC = () => {
             });
 
             if (currentCanvas) {
-                draw();
+                const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
+                draw(ctx);
             }
         },
         [draw]
@@ -164,11 +160,13 @@ export const Canvas: React.FC = () => {
             currentCanvas.height = window.innerHeight - 2;
             currentCanvas.width = INITIAL_WIDTH;
 
+            const ctx = currentCanvas.getContext("2d") as CanvasRenderingContext2D;
+
             /**
              * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
              */
             // window.requestAnimationFrame(draw);
-            draw();
+            draw(ctx);
         }
 
         return () => {
@@ -177,22 +175,22 @@ export const Canvas: React.FC = () => {
         };
     }, [resizeHandler, INITIAL_WIDTH, draw]);
 
-    function animate(time?: number): void {
-        console.log("animating", time);
+    // function animate(time?: number): void {
+    //     console.log("animating", time);
 
-        const currentCanvas = canvasRef.current;
-        if (currentCanvas) {
-            const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
-            ctx.save();
-            ctx.fillStyle = "red";
-            console.log("ctx", ctx);
-            ctx.fill();
-            ctx.restore();
-        }
+    //     const currentCanvas = canvasRef.current;
+    //     if (currentCanvas) {
+    //         const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
+    //         ctx.save();
+    //         ctx.fillStyle = "red";
+    //         console.log("ctx", ctx);
+    //         ctx.fill();
+    //         ctx.restore();
+    //     }
 
-        // draw here????
-        window.requestAnimationFrame(animate);
-    }
+    //     // draw here????
+    //     window.requestAnimationFrame(animate);
+    // }
 
     window.addEventListener("DOMContentLoaded", (e) => {
         console.log("dom content loaded", e);
@@ -217,6 +215,7 @@ export const Canvas: React.FC = () => {
                 </span>
                 <div style={{ margin: "0 auto" }}>range {range}</div>
                 <canvas
+                    id="canvas"
                     ref={canvasRef}
                     height={dimensions.height}
                     width={dimensions.width}

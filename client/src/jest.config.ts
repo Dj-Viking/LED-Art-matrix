@@ -22,6 +22,25 @@ window.HTMLMediaElement.prototype.addTextTrack = () => {
     /* do nothing */
 };
 
+// stub canvas element
+// @ts-ignore
+window.HTMLCanvasElement.prototype.getContext = () => {
+    // @ts-ignore
+    return {
+        canvas: {},
+        fillStyle: "",
+        fill: () => {
+            //
+        },
+        beginPath: () => {
+            //
+        },
+        roundRect: () => {
+            //
+        },
+    };
+};
+
 window.open = () => null;
 
 // @ts-ignore
