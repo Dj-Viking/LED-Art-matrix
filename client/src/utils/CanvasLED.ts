@@ -133,8 +133,6 @@ export class CanvasLED {
                 return this._createV2PatternHexString(row, col, animVarCoeff, countRef);
             case "waves":
                 return this._createWavesPatternHexString(row, col, animVarCoeff, countRef);
-            case "dm5":
-                return this._createWavesPatternHexString(row, col, animVarCoeff, countRef);
             default:
                 return this._createCustomPatternHexString(row, col, animVarCoeff, countRef);
         }
