@@ -7,7 +7,7 @@ import { ledActions } from "../store/ledSlice";
 import { CanvasLED } from "../utils/CanvasLED";
 
 export const Canvas: React.FC = () => {
-    const { animVarCoeff } = getGlobalState(useSelector);
+    const { animVarCoeff, presetName } = getGlobalState(useSelector);
     const [isHSL, setIsHSL] = useState(true);
     const dispatch = useDispatch();
 
@@ -15,6 +15,7 @@ export const Canvas: React.FC = () => {
     const RAFRef = useRef<number>(0);
     const timeRef = useRef<number>(0);
     const countRef = useRef<number>(0);
+    const ledRef = useRef<CanvasLED>({} as any);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -25,6 +26,7 @@ export const Canvas: React.FC = () => {
         width: window.innerWidth,
     });
 
+    // read only reference as an element when initialized to null
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // initial setup for di
@@ -56,19 +58,25 @@ export const Canvas: React.FC = () => {
 
                     for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
                         for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
-                            //
-                            const led = new CanvasLED(
+                            ledRef.current = new CanvasLED(
                                 col,
                                 row,
                                 dimensions.width,
                                 animVarCoeff,
                                 countRef.current,
-                                isHSL
+                                isHSL,
+                                "dm5"
                             );
 
-                            ctx.fillStyle = led.fillStyle;
+                            ctx.fillStyle = ledRef.current.fillStyle;
                             ctx.beginPath();
-                            ctx.roundRect(led.x, led.y, led.w, led.h, led.radii);
+                            ctx.roundRect(
+                                ledRef.current.x,
+                                ledRef.current.y,
+                                ledRef.current.w,
+                                ledRef.current.h,
+                                ledRef.current.radii
+                            );
                             ctx.fill();
                             ctx.closePath();
                         }
@@ -82,7 +90,7 @@ export const Canvas: React.FC = () => {
             }
             //
         },
-        [dimensions.width, isHSL, animVarCoeff]
+        [dimensions.width, isHSL, animVarCoeff, presetName]
     );
 
     /**
@@ -107,6 +115,12 @@ export const Canvas: React.FC = () => {
                     onClick={() => setIsHSL(!isHSL)}
                 >
                     {isHSL ? "SWITCH TO HEX RGB" : "SWITCH TO HSL"}
+                </button>
+                <button
+                    style={{ color: "black", width: "50%", margin: "0 auto" }}
+                    onClick={() => (countRef.current = 0)}
+                >
+                    reset animation timer
                 </button>
                 <span style={{ margin: "0 auto" }}>{isHSL ? "HSL" : "HEX RGB"}</span>
                 <span>
