@@ -38,8 +38,8 @@ export class CanvasLED {
         const hslValue = parseInt(CanvasLED._createPaddedHexString(hexString), 16);
 
         const red = CanvasLED._createPaddedHexString((50).toString(16));
-        const green = CanvasLED._createPaddedHexString(hexString);
         const blue = CanvasLED._createPaddedHexString(hexString);
+        const green = CanvasLED._createPaddedHexString((10).toString(16));
 
         if (isHSL) {
             this.fillStyle = `hsl(${hslValue}, 100%, 50%)`;
@@ -96,6 +96,8 @@ export class CanvasLED {
                 return this._createSpiralPatternHexString(row, col, animVarCoeff, countRef);
             case "rainbowTest":
                 return this._createRainbowTestPatternHexString(row, col, animVarCoeff, countRef);
+            case "v2":
+                return this._createV2PatternHexString(row, col, animVarCoeff, countRef);
             default:
                 return this._createCustomPatternHexString(row, col, animVarCoeff, countRef);
         }
@@ -114,6 +116,24 @@ export class CanvasLED {
         const uint8_1 = new Uint8Array(1).fill(num);
 
         return uint8_1[0].toString(16);
+    }
+
+    private _createV2PatternHexString(
+        row: number,
+        col: number,
+        animVarCoeff: string,
+        countRef: number
+    ): string {
+        // animation-duration: ${led <= 3 ? led / 2 : led / 8}s;
+        // animation-delay: ${led / 16 + led / (row / led - Number(coeff) / 5 / 5)}s;
+        const num =
+            32 / (countRef / (row + 1)) +
+            (col + 1) / ((row + 1) / (col + 1) - Number(animVarCoeff) / countRef) +
+            countRef * ((col + 1) * 0.05);
+
+        const uint8 = new Uint8Array(1).fill(num);
+
+        return uint8[0].toString(16);
     }
 
     private _createRainbowTestPatternHexString(
