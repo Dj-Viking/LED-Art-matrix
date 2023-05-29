@@ -7,7 +7,7 @@ import { ledActions } from "../store/ledSlice";
 import { CanvasLED } from "../utils/CanvasLED";
 
 export const Canvas: React.FC = () => {
-    const { animVarCoeff } = getGlobalState(useSelector);
+    const { animVarCoeff, presetName } = getGlobalState(useSelector);
     const [isHSL, setIsHSL] = useState(true);
     const dispatch = useDispatch();
 
@@ -64,7 +64,7 @@ export const Canvas: React.FC = () => {
                                 animVarCoeff,
                                 countRef.current,
                                 isHSL,
-                                "spiral"
+                                presetName
                             );
 
                             ctx.fillStyle = led.fillStyle;
@@ -83,7 +83,7 @@ export const Canvas: React.FC = () => {
             }
             //
         },
-        [dimensions.width, isHSL, animVarCoeff]
+        [dimensions.width, isHSL, animVarCoeff, presetName]
     );
 
     /**
