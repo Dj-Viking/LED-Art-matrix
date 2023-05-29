@@ -63,7 +63,8 @@ export const Canvas: React.FC = () => {
                                 dimensions.width,
                                 animVarCoeff,
                                 countRef.current,
-                                isHSL
+                                isHSL,
+                                "spiral"
                             );
 
                             ctx.fillStyle = led.fillStyle;
