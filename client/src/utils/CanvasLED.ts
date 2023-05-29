@@ -42,9 +42,23 @@ export class CanvasLED {
         const green = CanvasLED._createPaddedHexString((10).toString(16));
 
         if (isHSL) {
-            this.fillStyle = `hsl(${hslValue}, 100%, 50%)`;
+            if (this.presetName === "dm5") {
+                const lightnessBasedOnRow = this._generateLightness(
+                    col,
+                    row,
+                    animVarCoeff,
+                    countRef
+                );
+                this.fillStyle = `hsl(100, 100%, ${lightnessBasedOnRow}%)`;
+            } else {
+                this.fillStyle = `hsl(${hslValue}, 100%, 50%)`;
+            }
         } else {
-            this.fillStyle = `#${red}${green}${blue}`;
+            if (this.presetName === "dm5") {
+                this.fillStyle = "hsl(100, 100%, 50%)";
+            } else {
+                this.fillStyle = `#${red}${green}${blue}`;
+            }
         }
     }
 
@@ -78,6 +92,25 @@ export class CanvasLED {
         }
     }
 
+    private _generateLightness(
+        row: number,
+        col: number,
+        animVarCoeff: string,
+        countRef: number
+    ): string {
+        // animation-duration: ${led <= 3 ? 1 : led / 3.14159 / 2}s;
+        // animation-delay: ${row % 5 === 0 ? led / 3.14159 : led / Number(coeff)}s;
+
+        let num =
+            ((col + 1) % 5 === 0 ? row + 1 / Math.PI : (row + 1) / Number(animVarCoeff)) *
+            (countRef * 0.005);
+
+        if (num > 50) {
+            num = num % 50;
+        }
+        return num.toString();
+    }
+
     public static _createPaddedHexString(hexString: string): string {
         // number that wraps around when overflowed so it can loop colors
         // rgb uses three 8 bit values - this will create a padded 0 on the left side if the number was less than 16
@@ -99,6 +132,8 @@ export class CanvasLED {
             case "v2":
                 return this._createV2PatternHexString(row, col, animVarCoeff, countRef);
             case "waves":
+                return this._createWavesPatternHexString(row, col, animVarCoeff, countRef);
+            case "dm5":
                 return this._createWavesPatternHexString(row, col, animVarCoeff, countRef);
             default:
                 return this._createCustomPatternHexString(row, col, animVarCoeff, countRef);
