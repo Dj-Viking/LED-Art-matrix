@@ -15,6 +15,7 @@ export const Canvas: React.FC = () => {
     const RAFRef = useRef<number>(0);
     const timeRef = useRef<number>(0);
     const countRef = useRef<number>(0);
+    const ledRef = useRef<CanvasLED>({} as any);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -25,6 +26,7 @@ export const Canvas: React.FC = () => {
         width: window.innerWidth,
     });
 
+    // read only reference as an element when initialized to null
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     // initial setup for di
@@ -56,20 +58,25 @@ export const Canvas: React.FC = () => {
 
                     for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
                         for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
-                            //
-                            const led = new CanvasLED(
+                            ledRef.current = new CanvasLED(
                                 col,
                                 row,
                                 dimensions.width,
                                 animVarCoeff,
                                 countRef.current,
                                 isHSL,
-                                presetName
+                                "rainbowTest"
                             );
 
-                            ctx.fillStyle = led.fillStyle;
+                            ctx.fillStyle = ledRef.current.fillStyle;
                             ctx.beginPath();
-                            ctx.roundRect(led.x, led.y, led.w, led.h, led.radii);
+                            ctx.roundRect(
+                                ledRef.current.x,
+                                ledRef.current.y,
+                                ledRef.current.w,
+                                ledRef.current.h,
+                                ledRef.current.radii
+                            );
                             ctx.fill();
                             ctx.closePath();
                         }

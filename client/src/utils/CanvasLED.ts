@@ -94,6 +94,8 @@ export class CanvasLED {
         switch (this.presetName) {
             case "spiral":
                 return this._createSpiralPatternHexString(row, col, animVarCoeff, countRef);
+            case "rainbowTest":
+                return this._createRainbowTestPatternHexString(row, col, animVarCoeff, countRef);
             default:
                 return this._createCustomPatternHexString(row, col, animVarCoeff, countRef);
         }
@@ -111,9 +113,26 @@ export class CanvasLED {
         // number that wraps around when overflowed so it can loop colors
         const uint8_1 = new Uint8Array(1).fill(num);
 
-        const intToHexString = uint8_1[0].toString(16);
+        return uint8_1[0].toString(16);
+    }
 
-        return intToHexString;
+    private _createRainbowTestPatternHexString(
+        row: number,
+        col: number,
+        animVarCoeff: string,
+        countRef: number
+    ): string {
+        // original idea relating to animation start times and durations (only applies to the css styling but has some similarities)
+        // animation-duration: ${Number(coeff) / 100}s;
+        // led / 64 + led / (row / led) / (Number(coeff) / 20 + row / (Number(coeff) / 20))
+        const num =
+            col / 64 +
+            col / ((row + 1) / (col + 1)) / Number(animVarCoeff) +
+            countRef / Number(animVarCoeff);
+
+        const uint8 = new Uint8Array(1).fill(num);
+
+        return uint8[0].toString(16);
     }
 
     private _createSpiralPatternHexString(
@@ -127,8 +146,6 @@ export class CanvasLED {
         // number that wraps around when overflowed so it can loop colors
         const uint8_1 = new Uint8Array(1).fill(num);
 
-        const intToHexString = uint8_1[0].toString(16);
-
-        return intToHexString;
+        return uint8_1[0].toString(16);
     }
 }
