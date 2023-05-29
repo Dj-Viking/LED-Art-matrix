@@ -98,6 +98,8 @@ export class CanvasLED {
                 return this._createRainbowTestPatternHexString(row, col, animVarCoeff, countRef);
             case "v2":
                 return this._createV2PatternHexString(row, col, animVarCoeff, countRef);
+            case "waves":
+                return this._createWavesPatternHexString(row, col, animVarCoeff, countRef);
             default:
                 return this._createCustomPatternHexString(row, col, animVarCoeff, countRef);
         }
@@ -116,6 +118,24 @@ export class CanvasLED {
         const uint8_1 = new Uint8Array(1).fill(num);
 
         return uint8_1[0].toString(16);
+    }
+
+    private _createWavesPatternHexString(
+        row: number,
+        col: number,
+        animVarCoeff: string,
+        countRef: number
+    ): string {
+        // animation-duration: ${led / 32 + row / led}s;
+        // animation-delay: ${led / 16 + led / (row / led - 2 * Number(coeff))}s;
+
+        const num =
+            countRef / (col + 1) / 16 +
+            (col + 1) / ((row + 1) / (col + 1) - (countRef % 512) * (Number(animVarCoeff) * 0.1));
+
+        const uint8 = new Uint8Array(1).fill(num - (countRef / 2) * ((row + 1) / (col + 1)));
+
+        return uint8[0].toString(16);
     }
 
     private _createV2PatternHexString(

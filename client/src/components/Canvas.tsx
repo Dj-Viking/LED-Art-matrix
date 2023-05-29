@@ -65,7 +65,7 @@ export const Canvas: React.FC = () => {
                                 animVarCoeff,
                                 countRef.current,
                                 isHSL,
-                                "v2"
+                                "waves"
                             );
 
                             ctx.fillStyle = ledRef.current.fillStyle;
