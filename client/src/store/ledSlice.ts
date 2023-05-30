@@ -8,7 +8,6 @@ const initialState: ILedState = {
     animationDurationState: "",
     presetName: "",
     isHSL: true,
-    html: "",
 };
 
 export const ledSlice = createSlice({
@@ -20,19 +19,9 @@ export const ledSlice = createSlice({
                 state.resetTimerFn = action.payload;
             });
         },
-        clearStyle: (state: ILedState) => {
-            return produce(state, () => {
-                state.html = "";
-            });
-        },
         toggleIsHSL: (state: ILedState) => {
             return produce(state, () => {
                 state.isHSL = !state.isHSL;
-            });
-        },
-        setLedStyle: (state: ILedState, action: PayloadAction<string>) => {
-            return produce(state, () => {
-                state.html = action.payload;
             });
         },
         setAnimVarCoeff: (state: ILedState, action: PayloadAction<string>) => {

@@ -1,6 +1,5 @@
 import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
-import { LedStyleEngine } from "./LedStyleEngineClass";
 import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
 
@@ -43,10 +42,8 @@ class PresetButtonsList {
         preset: string,
         animVarCoeff: string
     ): void {
-        const styleHTML = new LedStyleEngine(preset).createStyleSheet(animVarCoeff);
         dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
         dispatchcb(ledActions.setPresetName(preset));
-        dispatchcb(ledActions.setLedStyle(styleHTML));
     }
 
     private _createDisplayName(displayName: string, presetName: string): string {

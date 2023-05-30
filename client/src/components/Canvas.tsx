@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useRef } from "react";
-import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { CanvasLED } from "../utils/CanvasLED";
 import { ledActions } from "../store/ledSlice";
+import { LED_AMOUNT } from "../constants";
 
 export const Canvas: React.FC = () => {
     const { animVarCoeff, presetName, isHSL } = getGlobalState(useSelector);
@@ -55,8 +55,8 @@ export const Canvas: React.FC = () => {
 
                     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-                    for (let col = 0; col < LedStyleEngine.LED_AMOUNT + 1; col++) {
-                        for (let row = 0; row < LedStyleEngine.LED_AMOUNT + 1; row++) {
+                    for (let col = 0; col < LED_AMOUNT + 1; col++) {
+                        for (let row = 0; row < LED_AMOUNT + 1; row++) {
                             ledRef.current = new CanvasLED(
                                 col,
                                 row,

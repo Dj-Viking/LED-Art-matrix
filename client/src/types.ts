@@ -60,7 +60,6 @@ export interface ILedState {
     presetName: string;
     animationDurationState: string;
     animVarCoeff: string;
-    html: string;
 }
 
 export interface IGif {
