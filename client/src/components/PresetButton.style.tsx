@@ -71,7 +71,7 @@ const ClearButton: React.FC = () => {
         <animated.button
             style={clear}
             role="button"
-            data-testid="clear"
+            data-testid="resetTimer"
             className="preset-button"
             onClick={() => resetTimerFn()}
         >

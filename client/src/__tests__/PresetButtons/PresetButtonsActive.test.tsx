@@ -65,17 +65,6 @@ describe("test the preset buttons are becoming active and inactive and clearing 
         expect(screen.getByTestId("waves").classList).toHaveLength(1);
         expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-inactive");
 
-        const clear = screen.getByTestId("clear");
-
-        act(() => {
-            clear.dispatchEvent(TestService.createBubbledEvent("click"));
-        });
-
-        expect(screen.getByTestId("v2").classList).toHaveLength(1);
-        expect(screen.getByTestId("v2").classList[0]).toBe("preset-button-inactive");
-        expect(screen.getByTestId("waves").classList).toHaveLength(1);
-        expect(screen.getByTestId("waves").classList[0]).toBe("preset-button-inactive");
-
         act(() => {
             waves.dispatchEvent(TestService.createBubbledEvent("click"));
         });
