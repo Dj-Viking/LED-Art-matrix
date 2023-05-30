@@ -80,7 +80,6 @@ it("tests the led styles change to rainbowTest when rainbow button is clicked", 
     expect(fetch).toHaveBeenCalledTimes(1);
 
     const preset_buttons = {
-        clear: screen.getByTestId("clear"),
         rainbowTest: await screen.findByTestId("rainbowTest"),
         v2: await screen.findByTestId("v2"),
         waves: await screen.findByTestId("waves"),

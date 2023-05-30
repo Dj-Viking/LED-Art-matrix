@@ -3,7 +3,7 @@
 import React from "react";
 import App from "../../App";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import "@types/jest";
@@ -11,7 +11,6 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
-import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
@@ -44,7 +43,6 @@ it("tests the led styles change to v2 when v2 button is clicked", async () => {
     expect(hiddenHistoryRef).toHaveTextContent("/");
 
     const preset_buttons = {
-        clear: screen.getByTestId("clear"),
         rainbowTest: screen.getByTestId("rainbowTest"),
         v2: screen.getByTestId("v2"),
         waves: screen.getByTestId("waves"),
@@ -53,14 +51,6 @@ it("tests the led styles change to v2 when v2 button is clicked", async () => {
         saveDefault: screen.getByTestId("saveDefault"),
     };
 
-    //get ref to led element and check it's there
-
-    act(() => {
-        fireEvent.click(preset_buttons.clear);
-        preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
-    });
-
-    expect(preset_buttons.clear).toBeInTheDocument();
     expect(preset_buttons.rainbowTest).toBeInTheDocument();
     expect(preset_buttons.v2).toBeInTheDocument();
     expect(preset_buttons.waves).toBeInTheDocument();

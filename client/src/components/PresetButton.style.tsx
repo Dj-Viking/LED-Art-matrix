@@ -64,7 +64,7 @@ const IsHSLButton: React.FC = () => {
     );
 };
 
-const ClearButton: React.FC = () => {
+const ResetTimerButton: React.FC = () => {
     const { resetTimerFn } = getGlobalState(useSelector);
     const clear = useSpring(_clear);
     return (
@@ -237,7 +237,7 @@ export {
     SavePresetButton,
     PresetLabelTitle,
     PresetControlButtonsContainer,
-    ClearButton,
+    ResetTimerButton,
     SaveDefaultButton,
     DeleteButton,
     OpenNewWindowButton,

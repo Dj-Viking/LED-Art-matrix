@@ -15,7 +15,6 @@ import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlCl
 import { mount, ReactWrapper } from "enzyme";
 import { IPresetButtonsProps, PresetButtons } from "../../components/PresetButtons";
 import {
-    ClearButton,
     OpenNewWindowButton,
     SaveDefaultButton,
 } from "../../components/PresetButton.style";
@@ -55,17 +54,6 @@ describe("test logging in and checking buttons are there", () => {
         const openNewWindowButton = wrapper.find(OpenNewWindowButton);
 
         openNewWindowButton.props().handleOpenNewWindow?.({ preventDefault: () => null });
-    });
-    it("covers clicking the clear button click handler", () => {
-        const wrapper: ReactWrapper<IPresetButtonsProps> = mount(
-            <Provider store={toolkitStore}>
-                <PresetButtons />
-            </Provider>
-        );
-
-        const clearButton = wrapper.find(ClearButton);
-
-        clearButton.props().clickHandler?.({ preventDefault: () => null });
     });
 
     it("covers clicking the save default button click handler", () => {

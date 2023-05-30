@@ -12,7 +12,7 @@ import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
 import {
-    ClearButton,
+    ResetTimerButton,
     DeleteButton,
     IsHSLButton,
     OpenNewWindowButton,
@@ -84,13 +84,6 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
     }
 
-    function clearButtonClickHandler(event: any): void {
-        event.preventDefault();
-        dispatch(ledActions.setPresetName(""));
-        dispatch(ledActions.clearStyle());
-        dispatch(presetButtonsListActions.setAllInactive());
-    }
-
     useEffect(() => {
         if (Auth.loggedIn()) {
             dispatch(presetButtonsListActions.getPresetsAsync());
@@ -136,7 +129,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             <PresetLabelTitle auth={Auth} />
 
             <PresetControlButtonsContainer>
-                <ClearButton />
+                <ResetTimerButton />
                 <IsHSLButton />
                 <SaveDefaultButton auth={Auth} clickHandler={handleSaveDefault} />
                 <SavePresetButton auth={Auth} />
