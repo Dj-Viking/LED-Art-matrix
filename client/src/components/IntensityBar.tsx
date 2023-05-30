@@ -7,10 +7,9 @@ interface IntensityBarProps {
 const IntensityBar: React.FC<IntensityBarProps> = ({ intensity }) => {
     return (
         <>
-            <span>Intensity: {intensity}</span>
+            <span style={{ margin: "0 auto" }}>Intensity: {intensity}</span>
             <div
                 style={{
-                    marginTop: "1em",
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "center",

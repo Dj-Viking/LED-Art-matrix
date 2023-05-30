@@ -143,7 +143,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
             </PresetControlButtonsContainer>
 
-            <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
+            <div data-testid="buttons-parent" style={{ marginBottom: "2em", margin: "0 auto" }}>
                 {/* preset style toggle buttons */}
                 {presetButtons?.map?.((button) => {
                     return <PresetButton key={button.id} button={{ ...button }} />;

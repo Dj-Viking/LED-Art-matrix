@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";
 
-export const CanvasControls: React.FC<{ countRef: number }> = (props) => {
+export const CanvasControls: React.FC<{ resetCountRef: () => void }> = (props) => {
     const { isHSL } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
@@ -16,7 +16,7 @@ export const CanvasControls: React.FC<{ countRef: number }> = (props) => {
             </button>
             <button
                 style={{ color: "black", width: "50%", margin: "0 auto" }}
-                onClick={() => (props.countRef = 0)}
+                onClick={() => props.resetCountRef()}
             >
                 reset animation timer
             </button>

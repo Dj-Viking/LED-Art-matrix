@@ -105,10 +105,14 @@ export const Canvas: React.FC = () => {
         animate();
     });
 
+    const resetCountRef = (): void => {
+        countRef.current = 0;
+    };
+
     return (
         <>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <CanvasControls countRef={countRef.current} />
+                <CanvasControls resetCountRef={resetCountRef} />
                 <canvas
                     style={{ marginTop: "40px" }}
                     id="canvas"
