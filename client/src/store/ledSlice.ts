@@ -4,6 +4,7 @@ import { produce } from "immer";
 
 const initialState: ILedState = {
     animVarCoeff: "1",
+    resetTimerFn: () => void 0,
     animationDurationState: "",
     presetName: "",
     isHSL: true,
@@ -14,6 +15,11 @@ export const ledSlice = createSlice({
     name: "ledSlice",
     initialState,
     reducers: {
+        setResetTimerFn: (state: ILedState, action: PayloadAction<() => void>) => {
+            return produce(state, () => {
+                state.resetTimerFn = action.payload;
+            });
+        },
         clearStyle: (state: ILedState) => {
             return produce(state, () => {
                 state.html = "";

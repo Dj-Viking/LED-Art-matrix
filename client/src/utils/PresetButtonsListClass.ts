@@ -82,7 +82,7 @@ class PresetButtonsList {
                 _id: keyGen(),
                 presetName: name,
                 displayName: name,
-                animVarCoeff: "64",
+                animVarCoeff: "1",
             } as IDBPreset;
         });
 

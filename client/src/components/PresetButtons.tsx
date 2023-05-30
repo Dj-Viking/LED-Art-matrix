@@ -14,6 +14,7 @@ import MIDIListenerWrapper from "./MIDIListenerWrapper";
 import {
     ClearButton,
     DeleteButton,
+    IsHSLButton,
     OpenNewWindowButton,
     PresetControlButtonsContainer,
     PresetLabelTitle,
@@ -135,7 +136,8 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             <PresetLabelTitle auth={Auth} />
 
             <PresetControlButtonsContainer>
-                <ClearButton clickHandler={clearButtonClickHandler} />
+                <ClearButton />
+                <IsHSLButton />
                 <SaveDefaultButton auth={Auth} clickHandler={handleSaveDefault} />
                 <SavePresetButton auth={Auth} />
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />

@@ -2,13 +2,13 @@
 import React, { useCallback, useEffect, useRef } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
 import { CanvasLED } from "../utils/CanvasLED";
-import { CanvasControls } from "./CanvasControls";
+import { ledActions } from "../store/ledSlice";
 
 export const Canvas: React.FC = () => {
     const { animVarCoeff, presetName, isHSL } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
 
     // create reference to store the requestAnimationFrame ID when raf is called
     const RAFRef = useRef<number>(0);
@@ -96,23 +96,22 @@ export const Canvas: React.FC = () => {
      * @see https://css-tricks.com/using-requestanimationframe-with-react-hooks/
      */
     useEffect(() => {
+        animate();
         RAFRef.current = window.requestAnimationFrame(animate);
         return () => window.cancelAnimationFrame(RAFRef.current);
     }, [animate]);
 
-    window.addEventListener("DOMContentLoaded", (e) => {
-        console.log("dom content loaded", e);
-        animate();
-    });
-
-    const resetCountRef = (): void => {
+    const resetCountRef = useCallback((): void => {
         countRef.current = 0;
-    };
+    }, []);
+
+    useEffect(() => {
+        dispatch(ledActions.setResetTimerFn(resetCountRef));
+    }, [dispatch, resetCountRef]);
 
     return (
         <>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <CanvasControls resetCountRef={resetCountRef} />
                 <canvas
                     style={{ marginTop: "40px" }}
                     id="canvas"

@@ -8,11 +8,13 @@ import {
     _saveNewPresetButtonSpring,
     _openNewWindow,
     _toggleMIDIMapEditModeButton,
+    _hslButton,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { getGlobalState } from "../store/store";
+import { ledActions } from "../store/ledSlice";
 
 interface PresetLabelTitleProps {
     auth: typeof AuthService;
@@ -45,11 +47,25 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
     );
 };
 
-interface ClearButtonProps {
-    clickHandler: (event: any) => void;
-}
+const IsHSLButton: React.FC = () => {
+    const { isHSL } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    const HSLButton = useSpring(_hslButton);
+    return (
+        <animated.button
+            style={HSLButton}
+            role="button"
+            data-testid="isHSL"
+            className="preset-button"
+            onClick={() => dispatch(ledActions.toggleIsHSL())}
+        >
+            {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
+        </animated.button>
+    );
+};
 
-const ClearButton: React.FC<ClearButtonProps> = (props) => {
+const ClearButton: React.FC = () => {
+    const { resetTimerFn } = getGlobalState(useSelector);
     const clear = useSpring(_clear);
     return (
         <animated.button
@@ -57,9 +73,9 @@ const ClearButton: React.FC<ClearButtonProps> = (props) => {
             role="button"
             data-testid="clear"
             className="preset-button"
-            onClick={props.clickHandler}
+            onClick={() => resetTimerFn()}
         >
-            clear
+            Reset Animation Timer
         </animated.button>
     );
 };
@@ -214,7 +230,6 @@ export type {
     DeletePresetButtonProps,
     PresetLabelTitleProps,
     SaveDefaultButtonProps,
-    ClearButtonProps,
     OpenNewWindowButtonProps,
     ToggleMIDIMapEditModeButtonProps,
 };
@@ -227,4 +242,5 @@ export {
     DeleteButton,
     OpenNewWindowButton,
     ToggleMIDIMapEditModeButton,
+    IsHSLButton,
 };
