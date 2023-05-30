@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
     DM5_ANIMATION,
-    FOUR_SPIRALS_ANIMATION,
     RAINBOW_TEST_ANIMATION,
     RAINBOW_V2_ANIMATION,
     SPIRAL_ANIMATION,
@@ -51,12 +50,6 @@ export class LedStyleEngine {
             case "spiral":
                 str = `
                     ${SPIRAL_ANIMATION}
-                    ${this.createLedClass(coeff)}
-                `;
-                break;
-            case "fourSpirals":
-                str = `
-                    ${FOUR_SPIRALS_ANIMATION}
                     ${this.createLedClass(coeff)}
                 `;
                 break;
@@ -111,9 +104,6 @@ export class LedStyleEngine {
             case "spiral":
                 columnDelays = this.spiralDelay(led, row);
                 break;
-            case "fourSpirals":
-                columnDelays = this.fourSpiralsDelay(led, row);
-                break;
             case "dm5":
                 columnDelays = this.dm5Delay(led, row, coeff);
                 break;
@@ -160,16 +150,6 @@ export class LedStyleEngine {
             animation-duration: 2s;
             animation-iteration-count: infinite;
             animation-delay: ${led / 32 + led * (row / 16)}s;
-            animation-direction: reverse;
-            animation-timing-function: ease-in;
-        `;
-    }
-
-    private fourSpiralsDelay(led: number, row: number): string {
-        return `
-            animation-duration: 2s;
-            animation-iteration-count: infinite;
-            animation-delay: ${led / 32 + led * (row / 8)}s;
             animation-direction: reverse;
             animation-timing-function: ease-in;
         `;

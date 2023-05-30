@@ -53,7 +53,7 @@ class PresetButtonsList {
         // doing this for now since the initial presets always have the same displayName as the presetName
         // and will have an initial displayName of "" when instantiated on the server
         if (
-            ["dm5", "waves", "v2", "rainbowTest", "fourSpirals", "spiral"].includes(presetName) &&
+            ["dm5", "waves", "v2", "rainbowTest", "spiral"].includes(presetName) &&
             displayName === ""
         ) {
             return presetName;
@@ -75,7 +75,7 @@ class PresetButtonsList {
     }
 
     public static generateOfflinePresets(): IPresetButton[] {
-        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
+        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "dm5"];
 
         const tempPresets = presetNames.map((name) => {
             return {

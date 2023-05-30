@@ -1,5 +1,5 @@
 /* eslint-disable no-empty */
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PresetButton from "./PresetButton";
 import Auth from "../utils/AuthService";
@@ -7,7 +7,7 @@ import API from "../utils/ApiService";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
 import SavePresetModalContent from "./Modal/SavePresetModal";
-import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
 import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
@@ -26,13 +26,11 @@ import { getGlobalState } from "../store/store";
 import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
-import { keyGen } from "../utils/keyGen";
-
 export interface IPresetButtonsProps {
     children?: any;
 }
 
-const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
+export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const dispatch = useDispatch();
 
     const {
@@ -153,29 +151,23 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
                 <MIDIListenerWrapper />
 
-                {["dm5", "waves", "v2", "rainbowTest"].includes(presetName) && (
-                    <>
-                        <Slider
-                            name="led-anim-var"
-                            testid="led-anim-variation"
-                            label="LED Animation Variation: "
-                            inputValueState={animVarCoeff}
-                            handleChange={(event) => {
-                                event.preventDefault();
-                                dispatch(ledActions.setAnimVarCoeff(event.target.value));
-                                dispatch(
-                                    modalActions.setSaveModalContext({
-                                        presetName: presetName,
-                                        animVarCoeff: event.target.value,
-                                    })
-                                );
-                            }}
-                        />
-                    </>
-                )}
+                <Slider
+                    name="led-anim-var"
+                    testid="led-anim-variation"
+                    label="LED Animation Variation: "
+                    inputValueState={animVarCoeff}
+                    handleChange={(event) => {
+                        event.preventDefault();
+                        dispatch(ledActions.setAnimVarCoeff(event.target.value));
+                        dispatch(
+                            modalActions.setSaveModalContext({
+                                presetName: presetName,
+                                animVarCoeff: event.target.value,
+                            })
+                        );
+                    }}
+                />
             </div>
         </>
     );
 };
-
-export default PresetButtons;

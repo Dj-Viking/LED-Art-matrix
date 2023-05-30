@@ -158,8 +158,16 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
     );
 };
 
+const StyledSliderContainer = styled.div`
+    & {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+`;
+
 const ArtScrollerSliderContainer: React.FC = ({ children }) => {
-    return <div className="slider-container">{children}</div>;
+    return <StyledSliderContainer>{children}</StyledSliderContainer>;
 };
 
 const ArtScrollerCircleWidthLabel: React.FC = () => {
@@ -167,9 +175,9 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
         slider: { circleWidth },
     } = getGlobalState(useSelector);
     return (
-        <label htmlFor="scroller-circle-width" style={{ color: "white" }}>
+        <StyledSliderLabel htmlFor="scroller-circle-width">
             Scroller Circle Width: {circleWidth}
-        </label>
+        </StyledSliderLabel>
     );
 };
 
@@ -245,12 +253,19 @@ const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
         slider: { vertPos },
     } = getGlobalState(useSelector);
     return (
-        <label htmlFor="vertical-positioning" style={{ color: "white" }}>
+        <StyledSliderLabel htmlFor="vertical-positioning">
             Scroller Vert Positioning: {vertPos}
-        </label>
+        </StyledSliderLabel>
     );
 };
 type ArtScrollerVerticalPositionSliderProps = DOMAttributes<HTMLInputElement>;
+
+export const StyledSlider = styled.input`
+    & {
+        width: 70%;
+        margin: 0 auto;
+    }
+`;
 
 const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSliderProps> = () => {
     const {
@@ -258,9 +273,8 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <input
+        <StyledSlider
             name="vertical-positioning"
-            className="slider-style"
             data-testid="vert-pos"
             type="range"
             min="0"
@@ -284,9 +298,9 @@ const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
         slider: { hPos },
     } = getGlobalState(useSelector);
     return (
-        <label htmlFor="horizontal-positioning" style={{ color: "white" }}>
+        <StyledSliderLabel htmlFor="horizontal-positioning">
             Scroller Horizontal Positioning: {Number(hPos) / 1000}
-        </label>
+        </StyledSliderLabel>
     );
 };
 
@@ -300,9 +314,8 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <input
+        <StyledSlider
             name="horizontal-positioning"
-            className="slider-style"
             type="range"
             min="0"
             data-testid="horiz-pos"
@@ -321,14 +334,21 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
     );
 };
 
+export const StyledSliderLabel = styled.label`
+    & {
+        color: white;
+        margin: 0 auto;
+    }
+`;
+
 const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
     const {
         slider: { invert },
     } = getGlobalState(useSelector);
     return (
-        <label htmlFor="invert" style={{ color: "white" }}>
+        <StyledSliderLabel htmlFor="invert">
             Invert Colors: {Number(invert) / 100}
-        </label>
+        </StyledSliderLabel>
     );
 };
 
@@ -340,8 +360,7 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <input
-            className="slider-style"
+        <StyledSlider
             name="invert"
             type="range"
             data-testid="invert"
@@ -366,9 +385,9 @@ const ArtScrollerSpeedSliderLabel: React.FC = () => {
         slider: { animDuration },
     } = getGlobalState(useSelector);
     return (
-        <label htmlFor="animation-duration" style={{ color: "white" }}>
+        <StyledSliderLabel htmlFor="animation-duration">
             Scroll Speed: {Number(animDuration) / 100}
-        </label>
+        </StyledSliderLabel>
     );
 };
 
@@ -380,8 +399,7 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <input
-            className="slider-style"
+        <StyledSlider
             name="animation-duration"
             type="range"
             data-testid="anim-duration"

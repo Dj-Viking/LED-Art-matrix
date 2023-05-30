@@ -38,6 +38,12 @@ window.HTMLCanvasElement.prototype.getContext = () => {
         roundRect: () => {
             //
         },
+        clearRect: () => {
+            //
+        },
+        closePath: () => {
+            //
+        },
     };
 };
 

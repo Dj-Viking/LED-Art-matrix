@@ -130,7 +130,7 @@ describe("Adding a preset", () => {
             method: "POST",
         });
 
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(10);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(9);
         const newPresetBtn = await screen.findByText(/new preset/);
         expect(newPresetBtn).toBeInTheDocument();
 

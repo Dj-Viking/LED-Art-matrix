@@ -97,17 +97,6 @@
   pointer-events: none;
 }
 
-.slider-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.slider-style {
-  width: 70%;
-  margin: 0 auto;
-}
-
 .figure-transition-style {
   transition-duration: 1s;
 }

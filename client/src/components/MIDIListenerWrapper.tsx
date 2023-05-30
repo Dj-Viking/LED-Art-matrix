@@ -85,6 +85,8 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 style={{
                     visibility: isLedWindow() ? "hidden" : "visible",
                     height: isLedWindow() ? "0px" : "auto",
+                    display: "flex",
+                    flexDirection: "column",
                 }}
             >
                 <TestMIDI

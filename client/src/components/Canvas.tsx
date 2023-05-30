@@ -1,15 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
-import { useDispatch, useSelector } from "react-redux";
-import { ledActions } from "../store/ledSlice";
+import { useSelector } from "react-redux";
+
 import { CanvasLED } from "../utils/CanvasLED";
+import { CanvasControls } from "./CanvasControls";
 
 export const Canvas: React.FC = () => {
-    const { animVarCoeff, presetName } = getGlobalState(useSelector);
-    const [isHSL, setIsHSL] = useState(true);
-    const dispatch = useDispatch();
+    const { animVarCoeff, presetName, isHSL } = getGlobalState(useSelector);
 
     // create reference to store the requestAnimationFrame ID when raf is called
     const RAFRef = useRef<number>(0);
@@ -65,7 +64,7 @@ export const Canvas: React.FC = () => {
                                 animVarCoeff,
                                 countRef.current,
                                 isHSL,
-                                "dm5"
+                                presetName
                             );
 
                             ctx.fillStyle = ledRef.current.fillStyle;
@@ -109,32 +108,7 @@ export const Canvas: React.FC = () => {
     return (
         <>
             <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                <div style={{ margin: "0 auto" }}>anim var{animVarCoeff}</div>
-                <button
-                    style={{ color: "black", width: "50%", margin: "0 auto" }}
-                    onClick={() => setIsHSL(!isHSL)}
-                >
-                    {isHSL ? "SWITCH TO HEX RGB" : "SWITCH TO HSL"}
-                </button>
-                <button
-                    style={{ color: "black", width: "50%", margin: "0 auto" }}
-                    onClick={() => (countRef.current = 0)}
-                >
-                    reset animation timer
-                </button>
-                <span style={{ margin: "0 auto" }}>{isHSL ? "HSL" : "HEX RGB"}</span>
-                <span>
-                    <input
-                        type="range"
-                        min="0"
-                        max="360"
-                        value={animVarCoeff}
-                        onInput={(e) => {
-                            dispatch(ledActions.setAnimVarCoeff(e.target.value));
-                        }}
-                    />
-                    change me! {animVarCoeff}
-                </span>
+                <CanvasControls countRef={countRef.current} />
                 <canvas
                     style={{ marginTop: "40px" }}
                     id="canvas"

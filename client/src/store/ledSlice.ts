@@ -6,6 +6,7 @@ const initialState: ILedState = {
     animVarCoeff: "1",
     animationDurationState: "",
     presetName: "",
+    isHSL: true,
     html: "",
 };
 
@@ -16,6 +17,11 @@ export const ledSlice = createSlice({
         clearStyle: (state: ILedState) => {
             return produce(state, () => {
                 state.html = "";
+            });
+        },
+        toggleIsHSL: (state: ILedState) => {
+            return produce(state, () => {
+                state.isHSL = !state.isHSL;
             });
         },
         setLedStyle: (state: ILedState, action: PayloadAction<string>) => {

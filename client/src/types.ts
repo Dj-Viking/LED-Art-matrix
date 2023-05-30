@@ -55,6 +55,7 @@ export interface IJwtData extends jwt.JwtPayload {
     exp?: number;
 }
 export interface ILedState {
+    isHSL: boolean;
     presetName: string;
     animationDurationState: string;
     animVarCoeff: string;

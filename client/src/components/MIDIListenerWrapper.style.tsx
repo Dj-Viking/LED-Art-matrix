@@ -28,7 +28,14 @@ export const ControlNameContainer = styled.div`
 `;
 
 export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) => {
-    return <h2 className={isLedWindow() ? "no-height" : ""}>{heading}</h2>;
+    return (
+        <h2
+            style={{ margin: "0 auto", marginBottom: "10px" }}
+            className={isLedWindow() ? "no-height" : ""}
+        >
+            {heading}
+        </h2>
+    );
 };
 
 export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {

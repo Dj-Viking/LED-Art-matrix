@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import {
     _deletePresetButtonSpring,
@@ -33,6 +34,7 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
                     <span
                         style={{
                             color: "white",
+                            margin: "0 auto",
                         }}
                     >
                         To save your own Preset, Log in or Sign up!
@@ -190,10 +192,21 @@ const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = 
     );
 };
 
+export const StyledPresetControlButtonsContainer = styled.div`
+    & {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        height: 10wh;
+        margin-bottom: 10px;
+    }
+`;
+
 const PresetControlButtonsContainer: React.FC<{
     children: React.ReactNode | React.ReactNode[];
 }> = ({ children }) => {
-    return <div className="preset-button-container">{children}</div>;
+    return <StyledPresetControlButtonsContainer>{children}</StyledPresetControlButtonsContainer>;
 };
 
 export type {

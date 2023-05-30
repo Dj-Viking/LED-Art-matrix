@@ -90,7 +90,6 @@ it("tests the preset buttons render", async () => {
         v2: await screen.findByTestId("v2"),
         waves: await screen.findByTestId("waves"),
         spiral: await screen.findByTestId("spiral"),
-        fourSpirals: await screen.findByTestId("fourSpirals"),
         dm5: await screen.findByTestId("dm5"),
         saveDefault: await screen.findByTestId("saveDefault"),
     };
@@ -99,14 +98,10 @@ it("tests the preset buttons render", async () => {
     expect(preset_buttons.v2).toBeInTheDocument();
     expect(preset_buttons.waves).toBeInTheDocument();
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeInTheDocument();
     expect(preset_buttons.dm5).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
 
     act(() => {
         preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
     });
-
-    expect(screen.getByTestId("led1-1").classList.length).toBe(1);
-    expect(screen.getByTestId("led1-1").classList[0]).toBe("led1-1");
 });

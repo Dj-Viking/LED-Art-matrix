@@ -19,7 +19,7 @@ import {
     MOCK_SIGN_TOKEN_ARGS,
 } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
-import PresetButtons from "../../components/PresetButtons";
+import { PresetButtons } from "../../components/PresetButtons";
 import { mount } from "enzyme";
 import { DeleteButton } from "../../components/PresetButton.style";
 import { toolkitStore } from "../../store/store";
