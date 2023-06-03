@@ -10,6 +10,7 @@ import {
 import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
+import { ToolkitDispatch } from "../store/store";
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -256,7 +257,7 @@ class MIDIController implements IMIDIController {
 
     public static handleXONEK2MIDIMessage(
         midi_event: MIDIMessageEvent,
-        _dispatchcb: React.Dispatch<any>,
+        _dispatchcb: ToolkitDispatch,
         _buttonIds: string[]
     ): void {
         const midi_intensity = midi_event.data[2];
@@ -318,7 +319,7 @@ class MIDIController implements IMIDIController {
                     PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
                 }
                 break;
-            case "1_lower_button":
+            case "1_middle_button":
                 if (midi_intensity === 127) {
                     _dispatchcb(presetButtonsListActions.toggleMidiMode());
                     _dispatchcb(midiActions.toggleMidiEditMode());
@@ -363,6 +364,11 @@ class MIDIController implements IMIDIController {
                         value: midi_intensity <= 0 ? "1" : midi_intensity.toString(),
                     })
                 );
+                break;
+            case "1_lower_button": // reset timer button
+                if (midi_intensity === 127) {
+                    _dispatchcb((_dispatch, getState) => getState().ledState.resetTimerFn());
+                }
                 break;
             case "1_fader":
                 // debounce? not sure if this helps...
