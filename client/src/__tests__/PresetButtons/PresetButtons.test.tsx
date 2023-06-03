@@ -3,6 +3,7 @@
 // @ts-ignore
 import React from "react";
 import { Provider } from "react-redux";
+import { act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import {
@@ -17,10 +18,16 @@ import { IPresetButtonsProps, PresetButtons } from "../../components/PresetButto
 import {
     OpenNewWindowButton,
     SaveDefaultButton,
+    DeleteButton,
+    ToggleMIDIMapEditModeButton,
+    IsHSLButton,
 } from "../../components/PresetButton.style";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { presetButtonsListActions } from "../../store/presetButtonListSlice";
 import { toolkitStore } from "../../store/store";
+import { Slider } from "../../components/Slider";
+import { SavePresetModal } from "../../components/Modal/SavePresetModal";
+import { DeletePresetModal } from "../../components/Modal/DeletePresetConfirmModal";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
     return Promise.resolve({
@@ -145,7 +152,36 @@ describe("test logging in and checking buttons are there", () => {
         );
 
         const saveDefaultButton = wrapper.find(SaveDefaultButton);
+        const slider = wrapper.find(Slider);
+        const savePresetModal = wrapper.find(SavePresetModal);
+        const deletePresetModal = wrapper.find(DeletePresetModal);
+        const deleteButton = wrapper.find(DeleteButton);
+        const midiMapEditModebutton = wrapper.find(ToggleMIDIMapEditModeButton);
+        const isHSLButton = wrapper.find(IsHSLButton);
 
         saveDefaultButton.props().clickHandler?.({ preventDefault: () => null });
+
+        // adjust slider to cover handle change
+        slider
+            .props()
+            .handleChange?.({ target: { value: "64 " }, preventDefault: () => null } as any);
+
+        // cover save preset modal
+        savePresetModal.props().onClose?.({ preventDefault: () => null } as any);
+        // cover delete preset modal
+        deletePresetModal.props().onCancel?.({ preventDefault: () => null } as any);
+        deletePresetModal.props().onConfirm?.({ preventDefault: () => null } as any);
+
+        // click delete button to activate delete mode
+        deleteButton.props().clickHandler({ preventDefault: () => null } as any);
+
+        // cover midi map edit mode button
+        midiMapEditModebutton
+            .props()
+            .toggleMIDIMapEditMode?.({ preventDefault: () => null } as any);
+
+        act(() => {
+            isHSLButton.simulate("click");
+        });
     });
 });

@@ -7,7 +7,7 @@ import {
 } from "./actions/presetButtonsActionCreators";
 import { newReducer } from "../utils/newReducer";
 
-const initialState: IPresetButtonsListState = {
+export const initialPresetButtonListState: IPresetButtonsListState = {
     midiMode: false,
     presetButtons: [],
 };
@@ -17,7 +17,7 @@ const getPresetsAsync = buildGetPresetButtonsAction;
 
 export const presetButtonsListSlice = createSlice({
     name: "presetButtonsListSlice",
-    initialState,
+    initialState: initialPresetButtonListState,
     reducers: {
         setPresetButtonsList: (
             state: IPresetButtonsListState,

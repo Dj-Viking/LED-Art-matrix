@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ILedState } from "../types";
 import { produce } from "immer";
 
-const initialState: ILedState = {
+export const initialLLedState: ILedState = {
     animVarCoeff: "1",
     resetTimerFn: () => void 0,
     animationDurationState: "",
@@ -12,7 +12,7 @@ const initialState: ILedState = {
 
 export const ledSlice = createSlice({
     name: "ledSlice",
-    initialState,
+    initialState: initialLLedState,
     reducers: {
         setResetTimerFn: (state: ILedState, action: PayloadAction<() => void>) => {
             return produce(state, () => {

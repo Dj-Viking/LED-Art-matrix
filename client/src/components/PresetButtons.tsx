@@ -6,10 +6,10 @@ import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
-import SavePresetModalContent from "./Modal/SavePresetModal";
+import { SavePresetModal } from "./Modal/SavePresetModal";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
-import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
+import { DeletePresetModal } from "./Modal/DeletePresetConfirmModal";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
 import {
     ResetTimerButton,
@@ -102,7 +102,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     return (
         <>
             <Modal isOpen={saveModalIsOpen}>
-                <SavePresetModalContent
+                <SavePresetModal
                     context={saveModalContext}
                     onClose={(event) => {
                         event.preventDefault();
@@ -112,7 +112,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             </Modal>
 
             <Modal isOpen={deleteModalIsOpen}>
-                <DeletePresetConfirmModal
+                <DeletePresetModal
                     context={deleteModalContext}
                     onCancel={(event: any) => {
                         event.preventDefault();
