@@ -122,4 +122,4 @@ const DeletePresetModal: React.FC<DeletePresetConfirmModalProps> = ({
     );
 };
 
-export default DeletePresetModal;
+export { DeletePresetModal };

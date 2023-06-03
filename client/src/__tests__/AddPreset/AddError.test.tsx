@@ -4,7 +4,7 @@
 import React from "react";
 import App from "../../App";
 import { Provider } from "react-redux";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import user from "@testing-library/user-event";
 import "@types/jest";
 import "@testing-library/jest-dom";
@@ -137,7 +137,7 @@ describe("Adding a preset error", () => {
             method: "POST",
         });
 
-        expect(btnContainer.children).toHaveLength(14);
+        expect(btnContainer.children).toHaveLength(13);
         const error = await screen.findByTestId("add-error");
         expect(error).toBeInTheDocument();
     });

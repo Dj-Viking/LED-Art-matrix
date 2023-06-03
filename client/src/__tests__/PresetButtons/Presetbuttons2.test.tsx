@@ -9,14 +9,12 @@ import { Router } from "react-router-dom";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import { act } from "react-dom/test-utils";
 import {
     LOGIN_MOCK_TOKEN,
     MOCK_ACCESS_INPUTS,
     MOCK_ACCESS_OUTPUTS,
     MOCK_PRESETS,
 } from "../../utils/mocks";
-import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected
@@ -85,12 +83,10 @@ it("tests the preset buttons render", async () => {
     expect(hiddenHistoryRef).toHaveTextContent("/");
 
     const preset_buttons = {
-        clear: await screen.findByTestId("clear"),
         rainbowTest: await screen.findByTestId("rainbowTest"),
         v2: await screen.findByTestId("v2"),
         waves: await screen.findByTestId("waves"),
         spiral: await screen.findByTestId("spiral"),
-        fourSpirals: await screen.findByTestId("fourSpirals"),
         dm5: await screen.findByTestId("dm5"),
         saveDefault: await screen.findByTestId("saveDefault"),
     };
@@ -99,14 +95,6 @@ it("tests the preset buttons render", async () => {
     expect(preset_buttons.v2).toBeInTheDocument();
     expect(preset_buttons.waves).toBeInTheDocument();
     expect(preset_buttons.spiral).toBeInTheDocument();
-    expect(preset_buttons.fourSpirals).toBeInTheDocument();
     expect(preset_buttons.dm5).toBeInTheDocument();
     expect(preset_buttons.saveDefault).toBeInTheDocument();
-
-    act(() => {
-        preset_buttons.clear.dispatchEvent(TestService.createBubbledEvent("click"));
-    });
-
-    expect(screen.getByTestId("led1-1").classList.length).toBe(1);
-    expect(screen.getByTestId("led1-1").classList[0]).toBe("led1-1");
 });

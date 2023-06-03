@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
 import {
     _deletePresetButtonSpring,
@@ -7,11 +8,13 @@ import {
     _saveNewPresetButtonSpring,
     _openNewWindow,
     _toggleMIDIMapEditModeButton,
+    _hslButton,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { getGlobalState } from "../store/store";
+import { ledActions } from "../store/ledSlice";
 
 interface PresetLabelTitleProps {
     auth: typeof AuthService;
@@ -33,6 +36,7 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
                     <span
                         style={{
                             color: "white",
+                            margin: "0 auto",
                         }}
                     >
                         To save your own Preset, Log in or Sign up!
@@ -43,21 +47,35 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
     );
 };
 
-interface ClearButtonProps {
-    clickHandler: (event: any) => void;
-}
+const IsHSLButton: React.FC = () => {
+    const { isHSL } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    const HSLButton = useSpring(_hslButton);
+    return (
+        <animated.button
+            style={HSLButton}
+            role="button"
+            data-testid="isHSL"
+            className="preset-button"
+            onClick={() => dispatch(ledActions.toggleIsHSL())}
+        >
+            {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
+        </animated.button>
+    );
+};
 
-const ClearButton: React.FC<ClearButtonProps> = (props) => {
+const ResetTimerButton: React.FC = () => {
+    const { resetTimerFn } = getGlobalState(useSelector);
     const clear = useSpring(_clear);
     return (
         <animated.button
             style={clear}
             role="button"
-            data-testid="clear"
+            data-testid="resetTimer"
             className="preset-button"
-            onClick={props.clickHandler}
+            onClick={() => resetTimerFn()}
         >
-            clear
+            Reset Animation Timer
         </animated.button>
     );
 };
@@ -190,10 +208,21 @@ const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = 
     );
 };
 
+export const StyledPresetControlButtonsContainer = styled.div`
+    & {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        height: 10wh;
+        margin-bottom: 10px;
+    }
+`;
+
 const PresetControlButtonsContainer: React.FC<{
     children: React.ReactNode | React.ReactNode[];
 }> = ({ children }) => {
-    return <div className="preset-button-container">{children}</div>;
+    return <StyledPresetControlButtonsContainer>{children}</StyledPresetControlButtonsContainer>;
 };
 
 export type {
@@ -201,7 +230,6 @@ export type {
     DeletePresetButtonProps,
     PresetLabelTitleProps,
     SaveDefaultButtonProps,
-    ClearButtonProps,
     OpenNewWindowButtonProps,
     ToggleMIDIMapEditModeButtonProps,
 };
@@ -209,9 +237,10 @@ export {
     SavePresetButton,
     PresetLabelTitle,
     PresetControlButtonsContainer,
-    ClearButton,
+    ResetTimerButton,
     SaveDefaultButton,
     DeleteButton,
     OpenNewWindowButton,
     ToggleMIDIMapEditModeButton,
+    IsHSLButton,
 };

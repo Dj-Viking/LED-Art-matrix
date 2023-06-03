@@ -176,4 +176,4 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
     );
 };
 
-export default SavePresetModal;
+export { SavePresetModal };

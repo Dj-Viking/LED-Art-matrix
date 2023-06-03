@@ -28,8 +28,8 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                     className="slider-style"
                     data-testid={testid}
                     type="range"
-                    min="2"
-                    max="200"
+                    min="1"
+                    max="255"
                     value={inputValueState || "64"}
                     onChange={handleChange}
                 />

@@ -7,7 +7,6 @@ import { isLedWindow } from "../App";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
-    display: flex;
     justify-content: space-around;
 `;
 
@@ -25,10 +24,21 @@ export const KnobSvgDiv = styled.div`
 
 export const ControlNameContainer = styled.div`
     margin-bottom: 0.5em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
 `;
 
 export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) => {
-    return <h2 className={isLedWindow() ? "no-height" : ""}>{heading}</h2>;
+    return (
+        <h2
+            style={{ margin: "0 auto", marginBottom: "10px" }}
+            className={isLedWindow() ? "no-height" : ""}
+        >
+            {heading}
+        </h2>
+    );
 };
 
 export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {
@@ -115,7 +125,11 @@ export const MIDISelectContainer: React.FC<any> = ({ children }) => {
 };
 
 export const InputName: React.FC<{ name: MIDIInputName }> = ({ name }) => {
-    return <p>{MIDIController.stripNativeLabelFromMIDIInputName(name)}</p>;
+    return (
+        <p style={{ margin: "0 auto", marginTop: ".5em", marginBottom: ".5em" }}>
+            {MIDIController.stripNativeLabelFromMIDIInputName(name)}
+        </p>
+    );
 };
 
 export const DeviceInterfaceContainer: React.FC<{
@@ -142,6 +156,9 @@ export const DeviceInterfaceContainer: React.FC<{
             style={{
                 position: "relative",
                 width: "50%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
                 margin: "0 auto",
                 border: adjustBorder(statename, props.controllerName),
             }}
@@ -156,5 +173,5 @@ export const ChannelNumber: React.FC<{ channel: number }> = ({ channel }) => {
 };
 
 export const MIDIChannelControl: React.FC<{ name: string }> = ({ name }) => {
-    return <p style={{ margin: 0 }}>{name}</p>;
+    return <p style={{ margin: "0 auto" }}>{name}</p>;
 };

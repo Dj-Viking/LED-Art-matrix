@@ -4,7 +4,6 @@ import { ApiService } from "../../utils/ApiService";
 import AuthService from "../../utils/AuthService";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { ledActions } from "../ledSlice";
-import { LedStyleEngine } from "../../utils/LedStyleEngineClass";
 import { presetButtonsListActions } from "../presetButtonListSlice";
 
 const moduleName = "presetButtonListSlice";
@@ -44,11 +43,6 @@ export const buildGetDefaultPresetAction = createAsyncThunk<void, void, MyThunkC
 
         _thunkAPI.dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff));
         _thunkAPI.dispatch(ledActions.setPresetName(preset.presetName));
-        _thunkAPI.dispatch(
-            ledActions.setLedStyle(
-                new LedStyleEngine(preset.presetName).createStyleSheet(preset.animVarCoeff)
-            )
-        );
         _thunkAPI.dispatch(presetButtonsListActions.setActiveButton(preset._id));
 
         return void 0;

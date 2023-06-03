@@ -4,7 +4,6 @@ import { artScrollerActions } from "../store/artScrollerSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ledActions } from "../store/ledSlice";
 import { IPresetButton } from "../types";
-import { LedStyleEngine } from "../utils/LedStyleEngineClass";
 import { getGlobalState } from "../store/store";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
@@ -21,11 +20,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 })
             );
             dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff));
-            dispatch(
-                ledActions.setLedStyle(
-                    new LedStyleEngine(preset.presetName).createStyleSheet(preset.animVarCoeff)
-                )
-            );
         },
         [dispatch]
     );
@@ -39,7 +33,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             // TODO: change the LED styles to still have the dimensions of being empty but no color as to not remove the dimensional grid from the DOM
             if (event.key === "c" || event.key === "C") {
                 dispatch(ledActions.setPresetName(""));
-                dispatch(ledActions.clearStyle());
                 dispatch(presetButtonsListActions.setAllInactive());
             }
 

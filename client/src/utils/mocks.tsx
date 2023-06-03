@@ -37,12 +37,6 @@ export const MOCK_PRESETS: IDBPreset[] = [
     { displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c" },
     { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" },
     { displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e" },
-    {
-        displayName: "",
-        presetName: "fourSpirals",
-        animVarCoeff: "64",
-        _id: "6200149468fe291e26584e4f",
-    },
     { displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50" },
     {
         displayName: "bogus",
@@ -91,12 +85,6 @@ export const MOCK_ADD_PRESET_RES = [
     { displayName: "", presetName: "v2", animVarCoeff: "64", _id: "6200149468fe291e26584e4c" },
     { displayName: "", presetName: "waves", animVarCoeff: "64", _id: "6200149468fe291e26584e4d" },
     { displayName: "", presetName: "spiral", animVarCoeff: "64", _id: "6200149468fe291e26584e4e" },
-    {
-        displayName: "",
-        presetName: "fourSpirals",
-        animVarCoeff: "64",
-        _id: "6200149468fe291e26584e4f",
-    },
     { displayName: "", presetName: "dm5", animVarCoeff: "64", _id: "6200149468fe291e26584e50" },
     {
         displayName: "bogus",
@@ -132,10 +120,6 @@ export const ASSERT_ANIMATION = {
     spiral: {
         regex: new RegExp("spiral", "g"),
         classListItem: "led1-1spiral",
-    },
-    fourSpirals: {
-        regex: new RegExp("fourSpirals", "g"),
-        classListItem: "led1-1fourSpirals",
     },
     dm5: {
         regex: new RegExp("dm5", "g"),

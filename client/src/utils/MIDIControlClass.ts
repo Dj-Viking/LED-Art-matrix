@@ -311,20 +311,9 @@ class MIDIController implements IMIDIController {
                     PresetButtonsList.setStyle(_dispatchcb, "spiral", midi_intensity.toString());
                 }
                 break;
-            case "2_e_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
-
-                    PresetButtonsList.setStyle(
-                        _dispatchcb,
-                        "fourSpirals",
-                        midi_intensity.toString()
-                    );
-                }
-                break;
             case "2_f_button":
                 if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[5]));
+                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
 
                     PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
                 }

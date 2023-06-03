@@ -49,15 +49,6 @@ export const _spiralButtonSpring = {
     },
 };
 
-export const _fourSpiralsButtonSpring = {
-    delay: 0,
-    from: {
-        opacity: 0,
-    },
-    to: {
-        opacity: 1,
-    },
-};
 export const _dm5ButtonSpring = {
     delay: 0,
     from: {
@@ -126,6 +117,15 @@ export const _scrollerOnOffButtonSpring = {
     },
 };
 export const _clear = {
+    delay: 0,
+    from: {
+        opacity: 0,
+    },
+    to: {
+        opacity: 1,
+    },
+};
+export const _hslButton = {
     delay: 0,
     from: {
         opacity: 0,

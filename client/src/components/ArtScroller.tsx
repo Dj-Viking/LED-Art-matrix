@@ -56,4 +56,4 @@ const ArtScroller: React.FC = (): JSX.Element => {
     );
 };
 
-export default ArtScroller;
+export { ArtScroller };

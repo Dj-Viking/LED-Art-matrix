@@ -2,25 +2,26 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ILedState } from "../types";
 import { produce } from "immer";
 
-const initialState: ILedState = {
+export const initialLLedState: ILedState = {
     animVarCoeff: "1",
+    resetTimerFn: () => void 0,
     animationDurationState: "",
     presetName: "",
-    html: "",
+    isHSL: true,
 };
 
 export const ledSlice = createSlice({
     name: "ledSlice",
-    initialState,
+    initialState: initialLLedState,
     reducers: {
-        clearStyle: (state: ILedState) => {
+        setResetTimerFn: (state: ILedState, action: PayloadAction<() => void>) => {
             return produce(state, () => {
-                state.html = "";
+                state.resetTimerFn = action.payload;
             });
         },
-        setLedStyle: (state: ILedState, action: PayloadAction<string>) => {
+        toggleIsHSL: (state: ILedState) => {
             return produce(state, () => {
-                state.html = action.payload;
+                state.isHSL = !state.isHSL;
             });
         },
         setAnimVarCoeff: (state: ILedState, action: PayloadAction<string>) => {

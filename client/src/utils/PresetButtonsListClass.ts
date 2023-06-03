@@ -1,6 +1,5 @@
 import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
-import { LedStyleEngine } from "./LedStyleEngineClass";
 import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
 
@@ -43,17 +42,15 @@ class PresetButtonsList {
         preset: string,
         animVarCoeff: string
     ): void {
-        const styleHTML = new LedStyleEngine(preset).createStyleSheet(animVarCoeff);
         dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
         dispatchcb(ledActions.setPresetName(preset));
-        dispatchcb(ledActions.setLedStyle(styleHTML));
     }
 
     private _createDisplayName(displayName: string, presetName: string): string {
         // doing this for now since the initial presets always have the same displayName as the presetName
         // and will have an initial displayName of "" when instantiated on the server
         if (
-            ["dm5", "waves", "v2", "rainbowTest", "fourSpirals", "spiral"].includes(presetName) &&
+            ["dm5", "waves", "v2", "rainbowTest", "spiral"].includes(presetName) &&
             displayName === ""
         ) {
             return presetName;
@@ -75,14 +72,14 @@ class PresetButtonsList {
     }
 
     public static generateOfflinePresets(): IPresetButton[] {
-        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "fourSpirals", "dm5"];
+        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "dm5"];
 
         const tempPresets = presetNames.map((name) => {
             return {
                 _id: keyGen(),
                 presetName: name,
                 displayName: name,
-                animVarCoeff: "64",
+                animVarCoeff: "1",
             } as IDBPreset;
         });
 

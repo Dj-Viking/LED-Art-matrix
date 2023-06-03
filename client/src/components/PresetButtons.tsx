@@ -1,19 +1,20 @@
 /* eslint-disable no-empty */
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PresetButton from "./PresetButton";
 import Auth from "../utils/AuthService";
 import API from "../utils/ApiService";
 import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
-import SavePresetModalContent from "./Modal/SavePresetModal";
-import { IDBPreset, PresetButtonsList } from "../utils/PresetButtonsListClass";
+import { SavePresetModal } from "./Modal/SavePresetModal";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
-import DeletePresetConfirmModal from "./Modal/DeletePresetConfirmModal";
+import { DeletePresetModal } from "./Modal/DeletePresetConfirmModal";
 import MIDIListenerWrapper from "./MIDIListenerWrapper";
 import {
-    ClearButton,
+    ResetTimerButton,
     DeleteButton,
+    IsHSLButton,
     OpenNewWindowButton,
     PresetControlButtonsContainer,
     PresetLabelTitle,
@@ -26,13 +27,11 @@ import { getGlobalState } from "../store/store";
 import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
-import { keyGen } from "../utils/keyGen";
-
 export interface IPresetButtonsProps {
     children?: any;
 }
 
-const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
+export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const dispatch = useDispatch();
 
     const {
@@ -85,13 +84,6 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
     }
 
-    function clearButtonClickHandler(event: any): void {
-        event.preventDefault();
-        dispatch(ledActions.setPresetName(""));
-        dispatch(ledActions.clearStyle());
-        dispatch(presetButtonsListActions.setAllInactive());
-    }
-
     useEffect(() => {
         if (Auth.loggedIn()) {
             dispatch(presetButtonsListActions.getPresetsAsync());
@@ -110,7 +102,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     return (
         <>
             <Modal isOpen={saveModalIsOpen}>
-                <SavePresetModalContent
+                <SavePresetModal
                     context={saveModalContext}
                     onClose={(event) => {
                         event.preventDefault();
@@ -120,7 +112,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             </Modal>
 
             <Modal isOpen={deleteModalIsOpen}>
-                <DeletePresetConfirmModal
+                <DeletePresetModal
                     context={deleteModalContext}
                     onCancel={(event: any) => {
                         event.preventDefault();
@@ -137,7 +129,8 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             <PresetLabelTitle auth={Auth} />
 
             <PresetControlButtonsContainer>
-                <ClearButton clickHandler={clearButtonClickHandler} />
+                <ResetTimerButton />
+                <IsHSLButton />
                 <SaveDefaultButton auth={Auth} clickHandler={handleSaveDefault} />
                 <SavePresetButton auth={Auth} />
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
@@ -145,7 +138,7 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
             </PresetControlButtonsContainer>
 
-            <div data-testid="buttons-parent" style={{ marginBottom: "2em" }}>
+            <div data-testid="buttons-parent" style={{ marginBottom: "2em", margin: "0 auto" }}>
                 {/* preset style toggle buttons */}
                 {presetButtons?.map?.((button) => {
                     return <PresetButton key={button.id} button={{ ...button }} />;
@@ -153,29 +146,23 @@ const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
                 <MIDIListenerWrapper />
 
-                {["dm5", "waves", "v2", "rainbowTest"].includes(presetName) && (
-                    <>
-                        <Slider
-                            name="led-anim-var"
-                            testid="led-anim-variation"
-                            label="LED Animation Variation: "
-                            inputValueState={animVarCoeff}
-                            handleChange={(event) => {
-                                event.preventDefault();
-                                dispatch(ledActions.setAnimVarCoeff(event.target.value));
-                                dispatch(
-                                    modalActions.setSaveModalContext({
-                                        presetName: presetName,
-                                        animVarCoeff: event.target.value,
-                                    })
-                                );
-                            }}
-                        />
-                    </>
-                )}
+                <Slider
+                    name="led-anim-var"
+                    testid="led-anim-variation"
+                    label="LED Animation Variation: "
+                    inputValueState={animVarCoeff}
+                    handleChange={(event) => {
+                        event.preventDefault();
+                        dispatch(ledActions.setAnimVarCoeff(event.target.value));
+                        dispatch(
+                            modalActions.setSaveModalContext({
+                                presetName: presetName,
+                                animVarCoeff: event.target.value,
+                            })
+                        );
+                    }}
+                />
             </div>
         </>
     );
 };
-
-export default PresetButtons;

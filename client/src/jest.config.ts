@@ -27,7 +27,10 @@ window.HTMLMediaElement.prototype.addTextTrack = () => {
 window.HTMLCanvasElement.prototype.getContext = () => {
     // @ts-ignore
     return {
-        canvas: {},
+        canvas: {
+            width: 420,
+            height: 69,
+        },
         fillStyle: "",
         fill: () => {
             //
@@ -36,6 +39,12 @@ window.HTMLCanvasElement.prototype.getContext = () => {
             //
         },
         roundRect: () => {
+            //
+        },
+        clearRect: () => {
+            //
+        },
+        closePath: () => {
             //
         },
     };
