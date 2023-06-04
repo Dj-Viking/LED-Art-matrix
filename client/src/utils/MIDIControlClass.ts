@@ -321,7 +321,6 @@ class MIDIController implements IMIDIController {
                 break;
             case "1_middle_button":
                 if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.toggleMidiMode());
                     _dispatchcb(midiActions.toggleMidiEditMode());
                 }
                 break;

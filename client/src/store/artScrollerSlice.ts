@@ -1,12 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IArtScrollerState, IGif } from "../types";
 import { produce } from "immer";
-import {
-    GetGifsResult,
-    SaveGifsResult,
-    buildCreateGifsAction,
-    buildGetGifsAction,
-} from "./actions/gifActionCreators";
+import { buildCreateGifsAction, buildGetGifsAction } from "./actions/gifActionCreators";
 import { newReducer } from "../utils/newReducer";
 
 const initialState: IArtScrollerState = {

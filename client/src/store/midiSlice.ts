@@ -7,7 +7,6 @@ import {
     MIDIInput,
     MIDIOutput,
     MIDIConnectionEvent,
-    MIDIController,
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";

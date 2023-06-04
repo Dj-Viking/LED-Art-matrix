@@ -107,7 +107,6 @@ export interface ILoggedInState {
 }
 
 export interface IPresetButtonsListState {
-    midiMode: boolean;
     presetButtons: IPresetButton[];
 }
 export interface IPresetButton {

@@ -67,7 +67,6 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const toggleMIDIMapEditMode = React.useCallback(
         (event: any): void => {
             event.preventDefault();
-            dispatch(presetButtonsListActions.toggleMidiMode());
             dispatch(midiActions.toggleMidiEditMode());
         },
         [dispatch]
