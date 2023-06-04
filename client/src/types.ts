@@ -10,6 +10,12 @@ import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
+import {
+    ControllerName,
+    PresetButton,
+    SUPPORTED_CONTROLLERS,
+    XONEK2_ControlNames,
+} from "./constants";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
@@ -110,6 +116,7 @@ export interface IPresetButtonsListState {
     presetButtons: IPresetButton[];
 }
 export interface IPresetButton {
+    midiBinding: string;
     id: string;
     role: string;
     keyBinding: string;
@@ -210,6 +217,15 @@ export interface IDeleteModalState {
 }
 
 export type IAccessRecordState = {
+    controllerInUse: ControllerName;
+    midiMappingInUse: {
+        channelMappings: Record<XONEK2_ControlNames, number>;
+        uiMappings: Record<
+            keyof ILedState | keyof IArtScrollerState["slider"] | PresetButton,
+            XONEK2_ControlNames
+        >;
+    };
+    midiMappings: typeof SUPPORTED_CONTROLLERS;
     midiEditMode: boolean;
     usingFader: boolean;
     usingKnob: boolean;

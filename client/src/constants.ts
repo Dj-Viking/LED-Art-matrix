@@ -1,3 +1,5 @@
+import { IAccessRecordState, IArtScrollerState, ILedState } from "./types";
+
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
 export const LOCATION_DISPLAY_ID = "location-display";
@@ -84,6 +86,68 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     48: "1_upper_button",
 };
 
+export type PresetButton =
+    | "button_1_position"
+    | "button_2_position"
+    | "button_3_position"
+    | "button_4_position"
+    | "button_5_position"
+    | "resetTimerButton";
+
+export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
+    "1_upper_knob": 4,
+    "1_middle_knob": 8,
+    "1_lower_knob": 12,
+    "1_fader": 16,
+    "1_a_button": 36,
+    "1_b_button": 37,
+    "1_c_button": 38,
+    "1_d_button": 39,
+    "2_upper_knob": 5,
+    "2_middle_knob": 9,
+    "2_lower_knob": 13,
+    "2_fader": 17,
+    "2_e_button": 32,
+    "2_f_button": 33,
+    "2_g_button": 34,
+    "2_h_button": 35,
+    "3_fader": 18,
+    "3_i_button": 28,
+    "3_j_button": 29,
+    "3_k_button": 30,
+    "3_l_button": 31,
+    "4_fader": 19,
+    "4_m_button": 24,
+    "4_n_button": 25,
+    "4_o_button": 26,
+    "4_p_button": 27,
+    "1_lower_button": 40,
+    "1_middle_button": 44,
+    "1_upper_button": 48,
+};
+
+export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
+    keyof ILedState | keyof IArtScrollerState["slider"] | PresetButton,
+    XONEK2_ControlNames
+> = {
+    button_1_position: "1_a_button",
+    button_2_position: "1_b_button",
+    button_3_position: "1_c_button",
+    button_4_position: "1_d_button",
+    button_5_position: "2_e_button",
+    circleWidth: "1_upper_knob",
+    vertPos: "1_middle_knob",
+    hPos: "1_lower_knob",
+    invert: "2_upper_knob",
+    animDuration: "2_middle_knob",
+    resetTimerButton: "1_lower_button",
+    animVarCoeff: "1_fader",
+    resetTimerFn: "" as any,
+    isHSL: "" as any,
+    presetName: "" as any,
+    animationDurationState: "" as any,
+};
+
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
 
 export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;
@@ -149,12 +213,16 @@ export type ControllerLookup<Name extends ControllerName> = Record<
         : Nullable<Record<number, string>> //--------// else
 >;
 
-export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
-    "Not Found": null,
+export const SUPPORTED_CONTROLLERS = {
+    "Not Found": null as any,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
-    "UltraLite mk3 Hybrid": null,
+    "UltraLite mk3 Hybrid": null as any,
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
     "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
+} as const;
+
+export const DEFAULT_MIDI_MAPPINGS: IAccessRecordState["midiMappings"] = {
+    ...SUPPORTED_CONTROLLERS,
 };

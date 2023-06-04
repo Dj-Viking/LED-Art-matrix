@@ -10,10 +10,23 @@ import {
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
+import {
+    ControllerName,
+    DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
+    DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
+    SUPPORTED_CONTROLLERS,
+} from "../constants";
+import { deepCopy } from "../utils/deepCopy";
 
 export type MIDISliceState = IAccessRecordState;
 
-const initialState: MIDISliceState = {
+export const initialMidiSliceState: MIDISliceState = {
+    controllerInUse: "XONE:K2 MIDI",
+    midiMappingInUse: {
+        channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
+        uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
+    }, // could be custom set - probably have to fetch from local storage and/or user preferences set in their db
+    midiMappings: deepCopy(SUPPORTED_CONTROLLERS),
     midiEditMode: false,
     usingFader: false,
     usingKnob: false,
@@ -34,8 +47,18 @@ const getMIDIAccess = buildMIDIAccessGetter;
 
 export const midiSlice = createSlice({
     name: "midiSlice",
-    initialState,
+    initialState: initialMidiSliceState,
     reducers: {
+        setControllerInUse: (state: MIDISliceState, action: PayloadAction<ControllerName>) => {
+            return produce(state, () => {
+                state.controllerInUse = action.payload;
+
+                // TODO: when setting to different controller
+                // will have to change both parts to reflect what is currently mapped
+                // and custom set by the user/localStorage - if no custom settings set by the user/localStorage
+                // then set the default mappings
+            });
+        },
         determineDeviceControl: (
             state: MIDISliceState,
             action: PayloadAction<{ usingFader: boolean; usingKnob: boolean }>

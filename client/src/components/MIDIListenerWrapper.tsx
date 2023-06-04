@@ -92,6 +92,17 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <TestMIDI
                     testid="test-midi"
                     midi_access={{
+                        controllerInUse: "XONE:K2 MIDI",
+                        midiMappingInUse: { "XONE:K2 MIDI": null as any } as any,
+                        midiMappings: {
+                            "Not Found": null,
+                            "TouchOSC Bridge": null as any,
+                            "UltraLite mk3 Hybrid": null,
+                            "UltraLite mk3 Hybrid MIDI Port": null as any,
+                            "UltraLite mk3 Hybrid Sync Port": null as any,
+                            "XONE:K2 MIDI": null as any,
+                            nanoKontrol2: null as any,
+                        },
                         access: accessState,
                         inputs: accessInputs,
                         outputs: accessOutputs,

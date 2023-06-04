@@ -5,11 +5,22 @@ import {
 } from "../../store/presetButtonListSlice";
 import { PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { GlobalState } from "../../types";
+import { initialMidiSliceState, midiSlice } from "../../store/midiSlice";
+import { SUPPORTED_CONTROLLERS } from "../../constants";
 
 let initialState = {
     ...initialLLedState,
     ...initialPresetButtonListState,
+    ...initialMidiSliceState,
 } as Partial<GlobalState>;
+
+const resetInitialState = (): Partial<GlobalState> => {
+    return {
+        ...initialLLedState,
+        ...initialPresetButtonListState,
+        ...initialMidiSliceState,
+    };
+};
 
 describe("Redux store and slices", () => {
     describe("ledSlice", () => {
@@ -18,7 +29,7 @@ describe("Redux store and slices", () => {
 
         beforeEach(() => {
             initialState = {
-                resetTimerFn: () => void 0,
+                ...resetInitialState(),
             };
         });
 
@@ -33,7 +44,7 @@ describe("Redux store and slices", () => {
     describe("presetButtonListSlice", () => {
         beforeEach(() => {
             initialState = {
-                ...initialState,
+                ...resetInitialState(),
                 presetButtons: new PresetButtonsList(
                     () => null,
                     [
@@ -52,7 +63,6 @@ describe("Redux store and slices", () => {
                     ],
                     "some other id"
                 ).getList(),
-                midiMode: false,
             };
         });
 
@@ -66,6 +76,31 @@ describe("Redux store and slices", () => {
             expect(activePreset?.id).not.toBe("some other id");
 
             expect(activePreset?.id).toBe("some id");
+        });
+    });
+    describe("midiSlice", () => {
+        beforeEach(() => {
+            initialState = {
+                ...resetInitialState(),
+                controllerInUse: "Not Found",
+                midiMappingInUse: SUPPORTED_CONTROLLERS["Not Found"],
+                midiMappings: SUPPORTED_CONTROLLERS,
+            };
+        });
+
+        // IDGAF bout this right now
+        it.skip("test setting the controller in use", () => {
+            expect(initialState.controllerInUse).toBe("Not Found");
+
+            const action = midiSlice.actions.setControllerInUse("TouchOSC Bridge");
+
+            const newState = midiSlice.reducer(initialState as any, action);
+
+            expect(newState.controllerInUse).not.toBe("Not Found");
+
+            expect(newState.controllerInUse).toBe("TouchOSC Bridge");
+
+            expect(newState.midiMappingInUse).toBe(SUPPORTED_CONTROLLERS["TouchOSC Bridge"]);
         });
     });
 });

@@ -236,6 +236,7 @@ class MIDIController implements IMIDIController {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
 
+        _dispatchcb(midiActions.setControllerInUse("TouchOSC Bridge"));
         _dispatchcb(midiActions.setChannel(midi_channel));
         _dispatchcb(midiActions.setIntensity(midi_intensity));
 
@@ -263,6 +264,7 @@ class MIDIController implements IMIDIController {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
 
+        _dispatchcb(midiActions.setControllerInUse("XONE:K2 MIDI"));
         _dispatchcb(midiActions.setChannel(midi_channel));
         _dispatchcb(midiActions.setIntensity(midi_intensity));
 
@@ -312,7 +314,7 @@ class MIDIController implements IMIDIController {
                     PresetButtonsList.setStyle(_dispatchcb, "spiral", midi_intensity.toString());
                 }
                 break;
-            case "2_f_button":
+            case "2_e_button":
                 if (midi_intensity === 127) {
                     _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
 
@@ -324,7 +326,7 @@ class MIDIController implements IMIDIController {
                     _dispatchcb(midiActions.toggleMidiEditMode());
                 }
                 break;
-            case "1_upper_knob":
+            case "1_upper_knob": // dispatch whatever the current binding is supposed to change
                 _dispatchcb(
                     artScrollerActions.setSlider({
                         control: "circleWidth",

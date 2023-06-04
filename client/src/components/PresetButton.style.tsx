@@ -48,7 +48,7 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
 };
 
 const IsHSLButton: React.FC = () => {
-    const { isHSL } = getGlobalState(useSelector);
+    const { isHSL, midiEditMode } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     const HSLButton = useSpring(_hslButton);
     return (
@@ -60,12 +60,13 @@ const IsHSLButton: React.FC = () => {
             onClick={() => dispatch(ledActions.toggleIsHSL())}
         >
             {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
+            {midiEditMode && <p style={{ marginTop: 20 }}>{"<MIDI>"}</p>}
         </animated.button>
     );
 };
 
 const ResetTimerButton: React.FC = () => {
-    const { resetTimerFn } = getGlobalState(useSelector);
+    const { resetTimerFn, midiEditMode } = getGlobalState(useSelector);
     const clear = useSpring(_clear);
     return (
         <animated.button
@@ -76,6 +77,7 @@ const ResetTimerButton: React.FC = () => {
             onClick={() => resetTimerFn()}
         >
             Reset Animation Timer
+            {midiEditMode && <p style={{ marginTop: 5 }}>{"<MIDI>"}</p>}
         </animated.button>
     );
 };

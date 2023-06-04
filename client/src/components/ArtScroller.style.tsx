@@ -173,10 +173,15 @@ const ArtScrollerSliderContainer: React.FC = ({ children }) => {
 const ArtScrollerCircleWidthLabel: React.FC = () => {
     const {
         slider: { circleWidth },
+        midiEditMode,
+        midiMappingInUse,
     } = getGlobalState(useSelector);
+
+    const uiMapping = midiMappingInUse.uiMappings["circleWidth"];
+
     return (
         <StyledSliderLabel htmlFor="scroller-circle-width">
-            Scroller Circle Width: {circleWidth}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Circle Width: {circleWidth}
         </StyledSliderLabel>
     );
 };
@@ -235,6 +240,9 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             min="0"
             max="100"
             value={circleWidth}
+            onClick={() => {
+                console.log("listening for edits");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -251,10 +259,13 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
 const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
     const {
         slider: { vertPos },
+        midiEditMode,
+        midiMappingInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = midiMappingInUse.uiMappings["vertPos"];
     return (
         <StyledSliderLabel htmlFor="vertical-positioning">
-            Scroller Vert Positioning: {vertPos}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Vert Positioning: {vertPos}
         </StyledSliderLabel>
     );
 };
@@ -296,10 +307,14 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
 const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
     const {
         slider: { hPos },
+        midiEditMode,
+        midiMappingInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = midiMappingInUse.uiMappings["hPos"];
     return (
         <StyledSliderLabel htmlFor="horizontal-positioning">
-            Scroller Horizontal Positioning: {Number(hPos) / 1000}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Horizontal Positioning:{" "}
+            {Number(hPos) / 1000}
         </StyledSliderLabel>
     );
 };
@@ -344,10 +359,13 @@ export const StyledSliderLabel = styled.label`
 const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
     const {
         slider: { invert },
+        midiEditMode,
+        midiMappingInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = midiMappingInUse.uiMappings["invert"];
     return (
         <StyledSliderLabel htmlFor="invert">
-            Invert Colors: {Number(invert) / 100}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Invert Colors: {Number(invert) / 100}
         </StyledSliderLabel>
     );
 };
@@ -383,10 +401,13 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
 const ArtScrollerSpeedSliderLabel: React.FC = () => {
     const {
         slider: { animDuration },
+        midiEditMode,
+        midiMappingInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = midiMappingInUse.uiMappings["animDuration"];
     return (
         <StyledSliderLabel htmlFor="animation-duration">
-            Scroll Speed: {Number(animDuration) / 100}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroll Speed: {Number(animDuration) / 100}
         </StyledSliderLabel>
     );
 };
