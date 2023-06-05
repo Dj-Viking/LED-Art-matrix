@@ -1,4 +1,4 @@
-import { IAccessRecordState, IArtScrollerState, ILedState } from "./types";
+import { IArtScrollerState, ILedState } from "./types";
 
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
@@ -86,7 +86,7 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     48: "1_upper_button",
 };
 
-export type PresetButton =
+export type PresetButtonName =
     | "button_1_position"
     | "button_2_position"
     | "button_3_position"
@@ -126,8 +126,13 @@ export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlN
     "1_upper_button": 48,
 };
 
+export type UIInterfaceDeviceName =
+    | keyof ILedState
+    | keyof IArtScrollerState["slider"]
+    | PresetButtonName;
+
 export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
-    keyof ILedState | keyof IArtScrollerState["slider"] | PresetButton,
+    UIInterfaceDeviceName,
     XONEK2_ControlNames
 > = {
     button_1_position: "1_a_button",
@@ -142,10 +147,18 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
     animDuration: "2_middle_knob",
     resetTimerButton: "1_lower_button",
     animVarCoeff: "1_fader",
-    resetTimerFn: "" as any,
+    /**
+     * never implemented
+     */
+    resetTimerFn: void 0 as never,
+    /**
+     * not yet implemented
+     */
     isHSL: "" as any,
-    presetName: "" as any,
-    animationDurationState: "" as any,
+    /**
+     * never implemented
+     */
+    presetName: void 0 as never,
 };
 
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
@@ -184,6 +197,81 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     8: "button_4",
 };
 
+export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
+    TouchOscBridgeControlNames,
+    number
+> = {
+    fader_1: 0,
+    fader_2: 1,
+    fader_3: 2,
+    fader_4: 3,
+    top_fader: 4,
+    button_1: 5,
+    button_2: 6,
+    button_3: 7,
+    button_4: 8,
+};
+
+export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
+    UIInterfaceDeviceName,
+    TouchOscBridgeControlNames
+> = {
+    /**
+     * not yet implemented
+     */
+    button_1_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_2_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_3_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_4_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_5_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    circleWidth: "" as any,
+    /**
+     * not yet implemented
+     */
+    vertPos: "" as any,
+    /**
+     * not yet implemented
+     */
+    hPos: "" as any,
+    /**
+     * not yet implemented
+     */
+    invert: "" as any,
+    /**
+     * not yet implemented
+     */
+    animDuration: "" as any,
+    resetTimerButton: "button_1",
+    animVarCoeff: "fader_1",
+    /**
+     * never implemented
+     */
+    resetTimerFn: void 0 as never,
+    /**
+     * not yet implemented
+     */
+    isHSL: "" as any,
+    /**
+     * never implemented
+     */
+    presetName: void 0 as never,
+};
+
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
     /** UNIMPLEMENTED */
 };
@@ -213,6 +301,38 @@ export type ControllerLookup<Name extends ControllerName> = Record<
         : Nullable<Record<number, string>> //--------// else
 >;
 
+export type ChannelMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
+    ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    : N extends "TouchOSC Bridge"
+    ? typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
+    : Record<string, never>;
+
+export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
+    ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    : N extends "TouchOSC Bridge"
+    ? typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
+    : Record<string, never>;
+
+export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? keyof typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    : Name extends "TouchOSC Bridge"
+    ? keyof typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
+    : string; // unimplemented controller name
+
+export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? keyof typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    : Name extends "TouchOSC Bridge"
+    ? keyof typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
+    : string; // unimplemented controller name
+
+export type MIDIMappingPreference<Name extends MIDIInputName> = Record<
+    Name,
+    {
+        channelMappings: ChannelMappingPreference<Name>;
+        uiMappings: UIMappingPreference<Name>;
+    }
+>;
+
 export const SUPPORTED_CONTROLLERS = {
     "Not Found": null as any,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
@@ -222,7 +342,3 @@ export const SUPPORTED_CONTROLLERS = {
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
     "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
 } as const;
-
-export const DEFAULT_MIDI_MAPPINGS: IAccessRecordState["midiMappings"] = {
-    ...SUPPORTED_CONTROLLERS,
-};

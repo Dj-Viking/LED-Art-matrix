@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 //
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,7 +19,12 @@ import {
     ControlSvg,
 } from "./MIDIListenerWrapper.style";
 import { IAccessRecordState } from "../types";
-import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
+import {
+    SUPPORTED_CONTROLLERS,
+    MIDIInputName,
+    DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
+    DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
+} from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
@@ -79,6 +84,21 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         return SUPPORTED_CONTROLLERS[strippedName]![channel] || "unknown control name";
     }
 
+    const setOptionCallback = useCallback(
+        (option: string) => {
+            setOption(option);
+            console.log("option selected", option);
+            // may have a native label given by the browser so strip native label name
+            dispatch(
+                midiActions.setControllerInUse({
+                    controllerName: MIDIController.stripNativeLabelFromMIDIInputName(option),
+                    hasPreference: false,
+                })
+            );
+        },
+        [setOption, dispatch]
+    );
+
     return (
         <>
             <div
@@ -93,15 +113,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     testid="test-midi"
                     midi_access={{
                         controllerInUse: "XONE:K2 MIDI",
-                        midiMappingInUse: { "XONE:K2 MIDI": null as any } as any,
-                        midiMappings: {
-                            "Not Found": null,
-                            "TouchOSC Bridge": null as any,
-                            "UltraLite mk3 Hybrid": null,
-                            "UltraLite mk3 Hybrid MIDI Port": null as any,
-                            "UltraLite mk3 Hybrid Sync Port": null as any,
-                            "XONE:K2 MIDI": null as any,
-                            nanoKontrol2: null as any,
+                        midiMappingInUse: {
+                            channelMappings: DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
+                            uiMappings: DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
+                            hasPreference: false,
                         },
                         access: accessState,
                         inputs: accessInputs,
@@ -118,7 +133,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
                         <MIDISelect
-                            setOption={setOption}
+                            setOption={setOptionCallback}
                             option={option}
                             midi_inputs={accessInputs}
                         />

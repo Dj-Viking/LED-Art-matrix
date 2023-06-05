@@ -11,10 +11,10 @@ import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import {
+    ChannelMappingPreference,
     ControllerName,
-    PresetButton,
-    SUPPORTED_CONTROLLERS,
-    XONEK2_ControlNames,
+    MIDIInputName,
+    UIMappingPreference,
 } from "./constants";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
@@ -64,7 +64,6 @@ export interface ILedState {
     resetTimerFn: () => void;
     isHSL: boolean;
     presetName: string;
-    animationDurationState: string;
     animVarCoeff: string;
 }
 
@@ -219,13 +218,10 @@ export interface IDeleteModalState {
 export type IAccessRecordState = {
     controllerInUse: ControllerName;
     midiMappingInUse: {
-        channelMappings: Record<XONEK2_ControlNames, number>;
-        uiMappings: Record<
-            keyof ILedState | keyof IArtScrollerState["slider"] | PresetButton,
-            XONEK2_ControlNames
-        >;
+        hasPreference: boolean;
+        channelMappings: ChannelMappingPreference<MIDIInputName>;
+        uiMappings: UIMappingPreference<MIDIInputName>;
     };
-    midiMappings: typeof SUPPORTED_CONTROLLERS;
     midiEditMode: boolean;
     usingFader: boolean;
     usingKnob: boolean;

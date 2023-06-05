@@ -148,7 +148,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <Slider
                     name="led-anim-var"
                     testid="led-anim-variation"
-                    label="LED Animation Variation: "
+                    label="LED Animation Variation"
                     inputValueState={animVarCoeff}
                     handleChange={(event) => {
                         event.preventDefault();

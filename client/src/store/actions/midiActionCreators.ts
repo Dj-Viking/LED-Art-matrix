@@ -27,7 +27,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                 case midi_event.currentTarget.name.includes("TouchOSC Bridge"):
                     MIDIController.handleTouchOSCMessage(midi_event, _thunkAPI.dispatch);
                     break;
-                case midi_event.currentTarget.name.includes("XONE"): // the browser appends some number and a dash for whatever reason
+                // the browser appends some number and a dash for whatever reason
+                case midi_event.currentTarget.name.includes("XONE"):
                     MIDIController.handleXONEK2MIDIMessage(
                         midi_event,
                         _thunkAPI.dispatch,

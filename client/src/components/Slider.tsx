@@ -1,4 +1,6 @@
 import React from "react";
+import { useSelector } from "react-redux";
+import { getGlobalState } from "../store/store";
 import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
@@ -10,12 +12,26 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
+    const { midiEditMode, midiMappingInUse } = getGlobalState(useSelector);
+    const uiMapping = midiMappingInUse.uiMappings["animVarCoeff"];
     return (
         <>
             <div className="led-slider-container">
-                <label htmlFor={name} style={{ color: "white", margin: "0 auto" }}>
-                    {label}
-                    {inputValueState}
+                <label
+                    htmlFor={name}
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        color: "white",
+                        margin: "0 auto",
+                    }}
+                >
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>
+                        {midiEditMode ? `<MIDI> ${uiMapping}` : ""}
+                    </p>
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>{label}</p>
+                    <p style={{ margin: "0 auto" }}>{inputValueState}</p>
                 </label>
 
                 {/* TODO figure out what kinds of labels to use for particular sliders */}

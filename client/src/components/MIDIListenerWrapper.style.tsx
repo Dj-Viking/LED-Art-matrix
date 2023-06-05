@@ -78,7 +78,7 @@ export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
 };
 
 interface MIDISelectProps {
-    setOption: React.Dispatch<React.SetStateAction<string>>;
+    setOption: (option: string) => void;
     children?: ReactNode | ReactNode[];
     midi_inputs: MIDIInput[];
     option: string;
