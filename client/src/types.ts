@@ -21,6 +21,7 @@ export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch
 
 type RecordKey = string | number | symbol;
 declare global {
+    type Tuple<First, Second> = [First, Second];
     // make own overloads to the object static class methods
     interface ObjectConstructor {
         entries<K extends RecordKey, V>(o: Record<K, V> | ArrayLike<V>): [K, V][];

@@ -243,7 +243,7 @@ class MIDIController implements IMIDIController {
 
     public static getMIDIMappingPreferenceFromStorage(
         name: MIDIInputName
-    ): [UIMappingPreference<typeof name>, ChannelMappingPreference<typeof name>] {
+    ): Tuple<UIMappingPreference<typeof name>, ChannelMappingPreference<typeof name>> {
         switch (name) {
             case "TouchOSC Bridge": {
                 const result = MIDIController.getTypedMIDILocalStorage(name);
@@ -361,7 +361,7 @@ class MIDIController implements IMIDIController {
     public static getMIDIControllerUIandChannelMappings(
         name: MIDIInputName,
         hasPreference: boolean
-    ): [UIMappingPreference<typeof name>, ChannelMappingPreference<typeof name>] {
+    ): Tuple<UIMappingPreference<typeof name>, ChannelMappingPreference<typeof name>> {
         switch (name) {
             case "TouchOSC Bridge":
                 if (hasPreference) {
