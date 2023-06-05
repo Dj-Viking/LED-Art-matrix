@@ -19,7 +19,6 @@ class PresetButtonsList {
     ) {
         this._list = dbPresets?.map((preset, index: number) => {
             return {
-                midiBinding: "",
                 id: preset._id,
                 key: preset._id,
                 role: "button",

@@ -116,7 +116,6 @@ export interface IPresetButtonsListState {
     presetButtons: IPresetButton[];
 }
 export interface IPresetButton {
-    midiBinding: string;
     id: string;
     role: string;
     keyBinding: string;
