@@ -15,6 +15,8 @@ import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
+import { midiActions } from "../store/midiSlice";
+import { UIInterfaceDeviceName } from "../constants";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -176,6 +178,7 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
         midiEditMode,
         midiMappingInUse,
     } = getGlobalState(useSelector);
+    console.log("midi mapping in use", midiMappingInUse);
 
     const uiMapping = midiMappingInUse.uiMappings["circleWidth"];
 
@@ -242,6 +245,12 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             value={circleWidth}
             onClick={() => {
                 console.log("listening for edits");
+                dispatch(midiActions.setListeningForMappingEdit(true));
+                dispatch(
+                    midiActions.setMappingEditOptions({
+                        uiName: "circleWidth" as UIInterfaceDeviceName,
+                    })
+                );
             }}
             onChange={(event) => {
                 event.preventDefault();

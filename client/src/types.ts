@@ -12,8 +12,8 @@ import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import {
     ChannelMappingPreference,
-    ControllerName,
     MIDIInputName,
+    UIInterfaceDeviceName,
     UIMappingPreference,
 } from "./constants";
 
@@ -216,13 +216,17 @@ export interface IDeleteModalState {
 }
 
 export type IAccessRecordState = {
-    controllerInUse: ControllerName;
+    controllerInUse: MIDIInputName;
     midiMappingInUse: {
         hasPreference: boolean;
         channelMappings: ChannelMappingPreference<MIDIInputName>;
         uiMappings: UIMappingPreference<MIDIInputName>;
     };
     midiEditMode: boolean;
+    isListeningForMappingEdit: boolean;
+    mappingEditOptions: {
+        uiName: UIInterfaceDeviceName;
+    };
     usingFader: boolean;
     usingKnob: boolean;
     channel: number;

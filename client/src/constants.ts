@@ -314,15 +314,15 @@ export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MI
     : Record<string, never>;
 
 export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
-    ? keyof typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    ? keyof Record<XONEK2_ControlNames, number>
     : Name extends "TouchOSC Bridge"
-    ? keyof typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
+    ? keyof Record<TouchOscBridgeControlNames, number>
     : string; // unimplemented controller name
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
-    ? keyof typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
     : Name extends "TouchOSC Bridge"
-    ? keyof typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
+    ? keyof Record<UIInterfaceDeviceName, TouchOscBridgeControlNames>
     : string; // unimplemented controller name
 
 export type MIDIMappingPreference<Name extends MIDIInputName> = Record<
@@ -334,9 +334,9 @@ export type MIDIMappingPreference<Name extends MIDIInputName> = Record<
 >;
 
 export const SUPPORTED_CONTROLLERS = {
-    "Not Found": null as any,
+    "Not Found": {} as any,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
-    "UltraLite mk3 Hybrid": null as any,
+    "UltraLite mk3 Hybrid": {} as any,
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,

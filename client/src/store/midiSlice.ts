@@ -20,15 +20,22 @@ import { deepCopy } from "../utils/deepCopy";
 
 export type MIDISliceState = IAccessRecordState;
 
+export const defaultMappingEditOptions = {
+    uiName: "" as any,
+};
+
 export const initialMidiSliceState: MIDISliceState = {
     controllerInUse: "XONE:K2 MIDI",
     // TODO: could be custom set - Will fetch from local storage and/or user preferences set in their db
     midiMappingInUse: {
+        // TODO: keep track of which controller name was recently used
         hasPreference: false,
         channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
         uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
     },
     midiEditMode: false,
+    isListeningForMappingEdit: false,
+    mappingEditOptions: defaultMappingEditOptions,
     usingFader: false,
     usingKnob: false,
     intensity: 0,
@@ -50,6 +57,27 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
+        setMappingEditOptions: (
+            state: MIDISliceState,
+            action: PayloadAction<Partial<MIDISliceState["mappingEditOptions"]>>
+        ) => {
+            return produce(state, () => {
+                state.mappingEditOptions = {
+                    ...state.mappingEditOptions,
+                    ...action.payload,
+                };
+            });
+        },
+        setListeningForMappingEdit: (state: MIDISliceState, action: PayloadAction<boolean>) => {
+            return produce(state, () => {
+                state.isListeningForMappingEdit = action.payload;
+            });
+        },
+        setHasPreferencesSet: (state: MIDISliceState, action: PayloadAction<boolean>) => {
+            return produce(state, () => {
+                state.midiMappingInUse.hasPreference = action.payload;
+            });
+        },
         setControllerInUse: (
             state: MIDISliceState,
             action: PayloadAction<{
@@ -61,14 +89,14 @@ export const midiSlice = createSlice({
                 const { controllerName, hasPreference } = action.payload;
                 state.controllerInUse = controllerName;
 
-                const [uiMappings, channelMappings] =
+                const { uiMappings, channelMappings } =
                     MIDIController.getMIDIControllerUIandChannelMappings(
                         controllerName,
                         hasPreference
                     );
 
-                state.midiMappingInUse.channelMappings = channelMappings;
-                state.midiMappingInUse.uiMappings = uiMappings;
+                state.midiMappingInUse.channelMappings = deepCopy(channelMappings);
+                state.midiMappingInUse.uiMappings = deepCopy(uiMappings);
             });
         },
         // TODO: make an action for updating a specific control mapping to the controller in use
@@ -104,6 +132,11 @@ export const midiSlice = createSlice({
                 // Map interface is not serializable in redux toolkit for whatever reason
                 // but i can still put it into state
                 state.access = action.payload.access;
+                console.log(
+                    "what is initied in state for mappings",
+                    action.payload.midiMappingInUse
+                );
+                state.midiMappingInUse = action.payload.midiMappingInUse;
                 state.inputs = action.payload.inputs;
                 state.outputs = action.payload.outputs;
                 state.online = true;

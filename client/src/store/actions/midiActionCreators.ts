@@ -1,4 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../../constants";
 
 import { MyThunkConfig } from "../../types";
 import {
@@ -6,6 +7,18 @@ import {
     MIDIMessageEvent,
     MIDIConnectionEvent,
 } from "../../utils/MIDIControlClass";
+import { midiActions } from "../midiSlice";
+
+function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
+    console.log(
+        "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
+        name,
+        "\n",
+        event,
+        "\n channel",
+        channel
+    );
+}
 
 export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyThunkConfig>(
     "midiSlice/midiAccess",
@@ -14,13 +27,29 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
 
         const midicb = function (midi_event: MIDIMessageEvent): void {
             const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
+            const isListeningForMappingEdit =
+                _thunkAPI.getState().midiState.isListeningForMappingEdit;
 
             const _buttonIds = _thunkAPI
                 .getState()
                 .presetButtonsListState.presetButtons.map((btn) => btn.id);
 
-            if (isEditMode) {
-                MIDIController.mapMIDIChannelToInterface(midi_event);
+            if (isEditMode && isListeningForMappingEdit) {
+                //
+                _thunkAPI.dispatch(midiActions.setListeningForMappingEdit(false));
+
+                const name = MIDIController.stripNativeLabelFromMIDIInputName(
+                    midi_event.currentTarget.name
+                );
+
+                const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
+
+                const channel = midi_event.data[1];
+
+                const controlName = SUPPORTED_CONTROLLERS[name][channel];
+                console.log("setting the new control mapping", name, controlName, channel, uiName);
+
+                MIDIController.mapMIDIChannelToInterface(name, controlName, channel, uiName);
             }
 
             switch (true) {
@@ -37,14 +66,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                     break;
                 default: {
                     const channel = midi_event.data[1];
-                    console.log(
-                        "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
-                        midi_event.currentTarget.name,
-                        "\n",
-                        midi_event,
-                        "\n channel",
-                        channel
-                    );
+                    UNIMPLEMENTED(midi_event.currentTarget.name, midi_event, channel);
                 }
             }
         };

@@ -28,7 +28,7 @@ import {
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
-import { midiActions } from "../store/midiSlice";
+import { defaultMappingEditOptions, midiActions } from "../store/midiSlice";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -54,9 +54,16 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         usingKnob,
         channel,
         intensity,
+        isListeningForMappingEdit,
+        controllerInUse,
+        midiMappingInUse: { hasPreference },
     } = getGlobalState(useSelector);
 
     const [option, setOption] = useState<string>("");
+
+    useEffect(() => {
+        MIDIController.isMIDIPreferenceLocalStorageSet(controllerInUse, dispatch);
+    }, [controllerInUse, dispatch]);
 
     useEffect(() => {
         dispatch(midiActions.getMIDIAccess());
@@ -92,11 +99,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
             dispatch(
                 midiActions.setControllerInUse({
                     controllerName: MIDIController.stripNativeLabelFromMIDIInputName(option),
-                    hasPreference: false,
+                    hasPreference,
                 })
             );
         },
-        [setOption, dispatch]
+        [setOption, dispatch, hasPreference]
     );
 
     return (
@@ -112,6 +119,8 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <TestMIDI
                     testid="test-midi"
                     midi_access={{
+                        isListeningForMappingEdit,
+                        mappingEditOptions: defaultMappingEditOptions,
                         controllerInUse: "XONE:K2 MIDI",
                         midiMappingInUse: {
                             channelMappings: DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
