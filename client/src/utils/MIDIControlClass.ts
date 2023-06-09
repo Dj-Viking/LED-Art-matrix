@@ -13,6 +13,8 @@ import {
     ChannelMappingPreference,
     GenericControlName,
     UIInterfaceDeviceName,
+    DEFAULT_CALLBACK_TABLE,
+    SUPPORTED_CONTROLLERS,
 } from "../constants";
 import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
@@ -151,6 +153,7 @@ interface IMIDIController {
         hasPreference: boolean;
         channelMappings: ChannelMappingPreference<MIDIInputName>;
         uiMappings: UIMappingPreference<MIDIInputName>;
+        callbackTable: Record<UIInterfaceDeviceName, () => void>;
     };
     outputs?: Array<MIDIOutput>;
     online?: boolean;
@@ -160,17 +163,18 @@ interface IMIDIController {
 class MIDIController implements IMIDIController {
     public access = {} as MIDIAccessRecord;
     public inputs = [] as Array<MIDIInput>;
+    public inputs_size = 0;
+    public outputs_size = 0;
+    public outputs = [] as Array<MIDIOutput>;
+    public online = false;
     public midiMappingInUse = {
         // TODO: track this recently used better
         wasRecentlyUsed: false,
         hasPreference: true,
         channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
         uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
+        callbackTable: deepCopy(DEFAULT_CALLBACK_TABLE),
     } as IMIDIController["midiMappingInUse"];
-    public inputs_size = 0;
-    public outputs_size = 0;
-    public outputs = [] as Array<MIDIOutput>;
-    public online = false;
 
     public constructor(access: MIDIAccessRecord) {
         this.access = access;
@@ -263,6 +267,54 @@ class MIDIController implements IMIDIController {
         return JSON.parse(window.localStorage.getItem(name as MIDIInputName)!);
     }
 
+    // TODO: initialize callback table with set mapping preferences for each controller
+
+    public setCallbackTableBasedOnMIDIInputName(name: MIDIInputName, channel: number): void {
+        //
+
+        switch (name) {
+            case "TouchOSC Bridge":
+                {
+                    const something = "TODO!!!";
+                    console.log("todo", something);
+                    // where the midi input controller's
+                    // control-name is mapped to another table which has UI name
+                    // and channel associated that UI name get's the dispatch callback assigned to the key value pair
+                    /**
+                     * TODO
+                     * restructure mapping preference table like this - a table of tables
+                     *
+                     * const preference = {
+                     *     [MIDIInputName]: {
+                     *         [controlName]: {
+                     *             uiName: "circleWidth"
+                     *             channel: 4
+                     *         },
+                     *         ["fader_1"]: {
+                     *             uiName: "animDuration"
+                     *             channel: 0
+                     *         }
+                     *     }
+                     * }
+                     *     // look up which callback based on the UI name derived from the midi input's own control name
+                     *
+                     *     const callbackTable = {
+                     *         ["circleWidth"]: dispatch(someSlice.someAction(value))
+                     *     };
+                     *
+                     *     call the callback like this
+                     *     const uiName = preference[midiname][controlName];
+                     *     callbackTable[uiName]?.()
+                     */
+                }
+                break;
+            case "XONE:K2 MIDI":
+                break;
+            default:
+                break;
+        }
+    }
+
     public static isMIDIPreferenceLocalStorageSet(
         name: MIDIInputName,
         dispatch: ToolkitDispatch
@@ -343,7 +395,7 @@ class MIDIController implements IMIDIController {
                     uiMappings:
                         value?.uiMappings || deepCopy(DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING),
                     wasRecentlyUsed: value?.wasRecentlyUsed || false,
-                } as Omit<MIDISliceState["midiMappingInUse"], "hasPreference">)
+                } as Omit<IMIDIController["midiMappingInUse"], "hasPreference">)
             );
         }
         if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
@@ -362,7 +414,7 @@ class MIDIController implements IMIDIController {
                     uiMappings:
                         value?.uiMappings || deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
                     wasRecentlyUsed: value?.wasRecentlyUsed || false,
-                } as Omit<MIDISliceState["midiMappingInUse"], "hasPreference">)
+                } as Omit<IMIDIController["midiMappingInUse"], "hasPreference">)
             );
         }
 

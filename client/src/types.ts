@@ -221,6 +221,7 @@ export type IAccessRecordState = {
         hasPreference: boolean;
         channelMappings: ChannelMappingPreference<MIDIInputName>;
         uiMappings: UIMappingPreference<MIDIInputName>;
+        callbackTable: Record<UIInterfaceDeviceName, () => void>;
     };
     midiEditMode: boolean;
     isListeningForMappingEdit: boolean;

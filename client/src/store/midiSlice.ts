@@ -12,6 +12,7 @@ import {
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
 import {
+    DEFAULT_CALLBACK_TABLE,
     DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
     DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
     MIDIInputName,
@@ -32,6 +33,7 @@ export const initialMidiSliceState: MIDISliceState = {
         hasPreference: false,
         channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
         uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
+        callbackTable: deepCopy(DEFAULT_CALLBACK_TABLE),
     },
     midiEditMode: false,
     isListeningForMappingEdit: false,

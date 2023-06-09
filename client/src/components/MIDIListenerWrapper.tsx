@@ -126,6 +126,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             channelMappings: DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
                             uiMappings: DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
                             hasPreference: false,
+                            callbackTable: {} as any,
                         },
                         access: accessState,
                         inputs: accessInputs,
