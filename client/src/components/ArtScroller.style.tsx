@@ -24,7 +24,7 @@ const ArtScrollerMainContainer = styled.main`
 `;
 
 const ArtScrollerSection: React.FC = ({ children }) => {
-    return <section>{children}</section>;
+    return <section style={{ display: "flex", "flexDirection": "column", "justifyContent": "center"}}>{children}</section>;
 };
 
 const ArtScrollerBorderTop: React.FC = () => {
@@ -37,6 +37,7 @@ const ArtScrollerTitle: React.FC = () => {
             style={{
                 color: "white",
                 textAlign: "center",
+                margin: "0 auto",
             }}
         >
             Art Scroller Controls
