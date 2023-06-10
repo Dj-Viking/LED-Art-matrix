@@ -359,9 +359,9 @@ export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MI
     : Record<string, never>;
 
 export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
-    ? keyof Record<XONEK2_ControlNames, number>
+    ? XONEK2_ControlNames
     : Name extends "TouchOSC Bridge"
-    ? keyof Record<TouchOscBridgeControlNames, number>
+    ? TouchOscBridgeControlNames
     : string; // unimplemented controller name
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
