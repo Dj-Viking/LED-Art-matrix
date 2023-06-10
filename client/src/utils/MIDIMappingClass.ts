@@ -26,7 +26,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
     public mapping: MIDIMapping<N> = {} as any;
     public callbackMap: CallbackMapping<N> = {} as any;
 
-    public constructor(name: N) {
+    public constructor(name: N, storedPreference?: any) {
         this.name = name;
 
         this._setMIDIMappingBasedOnInputName(name);

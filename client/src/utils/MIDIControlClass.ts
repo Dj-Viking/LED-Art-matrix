@@ -21,6 +21,7 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions, MIDISliceState } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
 import { deepCopy } from "./deepCopy";
+import { MIDIMappingPreference } from "./MIDIMappingClass";
 
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
@@ -252,12 +253,13 @@ class MIDIController implements IMIDIController {
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
-    public static getMIDIMappingPreferenceFromStorage(name: MIDIInputName): {
-        uiMappings: UIMappingPreference<typeof name>;
-        channelMappings: ChannelMappingPreference<typeof name>;
-    } {
+    public static getMIDIMappingPreferenceFromStorage(
+        name: MIDIInputName
+    ): MIDIMappingPreference<typeof name> {
+        // TODO: update the data structure for what is stored in local storage
         const result = MIDIController.getTypedMIDILocalStorage(name);
-        return { uiMappings: result.uiMappings, channelMappings: result.channelMappings };
+        let pref = new MIDIMappingPreference(name);
+        return pref;
     }
 
     public static getTypedMIDILocalStorage(name: MIDIInputName): {
@@ -461,7 +463,9 @@ class MIDIController implements IMIDIController {
 
     public static handleTouchOSCMessage(
         midi_event: MIDIMessageEvent,
-        _dispatchcb: ToolkitDispatch
+        _dispatchcb: ToolkitDispatch,
+        pref: MIDIMappingPreference<typeof name>,
+        name: MIDIInputName
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
@@ -500,7 +504,9 @@ class MIDIController implements IMIDIController {
     public static handleXONEK2MIDIMessage(
         midi_event: MIDIMessageEvent,
         _dispatchcb: ToolkitDispatch,
-        _buttonIds: string[]
+        _buttonIds: string[],
+        midiPreferenceTable: MIDIMappingPreference<typeof name>,
+        name: MIDIInputName
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
