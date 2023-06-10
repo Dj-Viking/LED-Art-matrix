@@ -5,6 +5,7 @@ import {
     MIDIOutput,
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
+import { MIDIMappingPreference } from "./utils/MIDIMappingClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
@@ -221,8 +222,9 @@ export type IAccessRecordState = {
         hasPreference: boolean;
         channelMappings: ChannelMappingPreference<MIDIInputName>;
         uiMappings: UIMappingPreference<MIDIInputName>;
-        callbackTable: Record<UIInterfaceDeviceName, () => void>;
     };
+    callbackMap: MIDIMappingPreference<MIDIInputName>["callbackMap"];
+    midiMappingInUse2: MIDIMappingPreference<MIDIInputName>["mapping"];
     midiEditMode: boolean;
     isListeningForMappingEdit: boolean;
     mappingEditOptions: {

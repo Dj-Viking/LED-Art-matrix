@@ -12,18 +12,22 @@ import {
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
 import {
-    DEFAULT_CALLBACK_TABLE,
     DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
     DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
     MIDIInputName,
 } from "../constants";
 import { deepCopy } from "../utils/deepCopy";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 
 export type MIDISliceState = IAccessRecordState;
 
 export const defaultMappingEditOptions = {
     uiName: "" as any,
 };
+
+const defaultPreference = new MIDIMappingPreference("TouchOSC Bridge");
+
+console.log("mapping pref", defaultPreference);
 
 export const initialMidiSliceState: MIDISliceState = {
     controllerInUse: "XONE:K2 MIDI",
@@ -33,8 +37,9 @@ export const initialMidiSliceState: MIDISliceState = {
         hasPreference: false,
         channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
         uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
-        callbackTable: deepCopy(DEFAULT_CALLBACK_TABLE),
     },
+    midiMappingInUse2: defaultPreference.mapping,
+    callbackMap: defaultPreference.callbackMap,
     midiEditMode: false,
     isListeningForMappingEdit: false,
     mappingEditOptions: defaultMappingEditOptions,

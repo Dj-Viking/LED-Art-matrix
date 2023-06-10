@@ -212,6 +212,33 @@ export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
     button_4: 8,
 };
 
+export const unsetPreference = {
+    uiName: "",
+    channel: 9999,
+};
+
+// export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<XONEK2_ControlNames, any> = {
+
+// }
+
+export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<TouchOscBridgeControlNames, any> = {
+    fader_1: {
+        uiName: "animDuration",
+        channel: 0,
+    },
+    fader_2: unsetPreference,
+    fader_3: unsetPreference,
+    fader_4: unsetPreference,
+    top_fader: {
+        uiName: "circleWidth",
+        channel: 4,
+    },
+    button_1: unsetPreference,
+    button_2: unsetPreference,
+    button_3: unsetPreference,
+    button_4: unsetPreference,
+};
+
 export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
     UIInterfaceDeviceName,
     TouchOscBridgeControlNames
@@ -342,14 +369,6 @@ export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends 
     : Name extends "TouchOSC Bridge"
     ? keyof Record<UIInterfaceDeviceName, TouchOscBridgeControlNames>
     : string; // unimplemented controller name
-
-export type MIDIMappingPreference<Name extends MIDIInputName> = Record<
-    Name,
-    {
-        channelMappings: ChannelMappingPreference<Name>;
-        uiMappings: UIMappingPreference<Name>;
-    }
->;
 
 export const SUPPORTED_CONTROLLERS = {
     "Not Found": {} as any,

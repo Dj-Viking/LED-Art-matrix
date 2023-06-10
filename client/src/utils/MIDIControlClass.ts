@@ -268,7 +268,38 @@ class MIDIController implements IMIDIController {
     }
 
     // TODO: initialize callback table with set mapping preferences for each controller
-
+    // where the midi input controller's
+    // control-name is mapped to another table which has UI name
+    // and channel associated that UI name get's the dispatch callback assigned to the key value pair
+    /**
+     * TODO
+     * restructure mapping preference table like this - a table of tables
+     *
+     * @example
+     * const preference = {
+     *     [MIDIInputName]: {
+     *         [controlName]: {
+     *             uiName: "circleWidth"
+     *             channel: 4
+     *         },
+     *         // other control names
+     *         ["fader_1"]: {
+     *             uiName: "animDuration"
+     *             channel: 0
+     *         }
+     *     },
+     *     [MIDIInputName]: {}
+     * }
+     * // look up which callback based on the UI name derived from the midi input's own control name
+     *
+     * const callbackTable = {
+     *     ["circleWidth"]: dispatch(someSlice.someAction(value))
+     * };
+     *
+     * //call the callback like this
+     * const uiName = preference[midiname][controlName];
+     * callbackTable[uiName]()
+     */
     public setCallbackTableBasedOnMIDIInputName(name: MIDIInputName, channel: number): void {
         //
 
@@ -277,35 +308,6 @@ class MIDIController implements IMIDIController {
                 {
                     const something = "TODO!!!";
                     console.log("todo", something);
-                    // where the midi input controller's
-                    // control-name is mapped to another table which has UI name
-                    // and channel associated that UI name get's the dispatch callback assigned to the key value pair
-                    /**
-                     * TODO
-                     * restructure mapping preference table like this - a table of tables
-                     *
-                     * const preference = {
-                     *     [MIDIInputName]: {
-                     *         [controlName]: {
-                     *             uiName: "circleWidth"
-                     *             channel: 4
-                     *         },
-                     *         ["fader_1"]: {
-                     *             uiName: "animDuration"
-                     *             channel: 0
-                     *         }
-                     *     }
-                     * }
-                     *     // look up which callback based on the UI name derived from the midi input's own control name
-                     *
-                     *     const callbackTable = {
-                     *         ["circleWidth"]: dispatch(someSlice.someAction(value))
-                     *     };
-                     *
-                     *     call the callback like this
-                     *     const uiName = preference[midiname][controlName];
-                     *     callbackTable[uiName]?.()
-                     */
                 }
                 break;
             case "XONE:K2 MIDI":

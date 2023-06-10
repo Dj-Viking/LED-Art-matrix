@@ -7,6 +7,7 @@ import {
     MIDIMessageEvent,
     MIDIConnectionEvent,
 } from "../../utils/MIDIControlClass";
+import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
 
 function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
@@ -34,26 +35,45 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                 .getState()
                 .presetButtonsListState.presetButtons.map((btn) => btn.id);
 
+            const name = MIDIController.stripNativeLabelFromMIDIInputName(
+                midi_event.currentTarget.name
+            );
+
+            const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
+
+            const channel = midi_event.data[1];
+
+            const controlName = SUPPORTED_CONTROLLERS[name][channel];
+
             if (isEditMode && isListeningForMappingEdit) {
-                //
                 _thunkAPI.dispatch(midiActions.setListeningForMappingEdit(false));
 
-                const name = MIDIController.stripNativeLabelFromMIDIInputName(
-                    midi_event.currentTarget.name
-                );
-
-                const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
-
-                const channel = midi_event.data[1];
-
-                const controlName = SUPPORTED_CONTROLLERS[name][channel];
                 console.log("setting the new control mapping", name, controlName, channel, uiName);
 
                 MIDIController.mapMIDIChannelToInterface(name, controlName, channel, uiName);
             }
 
+            let pref = new MIDIMappingPreference(name);
+
+            // TODO: this only updates the preference mapping
+            // calling the callback based on the channel number
+            // should be handled separately
+            // have to do this because typescript complains that I can't just set a class instance directly into the slice state
+            pref = MIDIMappingPreference.updatePreferenceMapping(
+                pref,
+                name,
+                controlName,
+                channel,
+                uiName,
+                _thunkAPI.dispatch
+            );
+
+            // TODO: call action to update midi state preference mappings
+
             switch (true) {
                 case midi_event.currentTarget.name.includes("TouchOSC Bridge"):
+                    // TODO: pass the preference class into here? and invoke the callback based on the ui name
+                    // that was interacted with. see notes in midi control class on the data structure
                     MIDIController.handleTouchOSCMessage(midi_event, _thunkAPI.dispatch);
                     break;
                 // the browser appends some number and a dash for whatever reason
