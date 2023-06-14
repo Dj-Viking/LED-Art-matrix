@@ -19,12 +19,7 @@ import {
     ControlSvg,
 } from "./MIDIListenerWrapper.style";
 import { IAccessRecordState } from "../types";
-import {
-    SUPPORTED_CONTROLLERS,
-    MIDIInputName,
-    DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
-    DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
-} from "../constants";
+import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";

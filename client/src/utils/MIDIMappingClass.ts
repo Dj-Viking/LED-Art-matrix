@@ -43,7 +43,7 @@ export type CallbackMapping<N extends MIDIInputName> = Record<
  *             }
  *         },
  *         callbackMap: {
- *             ["uiName"]: () => void (calls dispatch with supplied arguments)
+ *             ["uiName"]: (...args: any[]) => void // (calls dispatch with supplied arguments)
  *         }
  *     },
  * }
@@ -71,11 +71,29 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         // will have to regenerate the callbacks based on which controlName object is mapped to a particular UI interface names
     }
 
+    public static getControlNameFromControllerInUseUIMapping(
+        mappingInUse: MIDIMapping<MIDIInputName>,
+        uiName: UIInterfaceDeviceName
+    ): string {
+        let ret = "";
+
+        for (const controlName of Object.keys(mappingInUse)) {
+            if (uiName === mappingInUse[controlName].uiName) {
+                ret = controlName;
+                break;
+            } else {
+                ret = "unknown control name mapping";
+            }
+        }
+
+        return ret;
+    }
+
     // TODO:
-    private static _generateCallbackBasedOnUIName<P extends keyof CallbackMapping<MIDIInputName>>(
-        uiName: UIInterfaceDeviceName,
-        dispatch: ToolkitDispatch
-    ): CallbackMapping<MIDIInputName>[P] {
+    private static _generateCallbackBasedOnUIName<
+        N extends MIDIInputName,
+        P extends keyof CallbackMapping<N>
+    >(uiName: UIInterfaceDeviceName, dispatch: ToolkitDispatch): CallbackMapping<N>[P] {
         switch (uiName) {
             case "animDuration":
                 return (_midiIntensity: number) => {

@@ -245,12 +245,11 @@ class MIDIController implements IMIDIController {
 
     public static getMIDIMappingPreferenceFromStorage(
         name: MIDIInputName,
-        dispatch: ToolkitDispatch
+        hasPreference: boolean
     ): MIDIMappingPreference<typeof name> {
         // TODO: update the data structure for what is stored in local storage
         const result = MIDIController.getTypedMIDILocalStorage(name);
-        let pref = new MIDIMappingPreference(name, dispatch);
-        return pref;
+        return result;
     }
 
     public static getTypedMIDILocalStorage(
@@ -288,10 +287,10 @@ class MIDIController implements IMIDIController {
         // add more preferences
         const hasPreferencesSet = !!window.localStorage.getItem(name);
         dispatch(midiActions.setHasPreferencesSet(hasPreferencesSet));
-        return !!window.localStorage.getItem(name) as any;
+        return !!window.localStorage.getItem(name);
     }
 
-    // TODO:
+    // TODO: set in local storage and/or the api database of user preferences
     public static mapMIDIChannelToInterface(
         name: MIDIInputName,
         controlName: GenericControlName<typeof name>,
@@ -308,7 +307,7 @@ class MIDIController implements IMIDIController {
         );
     }
 
-    public static setTypedMIDILocalStorage(
+    public static setTypedMIDIPreferenceLocalStorage(
         name: MIDIInputName,
         controlName: GenericControlName<typeof name>,
         channel: number,
@@ -316,12 +315,12 @@ class MIDIController implements IMIDIController {
         dispatch: ToolkitDispatch
     ): void {
         // get current as to not overwrite everything
-        const pref = MIDIController.getMIDIMappingPreferenceFromStorage(name, dispatch);
+        const pref = MIDIController.getMIDIMappingPreferenceFromStorage(name, true);
 
         console.log("set pref in local storage", pref);
         // can only set the controlName map but not the callback map we have to create that on the fly
 
-        // window.localStorage.setItem(name, JSON.stringify(newMapping));
+        window.localStorage.setItem(name, JSON.stringify(pref));
     }
 
     // TODO:
@@ -333,8 +332,13 @@ class MIDIController implements IMIDIController {
         dispatch: ToolkitDispatch
     ): void {
         // TODO: set in local storage for now
-        MIDIController.setTypedMIDILocalStorage(name, controlName, channel, uiName, dispatch);
-        // TODO: later call functions to update user table in database for their midi mapping preferences for each controller
+        MIDIController.setTypedMIDIPreferenceLocalStorage(
+            name,
+            controlName,
+            channel,
+            uiName,
+            dispatch
+        );
     }
 
     // for each new midi controller to support this has to be expanded

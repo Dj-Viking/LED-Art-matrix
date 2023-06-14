@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { getGlobalState } from "../store/store";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
@@ -12,8 +13,11 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
-    const { midiEditMode, midiMappingInUse } = getGlobalState(useSelector);
-    const uiMapping = midiMappingInUse.uiMappings["animVarCoeff"];
+    const { midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "animVarCoeff"
+    );
     return (
         <>
             <div className="led-slider-container">

@@ -7,6 +7,7 @@ import {
     MIDIInput,
     MIDIOutput,
     MIDIConnectionEvent,
+    MIDIController,
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
@@ -25,7 +26,10 @@ export const initialMidiSliceState: MIDISliceState = {
         // TODO: keep track of which controller name was recently used
         hasPreference: false,
         recentlyUsed: "XONE:K2 MIDI",
-        mapping: {},
+        mapping: {
+            "TouchOSC Bridge": {} as any,
+            "XONE:K2 MIDI": {} as any,
+        } as Partial<IAccessRecordState["midiMappingInUse"]["mapping"]> as any,
     },
     midiEditMode: false,
     isListeningForMappingEdit: false,
@@ -85,11 +89,12 @@ export const midiSlice = createSlice({
 
                 // TODO: redo this part to use the new midi mapping class object structure
 
-                // const { uiMappings, channelMappings } =
-                //     MIDIController.getMIDIControllerUIandChannelMappings(
-                //         controllerName,
-                //         hasPreference
-                //     );
+                const preference = MIDIController.getMIDIMappingPreferenceFromStorage(
+                    controllerName,
+                    hasPreference
+                );
+
+                state.midiMappingInUse.mapping[controllerName] = preference.mapping;
 
                 // state.midiMappingInUse.channelMappings = deepCopy(channelMappings);
                 // state.midiMappingInUse.uiMappings = deepCopy(uiMappings);

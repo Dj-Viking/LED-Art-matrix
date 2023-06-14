@@ -16,7 +16,12 @@ import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { midiActions } from "../store/midiSlice";
-import { UIInterfaceDeviceName } from "../constants";
+import {
+    DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING,
+    touchOsc_MIDI_CHANNEL_TABLE,
+    UIInterfaceDeviceName,
+} from "../constants";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -24,7 +29,11 @@ const ArtScrollerMainContainer = styled.main`
 `;
 
 const ArtScrollerSection: React.FC = ({ children }) => {
-    return <section style={{ display: "flex", "flexDirection": "column", "justifyContent": "center"}}>{children}</section>;
+    return (
+        <section style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {children}
+        </section>
+    );
 };
 
 const ArtScrollerBorderTop: React.FC = () => {
@@ -178,10 +187,15 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
         slider: { circleWidth },
         midiEditMode,
         midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
     console.log("midi mapping in use", midiMappingInUse);
 
-    const uiMapping = midiMappingInUse.uiMappings["circleWidth"];
+    // controlName
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "circleWidth"
+    );
 
     return (
         <StyledSliderLabel htmlFor="scroller-circle-width">
@@ -202,7 +216,7 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 name="gif-list-selector"
                 id="gif-list-selector"
                 style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
-                onChange={(event: any) => {
+                onChange={(event) => {
                     dispatch(artScrollerActions.setListName(event.target.value));
                 }}
             >
@@ -271,8 +285,12 @@ const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
         slider: { vertPos },
         midiEditMode,
         midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
-    const uiMapping = midiMappingInUse.uiMappings["vertPos"];
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "vertPos"
+    );
     return (
         <StyledSliderLabel htmlFor="vertical-positioning">
             {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Vert Positioning: {vertPos}
@@ -319,8 +337,12 @@ const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
         slider: { hPos },
         midiEditMode,
         midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
-    const uiMapping = midiMappingInUse.uiMappings["hPos"];
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "hPos"
+    );
     return (
         <StyledSliderLabel htmlFor="horizontal-positioning">
             {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Horizontal Positioning:{" "}
@@ -371,8 +393,12 @@ const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
         slider: { invert },
         midiEditMode,
         midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
-    const uiMapping = midiMappingInUse.uiMappings["invert"];
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "invert"
+    );
     return (
         <StyledSliderLabel htmlFor="invert">
             {midiEditMode && `<MIDI> (${uiMapping})`} Invert Colors: {Number(invert) / 100}
@@ -413,8 +439,12 @@ const ArtScrollerSpeedSliderLabel: React.FC = () => {
         slider: { animDuration },
         midiEditMode,
         midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
-    const uiMapping = midiMappingInUse.uiMappings["animDuration"];
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.mapping[controllerInUse],
+        "animDuration"
+    );
     return (
         <StyledSliderLabel htmlFor="animation-duration">
             {midiEditMode && `<MIDI> (${uiMapping})`} Scroll Speed: {Number(animDuration) / 100}
