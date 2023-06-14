@@ -38,7 +38,7 @@ module.exports = {
         "@typescript-eslint/no-extra-semi": "off",
         "@typescript-eslint/ban-ts-comment": "off",
         "import/no-named-as-default-member": "off",
-        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-explicit-any": "warn",
         "class-methods-use-this": "off",
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
