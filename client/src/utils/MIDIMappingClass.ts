@@ -73,7 +73,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
 
     // TODO:
     private static _generateCallbackBasedOnUIName<P extends keyof CallbackMapping<MIDIInputName>>(
-        uiName: P,
+        uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
     ): CallbackMapping<MIDIInputName>[P] {
         switch (uiName) {
