@@ -6,7 +6,10 @@ import {
     DEFAULT_CALLBACK_TABLE,
     UIInterfaceDeviceName,
 } from "../constants";
+import { artScrollerActions } from "../store/artScrollerSlice";
+import { ledActions } from "../store/ledSlice";
 import { ToolkitDispatch } from "../store/store";
+import { IPresetButton } from "../types";
 import { deepCopy } from "./deepCopy";
 
 export type MIDIMapping<N extends MIDIInputName> = Record<
@@ -18,53 +21,137 @@ export type MIDIMapping<N extends MIDIInputName> = Record<
 >;
 export type CallbackMapping<N extends MIDIInputName> = Record<
     GenericUIMIDIMappingName<N>,
-    () => void
+    (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => void
 >;
 
+/**
+ * TODO
+ * restructure mapping preference table like this - a table of tables
+ *
+ * @example
+ * const preference = {
+ *     [this.name]: {
+ *         mapping: {
+ *             [controlName]: {
+ *                 uiName: "circleWidth"
+ *                 channel: 4
+ *             },
+ *             // other control names
+ *             ["fader_1"]: {
+ *                 uiName: "animDuration"
+ *                 channel: 0
+ *             }
+ *         },
+ *         callbackMap: {
+ *             ["uiName"]: () => void (calls dispatch with supplied arguments)
+ *         }
+ *     },
+ * }
+ * // look up which callback based on the UI name derived from the midi input's own control name
+ *
+ * const callbackMap = {
+ *     ["circleWidth"]: dispatch(someSlice.someAction(value))
+ * };
+ *
+ * //call the callback like this
+ * const uiName = preference[midiname][controlName];
+ * callbackMap[uiName]()
+ */
 export class MIDIMappingPreference<N extends MIDIInputName> {
     public name: N;
     public mapping: MIDIMapping<N> = {} as any;
     public callbackMap: CallbackMapping<N> = {} as any;
 
-    public constructor(name: N, storedPreference?: any) {
+    public constructor(name: N, dispatch: ToolkitDispatch) {
         this.name = name;
 
         this._setMIDIMappingBasedOnInputName(name);
-        this._setMIDICallbackMapBasedOnInputName(name);
+        this._setMIDICallbackMapBasedOnInputName(name, dispatch);
+        // TODO: since functions can't be serialized into JSON for local storage
+        // will have to regenerate the callbacks based on which controlName object is mapped to a particular UI interface names
     }
 
     // TODO:
-    private static _generateCallbackBasedOnUIName(
+    private static _generateCallbackBasedOnUIName<P extends keyof CallbackMapping<MIDIInputName>>(
         uiName: UIInterfaceDeviceName,
-        callback: (midiIntensity: number) => void
-    ): any {
+        dispatch: ToolkitDispatch
+    ): CallbackMapping<MIDIInputName>[P] {
         switch (uiName) {
             case "animDuration":
-                break;
+                return (_midiIntensity: number) => {
+                    // TODO: NOT IMPLEMENTED
+                };
             case "animVarCoeff":
-                break;
+                return (midiIntensity: number) => {
+                    dispatch(ledActions.setAnimVarCoeff(midiIntensity.toString()));
+                };
             case "button_1_position":
-                break;
+                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
+                    // TODO: not implemented
+                };
             case "button_2_position":
-                break;
+                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
+                    // TODO: not implemented
+                };
             case "button_3_position":
-                break;
+                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
+                    // TODO: not implemented
+                };
             case "button_4_position":
-                break;
+                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
+                    // TODO: not implemented
+                };
             case "button_5_position":
-                break;
+                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
+                    // TODO: not implemented
+                };
             case "circleWidth":
-                return callback;
+                return (midiIntensity: number) => {
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "circleWidth",
+                            value: midiIntensity.toString(),
+                        })
+                    );
+                };
             case "hPos":
-                break;
+                return (midiIntensity: number) => {
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "hPos",
+                            value: midiIntensity.toString(),
+                        })
+                    );
+                };
             case "vertPos":
-                break;
+                return (midiIntensity: number) => {
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "vertPos",
+                            value: midiIntensity.toString(),
+                        })
+                    );
+                };
             case "invert":
-                break;
+                return (midiIntensity: number) => {
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "invert",
+                            value: midiIntensity.toString(),
+                        })
+                    );
+                };
             case "resetTimerButton":
-                break;
+                return (midiIntensity: number) => {
+                    // only on button down trigger action
+                    if (midiIntensity === 127) {
+                        dispatch((_dispatchcb, getState) => {
+                            getState().ledState.resetTimerFn();
+                        });
+                    }
+                };
             default:
-                return () => void 0;
+                return (_midiIntensity: number) => void 0;
         }
     }
 
@@ -79,28 +166,29 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         // update this.mapping and this.callbackmap
 
         const ret = deepCopy(_this);
-        switch (ret.name) {
-            case "TouchOSC Bridge":
-                ret.mapping[controlName].channel = channel;
-                ret.mapping[controlName].uiName = uiName;
-                ret.callbackMap[uiName] = MIDIMappingPreference._generateCallbackBasedOnUIName(
-                    uiName,
-                    dispatch
-                );
-                break;
-            case "XONE:K2 MIDI":
-                break;
-        }
+        ret.mapping[controlName].channel = channel;
+        ret.mapping[controlName].uiName = uiName;
+        ret.callbackMap[uiName] = MIDIMappingPreference._generateCallbackBasedOnUIName(
+            uiName,
+            dispatch
+        );
+
+        // TODO: update storage preference too?
+        // but can't store the callback map...only the mapping itself
+
         return ret;
     }
 
-    private _setMIDICallbackMapBasedOnInputName(name: N): void {
+    private _setMIDICallbackMapBasedOnInputName(name: N, dispatch: ToolkitDispatch): void {
         switch (name) {
             case "TouchOSC Bridge":
-                Object.keys(DEFAULT_CALLBACK_TABLE).forEach((key) => {
+                Object.keys(DEFAULT_CALLBACK_TABLE).forEach((uiName) => {
                     this.callbackMap = {
                         ...this.callbackMap,
-                        [key]: DEFAULT_CALLBACK_TABLE[key],
+                        [uiName]: MIDIMappingPreference._generateCallbackBasedOnUIName(
+                            uiName,
+                            dispatch
+                        ),
                     };
                 });
                 break;
@@ -119,7 +207,8 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
-            case "XONE:K2 MIDI": // TODO:
+            case "XONE:K2 MIDI":
+                // Object.keys();
                 break;
             default:
                 break;

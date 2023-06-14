@@ -217,13 +217,23 @@ export const unsetPreference = {
     channel: 9999,
 };
 
-// export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<XONEK2_ControlNames, any> = {
+// TODO: implement the default mapping preference table for XONEk2
+// export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
+//     XONEK2_ControlNames,
+//     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+// > = {
+//     "1_a_button": {
+//         uiName: "",
+//         channel: 9999
+//     }
+// };
 
-// }
-
-export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<TouchOscBridgeControlNames, any> = {
+export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
+    TouchOscBridgeControlNames,
+    { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+> = {
     fader_1: {
-        uiName: "animDuration",
+        uiName: "animVarCoeff",
         channel: 0,
     },
     fader_2: unsetPreference,
@@ -299,22 +309,25 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
     presetName: void 0 as never,
 };
 
-export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, () => void> = {
-    animDuration: () => void 0,
-    animVarCoeff: () => void 0,
-    button_1_position: () => void 0,
-    button_2_position: () => void 0,
-    button_3_position: () => void 0,
-    button_4_position: () => void 0,
-    button_5_position: () => void 0,
-    circleWidth: () => void 0,
-    hPos: () => void 0,
-    invert: () => void 0,
-    isHSL: () => void 0,
-    presetName: () => void 0,
-    resetTimerButton: () => void 0,
-    resetTimerFn: () => void 0,
-    vertPos: () => void 0,
+export const DEFAULT_CALLBACK_TABLE: Record<
+    UIInterfaceDeviceName,
+    (_midiIntensity: number) => void
+> = {
+    animDuration: (_midiIntensity: number) => void 0,
+    animVarCoeff: (_midiIntensity: number) => void 0,
+    button_1_position: (_midiIntensity: number) => void 0,
+    button_2_position: (_midiIntensity: number) => void 0,
+    button_3_position: (_midiIntensity: number) => void 0,
+    button_4_position: (_midiIntensity: number) => void 0,
+    button_5_position: (_midiIntensity: number) => void 0,
+    circleWidth: (_midiIntensity: number) => void 0,
+    hPos: (_midiIntensity: number) => void 0,
+    invert: (_midiIntensity: number) => void 0,
+    isHSL: (_midiIntensity: number) => void 0,
+    presetName: (_midiIntensity: number) => void 0,
+    resetTimerButton: (_midiIntensity: number) => void 0,
+    resetTimerFn: (_midiIntensity: number) => void 0,
+    vertPos: (_midiIntensity: number) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {

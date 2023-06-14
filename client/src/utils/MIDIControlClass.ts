@@ -5,22 +5,13 @@ import {
     MIDIInputName,
     XONEK2_MIDI_CHANNEL_TABLE,
     touchOsc_MIDI_CHANNEL_TABLE,
-    DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING,
-    DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING,
-    DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING,
-    DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING,
-    UIMappingPreference,
-    ChannelMappingPreference,
     GenericControlName,
     UIInterfaceDeviceName,
-    DEFAULT_CALLBACK_TABLE,
-    SUPPORTED_CONTROLLERS,
 } from "../constants";
 import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
-import { midiActions, MIDISliceState } from "../store/midiSlice";
+import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
-import { deepCopy } from "./deepCopy";
 import { MIDIMappingPreference } from "./MIDIMappingClass";
 
 /**
@@ -149,12 +140,10 @@ interface IMIDIController {
     inputs?: Array<MIDIInput>;
     inputs_size: number;
     outputs_size: number;
-    midiMappingInUse: {
-        wasRecentlyUsed: boolean;
+    recentlyUsed: MIDIInputName;
+    controllerPreference: {
         hasPreference: boolean;
-        channelMappings: ChannelMappingPreference<MIDIInputName>;
-        uiMappings: UIMappingPreference<MIDIInputName>;
-        callbackTable: Record<UIInterfaceDeviceName, () => void>;
+        midiMappingPreference: MIDIMappingPreference<MIDIInputName>;
     };
     outputs?: Array<MIDIOutput>;
     online?: boolean;
@@ -168,23 +157,24 @@ class MIDIController implements IMIDIController {
     public outputs_size = 0;
     public outputs = [] as Array<MIDIOutput>;
     public online = false;
-    public midiMappingInUse = {
-        // TODO: track this recently used better
-        wasRecentlyUsed: false,
+    public recentlyUsed: MIDIInputName = "TouchOSC Bridge";
+    public controllerPreference: IMIDIController["controllerPreference"] = {
         hasPreference: true,
-        channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
-        uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
-        callbackTable: deepCopy(DEFAULT_CALLBACK_TABLE),
-    } as IMIDIController["midiMappingInUse"];
+        midiMappingPreference: {} as any,
+    };
 
-    public constructor(access: MIDIAccessRecord) {
+    public constructor(access: MIDIAccessRecord, dispatch: ToolkitDispatch) {
         this.access = access;
         this.online = true;
         this.inputs_size = access!.inputs.size;
         this.outputs_size = access!.outputs.size;
+        this.controllerPreference = {
+            hasPreference: true,
+            midiMappingPreference: new MIDIMappingPreference("TouchOSC Bridge", dispatch),
+        };
         this._setInputs(access!.inputs);
         this._setOutputs(access!.outputs);
-        this._initLocalStoragePreferencesIfNotExists();
+        this._initLocalStoragePreferencesIfNotExists(dispatch);
     }
 
     public static async requestMIDIAccess(): Promise<MIDIAccessRecord> {
@@ -254,54 +244,26 @@ class MIDIController implements IMIDIController {
     }
 
     public static getMIDIMappingPreferenceFromStorage(
-        name: MIDIInputName
+        name: MIDIInputName,
+        dispatch: ToolkitDispatch
     ): MIDIMappingPreference<typeof name> {
         // TODO: update the data structure for what is stored in local storage
         const result = MIDIController.getTypedMIDILocalStorage(name);
-        let pref = new MIDIMappingPreference(name);
+        let pref = new MIDIMappingPreference(name, dispatch);
         return pref;
     }
 
-    public static getTypedMIDILocalStorage(name: MIDIInputName): {
-        uiMappings: UIMappingPreference<typeof name>;
-        channelMappings: ChannelMappingPreference<typeof name>;
-    } {
-        return JSON.parse(window.localStorage.getItem(name as MIDIInputName)!);
+    public static getTypedMIDILocalStorage(
+        name: MIDIInputName
+    ): MIDIMappingPreference<typeof name> {
+        return JSON.parse(window.localStorage.getItem(name)!);
     }
 
     // TODO: initialize callback table with set mapping preferences for each controller
     // where the midi input controller's
     // control-name is mapped to another table which has UI name
     // and channel associated that UI name get's the dispatch callback assigned to the key value pair
-    /**
-     * TODO
-     * restructure mapping preference table like this - a table of tables
-     *
-     * @example
-     * const preference = {
-     *     [MIDIInputName]: {
-     *         [controlName]: {
-     *             uiName: "circleWidth"
-     *             channel: 4
-     *         },
-     *         // other control names
-     *         ["fader_1"]: {
-     *             uiName: "animDuration"
-     *             channel: 0
-     *         }
-     *     },
-     *     [MIDIInputName]: {}
-     * }
-     * // look up which callback based on the UI name derived from the midi input's own control name
-     *
-     * const callbackTable = {
-     *     ["circleWidth"]: dispatch(someSlice.someAction(value))
-     * };
-     *
-     * //call the callback like this
-     * const uiName = preference[midiname][controlName];
-     * callbackTable[uiName]()
-     */
+
     public setCallbackTableBasedOnMIDIInputName(name: MIDIInputName, channel: number): void {
         //
 
@@ -334,38 +296,32 @@ class MIDIController implements IMIDIController {
         name: MIDIInputName,
         controlName: GenericControlName<typeof name>,
         channel: number,
-        uiName: UIInterfaceDeviceName
+        uiName: UIInterfaceDeviceName,
+        dispatch: ToolkitDispatch
     ): void {
-        MIDIController.setMIDIMappingPreferenceInStorage(name, controlName, channel, uiName);
+        MIDIController.setMIDIMappingPreferenceInStorage(
+            name,
+            controlName,
+            channel,
+            uiName,
+            dispatch
+        );
     }
 
     public static setTypedMIDILocalStorage(
         name: MIDIInputName,
         controlName: GenericControlName<typeof name>,
         channel: number,
-        uiName: UIInterfaceDeviceName
+        uiName: UIInterfaceDeviceName,
+        dispatch: ToolkitDispatch
     ): void {
         // get current as to not overwrite everything
-        const { uiMappings, channelMappings } =
-            MIDIController.getMIDIMappingPreferenceFromStorage(name);
+        const pref = MIDIController.getMIDIMappingPreferenceFromStorage(name, dispatch);
 
-        const newMapping = {
-            channelMappings: {
-                ...channelMappings,
-                [controlName]: channel,
-            },
-            uiMappings: {
-                ...uiMappings,
-                [uiName]: controlName,
-            },
-            wasRecentlyUsed: true,
-        } as Omit<MIDISliceState["midiMappingInUse"], "hasPreference"> & {
-            wasRecentlyUsed: boolean;
-        };
+        console.log("set pref in local storage", pref);
+        // can only set the controlName map but not the callback map we have to create that on the fly
 
-        console.log("new mapping?", newMapping);
-
-        window.localStorage.setItem(name, JSON.stringify(newMapping));
+        // window.localStorage.setItem(name, JSON.stringify(newMapping));
     }
 
     // TODO:
@@ -373,99 +329,48 @@ class MIDIController implements IMIDIController {
         name: MIDIInputName,
         controlName: GenericControlName<typeof name>,
         channel: number,
-        uiName: UIInterfaceDeviceName
+        uiName: UIInterfaceDeviceName,
+        dispatch: ToolkitDispatch
     ): void {
         // TODO: set in local storage for now
-        MIDIController.setTypedMIDILocalStorage(name, controlName, channel, uiName);
+        MIDIController.setTypedMIDILocalStorage(name, controlName, channel, uiName, dispatch);
         // TODO: later call functions to update user table in database for their midi mapping preferences for each controller
     }
 
     // for each new midi controller to support this has to be expanded
-    private _initLocalStoragePreferencesIfNotExists(): void {
-        let mapping = null;
+    private _initLocalStoragePreferencesIfNotExists(dispatch: ToolkitDispatch): void {
+        let pref = null;
+        // unfortunately functions are not serializable to JSON in local storage
         if (!window.localStorage.getItem("TouchOSC Bridge" as MIDIInputName)) {
-            const value = JSON.parse(window.localStorage.getItem("TouchOSC Bridge")!) as
-                | IMIDIController["midiMappingInUse"]
-                | null;
-
-            if (value?.wasRecentlyUsed) mapping = value;
-
+            // create
+            const initPref = new MIDIMappingPreference("TouchOSC Bridge", dispatch);
+            pref = initPref;
+            console.log("pref", pref);
             window.localStorage.setItem(
-                "TouchOSC Bridge",
-                JSON.stringify({
-                    channelMappings:
-                        value?.channelMappings ||
-                        deepCopy(DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING),
-                    uiMappings:
-                        value?.uiMappings || deepCopy(DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING),
-                    wasRecentlyUsed: value?.wasRecentlyUsed || false,
-                } as Omit<IMIDIController["midiMappingInUse"], "hasPreference">)
+                "TouchOSC Bridge" as MIDIInputName,
+                JSON.stringify(initPref)
             );
+            const gotPref = window.localStorage.getItem("TouchOSC Bridge")!;
+            console.log("got pref", JSON.parse(gotPref));
         }
-        if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
-            const value = JSON.parse(window.localStorage.getItem("TouchOSC Bridge")!) as
-                | IMIDIController["midiMappingInUse"]
-                | null;
-
-            if (value?.wasRecentlyUsed) mapping = value;
-
-            window.localStorage.setItem(
-                "XONE:K2 MIDI",
-                JSON.stringify({
-                    channelMappings:
-                        value?.channelMappings ||
-                        deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
-                    uiMappings:
-                        value?.uiMappings || deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
-                    wasRecentlyUsed: value?.wasRecentlyUsed || false,
-                } as Omit<IMIDIController["midiMappingInUse"], "hasPreference">)
-            );
-        }
-
-        if (mapping) {
-            this.midiMappingInUse = mapping;
-        }
+        // if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
+        // }
     }
 
     // for each new midi controller to support this has to be expanded
     public static getMIDIControllerUIandChannelMappings(
         name: MIDIInputName,
         hasPreference: boolean
-    ): {
-        uiMappings: UIMappingPreference<typeof name>;
-        channelMappings: ChannelMappingPreference<typeof name>;
-    } {
-        switch (name) {
-            case "TouchOSC Bridge":
-                if (hasPreference) {
-                    // get preference from local storage if exists
-                    return MIDIController.getMIDIMappingPreferenceFromStorage(name);
-                } else {
-                    return {
-                        uiMappings: deepCopy(DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING),
-                        channelMappings: deepCopy(DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING),
-                    };
-                }
-            case "XONE:K2 MIDI":
-                if (hasPreference) {
-                    // get preference from local storage if exists
-                    return MIDIController.getMIDIMappingPreferenceFromStorage(name);
-                } else {
-                    return {
-                        uiMappings: deepCopy(DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING),
-                        channelMappings: deepCopy(DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING),
-                    };
-                }
-            default:
-                return { uiMappings: {}, channelMappings: {} };
-        }
+    ): IMIDIController["controllerPreference"] & any {
+        //
     }
 
     public static handleTouchOSCMessage(
         midi_event: MIDIMessageEvent,
         _dispatchcb: ToolkitDispatch,
         pref: MIDIMappingPreference<typeof name>,
-        name: MIDIInputName
+        name: MIDIInputName,
+        _this: MIDIController
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
@@ -485,20 +390,12 @@ class MIDIController implements IMIDIController {
         // TODO render svgs for showing it's touch osc
         // touch osc logo?
 
-        //TODO: once the preference is set in the storage
-        // it now has to map to a callback that gets called on that channel => controller => UI connection
+        const callbackMap = _this.controllerPreference.midiMappingPreference.callbackMap;
+        const mapping = _this.controllerPreference.midiMappingPreference.mapping;
 
-        switch (touchOsc_MIDI_CHANNEL_TABLE[midi_channel]) {
-            case "fader_1":
-                _dispatchcb(
-                    ledActions.setAnimVarCoeff(
-                        (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
-                    )
-                );
-                break;
-            default:
-                break;
-        }
+        const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[midi_channel]].uiName];
+
+        callback(midi_intensity);
     }
 
     public static handleXONEK2MIDIMessage(

@@ -26,6 +26,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
     async (_params, _thunkAPI) => {
         const browserAccess = await MIDIController.requestMIDIAccess();
 
+        const mc = new MIDIController(browserAccess, _thunkAPI.dispatch);
+
         const midicb = function (midi_event: MIDIMessageEvent): void {
             const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
             const isListeningForMappingEdit =
@@ -40,10 +42,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             );
 
             // will get updated if we are in edit mode and listening for changes
-            let pref = new MIDIMappingPreference(
-                name,
-                MIDIController.getMIDIMappingPreferenceFromStorage(name)
-            );
+            let pref = new MIDIMappingPreference(name, _thunkAPI.dispatch);
 
             const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
 
@@ -56,7 +55,13 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
 
                 console.log("setting the new control mapping", name, controlName, channel, uiName);
 
-                MIDIController.mapMIDIChannelToInterface(name, controlName, channel, uiName);
+                MIDIController.mapMIDIChannelToInterface(
+                    name,
+                    controlName,
+                    channel,
+                    uiName,
+                    _thunkAPI.dispatch
+                );
 
                 // TODO: this only updates the preference mapping
                 // calling the callback based on the channel number
@@ -82,7 +87,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                         midi_event,
                         _thunkAPI.dispatch,
                         pref,
-                        name
+                        name,
+                        mc
                     );
                     break;
                 // the browser appends some number and a dash for whatever reason
@@ -107,7 +113,10 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
         // browserAccess.onstatechange = (event: MIDIConnectionEvent) => {
         //     console.log("browser access reference got a state change", event);
         // };
-        const mc = new MIDIController(browserAccess);
+
+        // make sure both the callback map and the mapping are applied to the midicontroller class separately
+        // since I don't think I can store a class instance into the redux state (i dont think T_T)
+
         mc.setInputCbs(midicb, onstatechangecb);
         return mc;
     }

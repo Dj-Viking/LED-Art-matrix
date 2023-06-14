@@ -5,18 +5,13 @@ import {
     MIDIOutput,
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
-import { MIDIMappingPreference } from "./utils/MIDIMappingClass";
+import { MIDIMapping } from "./utils/MIDIMappingClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
-import {
-    ChannelMappingPreference,
-    MIDIInputName,
-    UIInterfaceDeviceName,
-    UIMappingPreference,
-} from "./constants";
+import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
@@ -219,12 +214,10 @@ export interface IDeleteModalState {
 export type IAccessRecordState = {
     controllerInUse: MIDIInputName;
     midiMappingInUse: {
+        recentlyUsed: MIDIInputName;
         hasPreference: boolean;
-        channelMappings: ChannelMappingPreference<MIDIInputName>;
-        uiMappings: UIMappingPreference<MIDIInputName>;
+        mapping: MIDIMapping<MIDIInputName>;
     };
-    callbackMap: MIDIMappingPreference<MIDIInputName>["callbackMap"];
-    midiMappingInUse2: MIDIMappingPreference<MIDIInputName>["mapping"];
     midiEditMode: boolean;
     isListeningForMappingEdit: boolean;
     mappingEditOptions: {
