@@ -118,6 +118,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
         // since I don't think I can store a class instance into the redux state (i dont think T_T)
 
         mc.setInputCbs(midicb, onstatechangecb);
+
+        console.log("what is mc here on initialization of midi control", mc);
         return mc;
     }
 );

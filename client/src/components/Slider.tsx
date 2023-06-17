@@ -15,7 +15,7 @@ interface SliderProps {
 const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
     const { midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "animVarCoeff"
     );
     return (

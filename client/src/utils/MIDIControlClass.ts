@@ -349,13 +349,13 @@ class MIDIController implements IMIDIController {
             // create
             const initPref = new MIDIMappingPreference("TouchOSC Bridge", dispatch);
             pref = initPref;
-            console.log("pref", pref);
+            console.log("pref to initialize into local storage", pref);
             window.localStorage.setItem(
                 "TouchOSC Bridge" as MIDIInputName,
                 JSON.stringify(initPref)
             );
             const gotPref = window.localStorage.getItem("TouchOSC Bridge")!;
-            console.log("got pref", JSON.parse(gotPref));
+            console.log("got pref from local storage", JSON.parse(gotPref));
         }
         // if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
         // }

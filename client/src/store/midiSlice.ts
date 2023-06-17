@@ -26,10 +26,10 @@ export const initialMidiSliceState: MIDISliceState = {
         // TODO: keep track of which controller name was recently used
         hasPreference: false,
         recentlyUsed: "XONE:K2 MIDI",
-        mapping: {
+        midiMappingPreference: {
             "TouchOSC Bridge": {} as any,
             "XONE:K2 MIDI": {} as any,
-        } as Partial<IAccessRecordState["midiMappingInUse"]["mapping"]> as any,
+        } as Partial<IAccessRecordState["midiMappingInUse"]["midiMappingPreference"]> as any,
     },
     midiEditMode: false,
     isListeningForMappingEdit: false,
@@ -94,7 +94,8 @@ export const midiSlice = createSlice({
                     hasPreference
                 );
 
-                state.midiMappingInUse.mapping[controllerName] = preference.mapping;
+                state.midiMappingInUse.midiMappingPreference[controllerName] = preference.mapping;
+                state.midiMappingInUse.recentlyUsed = controllerName;
 
                 // state.midiMappingInUse.channelMappings = deepCopy(channelMappings);
                 // state.midiMappingInUse.uiMappings = deepCopy(uiMappings);

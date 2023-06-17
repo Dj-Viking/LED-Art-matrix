@@ -216,7 +216,7 @@ export type IAccessRecordState = {
     midiMappingInUse: {
         recentlyUsed: MIDIInputName;
         hasPreference: boolean;
-        mapping: Record<MIDIInputName, MIDIMapping<MIDIInputName>>;
+        midiMappingPreference: Record<MIDIInputName, MIDIMapping<MIDIInputName>>;
     };
     midiEditMode: boolean;
     isListeningForMappingEdit: boolean;

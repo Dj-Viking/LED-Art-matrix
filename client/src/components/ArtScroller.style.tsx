@@ -189,11 +189,10 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
         midiMappingInUse,
         controllerInUse,
     } = getGlobalState(useSelector);
-    console.log("midi mapping in use", midiMappingInUse);
 
     // controlName
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "circleWidth"
     );
 
@@ -288,7 +287,7 @@ const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
         controllerInUse,
     } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "vertPos"
     );
     return (
@@ -340,7 +339,7 @@ const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
         controllerInUse,
     } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "hPos"
     );
     return (
@@ -396,7 +395,7 @@ const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
         controllerInUse,
     } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "invert"
     );
     return (
@@ -442,7 +441,7 @@ const ArtScrollerSpeedSliderLabel: React.FC = () => {
         controllerInUse,
     } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
-        midiMappingInUse.mapping[controllerInUse],
+        midiMappingInUse.midiMappingPreference[controllerInUse],
         "animDuration"
     );
     return (

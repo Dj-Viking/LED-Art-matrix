@@ -10,6 +10,7 @@ import { artScrollerActions } from "../store/artScrollerSlice";
 import { ledActions } from "../store/ledSlice";
 import { ToolkitDispatch } from "../store/store";
 import { IPresetButton } from "../types";
+import { calcPositionFromRange } from "./calcPositionFromRange";
 import { deepCopy } from "./deepCopy";
 
 export type MIDIMapping<N extends MIDIInputName> = Record<
@@ -101,7 +102,13 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                 };
             case "animVarCoeff":
                 return (midiIntensity: number) => {
-                    dispatch(ledActions.setAnimVarCoeff(midiIntensity.toString()));
+                    dispatch(
+                        ledActions.setAnimVarCoeff(
+                            midiIntensity <= 0
+                                ? "1"
+                                : calcPositionFromRange(midiIntensity, 1, 255, 0, 127).toString()
+                        )
+                    );
                 };
             case "button_1_position":
                 return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {

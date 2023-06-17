@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
@@ -119,7 +120,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         controllerInUse: "XONE:K2 MIDI",
                         midiMappingInUse: {
                             recentlyUsed: "XONE:K2 MIDI",
-                            mapping: {} as any,
+                            midiMappingPreference: {} as any,
                             hasPreference: false,
                         },
                         access: accessState,
