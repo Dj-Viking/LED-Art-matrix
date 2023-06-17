@@ -296,8 +296,27 @@ class MIDIController implements IMIDIController {
         dispatch: ToolkitDispatch
     ): CallbackMapping<MIDIInputName> {
         // have to create a copy otherwise these nested properties are read-only by default in JS classes (head asplode)
+
         let newPref = deepCopy(new MIDIMappingPreference(name, dispatch));
 
+        // TODO: unset the previous mapping if it already exists on a different control
+        // get the current one
+        // this currently only works against controls that don't have default mappings already
+        // # BUG
+        /**
+         * @see https://github.com/Dj-Viking/LED-Art-matrix/issues/178
+         */
+        const currentPref = MIDIController.getMIDIMappingPreferenceFromStorage(name, true);
+        if (
+            currentPref.mapping[controlName].channel === channel &&
+            currentPref.mapping[controlName].uiName === uiName
+        ) {
+            currentPref.mapping[controlName].channel = 9999;
+            currentPref.mapping[controlName].uiName = "";
+            window.localStorage.setItem(name, JSON.stringify(currentPref));
+        }
+
+        // overwrite new mapping with the inputs to this function
         newPref.mapping[controlName].channel = channel;
         newPref.mapping[controlName].uiName = uiName;
 
