@@ -111,8 +111,13 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
     >(uiName: UIInterfaceDeviceName, dispatch: ToolkitDispatch): CallbackMapping<N>[P] {
         switch (uiName) {
             case "animDuration":
-                return (_midiIntensity: number) => {
-                    // TODO: NOT IMPLEMENTED
+                return (midiIntensity: number) => {
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "animDuration",
+                            value: calcPositionFromRange(midiIntensity, 1, 100, 0, 127).toString(),
+                        })
+                    );
                 };
             case "animVarCoeff":
                 return (midiIntensity: number) => {
@@ -149,7 +154,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     dispatch(
                         artScrollerActions.setSlider({
                             control: "circleWidth",
-                            value: midiIntensity.toString(),
+                            value: calcPositionFromRange(midiIntensity, 0, 100, 0, 127).toString(),
                         })
                     );
                 };
@@ -167,7 +172,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     dispatch(
                         artScrollerActions.setSlider({
                             control: "vertPos",
-                            value: midiIntensity.toString(),
+                            value: calcPositionFromRange(midiIntensity, 0, 200, 0, 127).toString(),
                         })
                     );
                 };
@@ -176,7 +181,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     dispatch(
                         artScrollerActions.setSlider({
                             control: "invert",
-                            value: midiIntensity.toString(),
+                            value: calcPositionFromRange(midiIntensity, 0, 100, 0, 127).toString(),
                         })
                     );
                 };
