@@ -317,8 +317,21 @@ class MIDIController implements IMIDIController {
         }
 
         // overwrite new mapping with the inputs to this function
-        newPref.mapping[controlName].channel = channel;
-        newPref.mapping[controlName].uiName = uiName;
+        // somehow check which controls are mapped already and if they already have
+        // a channel assigned to them which is the same as the one we're trying to assign
+        // then unset it to the default un-set values
+
+        // TODO-NOTE:
+        // right now multiple channels could be mapped to the same ui control interface
+        newPref.mapping = {
+            ...currentPref.mapping,
+            [controlName]: {
+                channel,
+                uiName,
+            },
+        };
+        // newPref.mapping[controlName].channel = channel;
+        // newPref.mapping[controlName].uiName = uiName;
 
         window.localStorage.setItem(name, JSON.stringify(newPref));
 

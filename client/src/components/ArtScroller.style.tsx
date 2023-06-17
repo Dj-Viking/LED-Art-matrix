@@ -360,6 +360,9 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
             data-testid="horiz-pos"
             max="100"
             value={hPos}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "hPos");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -413,6 +416,9 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
             min="0"
             max="100"
             value={invert}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "invert");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -459,6 +465,9 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
             min="1"
             max="100"
             value={animDuration}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "animDuration");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
