@@ -24,19 +24,6 @@ const ArtScrollerMainContainer = styled.main`
     flex-direction: column;
 `;
 
-function listeningForEditsHandler(
-    dispatch: React.Dispatch<any>,
-    uiName: UIInterfaceDeviceName
-): void {
-    console.log("listening for edits");
-    dispatch(midiActions.setListeningForMappingEdit(true));
-    dispatch(
-        midiActions.setMappingEditOptions({
-            uiName: uiName,
-        })
-    );
-}
-
 const ArtScrollerSection: React.FC = ({ children }) => {
     return (
         <section style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
@@ -267,7 +254,7 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             max="100"
             value={circleWidth}
             onClick={() => {
-                listeningForEditsHandler(dispatch, "circleWidth");
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "circleWidth");
             }}
             onChange={(event) => {
                 event.preventDefault();
@@ -322,7 +309,7 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
             max="200"
             value={vertPos}
             onClick={() => {
-                listeningForEditsHandler(dispatch, "vertPos");
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "vertPos");
             }}
             onChange={(event) => {
                 event.preventDefault();

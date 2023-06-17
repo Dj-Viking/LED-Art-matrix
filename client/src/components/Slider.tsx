@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getGlobalState } from "../store/store";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import "./aux-styles/ledSliderStyles.css";
@@ -13,6 +13,7 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
+    const dispatch = useDispatch();
     const { midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
@@ -50,6 +51,9 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                     type="range"
                     min="1"
                     max="255"
+                    onClick={() => {
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "animVarCoeff");
+                    }}
                     value={inputValueState || "64"}
                     onChange={handleChange}
                 />

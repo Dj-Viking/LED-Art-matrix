@@ -8,6 +8,7 @@ import {
 } from "../constants";
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { ledActions } from "../store/ledSlice";
+import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
 import { IPresetButton } from "../types";
 import { calcPositionFromRange } from "./calcPositionFromRange";
@@ -70,6 +71,19 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         // TODO: since functions can't be serialized into JSON for local storage
         // will have to regenerate the callbacks based on which controlName object is mapped to a particular UI interface names
         MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, this, dispatch);
+    }
+
+    public static listeningForEditsHandler(
+        dispatch: React.Dispatch<any>,
+        uiName: UIInterfaceDeviceName
+    ): void {
+        console.log("listening for edits");
+        dispatch(midiActions.setListeningForMappingEdit(true));
+        dispatch(
+            midiActions.setMappingEditOptions({
+                uiName: uiName,
+            })
+        );
     }
 
     public static getControlNameFromControllerInUseUIMapping(
