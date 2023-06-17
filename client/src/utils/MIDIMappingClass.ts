@@ -66,10 +66,10 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
     public constructor(name: N, dispatch: ToolkitDispatch) {
         this.name = name;
 
-        this._setMIDIMappingBasedOnInputName(name);
-        this._setMIDICallbackMapBasedOnInputName(name, dispatch);
+        this.#setMIDIMappingBasedOnInputName(name);
         // TODO: since functions can't be serialized into JSON for local storage
         // will have to regenerate the callbacks based on which controlName object is mapped to a particular UI interface names
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, this, dispatch);
     }
 
     public static getControlNameFromControllerInUseUIMapping(
@@ -91,7 +91,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
     }
 
     // TODO:
-    private static _generateCallbackBasedOnUIName<
+    public static generateCallbackBasedOnUIName<
         N extends MIDIInputName,
         P extends keyof CallbackMapping<N>
     >(uiName: UIInterfaceDeviceName, dispatch: ToolkitDispatch): CallbackMapping<N>[P] {
@@ -193,24 +193,23 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         const ret = deepCopy(_this);
         ret.mapping[controlName].channel = channel;
         ret.mapping[controlName].uiName = uiName;
-        ret.callbackMap[uiName] = MIDIMappingPreference._generateCallbackBasedOnUIName(
-            uiName,
-            dispatch
-        );
 
-        // TODO: update storage preference too?
-        // but can't store the callback map...only the mapping itself
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, ret, dispatch);
 
         return ret;
     }
 
-    private _setMIDICallbackMapBasedOnInputName(name: N, dispatch: ToolkitDispatch): void {
+    public static setMIDICallbackMapBasedOnControllerName(
+        name: MIDIInputName,
+        _this: MIDIMappingPreference<MIDIInputName>,
+        dispatch: ToolkitDispatch
+    ): void {
         switch (name) {
             case "TouchOSC Bridge":
                 Object.keys(DEFAULT_CALLBACK_TABLE).forEach((uiName) => {
-                    this.callbackMap = {
-                        ...this.callbackMap,
-                        [uiName]: MIDIMappingPreference._generateCallbackBasedOnUIName(
+                    _this.callbackMap = {
+                        ..._this.callbackMap,
+                        [uiName]: MIDIMappingPreference.generateCallbackBasedOnUIName(
                             uiName,
                             dispatch
                         ),
@@ -222,7 +221,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         }
     }
 
-    private _setMIDIMappingBasedOnInputName(name: N): void {
+    #setMIDIMappingBasedOnInputName(name: N): void {
         switch (name) {
             case "TouchOSC Bridge":
                 Object.keys(DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE).forEach((key) => {

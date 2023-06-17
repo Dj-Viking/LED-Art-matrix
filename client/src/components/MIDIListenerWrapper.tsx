@@ -118,6 +118,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                         mappingEditOptions: defaultMappingEditOptions,
                         controllerInUse: "XONE:K2 MIDI",
                         midiMappingInUse: {
+                            callbackMap: {} as any,
                             recentlyUsed: "XONE:K2 MIDI",
                             midiMappingPreference: {} as any,
                             hasPreference: false,

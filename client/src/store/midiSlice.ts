@@ -12,6 +12,8 @@ import {
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
 import { MIDIInputName } from "../constants";
+import { deepCopy } from "../utils/deepCopy";
+import { CallbackMapping } from "../utils/MIDIMappingClass";
 
 export type MIDISliceState = IAccessRecordState;
 
@@ -26,6 +28,7 @@ export const initialMidiSliceState: MIDISliceState = {
         // TODO: keep track of which controller name was recently used
         hasPreference: false,
         recentlyUsed: "XONE:K2 MIDI",
+        callbackMap: {} as any,
         midiMappingPreference: {
             "TouchOSC Bridge": {} as any,
             "XONE:K2 MIDI": {} as any,
@@ -55,6 +58,14 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
+        setCallbackMap: (
+            state: MIDISliceState,
+            action: PayloadAction<CallbackMapping<MIDIInputName>>
+        ) => {
+            return produce(state, () => {
+                state.midiMappingInUse.callbackMap = action.payload;
+            });
+        },
         setMappingEditOptions: (
             state: MIDISliceState,
             action: PayloadAction<Partial<MIDISliceState["mappingEditOptions"]>>
@@ -85,20 +96,21 @@ export const midiSlice = createSlice({
         ) => {
             return produce(state, () => {
                 const { controllerName, hasPreference } = action.payload;
-                state.controllerInUse = controllerName;
 
                 // TODO: redo this part to use the new midi mapping class object structure
 
                 const preference = MIDIController.getMIDIMappingPreferenceFromStorage(
                     controllerName,
-                    hasPreference
+                    hasPreference // NOT IMPLEMENTED YET
                 );
 
-                state.midiMappingInUse.midiMappingPreference[controllerName] = preference.mapping;
-                state.midiMappingInUse.recentlyUsed = controllerName;
+                state.controllerInUse = controllerName;
 
-                // state.midiMappingInUse.channelMappings = deepCopy(channelMappings);
-                // state.midiMappingInUse.uiMappings = deepCopy(uiMappings);
+                state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(
+                    preference.mapping
+                );
+
+                state.midiMappingInUse.recentlyUsed = controllerName;
             });
         },
         // TODO: make an action for updating a specific control mapping to the controller in use
@@ -135,7 +147,16 @@ export const midiSlice = createSlice({
                 // but i can still put it into state
                 state.access = action.payload.access;
                 console.log("what is inited in state for mappings", action.payload);
-                // state.midiMappingInUse = action.payload.midiMappingInUse;
+
+                const controllerName =
+                    action.payload.controllerPreference.midiMappingPreference.name;
+
+                state.midiMappingInUse.midiMappingPreference[controllerName] =
+                    action.payload.controllerPreference.midiMappingPreference.mapping;
+
+                state.midiMappingInUse.callbackMap =
+                    action.payload.controllerPreference.midiMappingPreference.callbackMap;
+
                 state.inputs = action.payload.inputs;
                 state.outputs = action.payload.outputs;
                 state.online = true;

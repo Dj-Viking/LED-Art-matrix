@@ -16,17 +16,26 @@ import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { midiActions } from "../store/midiSlice";
-import {
-    DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING,
-    touchOsc_MIDI_CHANNEL_TABLE,
-    UIInterfaceDeviceName,
-} from "../constants";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
+import { UIInterfaceDeviceName } from "../constants";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
     flex-direction: column;
 `;
+
+function listeningForEditsHandler(
+    dispatch: React.Dispatch<any>,
+    uiName: UIInterfaceDeviceName
+): void {
+    console.log("listening for edits");
+    dispatch(midiActions.setListeningForMappingEdit(true));
+    dispatch(
+        midiActions.setMappingEditOptions({
+            uiName: uiName,
+        })
+    );
+}
 
 const ArtScrollerSection: React.FC = ({ children }) => {
     return (
@@ -258,13 +267,7 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             max="100"
             value={circleWidth}
             onClick={() => {
-                console.log("listening for edits");
-                dispatch(midiActions.setListeningForMappingEdit(true));
-                dispatch(
-                    midiActions.setMappingEditOptions({
-                        uiName: "circleWidth" as UIInterfaceDeviceName,
-                    })
-                );
+                listeningForEditsHandler(dispatch, "circleWidth");
             }}
             onChange={(event) => {
                 event.preventDefault();
@@ -318,6 +321,9 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
             min="0"
             max="200"
             value={vertPos}
+            onClick={() => {
+                listeningForEditsHandler(dispatch, "vertPos");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(

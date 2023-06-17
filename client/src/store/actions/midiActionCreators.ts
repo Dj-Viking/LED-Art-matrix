@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../../constants";
 
 import { MyThunkConfig } from "../../types";
+import { deepCopy } from "../../utils/deepCopy";
 import {
     MIDIController,
     MIDIMessageEvent,
@@ -42,7 +43,26 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             );
 
             // will get updated if we are in edit mode and listening for changes
-            let pref = new MIDIMappingPreference(name, _thunkAPI.dispatch);
+            // only make a new one if it's not currently set in state yet
+            let pref: MIDIMappingPreference<typeof name>;
+            if (
+                Object.keys(
+                    _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name]
+                ).length === 0
+            ) {
+                pref = new MIDIMappingPreference(name, _thunkAPI.dispatch);
+            } else {
+                pref = deepCopy(new MIDIMappingPreference(name, _thunkAPI.dispatch));
+
+                pref.mapping =
+                    _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name];
+
+                MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(
+                    name,
+                    pref,
+                    _thunkAPI.dispatch
+                );
+            }
 
             const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
 
@@ -87,8 +107,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                         midi_event,
                         _thunkAPI.dispatch,
                         pref,
-                        name,
-                        mc
+                        name
                     );
                     break;
                 // the browser appends some number and a dash for whatever reason

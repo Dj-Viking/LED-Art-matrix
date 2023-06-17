@@ -13,7 +13,8 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
 import { MIDIMappingPreference } from "./MIDIMappingClass";
-
+import { CallbackMapping } from "./MIDIMappingClass";
+import { deepCopy } from "./deepCopy";
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -245,7 +246,7 @@ class MIDIController implements IMIDIController {
 
     public static getMIDIMappingPreferenceFromStorage(
         name: MIDIInputName,
-        hasPreference: boolean
+        hasPreference: boolean // TODO: implement logic for has preference false if the preference doesn't exist yet and initialize it as something default
     ): MIDIMappingPreference<typeof name> {
         // TODO: update the data structure for what is stored in local storage
         const result = MIDIController.getTypedMIDILocalStorage(name);
@@ -255,7 +256,7 @@ class MIDIController implements IMIDIController {
     public static getTypedMIDILocalStorage(
         name: MIDIInputName
     ): MIDIMappingPreference<typeof name> {
-        return JSON.parse(window.localStorage.getItem(name)!);
+        return JSON.parse(window.localStorage.getItem(name)!) as MIDIMappingPreference<typeof name>;
     }
 
     // TODO: initialize callback table with set mapping preferences for each controller
@@ -298,6 +299,8 @@ class MIDIController implements IMIDIController {
         uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
     ): void {
+        // set in storage and also update the redux state for the mappings
+
         MIDIController.setMIDIMappingPreferenceInStorage(
             name,
             controlName,
@@ -313,14 +316,18 @@ class MIDIController implements IMIDIController {
         channel: number,
         uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
-    ): void {
-        // get current as to not overwrite everything
-        const pref = MIDIController.getMIDIMappingPreferenceFromStorage(name, true);
+    ): CallbackMapping<MIDIInputName> {
+        // have to create a copy otherwise these nested properties are read-only by default in JS classes (head asplode)
+        let newPref = deepCopy(new MIDIMappingPreference(name, dispatch));
 
-        console.log("set pref in local storage", pref);
-        // can only set the controlName map but not the callback map we have to create that on the fly
+        newPref.mapping[controlName].channel = channel;
+        newPref.mapping[controlName].uiName = uiName;
 
-        window.localStorage.setItem(name, JSON.stringify(pref));
+        window.localStorage.setItem(name, JSON.stringify(newPref));
+
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, newPref, dispatch);
+
+        return newPref.callbackMap;
     }
 
     // TODO:
@@ -332,13 +339,14 @@ class MIDIController implements IMIDIController {
         dispatch: ToolkitDispatch
     ): void {
         // TODO: set in local storage for now
-        MIDIController.setTypedMIDIPreferenceLocalStorage(
+        const newCallbackMap = MIDIController.setTypedMIDIPreferenceLocalStorage(
             name,
             controlName,
             channel,
             uiName,
             dispatch
         );
+        dispatch(midiActions.setCallbackMap(newCallbackMap));
     }
 
     // for each new midi controller to support this has to be expanded
@@ -361,20 +369,11 @@ class MIDIController implements IMIDIController {
         // }
     }
 
-    // for each new midi controller to support this has to be expanded
-    public static getMIDIControllerUIandChannelMappings(
-        name: MIDIInputName,
-        hasPreference: boolean
-    ): IMIDIController["controllerPreference"] & any {
-        //
-    }
-
     public static handleTouchOSCMessage(
         midi_event: MIDIMessageEvent,
         _dispatchcb: ToolkitDispatch,
         pref: MIDIMappingPreference<typeof name>,
-        name: MIDIInputName,
-        _this: MIDIController
+        name: MIDIInputName
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
@@ -394,8 +393,8 @@ class MIDIController implements IMIDIController {
         // TODO render svgs for showing it's touch osc
         // touch osc logo?
 
-        const callbackMap = _this.controllerPreference.midiMappingPreference.callbackMap;
-        const mapping = _this.controllerPreference.midiMappingPreference.mapping;
+        const callbackMap = pref.callbackMap;
+        const mapping = pref.mapping;
 
         const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[midi_channel]].uiName];
 
@@ -406,7 +405,7 @@ class MIDIController implements IMIDIController {
         midi_event: MIDIMessageEvent,
         _dispatchcb: ToolkitDispatch,
         _buttonIds: string[],
-        midiPreferenceTable: MIDIMappingPreference<typeof name>,
+        pref: MIDIMappingPreference<typeof name>,
         name: MIDIInputName
     ): void {
         const midi_intensity = midi_event.data[2];

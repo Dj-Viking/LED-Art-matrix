@@ -5,7 +5,7 @@ import {
     MIDIOutput,
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
-import { MIDIMapping } from "./utils/MIDIMappingClass";
+import { CallbackMapping, MIDIMapping } from "./utils/MIDIMappingClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
@@ -214,6 +214,7 @@ export interface IDeleteModalState {
 export type IAccessRecordState = {
     controllerInUse: MIDIInputName;
     midiMappingInUse: {
+        callbackMap: CallbackMapping<MIDIInputName>;
         recentlyUsed: MIDIInputName;
         hasPreference: boolean;
         midiMappingPreference: Record<MIDIInputName, MIDIMapping<MIDIInputName>>;
