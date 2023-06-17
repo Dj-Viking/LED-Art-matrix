@@ -259,28 +259,6 @@ class MIDIController implements IMIDIController {
         return JSON.parse(window.localStorage.getItem(name)!) as MIDIMappingPreference<typeof name>;
     }
 
-    // TODO: initialize callback table with set mapping preferences for each controller
-    // where the midi input controller's
-    // control-name is mapped to another table which has UI name
-    // and channel associated that UI name get's the dispatch callback assigned to the key value pair
-
-    public setCallbackTableBasedOnMIDIInputName(name: MIDIInputName, channel: number): void {
-        //
-
-        switch (name) {
-            case "TouchOSC Bridge":
-                {
-                    const something = "TODO!!!";
-                    console.log("todo", something);
-                }
-                break;
-            case "XONE:K2 MIDI":
-                break;
-            default:
-                break;
-        }
-    }
-
     public static isMIDIPreferenceLocalStorageSet(
         name: MIDIInputName,
         dispatch: ToolkitDispatch
