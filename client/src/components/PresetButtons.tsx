@@ -67,7 +67,6 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     const toggleMIDIMapEditMode = React.useCallback(
         (event: any): void => {
             event.preventDefault();
-            dispatch(presetButtonsListActions.toggleMidiMode());
             dispatch(midiActions.toggleMidiEditMode());
         },
         [dispatch]
@@ -149,7 +148,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <Slider
                     name="led-anim-var"
                     testid="led-anim-variation"
-                    label="LED Animation Variation: "
+                    label="LED Animation Variation"
                     inputValueState={animVarCoeff}
                     handleChange={(event) => {
                         event.preventDefault();

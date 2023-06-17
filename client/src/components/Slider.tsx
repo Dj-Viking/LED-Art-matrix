@@ -1,4 +1,7 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getGlobalState } from "../store/store";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
@@ -10,12 +13,30 @@ interface SliderProps {
 }
 
 const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
+    const dispatch = useDispatch();
+    const { midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "animVarCoeff"
+    );
     return (
         <>
             <div className="led-slider-container">
-                <label htmlFor={name} style={{ color: "white", margin: "0 auto" }}>
-                    {label}
-                    {inputValueState}
+                <label
+                    htmlFor={name}
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        color: "white",
+                        margin: "0 auto",
+                    }}
+                >
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>
+                        {midiEditMode ? `<MIDI> ${uiMapping}` : ""}
+                    </p>
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>{label}</p>
+                    <p style={{ margin: "0 auto" }}>{inputValueState}</p>
                 </label>
 
                 {/* TODO figure out what kinds of labels to use for particular sliders */}
@@ -30,6 +51,9 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                     type="range"
                     min="1"
                     max="255"
+                    onClick={() => {
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "animVarCoeff");
+                    }}
                     value={inputValueState || "64"}
                     onChange={handleChange}
                 />

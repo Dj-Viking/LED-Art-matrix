@@ -15,6 +15,9 @@ import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
+import { midiActions } from "../store/midiSlice";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
+import { UIInterfaceDeviceName } from "../constants";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -22,7 +25,11 @@ const ArtScrollerMainContainer = styled.main`
 `;
 
 const ArtScrollerSection: React.FC = ({ children }) => {
-    return <section>{children}</section>;
+    return (
+        <section style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {children}
+        </section>
+    );
 };
 
 const ArtScrollerBorderTop: React.FC = () => {
@@ -35,6 +42,7 @@ const ArtScrollerTitle: React.FC = () => {
             style={{
                 color: "white",
                 textAlign: "center",
+                margin: "0 auto",
             }}
         >
             Art Scroller Controls
@@ -173,10 +181,20 @@ const ArtScrollerSliderContainer: React.FC = ({ children }) => {
 const ArtScrollerCircleWidthLabel: React.FC = () => {
     const {
         slider: { circleWidth },
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
+
+    // controlName
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "circleWidth"
+    );
+
     return (
         <StyledSliderLabel htmlFor="scroller-circle-width">
-            Scroller Circle Width: {circleWidth}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Circle Width: {circleWidth}
         </StyledSliderLabel>
     );
 };
@@ -193,7 +211,7 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 name="gif-list-selector"
                 id="gif-list-selector"
                 style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
-                onChange={(event: any) => {
+                onChange={(event) => {
                     dispatch(artScrollerActions.setListName(event.target.value));
                 }}
             >
@@ -235,6 +253,9 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             min="0"
             max="100"
             value={circleWidth}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "circleWidth");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -251,10 +272,17 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
 const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
     const {
         slider: { vertPos },
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "vertPos"
+    );
     return (
         <StyledSliderLabel htmlFor="vertical-positioning">
-            Scroller Vert Positioning: {vertPos}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Vert Positioning: {vertPos}
         </StyledSliderLabel>
     );
 };
@@ -280,6 +308,9 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
             min="0"
             max="200"
             value={vertPos}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "vertPos");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -296,10 +327,18 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
 const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
     const {
         slider: { hPos },
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "hPos"
+    );
     return (
         <StyledSliderLabel htmlFor="horizontal-positioning">
-            Scroller Horizontal Positioning: {Number(hPos) / 1000}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Horizontal Positioning:{" "}
+            {Number(hPos) / 1000}
         </StyledSliderLabel>
     );
 };
@@ -321,6 +360,9 @@ const ArtScrollerHorizontalPositionSlider: React.FC<
             data-testid="horiz-pos"
             max="100"
             value={hPos}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "hPos");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -344,10 +386,17 @@ export const StyledSliderLabel = styled.label`
 const ArtScrollerInvertColorsSliderLabel: React.FC = () => {
     const {
         slider: { invert },
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "invert"
+    );
     return (
         <StyledSliderLabel htmlFor="invert">
-            Invert Colors: {Number(invert) / 100}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Invert Colors: {Number(invert) / 100}
         </StyledSliderLabel>
     );
 };
@@ -367,6 +416,9 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
             min="0"
             max="100"
             value={invert}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "invert");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(
@@ -383,10 +435,17 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
 const ArtScrollerSpeedSliderLabel: React.FC = () => {
     const {
         slider: { animDuration },
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "animDuration"
+    );
     return (
         <StyledSliderLabel htmlFor="animation-duration">
-            Scroll Speed: {Number(animDuration) / 100}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroll Speed: {Number(animDuration) / 100}
         </StyledSliderLabel>
     );
 };
@@ -406,6 +465,9 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
             min="1"
             max="100"
             value={animDuration}
+            onClick={() => {
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, "animDuration");
+            }}
             onChange={(event) => {
                 event.preventDefault();
                 dispatch(

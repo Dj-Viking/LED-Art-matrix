@@ -8,7 +8,6 @@ import {
 import { newReducer } from "../utils/newReducer";
 
 export const initialPresetButtonListState: IPresetButtonsListState = {
-    midiMode: false,
     presetButtons: [],
 };
 
@@ -25,11 +24,6 @@ export const presetButtonsListSlice = createSlice({
         ) => {
             return produce(state, () => {
                 state.presetButtons = action.payload;
-            });
-        },
-        toggleMidiMode: (state: IPresetButtonsListState) => {
-            return produce(state, () => {
-                state.midiMode = !state.midiMode;
             });
         },
         setActiveButton: (state: IPresetButtonsListState, action: PayloadAction<string>) => {

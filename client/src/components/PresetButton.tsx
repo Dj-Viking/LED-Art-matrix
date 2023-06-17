@@ -36,7 +36,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
     } = button;
 
     const dispatch = useDispatch();
-    const { deleteModeActive, midiMode } = getGlobalState(useSelector);
+    const { deleteModeActive, midiEditMode } = getGlobalState(useSelector);
 
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
         switch (true) {
@@ -82,7 +82,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                 }}
             >
                 {/* TODO: make display none if the screen is mobile, check user agent? or just media query??*/}
-                {midiMode ? <KeyIcon type={"midi"} /> : <KeyIcon type={keyBinding} />}
+                {midiEditMode ? <KeyIcon type={"midi"} /> : <KeyIcon type={keyBinding} />}
                 <p style={{ margin: 0 }}>{displayName}</p>
             </button>
         </>

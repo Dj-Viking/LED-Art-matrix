@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/display-name */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 //
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,7 +24,7 @@ import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
-import { midiActions } from "../store/midiSlice";
+import { defaultMappingEditOptions, midiActions } from "../store/midiSlice";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -49,9 +50,16 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         usingKnob,
         channel,
         intensity,
+        isListeningForMappingEdit,
+        controllerInUse,
+        midiMappingInUse: { hasPreference },
     } = getGlobalState(useSelector);
 
     const [option, setOption] = useState<string>("");
+
+    useEffect(() => {
+        MIDIController.isMIDIPreferenceLocalStorageSet(controllerInUse, dispatch);
+    }, [controllerInUse, dispatch]);
 
     useEffect(() => {
         dispatch(midiActions.getMIDIAccess());
@@ -79,6 +87,20 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         return SUPPORTED_CONTROLLERS[strippedName]![channel] || "unknown control name";
     }
 
+    const setOptionCallback = useCallback(
+        (option: string) => {
+            setOption(option);
+            // may have a native label given by the browser so strip native label name
+            dispatch(
+                midiActions.setControllerInUse({
+                    controllerName: MIDIController.stripNativeLabelFromMIDIInputName(option),
+                    hasPreference,
+                })
+            );
+        },
+        [setOption, dispatch, hasPreference]
+    );
+
     return (
         <>
             <div
@@ -92,6 +114,15 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <TestMIDI
                     testid="test-midi"
                     midi_access={{
+                        isListeningForMappingEdit,
+                        mappingEditOptions: defaultMappingEditOptions,
+                        controllerInUse: "XONE:K2 MIDI",
+                        midiMappingInUse: {
+                            callbackMap: {} as any,
+                            recentlyUsed: "XONE:K2 MIDI",
+                            midiMappingPreference: {} as any,
+                            hasPreference: false,
+                        },
                         access: accessState,
                         inputs: accessInputs,
                         outputs: accessOutputs,
@@ -107,7 +138,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
                         <MIDISelect
-                            setOption={setOption}
+                            setOption={setOptionCallback}
                             option={option}
                             midi_inputs={accessInputs}
                         />

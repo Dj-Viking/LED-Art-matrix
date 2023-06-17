@@ -47,7 +47,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
             return void 0;
         } catch (error) {
             const err = error as Error;
-            console.log("error", err);
+            console.log("error with save preset", err);
             setError(`Oops! ${err.message || err}`);
             return void 0;
         }

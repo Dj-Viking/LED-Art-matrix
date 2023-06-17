@@ -5,16 +5,19 @@ import {
     MIDIOutput,
     onstatechangeHandler,
 } from "./utils/MIDIControlClass";
+import { CallbackMapping, MIDIMapping } from "./utils/MIDIMappingClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";
 import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
+import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
 type RecordKey = string | number | symbol;
 declare global {
+    type Tuple<First, Second> = [First, Second];
     // make own overloads to the object static class methods
     interface ObjectConstructor {
         entries<K extends RecordKey, V>(o: Record<K, V> | ArrayLike<V>): [K, V][];
@@ -58,7 +61,6 @@ export interface ILedState {
     resetTimerFn: () => void;
     isHSL: boolean;
     presetName: string;
-    animationDurationState: string;
     animVarCoeff: string;
 }
 
@@ -107,7 +109,6 @@ export interface ILoggedInState {
 }
 
 export interface IPresetButtonsListState {
-    midiMode: boolean;
     presetButtons: IPresetButton[];
 }
 export interface IPresetButton {
@@ -211,7 +212,18 @@ export interface IDeleteModalState {
 }
 
 export type IAccessRecordState = {
+    controllerInUse: MIDIInputName;
+    midiMappingInUse: {
+        callbackMap: CallbackMapping<MIDIInputName>;
+        recentlyUsed: MIDIInputName;
+        hasPreference: boolean;
+        midiMappingPreference: Record<MIDIInputName, MIDIMapping<MIDIInputName>>;
+    };
     midiEditMode: boolean;
+    isListeningForMappingEdit: boolean;
+    mappingEditOptions: {
+        uiName: UIInterfaceDeviceName;
+    };
     usingFader: boolean;
     usingKnob: boolean;
     channel: number;

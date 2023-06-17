@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { IAccessRecordState } from "../types";
@@ -11,11 +12,32 @@ import {
 } from "../utils/MIDIControlClass";
 import { newReducer } from "../utils/newReducer";
 import { buildMIDIAccessGetter } from "./actions/midiActionCreators";
+import { MIDIInputName } from "../constants";
+import { deepCopy } from "../utils/deepCopy";
+import { CallbackMapping } from "../utils/MIDIMappingClass";
 
 export type MIDISliceState = IAccessRecordState;
 
-const initialState: MIDISliceState = {
+export const defaultMappingEditOptions = {
+    uiName: "" as any,
+};
+
+export const initialMidiSliceState: MIDISliceState = {
+    controllerInUse: "XONE:K2 MIDI",
+    // TODO: could be custom set - Will fetch from local storage and/or user preferences set in their db
+    midiMappingInUse: {
+        // TODO: keep track of which controller name was recently used
+        hasPreference: false,
+        recentlyUsed: "XONE:K2 MIDI",
+        callbackMap: {} as any,
+        midiMappingPreference: {
+            "TouchOSC Bridge": {} as any,
+            "XONE:K2 MIDI": {} as any,
+        } as Partial<IAccessRecordState["midiMappingInUse"]["midiMappingPreference"]> as any,
+    },
     midiEditMode: false,
+    isListeningForMappingEdit: false,
+    mappingEditOptions: defaultMappingEditOptions,
     usingFader: false,
     usingKnob: false,
     intensity: 0,
@@ -35,8 +57,64 @@ const getMIDIAccess = buildMIDIAccessGetter;
 
 export const midiSlice = createSlice({
     name: "midiSlice",
-    initialState,
+    initialState: initialMidiSliceState,
     reducers: {
+        setCallbackMap: (
+            state: MIDISliceState,
+            action: PayloadAction<CallbackMapping<MIDIInputName>>
+        ) => {
+            return produce(state, () => {
+                state.midiMappingInUse.callbackMap = action.payload;
+            });
+        },
+        setMappingEditOptions: (
+            state: MIDISliceState,
+            action: PayloadAction<Partial<MIDISliceState["mappingEditOptions"]>>
+        ) => {
+            return produce(state, () => {
+                state.mappingEditOptions = {
+                    ...state.mappingEditOptions,
+                    ...action.payload,
+                };
+            });
+        },
+        setListeningForMappingEdit: (state: MIDISliceState, action: PayloadAction<boolean>) => {
+            return produce(state, () => {
+                state.isListeningForMappingEdit = action.payload;
+            });
+        },
+        setHasPreferencesSet: (state: MIDISliceState, action: PayloadAction<boolean>) => {
+            return produce(state, () => {
+                state.midiMappingInUse.hasPreference = action.payload;
+            });
+        },
+        setControllerInUse: (
+            state: MIDISliceState,
+            action: PayloadAction<{
+                controllerName: MIDIInputName;
+                hasPreference: boolean;
+            }>
+        ) => {
+            return produce(state, () => {
+                const { controllerName, hasPreference } = action.payload;
+
+                // TODO: redo this part to use the new midi mapping class object structure
+
+                const preference = MIDIController.getMIDIMappingPreferenceFromStorage(
+                    controllerName,
+                    hasPreference // NOT IMPLEMENTED YET
+                );
+
+                state.controllerInUse = controllerName;
+
+                state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(
+                    preference?.mapping || {}
+                );
+
+                state.midiMappingInUse.recentlyUsed = controllerName;
+            });
+        },
+        // TODO: make an action for updating a specific control mapping to the controller in use
         determineDeviceControl: (
             state: MIDISliceState,
             action: PayloadAction<{ usingFader: boolean; usingKnob: boolean }>
@@ -69,6 +147,16 @@ export const midiSlice = createSlice({
                 // Map interface is not serializable in redux toolkit for whatever reason
                 // but i can still put it into state
                 state.access = action.payload.access;
+
+                const controllerName =
+                    action.payload.controllerPreference.midiMappingPreference.name;
+
+                state.midiMappingInUse.midiMappingPreference[controllerName] =
+                    action.payload.controllerPreference.midiMappingPreference.mapping;
+
+                state.midiMappingInUse.callbackMap =
+                    action.payload.controllerPreference.midiMappingPreference.callbackMap;
+
                 state.inputs = action.payload.inputs;
                 state.outputs = action.payload.outputs;
                 state.online = true;

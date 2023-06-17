@@ -1,3 +1,5 @@
+import { IArtScrollerState, ILedState } from "./types";
+
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
 export const LOCATION_DISPLAY_ID = "location-display";
@@ -84,6 +86,81 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     48: "1_upper_button",
 };
 
+export type PresetButtonName =
+    | "button_1_position"
+    | "button_2_position"
+    | "button_3_position"
+    | "button_4_position"
+    | "button_5_position"
+    | "resetTimerButton";
+
+export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
+    "1_upper_knob": 4,
+    "1_middle_knob": 8,
+    "1_lower_knob": 12,
+    "1_fader": 16,
+    "1_a_button": 36,
+    "1_b_button": 37,
+    "1_c_button": 38,
+    "1_d_button": 39,
+    "2_upper_knob": 5,
+    "2_middle_knob": 9,
+    "2_lower_knob": 13,
+    "2_fader": 17,
+    "2_e_button": 32,
+    "2_f_button": 33,
+    "2_g_button": 34,
+    "2_h_button": 35,
+    "3_fader": 18,
+    "3_i_button": 28,
+    "3_j_button": 29,
+    "3_k_button": 30,
+    "3_l_button": 31,
+    "4_fader": 19,
+    "4_m_button": 24,
+    "4_n_button": 25,
+    "4_o_button": 26,
+    "4_p_button": 27,
+    "1_lower_button": 40,
+    "1_middle_button": 44,
+    "1_upper_button": 48,
+};
+
+export type UIInterfaceDeviceName =
+    | keyof ILedState
+    | keyof IArtScrollerState["slider"]
+    | PresetButtonName;
+
+export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
+    UIInterfaceDeviceName,
+    XONEK2_ControlNames
+> = {
+    button_1_position: "1_a_button",
+    button_2_position: "1_b_button",
+    button_3_position: "1_c_button",
+    button_4_position: "1_d_button",
+    button_5_position: "2_e_button",
+    circleWidth: "1_upper_knob",
+    vertPos: "1_middle_knob",
+    hPos: "1_lower_knob",
+    invert: "2_upper_knob",
+    animDuration: "2_middle_knob",
+    resetTimerButton: "1_lower_button",
+    animVarCoeff: "1_fader",
+    /**
+     * never implemented
+     */
+    resetTimerFn: void 0 as never,
+    /**
+     * not yet implemented
+     */
+    isHSL: "" as any,
+    /**
+     * never implemented
+     */
+    presetName: void 0 as never,
+};
+
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
 
 export type nanoKontrol2_MIDIChannelTable = Record<number, nanoKontrol2ControlNames>;
@@ -120,6 +197,139 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     8: "button_4",
 };
 
+export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
+    TouchOscBridgeControlNames,
+    number
+> = {
+    fader_1: 0,
+    fader_2: 1,
+    fader_3: 2,
+    fader_4: 3,
+    top_fader: 4,
+    button_1: 5,
+    button_2: 6,
+    button_3: 7,
+    button_4: 8,
+};
+
+export const unsetPreference = {
+    uiName: "",
+    channel: 9999,
+};
+
+// TODO: implement the default mapping preference table for XONEk2
+// export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
+//     XONEK2_ControlNames,
+//     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+// > = {
+//     "1_a_button": {
+//         uiName: "",
+//         channel: 9999
+//     }
+// };
+
+export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
+    TouchOscBridgeControlNames,
+    { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+> = {
+    fader_1: {
+        uiName: "animVarCoeff",
+        channel: 0,
+    },
+    fader_2: unsetPreference,
+    fader_3: unsetPreference,
+    fader_4: unsetPreference,
+    top_fader: {
+        uiName: "circleWidth",
+        channel: 4,
+    },
+    button_1: unsetPreference,
+    button_2: unsetPreference,
+    button_3: unsetPreference,
+    button_4: unsetPreference,
+};
+
+export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
+    UIInterfaceDeviceName,
+    TouchOscBridgeControlNames
+> = {
+    /**
+     * not yet implemented
+     */
+    button_1_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_2_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_3_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_4_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    button_5_position: "" as any,
+    /**
+     * not yet implemented
+     */
+    circleWidth: "" as any,
+    /**
+     * not yet implemented
+     */
+    vertPos: "" as any,
+    /**
+     * not yet implemented
+     */
+    hPos: "" as any,
+    /**
+     * not yet implemented
+     */
+    invert: "" as any,
+    /**
+     * not yet implemented
+     */
+    animDuration: "" as any,
+    resetTimerButton: "button_1",
+    animVarCoeff: "fader_1",
+    /**
+     * never implemented
+     */
+    resetTimerFn: void 0 as never,
+    /**
+     * not yet implemented
+     */
+    isHSL: "" as any,
+    /**
+     * never implemented
+     */
+    presetName: void 0 as never,
+};
+
+export const DEFAULT_CALLBACK_TABLE: Record<
+    UIInterfaceDeviceName,
+    (_midiIntensity: number) => void
+> = {
+    animDuration: (_midiIntensity: number) => void 0,
+    animVarCoeff: (_midiIntensity: number) => void 0,
+    button_1_position: (_midiIntensity: number) => void 0,
+    button_2_position: (_midiIntensity: number) => void 0,
+    button_3_position: (_midiIntensity: number) => void 0,
+    button_4_position: (_midiIntensity: number) => void 0,
+    button_5_position: (_midiIntensity: number) => void 0,
+    circleWidth: (_midiIntensity: number) => void 0,
+    hPos: (_midiIntensity: number) => void 0,
+    invert: (_midiIntensity: number) => void 0,
+    isHSL: (_midiIntensity: number) => void 0,
+    presetName: (_midiIntensity: number) => void 0,
+    resetTimerButton: (_midiIntensity: number) => void 0,
+    resetTimerFn: (_midiIntensity: number) => void 0,
+    vertPos: (_midiIntensity: number) => void 0,
+};
+
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
     /** UNIMPLEMENTED */
 };
@@ -149,12 +359,36 @@ export type ControllerLookup<Name extends ControllerName> = Record<
         : Nullable<Record<number, string>> //--------// else
 >;
 
-export const SUPPORTED_CONTROLLERS: ControllerLookup<ControllerName> = {
-    "Not Found": null,
+export type ChannelMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
+    ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    : N extends "TouchOSC Bridge"
+    ? typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
+    : Record<string, never>;
+
+export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
+    ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    : N extends "TouchOSC Bridge"
+    ? typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
+    : Record<string, never>;
+
+export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? XONEK2_ControlNames
+    : Name extends "TouchOSC Bridge"
+    ? TouchOscBridgeControlNames
+    : string; // unimplemented controller name
+
+export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
+    : Name extends "TouchOSC Bridge"
+    ? keyof Record<UIInterfaceDeviceName, TouchOscBridgeControlNames>
+    : string; // unimplemented controller name
+
+export const SUPPORTED_CONTROLLERS = {
+    "Not Found": {} as any,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
-    "UltraLite mk3 Hybrid": null,
+    "UltraLite mk3 Hybrid": {} as any,
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
     "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
-};
+} as const;
