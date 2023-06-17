@@ -90,7 +90,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     const setOptionCallback = useCallback(
         (option: string) => {
             setOption(option);
-            console.log("option selected", option);
             // may have a native label given by the browser so strip native label name
             dispatch(
                 midiActions.setControllerInUse({
