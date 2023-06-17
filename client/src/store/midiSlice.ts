@@ -108,7 +108,7 @@ export const midiSlice = createSlice({
                 state.controllerInUse = controllerName;
 
                 state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(
-                    preference.mapping
+                    preference?.mapping || {}
                 );
 
                 state.midiMappingInUse.recentlyUsed = controllerName;
@@ -147,7 +147,6 @@ export const midiSlice = createSlice({
                 // Map interface is not serializable in redux toolkit for whatever reason
                 // but i can still put it into state
                 state.access = action.payload.access;
-                console.log("what is inited in state for mappings", action.payload);
 
                 const controllerName =
                     action.payload.controllerPreference.midiMappingPreference.name;
