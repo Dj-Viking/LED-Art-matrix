@@ -330,8 +330,6 @@ class MIDIController implements IMIDIController {
                 uiName,
             },
         };
-        // newPref.mapping[controlName].channel = channel;
-        // newPref.mapping[controlName].uiName = uiName;
 
         window.localStorage.setItem(name, JSON.stringify(newPref));
 
