@@ -176,13 +176,14 @@ export type TouchOscBridgeControlNames =
     | "fader_2"
     | "fader_3"
     | "fader_4"
+    | "fader_5"
     | "page_1_toggle_1"
     | "page_1_toggle_2"
     | "page_1_toggle_3"
     | "page_1_toggle_4"
-    | "page_2_toggle_1"
-    | "page_2_toggle_2"
-    | "page_2_toggle_3"
+    | "page_1_toggle_5"
+    | "page_1_toggle_6"
+    | "page_1_toggle_7"
     | "page_2_toggle_4"
     | "touch_pad_1_1"
     | "touch_pad_1_2"
@@ -210,14 +211,15 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     1: "fader_2",
     2: "fader_3",
     3: "fader_4",
-    4: "top_fader",
-    5: "page_1_toggle_1",
+    4: "fader_5",
+    5: "top_fader",
+    13: "page_1_toggle_1",
     6: "page_1_toggle_2",
     7: "page_1_toggle_3",
     8: "page_1_toggle_4",
-    9: "page_2_toggle_1",
-    10: "page_2_toggle_2",
-    11: "page_2_toggle_3",
+    9: "page_1_toggle_5",
+    10: "page_1_toggle_6",
+    11: "page_1_toggle_7",
     12: "page_2_toggle_4",
     36: "touch_pad_1_1",
     37: "touch_pad_1_2",
@@ -245,14 +247,15 @@ export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
     fader_2: 1,
     fader_3: 2,
     fader_4: 3,
-    top_fader: 4,
-    page_1_toggle_1: 5,
+    fader_5: 4,
+    top_fader: 5,
+    page_1_toggle_1: 13,
     page_1_toggle_2: 6,
     page_1_toggle_3: 7,
     page_1_toggle_4: 8,
-    page_2_toggle_1: 9,
-    page_2_toggle_2: 10,
-    page_2_toggle_3: 11,
+    page_1_toggle_5: 9,
+    page_1_toggle_6: 10,
+    page_1_toggle_7: 11,
     page_2_toggle_4: 12,
     touch_pad_1_1: 36,
     touch_pad_1_2: 37,
@@ -299,6 +302,7 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     fader_2: unsetPreference,
     fader_3: unsetPreference,
     fader_4: unsetPreference,
+    fader_5: unsetPreference,
     top_fader: {
         uiName: "circleWidth",
         channel: 4,
@@ -307,9 +311,9 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     page_1_toggle_2: unsetPreference,
     page_1_toggle_3: unsetPreference,
     page_1_toggle_4: unsetPreference,
-    page_2_toggle_1: unsetPreference,
-    page_2_toggle_2: unsetPreference,
-    page_2_toggle_3: unsetPreference,
+    page_1_toggle_5: unsetPreference,
+    page_1_toggle_6: unsetPreference,
+    page_1_toggle_7: unsetPreference,
     page_2_toggle_4: unsetPreference,
     touch_pad_1_1: unsetPreference,
     touch_pad_1_2: unsetPreference,

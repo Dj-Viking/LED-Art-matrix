@@ -22,6 +22,24 @@ function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: nu
     );
 }
 
+function DEBUGMIDIMESSAGE(
+    uiName: string,
+    name: MIDIInputName,
+    controlName: string,
+    channel: number
+): void {
+    console.log(
+        "uiname",
+        uiName,
+        "\n midi input name",
+        name,
+        "\n controlName",
+        controlName,
+        "\n channel ",
+        channel
+    );
+}
+
 export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyThunkConfig>(
     "midiSlice/midiAccess",
     async (_params, _thunkAPI) => {
@@ -69,6 +87,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             const channel = midi_event.data[1];
 
             const controlName = SUPPORTED_CONTROLLERS[name][channel];
+
+            DEBUGMIDIMESSAGE(uiName, name, controlName, channel);
 
             if (isEditMode && isListeningForMappingEdit) {
                 _thunkAPI.dispatch(midiActions.setListeningForMappingEdit(false));
