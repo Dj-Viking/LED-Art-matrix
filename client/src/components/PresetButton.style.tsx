@@ -49,20 +49,32 @@ const PresetLabelTitle: React.FC<PresetLabelTitleProps> = (props) => {
 };
 
 const IsHSLButton: React.FC = () => {
-    const { isHSL, midiEditMode } = getGlobalState(useSelector);
+    const { isHSL, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     const HSLButton = useSpring(_hslButton);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "isHSL"
+    );
     return (
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <span>
+            <span style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 {midiEditMode && <p style={{ margin: "0 auto", width: "50%" }}>{"<MIDI>"}</p>}
+                {midiEditMode && (
+                    <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>
+                )}
             </span>
             <animated.button
                 style={HSLButton}
                 role="button"
                 data-testid="isHSL"
                 className="preset-button"
-                onClick={() => dispatch(ledActions.toggleIsHSL())}
+                onClick={() => {
+                    if (midiEditMode) {
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "isHSL");
+                    }
+                    dispatch(ledActions.toggleIsHSL());
+                }}
             >
                 {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
             </animated.button>
@@ -81,9 +93,11 @@ const ResetTimerButton: React.FC = () => {
     );
     return (
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <span>
-                {midiEditMode && <p style={{ margin: "0 auto", width: "50%" }}>{"<MIDI>"}</p>}
-                {midiEditMode && <p>{`(${uiMapping})`}</p>}
+            <span style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                {midiEditMode && <p style={{ margin: "0 auto" }}>{"<MIDI>"}</p>}
+                {midiEditMode && (
+                    <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>
+                )}
             </span>
             <animated.button
                 style={clear}

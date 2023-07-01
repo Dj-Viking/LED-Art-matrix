@@ -184,6 +184,12 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                         })
                     );
                 };
+            case "isHSL":
+                return (midiIntensity: number) => {
+                    if (midiIntensity === 127) {
+                        dispatch(ledActions.toggleIsHSL());
+                    }
+                };
             case "resetTimerButton":
                 return (midiIntensity: number) => {
                     // only on button down trigger action
