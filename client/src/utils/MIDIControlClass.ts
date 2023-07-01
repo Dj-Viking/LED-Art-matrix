@@ -12,9 +12,9 @@ import { PresetButtonsList } from "./PresetButtonsListClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
-import { MIDIMappingPreference } from "./MIDIMappingClass";
-import { CallbackMapping } from "./MIDIMappingClass";
+import { MIDIMappingPreference, CallbackMapping } from "./MIDIMappingClass";
 import { deepCopy } from "./deepCopy";
+import { IPresetButton } from "../types";
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -385,9 +385,11 @@ class MIDIController implements IMIDIController {
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
+        let buttonIds: Array<IPresetButton["id"]> = [];
 
         _dispatchcb((dispatch, getState) => {
             const hasPref = getState().midiState.midiMappingInUse.hasPreference;
+            buttonIds = getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
             dispatch(
                 midiActions.setControllerInUse({
                     controllerName: "TouchOSC Bridge",
@@ -420,7 +422,7 @@ class MIDIController implements IMIDIController {
             return;
         }
 
-        callback(midi_intensity);
+        callback(midi_intensity, buttonIds);
     }
 
     public static handleXONEK2MIDIMessage(

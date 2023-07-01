@@ -28,7 +28,7 @@ import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 export interface IPresetButtonsProps {
-    children?: any;
+    children?: React.ReactNode | React.ReactNode[];
 }
 
 export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
@@ -113,12 +113,12 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
             <Modal isOpen={deleteModalIsOpen}>
                 <DeletePresetModal
                     context={deleteModalContext}
-                    onCancel={(event: any) => {
+                    onCancel={(event) => {
                         event.preventDefault();
                         dispatch(modalActions.setDeleteModalOpen(false));
                         dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
                     }}
-                    onConfirm={(event: any) => {
+                    onConfirm={(event) => {
                         event.preventDefault();
                         dispatch(modalActions.setDeleteModalOpen(false));
                         dispatch(modalActions.toggleDeleteMode(deleteModeActive ? false : true));
@@ -139,8 +139,8 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
 
             <div data-testid="buttons-parent" style={{ marginBottom: "2em", margin: "0 auto" }}>
                 {/* preset style toggle buttons */}
-                {presetButtons?.map?.((button) => {
-                    return <PresetButton key={button.id} button={{ ...button }} />;
+                {presetButtons?.map?.((button, index) => {
+                    return <PresetButton key={button.id} index={index} button={{ ...button }} />;
                 })}
 
                 <MIDIListenerWrapper />

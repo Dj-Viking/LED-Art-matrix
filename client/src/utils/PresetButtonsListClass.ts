@@ -28,7 +28,9 @@ class PresetButtonsList {
                 presetName: preset.presetName,
                 displayName: this._createDisplayName(preset.displayName, preset.presetName),
                 testid: this._createDisplayName(preset.displayName, preset.presetName),
-                clickHandler,
+                clickHandler: (event) => {
+                    clickHandler(event);
+                },
             };
         });
     }

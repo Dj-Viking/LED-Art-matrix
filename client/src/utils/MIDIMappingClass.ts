@@ -9,10 +9,12 @@ import {
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { ledActions } from "../store/ledSlice";
 import { midiActions } from "../store/midiSlice";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ToolkitDispatch } from "../store/store";
 import { IPresetButton } from "../types";
 import { calcPositionFromRange } from "./calcPositionFromRange";
 import { deepCopy } from "./deepCopy";
+import { PresetButtonsList } from "./PresetButtonsListClass";
 
 export type MIDIMapping<N extends MIDIInputName> = Record<
     GenericControlName<N>,
@@ -129,24 +131,54 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     );
                 };
             case "button_1_position":
-                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
-                    // TODO: not implemented
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        dispatch(
+                            presetButtonsListActions.setActiveButton(buttonIds?.[0] as string)
+                        );
+
+                        PresetButtonsList.setStyle(dispatch, "rainbowTest", "1");
+                    }
                 };
             case "button_2_position":
-                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
-                    // TODO: not implemented
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        dispatch(
+                            presetButtonsListActions.setActiveButton(buttonIds?.[1] as string)
+                        );
+
+                        PresetButtonsList.setStyle(dispatch, "v2", "1");
+                    }
                 };
             case "button_3_position":
-                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
-                    // TODO: not implemented
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        dispatch(
+                            presetButtonsListActions.setActiveButton(buttonIds?.[2] as string)
+                        );
+
+                        PresetButtonsList.setStyle(dispatch, "waves", "1");
+                    }
                 };
             case "button_4_position":
-                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
-                    // TODO: not implemented
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        dispatch(
+                            presetButtonsListActions.setActiveButton(buttonIds?.[3] as string)
+                        );
+
+                        PresetButtonsList.setStyle(dispatch, "spiral", "1");
+                    }
                 };
             case "button_5_position":
-                return (_midiIntensity: number, _buttonIds?: Array<IPresetButton["id"]>) => {
-                    // TODO: not implemented
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        dispatch(
+                            presetButtonsListActions.setActiveButton(buttonIds?.[4] as string)
+                        );
+
+                        PresetButtonsList.setStyle(dispatch, "dm5", "1");
+                    }
                 };
             case "circleWidth":
                 return (midiIntensity: number) => {

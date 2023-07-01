@@ -5,9 +5,12 @@ import { KeyIcon } from "./KeyIcon";
 import { modalActions } from "../store/modalSlice";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { getGlobalState } from "../store/store";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
+import { UIInterfaceDeviceName } from "../constants";
 
 interface PresetButtonProps {
+    index: number;
     button: {
         id: string;
         role: string;
@@ -22,7 +25,7 @@ interface PresetButtonProps {
     };
 }
 
-const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
+const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
     const {
         id,
         role,
@@ -37,6 +40,23 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
 
     const dispatch = useDispatch();
     const { deleteModeActive, midiEditMode } = getGlobalState(useSelector);
+
+    const deriveUiNameFromIndex = React.useCallback((index: number): UIInterfaceDeviceName => {
+        switch (index) {
+            case 0:
+                return "button_1_position";
+            case 1:
+                return "button_2_position";
+            case 2:
+                return "button_3_position";
+            case 3:
+                return "button_4_position";
+            case 4:
+                return "button_5_position";
+            default:
+                return "button_1_position";
+        }
+    }, []);
 
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
         switch (true) {
@@ -68,6 +88,13 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button }) => {
                 className={determineStyle(isActive, deleteModeActive)}
                 onClick={(event: any) => {
                     clickHandler(event);
+                    if (midiEditMode) {
+                        MIDIMappingPreference.listeningForEditsHandler(
+                            dispatch,
+                            deriveUiNameFromIndex(index)
+                        );
+                        return;
+                    }
                     if (!deleteModeActive) {
                         dispatch(
                             presetButtonsListActions.checkPresetButtonsActive({
