@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { IGif } from "../types";
 export type IDBRequestMethod = "put" | "getAll" | "delete" | "deleteAll";
-class LocalGifHelper {
+class IDBHelper {
     /**
      * inaccessible
      */
@@ -42,7 +42,9 @@ class LocalGifHelper {
         });
     }
 
-    #openStore(reqResult: IDBRequest): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
+    async #openStore(
+        reqResult: IDBRequest
+    ): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
         // console.info("indexed db open request succeeded");
         return new Promise((res) => {
             // start saving references to the database to the `db` variable
@@ -112,6 +114,6 @@ class LocalGifHelper {
     }
 }
 
-const localGifHelper = new LocalGifHelper("led-matrix", "gifs");
+const localGifHelper = new IDBHelper("led-matrix", "gifs");
 
 export { localGifHelper };

@@ -60,7 +60,7 @@ export const buildGetGifsAction = createAsyncThunk<
 
         gifs = userGifs;
     } else {
-        const freeGifs = (await ApiService.getUnloggedInGifs(true)) as IGif[];
+        const freeGifs = (await ApiService.getUnloggedInGifs(false)) as IGif[];
 
         newListName =
             freeGifs[0].listName +
