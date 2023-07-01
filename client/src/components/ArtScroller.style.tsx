@@ -15,9 +15,7 @@ import { getRandomIntLimit } from "../utils/helpers";
 import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
-import { midiActions } from "../store/midiSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
-import { UIInterfaceDeviceName } from "../constants";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -110,7 +108,7 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
             data-testid="switch-scroller"
             style={scrollerOnOffButtonSpring}
             className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
-            onClick={(event: any) => {
+            onClick={(event) => {
                 event.preventDefault();
                 dispatch(artScrollerActions.setFigureOn(!figureOn));
             }}
@@ -137,7 +135,7 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
     const { gifs, listName } = getGlobalState(useSelector);
 
-    const onClick = (event: any): void => {
+    const onClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
         event.preventDefault();
 
         dispatch(modalActions.setGifModalIsOpen(true));

@@ -33,7 +33,7 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                     }}
                 >
                     <p style={{ margin: "0 auto", marginBottom: "5px" }}>
-                        {midiEditMode ? `<MIDI> ${uiMapping}` : ""}
+                        {midiEditMode ? `<MIDI> (${uiMapping})` : ""}
                     </p>
                     <p style={{ margin: "0 auto", marginBottom: "5px" }}>{label}</p>
                     <p style={{ margin: "0 auto" }}>{inputValueState}</p>

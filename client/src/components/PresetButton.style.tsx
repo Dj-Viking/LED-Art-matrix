@@ -15,6 +15,7 @@ import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { getGlobalState } from "../store/store";
 import { ledActions } from "../store/ledSlice";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 
 interface PresetLabelTitleProps {
     auth: typeof AuthService;
@@ -52,33 +53,56 @@ const IsHSLButton: React.FC = () => {
     const dispatch = useDispatch();
     const HSLButton = useSpring(_hslButton);
     return (
-        <animated.button
-            style={HSLButton}
-            role="button"
-            data-testid="isHSL"
-            className="preset-button"
-            onClick={() => dispatch(ledActions.toggleIsHSL())}
-        >
-            {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
-            {midiEditMode && <p style={{ marginTop: 20 }}>{"<MIDI>"}</p>}
-        </animated.button>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <span>
+                {midiEditMode && <p style={{ margin: "0 auto", width: "50%" }}>{"<MIDI>"}</p>}
+            </span>
+            <animated.button
+                style={HSLButton}
+                role="button"
+                data-testid="isHSL"
+                className="preset-button"
+                onClick={() => dispatch(ledActions.toggleIsHSL())}
+            >
+                {isHSL ? "SWITCH TO RGB" : "SWITCH TO HSL"}
+            </animated.button>
+        </div>
     );
 };
 
 const ResetTimerButton: React.FC = () => {
-    const { resetTimerFn, midiEditMode } = getGlobalState(useSelector);
+    const { resetTimerFn, midiEditMode, midiMappingInUse, controllerInUse } =
+        getGlobalState(useSelector);
+    const dispatch = useDispatch();
     const clear = useSpring(_clear);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "resetTimerButton"
+    );
     return (
-        <animated.button
-            style={clear}
-            role="button"
-            data-testid="resetTimer"
-            className="preset-button"
-            onClick={() => resetTimerFn()}
-        >
-            Reset Animation Timer
-            {midiEditMode && <p style={{ marginTop: 5 }}>{"<MIDI>"}</p>}
-        </animated.button>
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            <span>
+                {midiEditMode && <p style={{ margin: "0 auto", width: "50%" }}>{"<MIDI>"}</p>}
+                {midiEditMode && <p>{`(${uiMapping})`}</p>}
+            </span>
+            <animated.button
+                style={clear}
+                role="button"
+                data-testid="resetTimer"
+                className="preset-button"
+                onClick={() => {
+                    if (midiEditMode) {
+                        MIDIMappingPreference.listeningForEditsHandler(
+                            dispatch,
+                            "resetTimerButton"
+                        );
+                    }
+                    resetTimerFn();
+                }}
+            >
+                Reset Animation Timer
+            </animated.button>
+        </div>
     );
 };
 

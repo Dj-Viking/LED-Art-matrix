@@ -406,6 +406,20 @@ class MIDIController implements IMIDIController {
 
         const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[midi_channel]].uiName];
 
+        if (typeof callback !== "function") {
+            console.warn(
+                "callback was not a function, cannot proceed to call the callback",
+                "\n callback was => ",
+                callback,
+                "\n mapping was => ",
+                mapping,
+                "\n control name was => ",
+                touchOsc_MIDI_CHANNEL_TABLE[midi_channel]
+            );
+            console.warn("did you assign a ui control to that midi control?");
+            return;
+        }
+
         callback(midi_intensity);
     }
 
