@@ -104,7 +104,6 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
-    // TODO:
     public static generateCallbackBasedOnUIName<
         N extends MIDIInputName,
         P extends keyof CallbackMapping<N>

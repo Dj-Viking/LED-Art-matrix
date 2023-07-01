@@ -176,10 +176,30 @@ export type TouchOscBridgeControlNames =
     | "fader_2"
     | "fader_3"
     | "fader_4"
-    | "button_1"
-    | "button_2"
-    | "button_3"
-    | "button_4"
+    | "page_1_toggle_1"
+    | "page_1_toggle_2"
+    | "page_1_toggle_3"
+    | "page_1_toggle_4"
+    | "page_2_toggle_1"
+    | "page_2_toggle_2"
+    | "page_2_toggle_3"
+    | "page_2_toggle_4"
+    | "touch_pad_1_1"
+    | "touch_pad_1_2"
+    | "touch_pad_1_3"
+    | "touch_pad_1_4"
+    | "touch_pad_2_1"
+    | "touch_pad_2_2"
+    | "touch_pad_2_3"
+    | "touch_pad_2_4"
+    | "touch_pad_3_1"
+    | "touch_pad_3_2"
+    | "touch_pad_3_3"
+    | "touch_pad_3_4"
+    | "touch_pad_4_1"
+    | "touch_pad_4_2"
+    | "touch_pad_4_3"
+    | "touch_pad_4_4"
     | "top_fader";
 
 export type TouchOscBridgeControlChannelTable = Record<number, TouchOscBridgeControlNames>;
@@ -191,10 +211,30 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     2: "fader_3",
     3: "fader_4",
     4: "top_fader",
-    5: "button_1",
-    6: "button_2",
-    7: "button_3",
-    8: "button_4",
+    5: "page_1_toggle_1",
+    6: "page_1_toggle_2",
+    7: "page_1_toggle_3",
+    8: "page_1_toggle_4",
+    9: "page_2_toggle_1",
+    10: "page_2_toggle_2",
+    11: "page_2_toggle_3",
+    12: "page_2_toggle_4",
+    36: "touch_pad_1_1",
+    37: "touch_pad_1_2",
+    38: "touch_pad_1_3",
+    39: "touch_pad_1_4",
+    32: "touch_pad_2_1",
+    33: "touch_pad_2_2",
+    34: "touch_pad_2_3",
+    35: "touch_pad_2_4",
+    28: "touch_pad_3_1",
+    29: "touch_pad_3_2",
+    30: "touch_pad_3_3",
+    31: "touch_pad_3_4",
+    24: "touch_pad_4_1",
+    25: "touch_pad_4_2",
+    26: "touch_pad_4_3",
+    27: "touch_pad_4_4",
 };
 
 export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
@@ -206,10 +246,30 @@ export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
     fader_3: 2,
     fader_4: 3,
     top_fader: 4,
-    button_1: 5,
-    button_2: 6,
-    button_3: 7,
-    button_4: 8,
+    page_1_toggle_1: 5,
+    page_1_toggle_2: 6,
+    page_1_toggle_3: 7,
+    page_1_toggle_4: 8,
+    page_2_toggle_1: 9,
+    page_2_toggle_2: 10,
+    page_2_toggle_3: 11,
+    page_2_toggle_4: 12,
+    touch_pad_1_1: 36,
+    touch_pad_1_2: 37,
+    touch_pad_1_3: 38,
+    touch_pad_1_4: 39,
+    touch_pad_2_1: 32,
+    touch_pad_2_2: 33,
+    touch_pad_2_3: 34,
+    touch_pad_2_4: 35,
+    touch_pad_3_1: 28,
+    touch_pad_3_2: 29,
+    touch_pad_3_3: 30,
+    touch_pad_3_4: 31,
+    touch_pad_4_1: 24,
+    touch_pad_4_2: 25,
+    touch_pad_4_3: 26,
+    touch_pad_4_4: 27,
 };
 
 export const unsetPreference = {
@@ -243,10 +303,30 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
         uiName: "circleWidth",
         channel: 4,
     },
-    button_1: unsetPreference,
-    button_2: unsetPreference,
-    button_3: unsetPreference,
-    button_4: unsetPreference,
+    page_1_toggle_1: unsetPreference,
+    page_1_toggle_2: unsetPreference,
+    page_1_toggle_3: unsetPreference,
+    page_1_toggle_4: unsetPreference,
+    page_2_toggle_1: unsetPreference,
+    page_2_toggle_2: unsetPreference,
+    page_2_toggle_3: unsetPreference,
+    page_2_toggle_4: unsetPreference,
+    touch_pad_1_1: unsetPreference,
+    touch_pad_1_2: unsetPreference,
+    touch_pad_1_3: unsetPreference,
+    touch_pad_1_4: unsetPreference,
+    touch_pad_2_1: unsetPreference,
+    touch_pad_2_2: unsetPreference,
+    touch_pad_2_3: unsetPreference,
+    touch_pad_2_4: unsetPreference,
+    touch_pad_3_1: unsetPreference,
+    touch_pad_3_2: unsetPreference,
+    touch_pad_3_3: unsetPreference,
+    touch_pad_3_4: unsetPreference,
+    touch_pad_4_1: unsetPreference,
+    touch_pad_4_2: unsetPreference,
+    touch_pad_4_3: unsetPreference,
+    touch_pad_4_4: unsetPreference,
 };
 
 export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
@@ -293,7 +373,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
      * not yet implemented
      */
     animDuration: "" as any,
-    resetTimerButton: "button_1",
+    resetTimerButton: "page_1_toggle_1",
     animVarCoeff: "fader_1",
     /**
      * never implemented
