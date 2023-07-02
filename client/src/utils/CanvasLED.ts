@@ -102,7 +102,9 @@ export class CanvasLED {
         // animation-delay: ${row % 5 === 0 ? led / 3.14159 : led / Number(coeff)}s;
 
         let num =
-            ((col + 1) % 5 === 0 ? row + 1 / Math.PI : (row + 1) / Number(animVarCoeff)) *
+            ((col + 1) % 5 === 0
+                ? row + 1 / Math.PI
+                : (row + (1 * countRef) / 100) / Number(animVarCoeff)) *
             (countRef * 0.005);
 
         if (num > 50) {
