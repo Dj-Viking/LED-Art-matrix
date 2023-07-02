@@ -106,6 +106,7 @@ class IDBHelper {
                         transaction.oncomplete = () => {
                             // console.info("transaction complete closing connection");
                             db.close();
+                            resolve();
                         };
                     });
                 };
