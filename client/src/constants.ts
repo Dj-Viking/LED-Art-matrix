@@ -297,18 +297,12 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     TouchOscBridgeControlNames,
     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
 > = {
-    fader_1: {
-        uiName: "animVarCoeff",
-        channel: 0,
-    },
+    fader_1: unsetPreference,
     fader_2: unsetPreference,
     fader_3: unsetPreference,
     fader_4: unsetPreference,
     fader_5: unsetPreference,
-    top_fader: {
-        uiName: "circleWidth",
-        channel: 4,
-    },
+    top_fader: unsetPreference,
     page_1_toggle_1: unsetPreference,
     page_1_toggle_2: unsetPreference,
     page_1_toggle_3: unsetPreference,
@@ -379,8 +373,8 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
      * not yet implemented
      */
     animDuration: "" as any,
-    resetTimerButton: "page_1_toggle_1",
-    animVarCoeff: "fader_1",
+    resetTimerButton: "" as any,
+    animVarCoeff: "" as any,
     /**
      * never implemented
      */
