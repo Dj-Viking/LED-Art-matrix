@@ -101,30 +101,47 @@ type ArtScrollerToggleButtonProps = DOMAttributes<HTMLButtonElement>;
 const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
     const dispatch = useDispatch();
-    const { figureOn } = getGlobalState(useSelector);
+    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } =
+        getGlobalState(useSelector);
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "figureOn"
+    );
     return (
-        <animated.button
-            role="button"
-            data-testid="switch-scroller"
-            style={scrollerOnOffButtonSpring}
-            className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
-            onClick={(event) => {
-                event.preventDefault();
-                dispatch(artScrollerActions.setFigureOn(!figureOn));
-            }}
-        >
-            {figureOn ? (
+        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+            {midiEditMode && (
                 <>
-                    <BKeySvg />
-                    <span style={{ color: "white" }}>Turn Off Scroller</span>
-                </>
-            ) : (
-                <>
-                    <BKeySvg />
-                    <span style={{ color: "white" }}>Turn On Scroller</span>
+                    <span>{"< MIDI >"}</span>
+                    <span>{`(${uiMapping})`}</span>
                 </>
             )}
-        </animated.button>
+            <animated.button
+                role="button"
+                data-testid="switch-scroller"
+                style={scrollerOnOffButtonSpring}
+                className={figureOn ? "scroller-toggle-button-on" : "scroller-toggle-button-off"}
+                onClick={(event) => {
+                    event.preventDefault();
+                    if (midiEditMode) {
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "figureOn");
+                        return;
+                    }
+                    dispatch(artScrollerActions.setFigureOn(!figureOn));
+                }}
+            >
+                {figureOn ? (
+                    <>
+                        <BKeySvg />
+                        <span style={{ color: "white" }}>Turn Off Scroller</span>
+                    </>
+                ) : (
+                    <>
+                        <BKeySvg />
+                        <span style={{ color: "white" }}>Turn On Scroller</span>
+                    </>
+                )}
+            </animated.button>
+        </div>
     );
 };
 
@@ -164,16 +181,18 @@ const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionP
     );
 };
 
-const StyledSliderContainer = styled.div`
+const StyledSliderContainer = styled.div<{ midiEditMode: boolean }>`
     & {
         display: flex;
         flex-direction: column;
         justify-content: center;
+        margin-top: ${(props) => (props.midiEditMode ? "40px" : "0px")};
     }
 `;
 
 const ArtScrollerSliderContainer: React.FC = ({ children }) => {
-    return <StyledSliderContainer>{children}</StyledSliderContainer>;
+    const { midiEditMode } = getGlobalState(useSelector);
+    return <StyledSliderContainer midiEditMode={midiEditMode}>{children}</StyledSliderContainer>;
 };
 
 const ArtScrollerCircleWidthLabel: React.FC = () => {

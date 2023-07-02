@@ -128,6 +128,7 @@ export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlN
 
 export type UIInterfaceDeviceName =
     | keyof ILedState
+    | "figureOn"
     | keyof IArtScrollerState["slider"]
     | PresetButtonName;
 
@@ -159,6 +160,7 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
      * never implemented
      */
     presetName: void 0 as never,
+    figureOn: "" as any,
 };
 
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
@@ -184,7 +186,7 @@ export type TouchOscBridgeControlNames =
     | "page_1_toggle_5"
     | "page_1_toggle_6"
     | "page_1_toggle_7"
-    | "page_2_toggle_4"
+    | "page_1_toggle_8"
     | "touch_pad_1_1"
     | "touch_pad_1_2"
     | "touch_pad_1_3"
@@ -220,7 +222,7 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     9: "page_1_toggle_5",
     10: "page_1_toggle_6",
     11: "page_1_toggle_7",
-    12: "page_2_toggle_4",
+    12: "page_1_toggle_8",
     36: "touch_pad_1_1",
     37: "touch_pad_1_2",
     38: "touch_pad_1_3",
@@ -256,7 +258,7 @@ export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
     page_1_toggle_5: 9,
     page_1_toggle_6: 10,
     page_1_toggle_7: 11,
-    page_2_toggle_4: 12,
+    page_1_toggle_8: 12,
     touch_pad_1_1: 36,
     touch_pad_1_2: 37,
     touch_pad_1_3: 38,
@@ -314,7 +316,7 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     page_1_toggle_5: unsetPreference,
     page_1_toggle_6: unsetPreference,
     page_1_toggle_7: unsetPreference,
-    page_2_toggle_4: unsetPreference,
+    page_1_toggle_8: unsetPreference,
     touch_pad_1_1: unsetPreference,
     touch_pad_1_2: unsetPreference,
     touch_pad_1_3: unsetPreference,
@@ -391,6 +393,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
      * never implemented
      */
     presetName: void 0 as never,
+    figureOn: "" as any,
 };
 
 export const DEFAULT_CALLBACK_TABLE: Record<
@@ -412,6 +415,7 @@ export const DEFAULT_CALLBACK_TABLE: Record<
     resetTimerButton: (_midiIntensity: number) => void 0,
     resetTimerFn: (_midiIntensity: number) => void 0,
     vertPos: (_midiIntensity: number) => void 0,
+    figureOn: (_midiIntensity: number) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {

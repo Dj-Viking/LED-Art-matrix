@@ -231,6 +231,15 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                         });
                     }
                 };
+            case "figureOn":
+                return (midiIntensity: number) => {
+                    // toggling the gifs art scroller
+                    if (midiIntensity === 127) {
+                        dispatch(artScrollerActions.setFigureOn(true));
+                    } else {
+                        dispatch(artScrollerActions.setFigureOn(false));
+                    }
+                };
             default:
                 return (_midiIntensity: number) => void 0;
         }
