@@ -259,6 +259,24 @@ export const StyledPresetControlButtonsContainer = styled.div`
     }
 `;
 
+export const StyledPresetButton = styled.div`
+    & {
+        display: flex;
+        padding: 0 10px;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+`;
+
+export const StyledPresetButtonsParent = styled.div`
+    & {
+        display: flex;
+        margin: 0 auto;
+        margin-bottom: 2em;
+    }
+`;
+
 const PresetControlButtonsContainer: React.FC<{
     children: React.ReactNode | React.ReactNode[];
 }> = ({ children }) => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,38 +79,55 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
         }
     }
 
+    const onClickHandler = React.useCallback(
+        (event: any): void => {
+            clickHandler(event);
+            if (midiEditMode) {
+                MIDIMappingPreference.listeningForEditsHandler(
+                    dispatch,
+                    deriveUiNameFromIndex(index)
+                );
+                return;
+            }
+            if (!deleteModeActive) {
+                dispatch(
+                    presetButtonsListActions.checkPresetButtonsActive({
+                        id,
+                    })
+                );
+                PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
+            } else {
+                dispatch(modalActions.setDeleteModalOpen(true));
+                dispatch(modalActions.setDeleteModalContext({ btnId: id, displayName }));
+            }
+        },
+        [
+            animVarCoeff,
+            clickHandler,
+            deleteModeActive,
+            deriveUiNameFromIndex,
+            displayName,
+            dispatch,
+            id,
+            index,
+            midiEditMode,
+            presetName,
+        ]
+    );
+
     return (
         <>
             <button
+                style={{ margin: "0 auto" }}
                 tabIndex={-1}
                 id={id}
                 data-testid={testid}
                 role={role}
                 className={determineStyle(isActive, deleteModeActive)}
-                onClick={(event: any) => {
-                    clickHandler(event);
-                    if (midiEditMode) {
-                        MIDIMappingPreference.listeningForEditsHandler(
-                            dispatch,
-                            deriveUiNameFromIndex(index)
-                        );
-                        return;
-                    }
-                    if (!deleteModeActive) {
-                        dispatch(
-                            presetButtonsListActions.checkPresetButtonsActive({
-                                id,
-                            })
-                        );
-                        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
-                    } else {
-                        dispatch(modalActions.setDeleteModalOpen(true));
-                        dispatch(modalActions.setDeleteModalContext({ btnId: id, displayName }));
-                    }
-                }}
+                onClick={onClickHandler}
             >
                 {/* TODO: make display none if the screen is mobile, check user agent? or just media query??*/}
-                {midiEditMode ? <KeyIcon type={"midi"} /> : <KeyIcon type={keyBinding} />}
+                {<KeyIcon type={keyBinding} />}
                 <p style={{ margin: 0 }}>{displayName}</p>
             </button>
         </>
