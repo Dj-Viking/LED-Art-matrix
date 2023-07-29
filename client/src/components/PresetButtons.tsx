@@ -21,12 +21,16 @@ import {
     SaveDefaultButton,
     SavePresetButton,
     ToggleMIDIMapEditModeButton,
+    StyledPresetButtonsParent,
+    StyledPresetButton,
 } from "./PresetButton.style";
 import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";
 import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
+import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
+import { UIInterfaceDeviceName } from "../constants";
 export interface IPresetButtonsProps {
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -43,6 +47,9 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalIsOpen,
         saveModalContext,
         presetButtons,
+        midiEditMode,
+        midiMappingInUse,
+        controllerInUse,
     } = getGlobalState(useSelector);
 
     async function handleSaveDefault(event: any): Promise<void> {
@@ -137,31 +144,52 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
             </PresetControlButtonsContainer>
 
-            <div data-testid="buttons-parent" style={{ marginBottom: "2em", margin: "0 auto" }}>
+            <StyledPresetButtonsParent data-testid="buttons-parent">
                 {/* preset style toggle buttons */}
                 {presetButtons?.map?.((button, index) => {
-                    return <PresetButton key={button.id} index={index} button={{ ...button }} />;
-                })}
+                    // TODO: dynamic types????
+                    const uiName: UIInterfaceDeviceName = ((index: number) => {
+                        return `button_${index + 1}_position`;
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    })(index) as any;
 
-                <MIDIListenerWrapper />
-
-                <Slider
-                    name="led-anim-var"
-                    testid="led-anim-variation"
-                    label="LED Animation Variation"
-                    inputValueState={animVarCoeff}
-                    handleChange={(event) => {
-                        event.preventDefault();
-                        dispatch(ledActions.setAnimVarCoeff(event.target.value));
-                        dispatch(
-                            modalActions.setSaveModalContext({
-                                presetName: presetName,
-                                animVarCoeff: event.target.value,
-                            })
+                    const uiMapping =
+                        MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+                            midiMappingInUse.midiMappingPreference[controllerInUse],
+                            uiName
                         );
-                    }}
-                />
-            </div>
+
+                    return (
+                        <StyledPresetButton key={button.id}>
+                            {midiEditMode && (
+                                <>
+                                    <span>{"<MIDI>"}</span>
+                                    <span>{`(${uiMapping})`}</span>
+                                </>
+                            )}
+                            <PresetButton index={index} button={{ ...button }} />
+                        </StyledPresetButton>
+                    );
+                })}
+            </StyledPresetButtonsParent>
+            <MIDIListenerWrapper />
+
+            <Slider
+                name="led-anim-var"
+                testid="led-anim-variation"
+                label="LED Animation Variation"
+                inputValueState={animVarCoeff}
+                handleChange={(event) => {
+                    event.preventDefault();
+                    dispatch(ledActions.setAnimVarCoeff(event.target.value));
+                    dispatch(
+                        modalActions.setSaveModalContext({
+                            presetName: presetName,
+                            animVarCoeff: event.target.value,
+                        })
+                    );
+                }}
+            />
         </>
     );
 };

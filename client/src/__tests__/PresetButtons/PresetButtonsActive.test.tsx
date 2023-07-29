@@ -42,7 +42,7 @@ describe("test the preset buttons are becoming active and inactive and clearing 
         expect(screen.getByTestId("location-display").textContent).toBe("/");
 
         const btnsParent = screen.getByTestId("buttons-parent");
-        expect(btnsParent.children).toHaveLength(7);
+        expect(btnsParent.children).toHaveLength(5);
 
         const waves = screen.getByTestId("waves");
 
