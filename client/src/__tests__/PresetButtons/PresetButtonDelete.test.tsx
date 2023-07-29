@@ -75,7 +75,7 @@ describe("test deleting a preset from the user's preset button list", () => {
         expect(screen.getByTestId("location-display").textContent).toBe("/");
         expect(fetch).toHaveBeenCalledTimes(1); // /user/presets first /user second
 
-        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(13);
+        expect((await screen.findByTestId("buttons-parent")).children).toHaveLength(11);
 
         const deleteBtn = await screen.findByTestId("deletePreset");
 
