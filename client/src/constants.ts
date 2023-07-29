@@ -58,6 +58,9 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     4: "1_upper_knob",
     8: "1_middle_knob",
     12: "1_lower_knob",
+    40: "1_lower_button",
+    44: "1_middle_button",
+    48: "1_upper_button",
     16: "1_fader",
     36: "1_a_button",
     37: "1_b_button",
@@ -81,9 +84,6 @@ export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     25: "4_n_button",
     26: "4_o_button",
     27: "4_p_button",
-    40: "1_lower_button",
-    44: "1_middle_button",
-    48: "1_upper_button",
 };
 
 export type PresetButtonName =
@@ -282,16 +282,40 @@ export const unsetPreference = {
     channel: 9999,
 };
 
-// TODO: implement the default mapping preference table for XONEk2
-// export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
-//     XONEK2_ControlNames,
-//     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
-// > = {
-//     "1_a_button": {
-//         uiName: "",
-//         channel: 9999
-//     }
-// };
+export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
+    XONEK2_ControlNames,
+    { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+> = {
+    "1_a_button": unsetPreference,
+    "1_b_button": unsetPreference,
+    "1_c_button": unsetPreference,
+    "1_d_button": unsetPreference,
+    "1_fader": unsetPreference,
+    "1_lower_button": unsetPreference,
+    "1_lower_knob": unsetPreference,
+    "1_middle_button": unsetPreference,
+    "1_middle_knob": unsetPreference,
+    "1_upper_button": unsetPreference,
+    "1_upper_knob": unsetPreference,
+    "2_fader": unsetPreference,
+    "2_e_button": unsetPreference,
+    "2_f_button": unsetPreference,
+    "2_g_button": unsetPreference,
+    "2_h_button": unsetPreference,
+    "2_lower_knob": unsetPreference,
+    "2_middle_knob": unsetPreference,
+    "2_upper_knob": unsetPreference,
+    "3_fader": unsetPreference,
+    "3_i_button": unsetPreference,
+    "3_j_button": unsetPreference,
+    "3_k_button": unsetPreference,
+    "3_l_button": unsetPreference,
+    "4_fader": unsetPreference,
+    "4_m_button": unsetPreference,
+    "4_n_button": unsetPreference,
+    "4_o_button": unsetPreference,
+    "4_p_button": unsetPreference,
+};
 
 export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     TouchOscBridgeControlNames,

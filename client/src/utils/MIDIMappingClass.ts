@@ -5,6 +5,7 @@ import {
     GenericUIMIDIMappingName,
     DEFAULT_CALLBACK_TABLE,
     UIInterfaceDeviceName,
+    DEFAULT_XONE_MAPPING_PREFERENCE_TABLE,
 } from "../constants";
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { ledActions } from "../store/ledSlice";
@@ -72,7 +73,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         this.#setMIDIMappingBasedOnInputName(name);
         // TODO: since functions can't be serialized into JSON for local storage
         // will have to regenerate the callbacks based on which controlName object is mapped to a particular UI interface names
-        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, this, dispatch);
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(this, dispatch);
     }
 
     public static listeningForEditsHandler(
@@ -259,31 +260,21 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         ret.mapping[controlName].channel = channel;
         ret.mapping[controlName].uiName = uiName;
 
-        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, ret, dispatch);
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(ret, dispatch);
 
         return ret;
     }
 
     public static setMIDICallbackMapBasedOnControllerName(
-        name: MIDIInputName,
         _this: MIDIMappingPreference<MIDIInputName>,
         dispatch: ToolkitDispatch
     ): void {
-        switch (name) {
-            case "TouchOSC Bridge":
-                Object.keys(DEFAULT_CALLBACK_TABLE).forEach((uiName) => {
-                    _this.callbackMap = {
-                        ..._this.callbackMap,
-                        [uiName]: MIDIMappingPreference.generateCallbackBasedOnUIName(
-                            uiName,
-                            dispatch
-                        ),
-                    };
-                });
-                break;
-            default:
-                break;
-        }
+        Object.keys(DEFAULT_CALLBACK_TABLE).forEach((uiName) => {
+            _this.callbackMap = {
+                ..._this.callbackMap,
+                [uiName]: MIDIMappingPreference.generateCallbackBasedOnUIName(uiName, dispatch),
+            };
+        });
     }
 
     #setMIDIMappingBasedOnInputName(name: N): void {
@@ -297,7 +288,12 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                 });
                 break;
             case "XONE:K2 MIDI":
-                // Object.keys();
+                Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
+                    this.mapping = {
+                        ...this.mapping,
+                        [key]: DEFAULT_XONE_MAPPING_PREFERENCE_TABLE[key],
+                    };
+                });
                 break;
             default:
                 break;

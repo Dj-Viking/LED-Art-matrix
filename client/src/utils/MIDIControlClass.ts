@@ -333,7 +333,7 @@ class MIDIController implements IMIDIController {
 
         window.localStorage.setItem(name, JSON.stringify(newPref));
 
-        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(name, newPref, dispatch);
+        MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(newPref, dispatch);
 
         return newPref.callbackMap;
     }
@@ -373,8 +373,16 @@ class MIDIController implements IMIDIController {
             const gotPref = window.localStorage.getItem("TouchOSC Bridge")!;
             console.log("got pref from local storage", JSON.parse(gotPref));
         }
-        // if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
-        // }
+
+        if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
+            // create
+            const initPref = new MIDIMappingPreference("XONE:K2 MIDI", dispatch);
+            pref = initPref;
+            console.log("pref to initialize into local storage", pref);
+            window.localStorage.setItem("XONE:K2 MIDI" as MIDIInputName, JSON.stringify(initPref));
+            const gotPref = window.localStorage.getItem("XONE:K2 MIDI")!;
+            console.log("got pref from local storage", JSON.parse(gotPref));
+        }
     }
 
     public static handleTouchOSCMessage(
@@ -434,9 +442,11 @@ class MIDIController implements IMIDIController {
     ): void {
         const midi_intensity = midi_event.data[2];
         const midi_channel = midi_event.data[1];
+        let buttonIds: Array<IPresetButton["id"]> = [];
 
         _dispatchcb((dispatch, getState) => {
             const hasPref = getState().midiState.midiMappingInUse.hasPreference;
+            buttonIds = getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
             dispatch(
                 midiActions.setControllerInUse({
                     controllerName: "XONE:K2 MIDI",
@@ -457,110 +467,26 @@ class MIDIController implements IMIDIController {
             })
         );
 
-        // TODO: when redux toolkit is in - we set styling based on our access to the whole state tree
-        // and not what we are passing into this handler because passing state stuff in here
-        // while it is changing causes memory leaks
-        switch (XONEK2_MIDI_CHANNEL_TABLE[midi_channel]) {
-            case "1_a_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[0]));
+        const callbackMap = pref.callbackMap;
+        const mapping = pref.mapping;
 
-                    PresetButtonsList.setStyle(
-                        _dispatchcb,
-                        "rainbowTest",
-                        midi_intensity.toString()
-                    );
-                }
-                break;
-            case "1_b_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[1]));
+        const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[midi_channel]].uiName];
 
-                    PresetButtonsList.setStyle(_dispatchcb, "v2", midi_intensity.toString());
-                }
-                break;
-            case "1_c_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[2]));
-
-                    PresetButtonsList.setStyle(_dispatchcb, "waves", midi_intensity.toString());
-                }
-                break;
-            case "1_d_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[3]));
-
-                    PresetButtonsList.setStyle(_dispatchcb, "spiral", midi_intensity.toString());
-                }
-                break;
-            case "2_e_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(presetButtonsListActions.setActiveButton(_buttonIds[4]));
-
-                    PresetButtonsList.setStyle(_dispatchcb, "dm5", midi_intensity.toString());
-                }
-                break;
-            case "1_middle_button":
-                if (midi_intensity === 127) {
-                    _dispatchcb(midiActions.toggleMidiEditMode());
-                }
-                break;
-            case "1_upper_knob": // dispatch whatever the current binding is supposed to change
-                _dispatchcb(
-                    artScrollerActions.setSlider({
-                        control: "circleWidth",
-                        value: midi_intensity.toString(),
-                    })
-                );
-                break;
-            case "1_middle_knob":
-                _dispatchcb(
-                    artScrollerActions.setSlider({
-                        control: "vertPos",
-                        value: midi_intensity.toString(),
-                    })
-                );
-                break;
-            case "1_lower_knob":
-                _dispatchcb(
-                    artScrollerActions.setSlider({
-                        control: "hPos",
-                        value: midi_intensity.toString(),
-                    })
-                );
-                break;
-            case "2_upper_knob":
-                _dispatchcb(
-                    artScrollerActions.setSlider({
-                        control: "invert",
-                        value: midi_intensity.toString(),
-                    })
-                );
-                break;
-            case "2_middle_knob":
-                _dispatchcb(
-                    artScrollerActions.setSlider({
-                        control: "animDuration",
-                        value: midi_intensity <= 0 ? "1" : midi_intensity.toString(),
-                    })
-                );
-                break;
-            case "1_lower_button": // reset timer button
-                if (midi_intensity === 127) {
-                    _dispatchcb((_dispatch, getState) => getState().ledState.resetTimerFn());
-                }
-                break;
-            case "1_fader":
-                // debounce? not sure if this helps...
-                _dispatchcb(
-                    ledActions.setAnimVarCoeff(
-                        (midi_intensity === 0 ? "1" : midi_intensity * 2).toString()
-                    )
-                );
-                break;
-            default:
-                break;
+        if (typeof callback !== "function") {
+            console.warn(
+                "callback was not a function, cannot proceed to call the callback",
+                "\n callback was => ",
+                callback,
+                "\n mapping was => ",
+                mapping,
+                "\n control name was => ",
+                touchOsc_MIDI_CHANNEL_TABLE[midi_channel]
+            );
+            console.warn("did you assign a ui control to that midi control?");
+            return;
         }
+
+        callback(midi_intensity, buttonIds);
     }
 }
 

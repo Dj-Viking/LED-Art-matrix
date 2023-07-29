@@ -76,7 +76,6 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                     _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name];
 
                 MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(
-                    name,
                     pref,
                     _thunkAPI.dispatch
                 );
