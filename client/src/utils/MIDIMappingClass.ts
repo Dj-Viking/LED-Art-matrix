@@ -236,9 +236,10 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                 return (midiIntensity: number) => {
                     // toggling the gifs art scroller
                     if (midiIntensity === 127) {
-                        dispatch(artScrollerActions.setFigureOn(true));
-                    } else {
-                        dispatch(artScrollerActions.setFigureOn(false));
+                        dispatch((dispatchcb, getState) => {
+                            const currentFigureOnState = getState().artScrollerState.figureOn;
+                            dispatchcb(artScrollerActions.setFigureOn(!currentFigureOnState));
+                        });
                     }
                 };
             default:
