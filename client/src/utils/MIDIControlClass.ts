@@ -1,20 +1,18 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { artScrollerActions } from "../store/artScrollerSlice";
-import { ledActions } from "../store/ledSlice";
 import {
     MIDIInputName,
     XONEK2_MIDI_CHANNEL_TABLE,
     touchOsc_MIDI_CHANNEL_TABLE,
     GenericControlName,
     UIInterfaceDeviceName,
+    getControllerTableFromName,
 } from "../constants";
-import { PresetButtonsList } from "./PresetButtonsListClass";
-import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
 import { MIDIMappingPreference, CallbackMapping } from "./MIDIMappingClass";
 import { deepCopy } from "./deepCopy";
 import { IPresetButton } from "../types";
+import { UNIMPLEMENTED } from "../store/actions/midiActionCreators";
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -383,6 +381,105 @@ class MIDIController implements IMIDIController {
             const gotPref = window.localStorage.getItem("XONE:K2 MIDI")!;
             console.log("got pref from local storage", JSON.parse(gotPref));
         }
+    }
+
+    public static handleMIDIMessage(
+        midi_event: MIDIMessageEvent,
+        _dispatchcb: ToolkitDispatch,
+        pref: MIDIMappingPreference<typeof name>,
+        name: MIDIInputName
+    ): void {
+        // get intensity and channel number
+        const midi_intensity = midi_event.data[2];
+        const midi_channel = midi_event.data[1];
+        // buttonIds
+        let buttonIds: Array<IPresetButton["id"]> = [];
+
+        _dispatchcb((dispatch, getState) => {
+            const hasPref = getState().midiState.midiMappingInUse.hasPreference;
+            buttonIds = getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
+            dispatch(
+                midiActions.setControllerInUse({
+                    controllerName: name,
+                    hasPreference: hasPref,
+                })
+            );
+        });
+        _dispatchcb(midiActions.setChannel(midi_channel));
+        _dispatchcb(midiActions.setIntensity(midi_intensity));
+
+        MIDIController._invokeCallbackOrWarn(
+            pref,
+            name,
+            midi_event,
+            midi_channel,
+            midi_intensity,
+            buttonIds
+        );
+    }
+
+    private static _invokeCallbackOrWarn(
+        pref: MIDIMappingPreference<typeof name>,
+        name: MIDIInputName,
+        midi_event: MIDIMessageEvent,
+        channel: number,
+        midiIntensity: number,
+        buttonIds: IPresetButton["id"][]
+    ): void {
+        //
+
+        switch (name) {
+            case "TouchOSC Bridge":
+                {
+                    const callbackMap = pref.callbackMap;
+                    const mapping = pref.mapping;
+                    const callback =
+                        callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
+                        callback(midiIntensity, buttonIds);
+                    }
+                }
+                break;
+            case "XONE:K2 MIDI":
+                {
+                    const callbackMap = pref.callbackMap;
+                    const mapping = pref.mapping;
+                    const callback =
+                        callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
+                        callback(midiIntensity, buttonIds);
+                    }
+                }
+                break;
+            default: {
+                UNIMPLEMENTED(name, midi_event, channel);
+            }
+        }
+    }
+
+    private static _warnCallbackIfError<
+        N extends MIDIInputName,
+        P extends keyof CallbackMapping<N>
+    >(
+        callback: CallbackMapping<typeof name>[P],
+        mapping: MIDIMappingPreference<typeof name>["mapping"],
+        midi_channel: number,
+        name: MIDIInputName
+    ): boolean {
+        if (typeof callback !== "function") {
+            console.warn(
+                "callback was not a function, cannot proceed to call the callback",
+                "\n callback was => ",
+                callback,
+                "\n mapping was => ",
+                mapping,
+                "\n control name was => ",
+                getControllerTableFromName(name)[midi_channel]
+            );
+            console.warn("did you assign a ui control to that midi control?");
+            return false;
+        }
+        return true;
     }
 
     public static handleTouchOSCMessage(

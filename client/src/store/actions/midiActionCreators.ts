@@ -11,7 +11,7 @@ import {
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
 
-function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
+export function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
     console.log(
         "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
         name,
@@ -52,10 +52,6 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             const isListeningForMappingEdit =
                 _thunkAPI.getState().midiState.isListeningForMappingEdit;
 
-            const _buttonIds = _thunkAPI
-                .getState()
-                .presetButtonsListState.presetButtons.map((btn) => btn.id);
-
             const name = MIDIController.stripNativeLabelFromMIDIInputName(
                 midi_event.currentTarget.name
             );
@@ -65,8 +61,10 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             let pref: MIDIMappingPreference<typeof name>;
             if (
                 Object.keys(
-                    _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name]
-                ).length === 0
+                    _thunkAPI?.getState()?.midiState?.midiMappingInUse?.midiMappingPreference?.[
+                        name
+                    ]
+                )?.length === 0
             ) {
                 pref = new MIDIMappingPreference(name, _thunkAPI.dispatch);
             } else {
@@ -102,9 +100,6 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                     _thunkAPI.dispatch
                 );
 
-                // TODO: this only updates the preference mapping
-                // calling the callback based on the channel number
-                // should be handled separately
                 // have to do this because typescript complains that I can't just set a class instance directly into the slice state
                 pref = MIDIMappingPreference.updatePreferenceMapping(
                     pref,
@@ -117,33 +112,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             }
 
             // TODO: call action to update midi state preference mappings
-
-            switch (true) {
-                case midi_event.currentTarget.name.includes("TouchOSC Bridge"):
-                    // TODO: pass the preference class into here? and invoke the callback based on the ui name
-                    // that was interacted with. see notes in midi control class on the data structure
-                    MIDIController.handleTouchOSCMessage(
-                        midi_event,
-                        _thunkAPI.dispatch,
-                        pref,
-                        name
-                    );
-                    break;
-                // the browser appends some number and a dash for whatever reason
-                case midi_event.currentTarget.name.includes("XONE"):
-                    MIDIController.handleXONEK2MIDIMessage(
-                        midi_event,
-                        _thunkAPI.dispatch,
-                        _buttonIds,
-                        pref,
-                        name
-                    );
-                    break;
-                default: {
-                    const channel = midi_event.data[1];
-                    UNIMPLEMENTED(midi_event.currentTarget.name, midi_event, channel);
-                }
-            }
+            MIDIController.handleMIDIMessage(midi_event, _thunkAPI.dispatch, pref, name);
         };
         const onstatechangecb = (event: MIDIConnectionEvent): void => {
             console.log("input had a change event", event);
@@ -153,9 +122,11 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
         // };
 
         // make sure both the callback map and the mapping are applied to the midicontroller class separately
-        // since I don't think I can store a class instance into the redux state (i dont think T_T)
+        // since I don't think I can store a class instance into the redux state (i dont think T_T) nope!
 
         mc.setInputCbs(midicb, onstatechangecb);
+
+        // no use for setting output midi controller callbacks (yet)
 
         console.log("what is mc here on initialization of midi control", mc);
         return mc;

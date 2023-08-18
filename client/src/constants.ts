@@ -498,3 +498,14 @@ export const SUPPORTED_CONTROLLERS = {
     "UltraLite mk3 Hybrid MIDI Port": ULTRALITE_MK3_HYBRID_MIDI_PORT,
     "TouchOSC Bridge": touchOsc_MIDI_CHANNEL_TABLE,
 } as const;
+
+export const getControllerTableFromName = <N extends keyof typeof SUPPORTED_CONTROLLERS>(
+    controllerName: N
+): typeof SUPPORTED_CONTROLLERS[N] => {
+    for (const [key, value] of Object.entries(SUPPORTED_CONTROLLERS)) {
+        if (key === controllerName) {
+            return value;
+        }
+    }
+    return null;
+};
