@@ -387,46 +387,21 @@ class MIDIController implements IMIDIController {
         midi_event: MIDIMessageEvent,
         _dispatchcb: ToolkitDispatch,
         pref: MIDIMappingPreference<typeof name>,
-        name: MIDIInputName
+        name: MIDIInputName,
+        buttonIds: Array<IPresetButton["id"]>
     ): void {
-        // get intensity and channel number
-        const midi_intensity = midi_event.data[2];
-        const midi_channel = midi_event.data[1];
-        // buttonIds
-        let buttonIds: Array<IPresetButton["id"]> = [];
-
-        _dispatchcb((dispatch, getState) => {
-            const hasPref = getState().midiState.midiMappingInUse.hasPreference;
-            buttonIds = getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
-            dispatch(
-                midiActions.setControllerInUse({
-                    controllerName: name,
-                    hasPreference: hasPref,
-                })
-            );
-        });
-        _dispatchcb(midiActions.setChannel(midi_channel));
-        _dispatchcb(midiActions.setIntensity(midi_intensity));
-
-        MIDIController._invokeCallbackOrWarn(
-            pref,
-            name,
-            midi_event,
-            midi_channel,
-            midi_intensity,
-            buttonIds
-        );
+        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds);
     }
 
     private static _invokeCallbackOrWarn(
         pref: MIDIMappingPreference<typeof name>,
         name: MIDIInputName,
         midi_event: MIDIMessageEvent,
-        channel: number,
-        midiIntensity: number,
         buttonIds: IPresetButton["id"][]
     ): void {
         //
+        const channel = midi_event.data[1];
+        const midiIntensity = midi_event.data[2];
 
         switch (name) {
             case "TouchOSC Bridge":

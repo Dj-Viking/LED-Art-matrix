@@ -129,6 +129,8 @@ export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlN
 export type UIInterfaceDeviceName =
     | keyof ILedState
     | "figureOn"
+    | "gifFetch"
+    | "startGifs"
     | keyof IArtScrollerState["slider"]
     | PresetButtonName;
 
@@ -161,6 +163,8 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
      */
     presetName: void 0 as never,
     figureOn: "" as any,
+    gifFetch: "" as any,
+    startGifs: "" as any,
 };
 
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
@@ -412,6 +416,8 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
      */
     presetName: void 0 as never,
     figureOn: "" as any,
+    gifFetch: "" as any,
+    startGifs: "" as any,
 };
 
 export const DEFAULT_CALLBACK_TABLE: Record<
@@ -434,6 +440,8 @@ export const DEFAULT_CALLBACK_TABLE: Record<
     resetTimerFn: (_midiIntensity: number) => void 0,
     vertPos: (_midiIntensity: number) => void 0,
     figureOn: (_midiIntensity: number) => void 0,
+    gifFetch: (_midiIntensity: number) => void 0,
+    startGifs: (_midiIntensity: number) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {

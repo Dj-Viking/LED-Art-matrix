@@ -57,9 +57,24 @@ type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement>;
 const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
     const dispatch = useDispatch();
-    const { figureOn } = getGlobalState(useSelector);
+    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } =
+        getGlobalState(useSelector);
 
-    async function handleGetNew(): Promise<void> {
+    const gifFetchUiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "gifFetch"
+    );
+
+    const startGifsUiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "startGifs"
+    );
+
+    async function handleGetNewClickHandler(): Promise<void> {
+        if (midiEditMode) {
+            MIDIMappingPreference.listeningForEditsHandler(dispatch, "gifFetch");
+            return;
+        }
         if (!figureOn) {
             dispatch(artScrollerActions.setFigureOn(true));
         }
@@ -67,31 +82,51 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
         dispatch(artScrollerActions.getGifsAsync({ getNew: true }));
     }
 
-    async function handleClick(): Promise<void> {
+    async function gifStartClickHandler(): Promise<void> {
+        if (midiEditMode) {
+            MIDIMappingPreference.listeningForEditsHandler(dispatch, "startGifs");
+            return;
+        }
         if (figureOn === false) {
             dispatch(artScrollerActions.setFigureOn(true));
         }
     }
     return (
         <>
-            <animated.button
-                style={leftInitButtonSpring}
-                role="button"
-                data-testid="get-new"
-                className="scroller-fetch-button"
-                onClick={handleGetNew}
-            >
-                Get New GIFs
-            </animated.button>
-            <animated.button
-                style={leftInitButtonSpring}
-                role="button"
-                data-testid="start-art"
-                className="scroller-fetch-button"
-                onClick={handleClick}
-            >
-                Start Art Scroller!
-            </animated.button>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                {midiEditMode && (
+                    <>
+                        <span>{"< MIDI >"}</span>
+                        <span>{`(${gifFetchUiMapping})`}</span>
+                    </>
+                )}
+                <animated.button
+                    style={{ ...leftInitButtonSpring, height: 50 }}
+                    role="button"
+                    data-testid="get-new"
+                    className="scroller-fetch-button"
+                    onClick={handleGetNewClickHandler}
+                >
+                    Get New GIFs
+                </animated.button>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                {midiEditMode && (
+                    <>
+                        <span>{"< MIDI >"}</span>
+                        <span>{`(${startGifsUiMapping})`}</span>
+                    </>
+                )}
+                <animated.button
+                    style={{ ...leftInitButtonSpring, height: 50 }}
+                    role="button"
+                    data-testid="start-art"
+                    className="scroller-fetch-button"
+                    onClick={gifStartClickHandler}
+                >
+                    Start Art Scroller!
+                </animated.button>
+            </div>
         </>
     );
 };

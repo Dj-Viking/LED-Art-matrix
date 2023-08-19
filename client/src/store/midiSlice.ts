@@ -136,6 +136,10 @@ export const midiSlice = createSlice({
         },
         toggleMidiEditMode: (state: MIDISliceState) => {
             return produce(state, () => {
+                // if we're currently toggling edit mode off then stop listening for midi preference editing changes
+                if (state.midiEditMode) {
+                    state.isListeningForMappingEdit = false;
+                }
                 state.midiEditMode = !state.midiEditMode;
             });
         },

@@ -26,7 +26,8 @@ function DEBUGMIDIMESSAGE(
     uiName: string,
     name: MIDIInputName,
     controlName: string,
-    channel: number
+    channel: number,
+    midiIntensity: number
 ): void {
     console.log(
         "uiname",
@@ -36,7 +37,9 @@ function DEBUGMIDIMESSAGE(
         "\n controlName",
         controlName,
         "\n channel ",
-        channel
+        channel,
+        "\n intensity",
+        midiIntensity
     );
 }
 
@@ -51,14 +54,34 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
             const isListeningForMappingEdit =
                 _thunkAPI.getState().midiState.isListeningForMappingEdit;
-
+            const buttonIds = _thunkAPI
+                .getState()
+                .presetButtonsListState.presetButtons.map((btn) => btn.id);
+            const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;
             const name = MIDIController.stripNativeLabelFromMIDIInputName(
                 midi_event.currentTarget.name
             );
+            const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
+            const channel = midi_event.data[1];
+            const midiIntensity = midi_event.data[2];
 
             // will get updated if we are in edit mode and listening for changes
             // only make a new one if it's not currently set in state yet
             let pref: MIDIMappingPreference<typeof name>;
+
+            // set channel and intensity and controller in use
+            _thunkAPI.dispatch(midiActions.setChannel(channel));
+            _thunkAPI.dispatch(midiActions.setIntensity(midiIntensity));
+
+            const controlName: string = SUPPORTED_CONTROLLERS[name][channel];
+
+            _thunkAPI.dispatch(
+                midiActions.setControllerInUse({
+                    controllerName: name,
+                    hasPreference: hasPref,
+                })
+            );
+
             if (
                 Object.keys(
                     _thunkAPI?.getState()?.midiState?.midiMappingInUse?.midiMappingPreference?.[
@@ -79,13 +102,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                 );
             }
 
-            const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
-
-            const channel = midi_event.data[1];
-
-            const controlName = SUPPORTED_CONTROLLERS[name][channel];
-
-            DEBUGMIDIMESSAGE(uiName, name, controlName, channel);
+            DEBUGMIDIMESSAGE(uiName, name, controlName, channel, midiIntensity);
 
             if (isEditMode && isListeningForMappingEdit) {
                 _thunkAPI.dispatch(midiActions.setListeningForMappingEdit(false));
@@ -112,7 +129,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             }
 
             // TODO: call action to update midi state preference mappings
-            MIDIController.handleMIDIMessage(midi_event, _thunkAPI.dispatch, pref, name);
+            MIDIController.handleMIDIMessage(midi_event, _thunkAPI.dispatch, pref, name, buttonIds);
         };
         const onstatechangecb = (event: MIDIConnectionEvent): void => {
             console.log("input had a change event", event);
