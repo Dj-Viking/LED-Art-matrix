@@ -242,6 +242,42 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                         });
                     }
                 };
+            case "startGifs":
+                return (midiIntensity: number) => {
+                    if (midiIntensity === 127) {
+                        dispatch((dispatchcb, getState) => {
+                            const currentFigureOnState = getState().artScrollerState.figureOn;
+                            const inMidiEditMode = getState().midiState.midiEditMode;
+                            // only switch on if it was already off. otherwise don't toggle off if already on.
+                            // and if we're not currently in edit mode
+                            if (!inMidiEditMode) {
+                                if (!currentFigureOnState) {
+                                    dispatchcb(artScrollerActions.setFigureOn(true));
+                                }
+                                // keeps pushing gifs of the same list in state....................
+                                if (getState().artScrollerState.gifs.length < 0) {
+                                    dispatch(artScrollerActions.getGifsAsync({ getNew: false }));
+                                }
+                            }
+                        });
+                    }
+                };
+            case "gifFetch":
+                return (midiIntensity: number) => {
+                    if (midiIntensity === 127) {
+                        dispatch((dispatchcb, getState) => {
+                            const currentFigureOnState = getState().artScrollerState.figureOn;
+                            const inMidiEditMode = getState().midiState.midiEditMode;
+                            // only switch on if it was already off. otherwise don't toggle off if already on.
+                            if (!inMidiEditMode) {
+                                if (!currentFigureOnState) {
+                                    dispatchcb(artScrollerActions.setFigureOn(true));
+                                }
+                                dispatch(artScrollerActions.getGifsAsync({ getNew: true }));
+                            }
+                        });
+                    }
+                };
             default:
                 return (_midiIntensity: number) => void 0;
         }

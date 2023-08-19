@@ -77,7 +77,14 @@ export const buildGetGifsAction = createAsyncThunk<
         );
 
         if (_thunkAPI.getState().artScrollerState.gifs.length > 0) {
-            gifs = [..._thunkAPI.getState().artScrollerState.gifs, ...freeGifs];
+            // hacky way to prevent dupes...
+            // if we got the gifs from indexed db - I know that I'm pushing the same list from indexed db back into state..TODO: Fix me
+            const gifSet = new Set<IGif>([
+                ..._thunkAPI.getState().artScrollerState.gifs,
+                ...freeGifs,
+            ]);
+
+            gifs = Array.from(gifSet);
         } else {
             gifs = freeGifs;
         }
