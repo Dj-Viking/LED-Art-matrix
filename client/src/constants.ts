@@ -140,18 +140,18 @@ export type UIInterfaceDeviceName =
     | PresetButtonName;
 
 export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceName, XONEK2_ControlNames> = {
-    button_1_position: "1_a_button",
-    button_2_position: "1_b_button",
-    button_3_position: "1_c_button",
-    button_4_position: "1_d_button",
-    button_5_position: "2_e_button",
-    circleWidth: "1_upper_knob",
-    vertPos: "1_middle_knob",
-    hPos: "1_lower_knob",
-    invert: "2_upper_knob",
-    animDuration: "2_middle_knob",
-    resetTimerButton: "1_lower_button",
-    animVarCoeff: "1_fader",
+    button_1_position: "" as any,
+    button_2_position: "" as any,
+    button_3_position: "" as any,
+    button_4_position: "" as any,
+    button_5_position: "" as any,
+    circleWidth: "" as any,
+    vertPos: "" as any,
+    hPos: "" as any,
+    invert: "" as any,
+    animDuration: "" as any,
+    resetTimerButton: "" as any,
+    animVarCoeff: "" as any,
     /**
      * never implemented
      */
