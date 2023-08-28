@@ -76,10 +76,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(this, dispatch);
     }
 
-    public static listeningForEditsHandler(
-        dispatch: React.Dispatch<any>,
-        uiName: UIInterfaceDeviceName
-    ): void {
+    public static listeningForEditsHandler(dispatch: React.Dispatch<any>, uiName: UIInterfaceDeviceName): void {
         console.log("listening for edits");
         dispatch(midiActions.setListeningForMappingEdit(true));
         dispatch(
@@ -107,10 +104,10 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
-    public static generateCallbackBasedOnUIName<
-        N extends MIDIInputName,
-        P extends keyof CallbackMapping<N>
-    >(uiName: UIInterfaceDeviceName, dispatch: ToolkitDispatch): CallbackMapping<N>[P] {
+    public static generateCallbackBasedOnUIName<N extends MIDIInputName, P extends keyof CallbackMapping<N>>(
+        uiName: UIInterfaceDeviceName,
+        dispatch: ToolkitDispatch
+    ): CallbackMapping<N>[P] {
         switch (uiName) {
             case "animDuration":
                 return (midiIntensity: number) => {
@@ -125,18 +122,14 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                 return (midiIntensity: number) => {
                     dispatch(
                         ledActions.setAnimVarCoeff(
-                            midiIntensity <= 0
-                                ? "1"
-                                : calcPositionFromRange(midiIntensity, 1, 255, 0, 127).toString()
+                            midiIntensity <= 0 ? "1" : calcPositionFromRange(midiIntensity, 1, 255, 0, 127).toString()
                         )
                     );
                 };
             case "button_1_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(
-                            presetButtonsListActions.setActiveButton(buttonIds?.[0] as string)
-                        );
+                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[0] as string));
 
                         PresetButtonsList.setStyle(dispatch, "rainbowTest", "1");
                     }
@@ -144,9 +137,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
             case "button_2_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(
-                            presetButtonsListActions.setActiveButton(buttonIds?.[1] as string)
-                        );
+                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[1] as string));
 
                         PresetButtonsList.setStyle(dispatch, "v2", "1");
                     }
@@ -154,9 +145,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
             case "button_3_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(
-                            presetButtonsListActions.setActiveButton(buttonIds?.[2] as string)
-                        );
+                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[2] as string));
 
                         PresetButtonsList.setStyle(dispatch, "waves", "1");
                     }
@@ -164,9 +153,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
             case "button_4_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(
-                            presetButtonsListActions.setActiveButton(buttonIds?.[3] as string)
-                        );
+                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[3] as string));
 
                         PresetButtonsList.setStyle(dispatch, "spiral", "1");
                     }
@@ -174,9 +161,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
             case "button_5_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(
-                            presetButtonsListActions.setActiveButton(buttonIds?.[4] as string)
-                        );
+                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[4] as string));
 
                         PresetButtonsList.setStyle(dispatch, "dm5", "1");
                     }

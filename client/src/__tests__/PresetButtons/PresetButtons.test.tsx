@@ -6,12 +6,7 @@ import { Provider } from "react-redux";
 import { act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import {
-    LOGIN_MOCK_TOKEN,
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-    MOCK_PRESETS,
-} from "../../utils/mocks";
+import { LOGIN_MOCK_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { mount, ReactWrapper } from "enzyme";
 import { IPresetButtonsProps, PresetButtons } from "../../components/PresetButtons";
@@ -162,9 +157,7 @@ describe("test logging in and checking buttons are there", () => {
         saveDefaultButton.props().clickHandler?.({ preventDefault: () => null });
 
         // adjust slider to cover handle change
-        slider
-            .props()
-            .handleChange?.({ target: { value: "64 " }, preventDefault: () => null } as any);
+        slider.props().handleChange?.({ target: { value: "64 " }, preventDefault: () => null } as any);
 
         // cover save preset modal
         savePresetModal.props().onClose?.({ preventDefault: () => null } as any);
@@ -176,9 +169,7 @@ describe("test logging in and checking buttons are there", () => {
         deleteButton.props().clickHandler({ preventDefault: () => null } as any);
 
         // cover midi map edit mode button
-        midiMapEditModebutton
-            .props()
-            .toggleMIDIMapEditMode?.({ preventDefault: () => null } as any);
+        midiMapEditModebutton.props().toggleMIDIMapEditMode?.({ preventDefault: () => null } as any);
 
         act(() => {
             isHSLButton.simulate("click");

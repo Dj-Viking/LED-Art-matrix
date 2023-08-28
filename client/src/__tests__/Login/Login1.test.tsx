@@ -114,9 +114,7 @@ describe("Test rendering login correctly", () => {
 
         const formEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             login: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,
@@ -150,7 +148,7 @@ describe("Test rendering login correctly", () => {
 
         expect(fetch).toHaveBeenCalledTimes(3);
         expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-            body: '{"usernameOrEmail":{"email":"iexist@exist.com"},"password":"believe it"}',
+            body: "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -205,9 +203,7 @@ describe("test signup functionality with no token", () => {
 
         const inputEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,

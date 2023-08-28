@@ -14,8 +14,5 @@ export function calcPositionFromRange(
     minInput: number,
     maxInput: number
 ): number {
-    return Math.floor(
-        ((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) +
-            minPercentage
-    );
+    return Math.floor(((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) + minPercentage);
 }

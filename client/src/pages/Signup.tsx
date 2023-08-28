@@ -98,12 +98,7 @@ const Signup: React.FC = (): JSX.Element => {
                         </>
                     ) : null}
                     <div className="form-button-container">
-                        <button
-                            type="submit"
-                            name="signup-button"
-                            disabled={false}
-                            className="form-btn"
-                        >
+                        <button type="submit" name="signup-button" disabled={false} className="form-btn">
                             Sign Up
                         </button>
                         {loading ? <Spinner /> : null}

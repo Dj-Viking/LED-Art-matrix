@@ -26,13 +26,7 @@ export class CanvasLED {
         this.#setFillStyle(col, row, countRef, animVarCoeff, isHSL);
     }
 
-    #setFillStyle(
-        col: number,
-        row: number,
-        countRef: number,
-        animVarCoeff: string,
-        isHSL: boolean
-    ): void {
+    #setFillStyle(col: number, row: number, countRef: number, animVarCoeff: string, isHSL: boolean): void {
         const hexString = this._determineHexStringFromPreset(row, col, animVarCoeff, countRef);
 
         const hslValue = parseInt(CanvasLED._createPaddedHexString(hexString), 16);
@@ -43,12 +37,7 @@ export class CanvasLED {
 
         if (isHSL) {
             if (this.presetName === "dm5") {
-                const lightnessBasedOnRow = this._generateLightness(
-                    col,
-                    row,
-                    animVarCoeff,
-                    countRef
-                );
+                const lightnessBasedOnRow = this._generateLightness(col, row, animVarCoeff, countRef);
                 this.fillStyle = `hsl(100, 100%, ${lightnessBasedOnRow}%)`;
             } else {
                 this.fillStyle = `hsl(${hslValue}, 100%, 50%)`;
@@ -92,19 +81,12 @@ export class CanvasLED {
         }
     }
 
-    private _generateLightness(
-        row: number,
-        col: number,
-        animVarCoeff: string,
-        countRef: number
-    ): string {
+    private _generateLightness(row: number, col: number, animVarCoeff: string, countRef: number): string {
         // animation-duration: ${led <= 3 ? 1 : led / 3.14159 / 2}s;
         // animation-delay: ${row % 5 === 0 ? led / 3.14159 : led / Number(coeff)}s;
 
         let num =
-            ((col + 1) % 5 === 0
-                ? row + 1 / Math.PI
-                : (row + (1 * countRef) / 100) / Number(animVarCoeff)) *
+            ((col + 1) % 5 === 0 ? row + 1 / Math.PI : (row + (1 * countRef) / 100) / Number(animVarCoeff)) *
             (countRef * 0.005);
 
         if (num > 50) {
@@ -120,12 +102,7 @@ export class CanvasLED {
         return uint8[0] <= 16 ? `0${hexString}` : hexString;
     }
 
-    private _determineHexStringFromPreset(
-        row: number,
-        col: number,
-        animVarCoeff: string,
-        countRef: number
-    ): string {
+    private _determineHexStringFromPreset(row: number, col: number, animVarCoeff: string, countRef: number): string {
         switch (this.presetName) {
             case "spiral":
                 return this._createSpiralPatternHexString(row, col, animVarCoeff, countRef);
@@ -155,12 +132,7 @@ export class CanvasLED {
         return uint8_1[0].toString(16);
     }
 
-    private _createWavesPatternHexString(
-        row: number,
-        col: number,
-        animVarCoeff: string,
-        countRef: number
-    ): string {
+    private _createWavesPatternHexString(row: number, col: number, animVarCoeff: string, countRef: number): string {
         // animation-duration: ${led / 32 + row / led}s;
         // animation-delay: ${led / 16 + led / (row / led - 2 * Number(coeff))}s;
 
@@ -173,12 +145,7 @@ export class CanvasLED {
         return uint8[0].toString(16);
     }
 
-    private _createV2PatternHexString(
-        row: number,
-        col: number,
-        animVarCoeff: string,
-        countRef: number
-    ): string {
+    private _createV2PatternHexString(row: number, col: number, animVarCoeff: string, countRef: number): string {
         // animation-duration: ${led <= 3 ? led / 2 : led / 8}s;
         // animation-delay: ${led / 16 + led / (row / led - Number(coeff) / 5 / 5)}s;
         const num =
@@ -200,22 +167,14 @@ export class CanvasLED {
         // original idea relating to animation start times and durations (only applies to the css styling but has some similarities)
         // animation-duration: ${Number(coeff) / 100}s;
         // led / 64 + led / (row / led) / (Number(coeff) / 20 + row / (Number(coeff) / 20))
-        const num =
-            col / 64 +
-            col / ((row + 1) / (col + 1)) / Number(animVarCoeff) +
-            countRef / Number(animVarCoeff);
+        const num = col / 64 + col / ((row + 1) / (col + 1)) / Number(animVarCoeff) + countRef / Number(animVarCoeff);
 
         const uint8 = new Uint8Array(1).fill(num);
 
         return uint8[0].toString(16);
     }
 
-    private _createSpiralPatternHexString(
-        row: number,
-        col: number,
-        animVarCoeff: string,
-        countRef: number
-    ): string {
+    private _createSpiralPatternHexString(row: number, col: number, animVarCoeff: string, countRef: number): string {
         // THIS IS THE SPIRAL PATTERN! add countRef to animate!
         const num = row * 8 * col * Number(animVarCoeff) + countRef;
         // number that wraps around when overflowed so it can loop colors

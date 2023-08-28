@@ -27,17 +27,7 @@ interface PresetButtonProps {
 }
 
 const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
-    const {
-        id,
-        role,
-        presetName,
-        displayName,
-        animVarCoeff,
-        testid,
-        isActive,
-        clickHandler,
-        keyBinding,
-    } = button;
+    const { id, role, presetName, displayName, animVarCoeff, testid, isActive, clickHandler, keyBinding } = button;
 
     const dispatch = useDispatch();
     const { deleteModeActive, midiEditMode } = getGlobalState(useSelector);
@@ -83,10 +73,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
         (event: any): void => {
             clickHandler(event);
             if (midiEditMode) {
-                MIDIMappingPreference.listeningForEditsHandler(
-                    dispatch,
-                    deriveUiNameFromIndex(index)
-                );
+                MIDIMappingPreference.listeningForEditsHandler(dispatch, deriveUiNameFromIndex(index));
                 return;
             }
             if (!deleteModeActive) {

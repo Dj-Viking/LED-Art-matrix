@@ -18,8 +18,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
         event.preventDefault();
         setLoading(true);
         try {
-            if (!window.navigator.onLine)
-                throw new Error("Internet is disconnected, please try again later.");
+            if (!window.navigator.onLine) throw new Error("Internet is disconnected, please try again later.");
             setSubmitted(true);
             const res = await API.forgotPassword(email);
             if (res) {
@@ -66,11 +65,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
                     className="form-email-input"
                     autoComplete="off"
                 />
-                <button
-                    disabled={disabled}
-                    className={disabled ? "form-btn-disabled" : "form-btn"}
-                    type="submit"
-                >
+                <button disabled={disabled} className={disabled ? "form-btn-disabled" : "form-btn"} type="submit">
                     Submit
                 </button>
                 {
@@ -80,10 +75,7 @@ const ForgotPassword: React.FC = (): JSX.Element => {
                 {loading ? (
                     <>
                         <div style={{ display: "flex", justifyContent: "center" }}>
-                            <span>
-                                If there is an account with that email, the reset link is now being
-                                sent!
-                            </span>
+                            <span>If there is an account with that email, the reset link is now being sent!</span>
                         </div>
                         <Spinner />
                     </>

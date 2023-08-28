@@ -8,8 +8,7 @@ import { getGlobalState } from "../store/store";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
-    const { deleteModeActive, presetButtons, saveModalIsOpen, figureOn } =
-        getGlobalState(useSelector);
+    const { deleteModeActive, presetButtons, saveModalIsOpen, figureOn } = getGlobalState(useSelector);
 
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
@@ -40,9 +39,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 dispatch(artScrollerActions.setFigureOn(figureOn ? false : true));
             }
 
-            const preset = presetButtons.filter(
-                (btn) => btn.keyBinding === event.key
-            )[0] as IPresetButton;
+            const preset = presetButtons.filter((btn) => btn.keyBinding === event.key)[0] as IPresetButton;
 
             if (!preset) return;
 

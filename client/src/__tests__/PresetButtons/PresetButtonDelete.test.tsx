@@ -12,12 +12,7 @@ import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
 import { act } from "react-dom/test-utils";
 import { TestService } from "../../utils/TestServiceClass";
-import {
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-    MOCK_PRESETS,
-    MOCK_SIGN_TOKEN_ARGS,
-} from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { PresetButtons } from "../../components/PresetButtons";
 import { mount } from "enzyme";
@@ -54,12 +49,8 @@ describe("test deleting a preset from the user's preset button list", () => {
         const mockFetch = jest
             .fn()
             .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
+            .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
+            .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
             .mockReturnValueOnce(fakeFetchRes({ message: "deleted" }));
         // @ts-ignore
         global.fetch = mockFetch;
@@ -155,12 +146,8 @@ describe("test deleting a preset from the user's preset button list", () => {
         const mockFetch = jest
             .fn()
             .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
+            .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
+            .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
             .mockReturnValueOnce(fakeFetchRes({ message: "deleted" }));
         // @ts-ignore
         global.fetch = mockFetch;

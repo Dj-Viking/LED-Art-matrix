@@ -97,9 +97,7 @@ const ModalCloseButton: React.FC<{ text: string; onClose: (event?: any) => void 
     );
 };
 
-const ModalSaveButton: React.FC<{ input: string; handleSubmit: (event: any) => Promise<void> }> = (
-    props
-) => {
+const ModalSaveButton: React.FC<{ input: string; handleSubmit: (event: any) => Promise<void> }> = (props) => {
     return (
         <StyledModalSaveButton
             data-testid="gif-modal-save-button"
@@ -118,9 +116,7 @@ const ModalHeader: React.FC<{ text: string }> = (props) => {
     return <h1 style={{ color: "black" }}>{props.text}</h1>;
 };
 
-const ModalInputField: React.FC<{ input: string; handleChange: (event?: any) => void }> = (
-    props
-) => {
+const ModalInputField: React.FC<{ input: string; handleChange: (event?: any) => void }> = (props) => {
     return (
         <input
             autoComplete="off"

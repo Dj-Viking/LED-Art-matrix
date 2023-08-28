@@ -251,16 +251,11 @@ class MIDIController implements IMIDIController {
         return result;
     }
 
-    public static getTypedMIDILocalStorage(
-        name: MIDIInputName
-    ): MIDIMappingPreference<typeof name> {
+    public static getTypedMIDILocalStorage(name: MIDIInputName): MIDIMappingPreference<typeof name> {
         return JSON.parse(window.localStorage.getItem(name)!) as MIDIMappingPreference<typeof name>;
     }
 
-    public static isMIDIPreferenceLocalStorageSet(
-        name: MIDIInputName,
-        dispatch: ToolkitDispatch
-    ): boolean {
+    public static isMIDIPreferenceLocalStorageSet(name: MIDIInputName, dispatch: ToolkitDispatch): boolean {
         // add more preferences
         const hasPreferencesSet = !!window.localStorage.getItem(name);
         dispatch(midiActions.setHasPreferencesSet(hasPreferencesSet));
@@ -277,13 +272,7 @@ class MIDIController implements IMIDIController {
     ): void {
         // set in storage and also update the redux state for the mappings
 
-        MIDIController.setMIDIMappingPreferenceInStorage(
-            name,
-            controlName,
-            channel,
-            uiName,
-            dispatch
-        );
+        MIDIController.setMIDIMappingPreferenceInStorage(name, controlName, channel, uiName, dispatch);
     }
 
     public static setTypedMIDIPreferenceLocalStorage(
@@ -364,10 +353,7 @@ class MIDIController implements IMIDIController {
             const initPref = new MIDIMappingPreference("TouchOSC Bridge", dispatch);
             pref = initPref;
             console.log("pref to initialize into local storage", pref);
-            window.localStorage.setItem(
-                "TouchOSC Bridge" as MIDIInputName,
-                JSON.stringify(initPref)
-            );
+            window.localStorage.setItem("TouchOSC Bridge" as MIDIInputName, JSON.stringify(initPref));
             const gotPref = window.localStorage.getItem("TouchOSC Bridge")!;
             console.log("got pref from local storage", JSON.parse(gotPref));
         }
@@ -408,8 +394,7 @@ class MIDIController implements IMIDIController {
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
-                    const callback =
-                        callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]].uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         callback(midiIntensity, buttonIds);
                     }
@@ -419,8 +404,7 @@ class MIDIController implements IMIDIController {
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
-                    const callback =
-                        callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]].uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         callback(midiIntensity, buttonIds);
                     }
@@ -432,10 +416,7 @@ class MIDIController implements IMIDIController {
         }
     }
 
-    private static _warnCallbackIfError<
-        N extends MIDIInputName,
-        P extends keyof CallbackMapping<N>
-    >(
+    private static _warnCallbackIfError<N extends MIDIInputName, P extends keyof CallbackMapping<N>>(
         callback: CallbackMapping<typeof name>[P],
         mapping: MIDIMappingPreference<typeof name>["mapping"],
         midi_channel: number,

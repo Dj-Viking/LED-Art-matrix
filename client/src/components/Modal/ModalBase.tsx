@@ -26,10 +26,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, children }) => {
     return (
         <>
             <ModalContainer>
-                <ModalSubContainer
-                    data-testid="modal-base"
-                    style={{ display: isOpen ? "flex" : "none" }}
-                >
+                <ModalSubContainer data-testid="modal-base" style={{ display: isOpen ? "flex" : "none" }}>
                     {children}
                 </ModalSubContainer>
             </ModalContainer>

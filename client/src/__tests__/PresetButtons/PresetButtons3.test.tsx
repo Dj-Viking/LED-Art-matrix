@@ -9,12 +9,7 @@ import { Router } from "react-router-dom";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import {
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-    MOCK_PRESETS,
-    MOCK_SIGN_TOKEN_ARGS,
-} from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 import { TestService } from "../../utils/TestServiceClass";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";

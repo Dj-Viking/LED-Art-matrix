@@ -137,34 +137,22 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
-                        <MIDISelect
-                            setOption={setOptionCallback}
-                            option={option}
-                            midi_inputs={accessInputs}
-                        />
+                        <MIDISelect setOption={setOptionCallback} option={option} midi_inputs={accessInputs} />
                     </MIDISelectContainer>
                     {option && (
                         <DeviceInterfaceContainer
                             statename={getInput(accessInputs, option)?.state || "disconnected"}
-                            controllerName={getStrippedInputName(
-                                getInputName(accessInputs, option)
-                            )}
+                            controllerName={getStrippedInputName(getInputName(accessInputs, option))}
                         >
                             <InputName name={getInputName(accessInputs, option)} />
                             <DeviceSvgContainer>
-                                <ControlSvg
-                                    usings={{ usingFader, usingKnob }}
-                                    intensity_input={intensity}
-                                />
+                                <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
                             </DeviceSvgContainer>
                             <IntensityBar intensity={intensity || 0} />
                             <ControlNameContainer>
                                 <ChannelNumber channel={channel || 0} />
                                 <MIDIChannelControl
-                                    name={getControlName(
-                                        getInputName(accessInputs, option),
-                                        channel
-                                    )}
+                                    name={getControlName(getInputName(accessInputs, option), channel)}
                                 />
                             </ControlNameContainer>
                         </DeviceInterfaceContainer>

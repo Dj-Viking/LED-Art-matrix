@@ -54,15 +54,14 @@ describe("<Canvas />", () => {
         // });
 
         await act(async () => {
-            const canvasWrapper = await new Promise<ReactWrapper<DOMAttributes<HTMLCanvasElement>>>(
-                (resolve) =>
-                    resolve(
-                        mount(
-                            <Provider store={toolkitStore}>
-                                <Canvas />
-                            </Provider>
-                        )
+            const canvasWrapper = await new Promise<ReactWrapper<DOMAttributes<HTMLCanvasElement>>>((resolve) =>
+                resolve(
+                    mount(
+                        <Provider store={toolkitStore}>
+                            <Canvas />
+                        </Provider>
                     )
+                )
             );
 
             console.log("canvas wrapper", canvasWrapper.debug());

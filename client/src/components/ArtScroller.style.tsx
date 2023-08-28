@@ -1,11 +1,7 @@
 import React, { DOMAttributes } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
-import {
-    _leftInitButtonSpring,
-    _scrollerOnOffButtonSpring,
-    _scrollerSaveGifsButtonSpring,
-} from "./SpringButtons";
+import { _leftInitButtonSpring, _scrollerOnOffButtonSpring, _scrollerSaveGifsButtonSpring } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { getGlobalState } from "../store/store";
 
@@ -23,11 +19,7 @@ const ArtScrollerMainContainer = styled.main`
 `;
 
 const ArtScrollerSection: React.FC = ({ children }) => {
-    return (
-        <section style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            {children}
-        </section>
-    );
+    return <section style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>{children}</section>;
 };
 
 const ArtScrollerBorderTop: React.FC = () => {
@@ -52,13 +44,47 @@ const ArtScrollerGifButtonContainer: React.FC = ({ children }) => {
     return <div className="gif-button-container">{children}</div>;
 };
 
+const StyledMIDIGifButton = styled.div`
+    & {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    & > div > div {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+`;
+
+const MIDIMappingDisplay: React.FC<{ isMIDIEditMode: boolean; mappingText: string }> = (props) => {
+    return (
+        <div>
+            {props.isMIDIEditMode && (
+                <div>
+                    <span>{"< MIDI >"}</span>
+                    <span>{`(${props.mappingText})`}</span>
+                </div>
+            )}
+        </div>
+    );
+};
+
 type ArtScrollerStartButtonProps = DOMAttributes<HTMLButtonElement>;
 
 const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
     const leftInitButtonSpring = useSpring(_leftInitButtonSpring);
     const dispatch = useDispatch();
-    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } =
-        getGlobalState(useSelector);
+    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
 
     const gifFetchUiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
@@ -93,13 +119,8 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
     }
     return (
         <>
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                {midiEditMode && (
-                    <>
-                        <span>{"< MIDI >"}</span>
-                        <span>{`(${gifFetchUiMapping})`}</span>
-                    </>
-                )}
+            <StyledMIDIGifButton>
+                <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={gifFetchUiMapping} />
                 <animated.button
                     style={{ ...leftInitButtonSpring, height: 50 }}
                     role="button"
@@ -109,14 +130,9 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
                 >
                     Get New GIFs
                 </animated.button>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-                {midiEditMode && (
-                    <>
-                        <span>{"< MIDI >"}</span>
-                        <span>{`(${startGifsUiMapping})`}</span>
-                    </>
-                )}
+            </StyledMIDIGifButton>
+            <StyledMIDIGifButton>
+                <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={startGifsUiMapping} />
                 <animated.button
                     style={{ ...leftInitButtonSpring, height: 50 }}
                     role="button"
@@ -126,7 +142,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
                 >
                     Start Art Scroller!
                 </animated.button>
-            </div>
+            </StyledMIDIGifButton>
         </>
     );
 };
@@ -136,20 +152,14 @@ type ArtScrollerToggleButtonProps = DOMAttributes<HTMLButtonElement>;
 const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
     const dispatch = useDispatch();
-    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } =
-        getGlobalState(useSelector);
+    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
         "figureOn"
     );
     return (
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            {midiEditMode && (
-                <>
-                    <span>{"< MIDI >"}</span>
-                    <span>{`(${uiMapping})`}</span>
-                </>
-            )}
+        <StyledMIDIGifButton>
+            <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={uiMapping} />
             <animated.button
                 role="button"
                 data-testid="switch-scroller"
@@ -176,7 +186,7 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
                     </>
                 )}
             </animated.button>
-        </div>
+        </StyledMIDIGifButton>
     );
 };
 
@@ -252,12 +262,22 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
 };
 
 const ArtScrollerGifListSelector: React.FC = () => {
-    const { gifs, listName } = getGlobalState(useSelector);
+    const { gifs, listName, midiEditMode } = getGlobalState(useSelector);
 
     const dispatch = useDispatch();
 
     return (
-        <div style={{ margin: "0 auto", width: "70%" }}>
+        <div
+            style={{
+                margin: "0 auto",
+                width: "70%",
+                textAlign: "center",
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+            }}
+        >
+            <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={"testing"} />
             <select
                 value={listName || "Choose a gif list"}
                 name="gif-list-selector"
@@ -389,17 +409,14 @@ const ArtScrollerHorizontalPositionSliderLabel: React.FC = () => {
     );
     return (
         <StyledSliderLabel htmlFor="horizontal-positioning">
-            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Horizontal Positioning:{" "}
-            {Number(hPos) / 1000}
+            {midiEditMode && `<MIDI> (${uiMapping})`} Scroller Horizontal Positioning: {Number(hPos) / 1000}
         </StyledSliderLabel>
     );
 };
 
 type ArtScrollerHorizontalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 
-const ArtScrollerHorizontalPositionSlider: React.FC<
-    ArtScrollerHorizontalPositionSliderProps
-> = () => {
+const ArtScrollerHorizontalPositionSlider: React.FC<ArtScrollerHorizontalPositionSliderProps> = () => {
     const {
         slider: { hPos },
     } = getGlobalState(useSelector);
@@ -562,8 +579,7 @@ const Gifs: React.FC = () => {
                             borderRadius: "50%",
                             animationName: "scrollAnim",
                             animationDuration: `${
-                                (Number(animDuration) / 100) *
-                                (index + getRandomIntLimit(index, 20))
+                                (Number(animDuration) / 100) * (index + getRandomIntLimit(index, 20))
                             }s`,
                             animationDelay: `0.${index + 1}`,
                             animationTimingFunction: "ease-in",

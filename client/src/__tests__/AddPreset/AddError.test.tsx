@@ -13,12 +13,7 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { TestService } from "../../utils/TestServiceClass";
-import {
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-    MOCK_PRESETS,
-    MOCK_SIGN_TOKEN_ARGS,
-} from "../../utils/mocks";
+import { MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS, MOCK_SIGN_TOKEN_ARGS } from "../../utils/mocks";
 import { MIDIAccessRecord } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";
 
@@ -62,9 +57,7 @@ describe("Adding a preset error", () => {
         const mockFetch = jest
             .fn()
             .mockReturnValueOnce(fakeFetchRes({ presets: MOCK_PRESETS }))
-            .mockReturnValueOnce(
-                fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } })
-            )
+            .mockReturnValueOnce(fakeFetchRes({ preset: { displayName: "waves", presetName: "waves" } }))
             .mockReturnValueOnce(fakeMockAddFail({ error: "error" }));
         // @ts-ignore
         global.fetch = mockFetch;

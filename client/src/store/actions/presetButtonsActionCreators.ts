@@ -8,38 +8,33 @@ import { presetButtonsListActions } from "../presetButtonListSlice";
 
 const moduleName = "presetButtonListSlice";
 
-export const buildGetPresetButtonsAction = createAsyncThunk<
-    { presetButtons: IPresetButton[] },
-    void,
-    MyThunkConfig
->(moduleName + "/getPresets", async (_params, _thunkAPI) => {
-    let buttons: IPresetButton[] = [];
+export const buildGetPresetButtonsAction = createAsyncThunk<{ presetButtons: IPresetButton[] }, void, MyThunkConfig>(
+    moduleName + "/getPresets",
+    async (_params, _thunkAPI) => {
+        let buttons: IPresetButton[] = [];
 
-    const dbButtons = (await ApiService.getUserPresets(
-        AuthService.getToken() as string
-    )) as IDBPreset[];
+        const dbButtons = (await ApiService.getUserPresets(AuthService.getToken() as string)) as IDBPreset[];
 
-    const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
+        const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
 
-    buttons = new PresetButtonsList(
-        (event: any) => {
-            event.preventDefault();
-        },
-        dbButtons,
-        defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
-    ).getList();
+        buttons = new PresetButtonsList(
+            (event: any) => {
+                event.preventDefault();
+            },
+            dbButtons,
+            defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
+        ).getList();
 
-    return {
-        presetButtons: buttons,
-    };
-});
+        return {
+            presetButtons: buttons,
+        };
+    }
+);
 
 export const buildGetDefaultPresetAction = createAsyncThunk<void, void, MyThunkConfig>(
     moduleName + "/getDefaultPreset",
     async (_params, _thunkAPI) => {
-        const preset = (await ApiService.getDefaultPreset(
-            AuthService.getToken() as string
-        )) as IDBPreset;
+        const preset = (await ApiService.getDefaultPreset(AuthService.getToken() as string)) as IDBPreset;
 
         _thunkAPI.dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff));
         _thunkAPI.dispatch(ledActions.setPresetName(preset.presetName));

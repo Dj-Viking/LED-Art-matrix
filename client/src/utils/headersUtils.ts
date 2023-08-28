@@ -4,10 +4,7 @@ export function setInitialHeaders(headers: Record<string, string>): Record<strin
     };
     return headers;
 }
-export function setAuthHeader(
-    headers: Record<string, string>,
-    token: string
-): Record<string, string> {
+export function setAuthHeader(headers: Record<string, string>, token: string): Record<string, string> {
     headers = {
         ...headers,
         authorization: `Bearer ${token}`,

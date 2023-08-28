@@ -59,10 +59,7 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
-        setCallbackMap: (
-            state: MIDISliceState,
-            action: PayloadAction<CallbackMapping<MIDIInputName>>
-        ) => {
+        setCallbackMap: (state: MIDISliceState, action: PayloadAction<CallbackMapping<MIDIInputName>>) => {
             return produce(state, () => {
                 state.midiMappingInUse.callbackMap = action.payload;
             });
@@ -107,9 +104,7 @@ export const midiSlice = createSlice({
 
                 state.controllerInUse = controllerName;
 
-                state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(
-                    preference?.mapping || {}
-                );
+                state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(preference?.mapping || {});
 
                 state.midiMappingInUse.recentlyUsed = controllerName;
             });
@@ -152,8 +147,7 @@ export const midiSlice = createSlice({
                 // but i can still put it into state
                 state.access = action.payload.access;
 
-                const controllerName =
-                    action.payload.controllerPreference.midiMappingPreference.name;
+                const controllerName = action.payload.controllerPreference.midiMappingPreference.name;
 
                 state.midiMappingInUse.midiMappingPreference[controllerName] =
                     action.payload.controllerPreference.midiMappingPreference.mapping;

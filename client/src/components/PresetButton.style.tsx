@@ -60,9 +60,7 @@ const IsHSLButton: React.FC = () => {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <span style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
                 {midiEditMode && <p style={{ margin: "0 auto", width: "50%" }}>{"<MIDI>"}</p>}
-                {midiEditMode && (
-                    <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>
-                )}
+                {midiEditMode && <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>}
             </span>
             <animated.button
                 style={HSLButton}
@@ -83,8 +81,7 @@ const IsHSLButton: React.FC = () => {
 };
 
 const ResetTimerButton: React.FC = () => {
-    const { resetTimerFn, midiEditMode, midiMappingInUse, controllerInUse } =
-        getGlobalState(useSelector);
+    const { resetTimerFn, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     const clear = useSpring(_clear);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
@@ -95,9 +92,7 @@ const ResetTimerButton: React.FC = () => {
         <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <span style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
                 {midiEditMode && <p style={{ margin: "0 auto" }}>{"<MIDI>"}</p>}
-                {midiEditMode && (
-                    <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>
-                )}
+                {midiEditMode && <p style={{ margin: "0 auto", marginBottom: "10px" }}>{`(${uiMapping})`}</p>}
             </span>
             <animated.button
                 style={clear}
@@ -106,10 +101,7 @@ const ResetTimerButton: React.FC = () => {
                 className="preset-button"
                 onClick={() => {
                     if (midiEditMode) {
-                        MIDIMappingPreference.listeningForEditsHandler(
-                            dispatch,
-                            "resetTimerButton"
-                        );
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "resetTimerButton");
                     }
                     resetTimerFn();
                 }}
@@ -133,9 +125,7 @@ const SaveDefaultButton: React.FC<SaveDefaultButtonProps> = (props) => {
             role="button"
             data-testid="saveDefault"
             style={saveButtonSpring}
-            className={
-                props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
-            }
+            className={props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
             disabled={!props.auth.loggedIn()} // enable if logged in
             onClick={props.clickHandler}
         >
@@ -157,9 +147,7 @@ const SavePresetButton: React.FC<SavePresetButtonProps> = (props) => {
             role="button"
             data-testid="savePreset"
             style={saveNewPresetButtonSpring}
-            className={
-                props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"
-            }
+            className={props.auth.loggedIn() ? "preset-button save-button" : "preset-button-disabled"}
             disabled={!props.auth.loggedIn()} // enable if logged in
             onClick={(event: any) => {
                 event.preventDefault();
@@ -191,9 +179,7 @@ const DeleteButton: React.FC<DeletePresetButtonProps> = (props) => {
             role="button"
             data-testid="deletePreset"
             style={deletePresetButtonSpring}
-            className={
-                props.auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"
-            }
+            className={props.auth.loggedIn() ? "preset-button delete-button" : "preset-button-disabled"}
             disabled={!props.auth.loggedIn()} // enable if logged in
             onClick={props.clickHandler}
         >

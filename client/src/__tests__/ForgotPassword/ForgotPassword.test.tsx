@@ -84,11 +84,9 @@ describe("Test rendering forgot password page", () => {
         fireEvent.click(link);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
 
-        const forgotLink = screen
-            .getAllByRole("button", { name: "Forgot Password?" })
-            .find((btn) => {
-                return btn.style.textDecoration === "none";
-            }) as HTMLElement;
+        const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
+            return btn.style.textDecoration === "none";
+        }) as HTMLElement;
         expect(forgotLink).toBeInTheDocument();
         fireEvent.click(forgotLink);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/forgot");
@@ -136,11 +134,9 @@ describe("Test sending forgot pass request", () => {
         fireEvent.click(link);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
 
-        const forgotLink = screen
-            .getAllByRole("button", { name: "Forgot Password?" })
-            .find((btn) => {
-                return btn.style.textDecoration === "none";
-            }) as HTMLElement;
+        const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
+            return btn.style.textDecoration === "none";
+        }) as HTMLElement;
         expect(forgotLink).toBeInTheDocument();
         fireEvent.click(forgotLink);
 
@@ -211,11 +207,9 @@ describe("Test request error mock", () => {
         fireEvent.click(link);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/login");
 
-        const forgotLink = screen
-            .getAllByRole("button", { name: "Forgot Password?" })
-            .find((btn) => {
-                return btn.style.textDecoration === "none";
-            }) as HTMLElement;
+        const forgotLink = screen.getAllByRole("button", { name: "Forgot Password?" }).find((btn) => {
+            return btn.style.textDecoration === "none";
+        }) as HTMLElement;
         expect(forgotLink).toBeInTheDocument();
         fireEvent.click(forgotLink);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/forgot");

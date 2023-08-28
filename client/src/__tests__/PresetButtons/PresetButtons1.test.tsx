@@ -86,9 +86,7 @@ it("full app rendering/navigating", async () => {
 
     const inputEls = {
         emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-        password: screen.getByPlaceholderText(
-            /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-        ) as HTMLInputElement,
+        password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
         btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
             return btn.classList.contains("form-btn");
         }) as HTMLElement,
@@ -109,7 +107,7 @@ it("full app rendering/navigating", async () => {
 
     expect(fetch).toHaveBeenCalledTimes(3);
     expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-        body: '{"usernameOrEmail":{"username":"i existi exist"},"password":"believe itbelieve it"}',
+        body: "{\"usernameOrEmail\":{\"username\":\"i existi exist\"},\"password\":\"believe itbelieve it\"}",
         headers: {
             "Content-Type": "application/json",
         },

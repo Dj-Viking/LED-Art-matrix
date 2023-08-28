@@ -93,9 +93,7 @@ describe("test signup functionality with token", () => {
 
         const inputEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             btn: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,

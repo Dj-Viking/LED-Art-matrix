@@ -32,10 +32,7 @@ export const modalSlice = createSlice({
                 state.gifsModalIsOpen = action.payload;
             });
         },
-        setGifModalContext: (
-            state: CombinedModalState,
-            action: PayloadAction<{ listName: string; gif: IGif }>
-        ) => {
+        setGifModalContext: (state: CombinedModalState, action: PayloadAction<{ listName: string; gif: IGif }>) => {
             return produce(state, () => {
                 state.gifsModalContext.gif = action.payload.gif;
                 state.gifsModalContext.listName = action.payload.listName;

@@ -12,11 +12,7 @@ export interface IDBPreset {
 
 class PresetButtonsList {
     private _list: IPresetButton[] = [];
-    constructor(
-        clickHandler: IPresetButton["clickHandler"],
-        dbPresets: IDBPreset[] | [],
-        activeId?: string
-    ) {
+    constructor(clickHandler: IPresetButton["clickHandler"], dbPresets: IDBPreset[] | [], activeId?: string) {
         this._list = dbPresets?.map((preset, index: number) => {
             return {
                 id: preset._id,
@@ -39,11 +35,7 @@ class PresetButtonsList {
         return this._list;
     }
 
-    public static setStyle(
-        dispatchcb: React.Dispatch<any>,
-        preset: string,
-        animVarCoeff: string
-    ): void {
+    public static setStyle(dispatchcb: React.Dispatch<any>, preset: string, animVarCoeff: string): void {
         dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
         dispatchcb(ledActions.setPresetName(preset));
     }
@@ -51,10 +43,7 @@ class PresetButtonsList {
     private _createDisplayName(displayName: string, presetName: string): string {
         // doing this for now since the initial presets always have the same displayName as the presetName
         // and will have an initial displayName of "" when instantiated on the server
-        if (
-            ["dm5", "waves", "v2", "rainbowTest", "spiral"].includes(presetName) &&
-            displayName === ""
-        ) {
+        if (["dm5", "waves", "v2", "rainbowTest", "spiral"].includes(presetName) && displayName === "") {
             return presetName;
         }
         return displayName;

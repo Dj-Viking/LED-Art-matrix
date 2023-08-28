@@ -77,9 +77,7 @@ describe("test that the fake window location pathname works with the jest test",
         await act(async () => {
             return void 0;
         });
-        expect(screen.getByTestId("location-display")).toHaveTextContent(
-            "/changePassword/HERESATOKEN"
-        );
+        expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
         const formEls = {
             newPass: screen.getByPlaceholderText(/New Password/g) as HTMLInputElement,
@@ -132,9 +130,7 @@ describe("test that the fake window location pathname works with the jest test",
         await act(async () => {
             return void 0;
         });
-        expect(screen.getByTestId("location-display")).toHaveTextContent(
-            "/changePassword/HERESATOKEN"
-        );
+        expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
         const formEls = {
             newPass: screen.getByPlaceholderText(/New Password/g) as HTMLInputElement,
@@ -187,9 +183,7 @@ describe("test that the fake window location pathname works with the jest test",
         await act(async () => {
             return void 0;
         });
-        expect(screen.getByTestId("location-display")).toHaveTextContent(
-            "/changePassword/HERESATOKEN"
-        );
+        expect(screen.getByTestId("location-display")).toHaveTextContent("/changePassword/HERESATOKEN");
 
         const formEls = {
             newPass: screen.getByPlaceholderText(/New Password/g) as HTMLInputElement,

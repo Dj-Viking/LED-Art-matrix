@@ -4,12 +4,7 @@ import App from "../../App";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import {
-    LOGIN_MOCK_PAYLOAD_EMAIL,
-    LOGIN_MOCK_TOKEN,
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-} from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_EMAIL, LOGIN_MOCK_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -84,9 +79,7 @@ describe("tests the logout works", () => {
 
         const formEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             login: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,
@@ -107,7 +100,7 @@ describe("tests the logout works", () => {
 
         expect(fetch).toHaveBeenCalledTimes(3);
         expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-            body: '{"usernameOrEmail":{"email":"iexist@exist.com"},"password":"believe it"}',
+            body: "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
             headers: {
                 "Content-Type": "application/json",
             },

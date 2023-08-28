@@ -1,8 +1,5 @@
 import { ledSlice, initialLLedState } from "../../store/ledSlice";
-import {
-    presetButtonsListSlice,
-    initialPresetButtonListState,
-} from "../../store/presetButtonListSlice";
+import { presetButtonsListSlice, initialPresetButtonListState } from "../../store/presetButtonListSlice";
 import { PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { GlobalState } from "../../types";
 import { initialMidiSliceState, midiSlice } from "../../store/midiSlice";

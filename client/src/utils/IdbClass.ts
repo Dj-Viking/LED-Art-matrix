@@ -42,9 +42,7 @@ class IDBHelper {
         });
     }
 
-    async #openStore(
-        reqResult: IDBRequest
-    ): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
+    async #openStore(reqResult: IDBRequest): Promise<[IDBDatabase, IDBObjectStore, IDBTransaction]> {
         // console.info("indexed db open request succeeded");
         return new Promise((res) => {
             // start saving references to the database to the `db` variable

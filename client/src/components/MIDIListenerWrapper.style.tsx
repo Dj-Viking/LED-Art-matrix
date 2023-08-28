@@ -32,10 +32,7 @@ export const ControlNameContainer = styled.div`
 
 export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) => {
     return (
-        <h2
-            style={{ margin: "0 auto", marginBottom: "10px" }}
-            className={isLedWindow() ? "no-height" : ""}
-        >
+        <h2 style={{ margin: "0 auto", marginBottom: "10px" }} className={isLedWindow() ? "no-height" : ""}>
             {heading}
         </h2>
     );
@@ -138,10 +135,7 @@ export const DeviceInterfaceContainer: React.FC<{
 }> = (props) => {
     const { statename, children } = props;
 
-    const adjustBorder = (
-        state: keyof typeof MIDIPortDeviceState,
-        ctrlName: MIDIInputName
-    ): string => {
+    const adjustBorder = (state: keyof typeof MIDIPortDeviceState, ctrlName: MIDIInputName): string => {
         switch (true) {
             case !!SUPPORTED_CONTROLLERS[ctrlName]:
             case state === MIDIPortDeviceState.connected:

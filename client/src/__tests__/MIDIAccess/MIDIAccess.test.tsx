@@ -12,11 +12,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { LOCATION_DISPLAY_ID, SUPPORTED_CONTROLLERS } from "../../constants";
-import {
-    MIDIAccessRecord,
-    MIDIConnectionEvent,
-    MIDIMessageEvent,
-} from "../../utils/MIDIControlClass";
+import { MIDIAccessRecord, MIDIConnectionEvent, MIDIMessageEvent } from "../../utils/MIDIControlClass";
 import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
 import { ITestMIDIProps, TestMIDI } from "../../components/MIDIListenerWrapper";
@@ -97,11 +93,7 @@ describe("faking navigator for midiaccess testing", () => {
 
                                 testMidi.props().midi_access.inputs[0].onmidimessage?.({
                                     currentTarget: testMidi.props().midi_access.inputs[0],
-                                    data: new Uint8Array([
-                                        1,
-                                        Number(key),
-                                        is2MiddleKnobOr1Fader ? 0 : 1,
-                                    ]),
+                                    data: new Uint8Array([1, Number(key), is2MiddleKnobOr1Fader ? 0 : 1]),
                                 } as Partial<MIDIMessageEvent> as any);
 
                                 testMidi.props().midi_access.inputs[0].onmidimessage?.({

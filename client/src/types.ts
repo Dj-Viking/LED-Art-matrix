@@ -1,10 +1,5 @@
 import jwt from "jsonwebtoken";
-import {
-    MIDIAccessRecord,
-    MIDIInput,
-    MIDIOutput,
-    onstatechangeHandler,
-} from "./utils/MIDIControlClass";
+import { MIDIAccessRecord, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
 import { CallbackMapping, MIDIMapping } from "./utils/MIDIMappingClass";
 import { IDBPreset } from "./utils/PresetButtonsListClass";
 import { CombinedFormState } from "./store/formSlice";

@@ -10,10 +10,7 @@ interface SavePresetModalProps {
     context: { animVarCoeff: string; presetName: string };
 }
 
-const SavePresetModal: React.FC<SavePresetModalProps> = ({
-    onClose,
-    context: { animVarCoeff, presetName },
-}) => {
+const SavePresetModal: React.FC<SavePresetModalProps> = ({ onClose, context: { animVarCoeff, presetName } }) => {
     const [error, setError] = useState<string>("");
     const [input, setInput] = useState<string>("");
     const dispatch = useDispatch();
@@ -158,9 +155,7 @@ const SavePresetModal: React.FC<SavePresetModalProps> = ({
                         data-testid="modal-save-button"
                         disabled={input.length === 0}
                         type="submit"
-                        className={
-                            input.length === 0 ? "modal-save-button-disabled" : "modal-save-button"
-                        }
+                        className={input.length === 0 ? "modal-save-button-disabled" : "modal-save-button"}
                         onClick={handleSubmit}
                     >
                         SAVE

@@ -5,11 +5,7 @@ import App from "../../App";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, cleanup, screen, fireEvent } from "@testing-library/react";
-import {
-    LOGIN_MOCK_PAYLOAD_EMAIL,
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-} from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_EMAIL, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -71,9 +67,7 @@ describe("Tests network error message", () => {
 
         const formEls = {
             emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             loginBtn: screen.getAllByRole("button", { name: "Login" }).find((loginBtn) => {
                 return loginBtn.classList.contains("form-btn");
             }) as HTMLElement,
@@ -86,9 +80,7 @@ describe("Tests network error message", () => {
 
         // type inputs to form fields and submit
         await act(async () => {
-            formEls.emailOrUsername.dispatchEvent(
-                new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername)
-            );
+            formEls.emailOrUsername.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.emailOrUsername));
             formEls.password.dispatchEvent(new KeyboardEvent(LOGIN_MOCK_PAYLOAD_EMAIL.password));
         });
 

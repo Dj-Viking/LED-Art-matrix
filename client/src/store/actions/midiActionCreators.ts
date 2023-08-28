@@ -3,23 +3,12 @@ import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../../constants";
 
 import { MyThunkConfig } from "../../types";
 import { deepCopy } from "../../utils/deepCopy";
-import {
-    MIDIController,
-    MIDIMessageEvent,
-    MIDIConnectionEvent,
-} from "../../utils/MIDIControlClass";
+import { MIDIController, MIDIMessageEvent, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
 
 export function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
-    console.log(
-        "UNIMPLEMENTED CONTROLLER receiving MESSAGES",
-        name,
-        "\n",
-        event,
-        "\n channel",
-        channel
-    );
+    console.log("UNIMPLEMENTED CONTROLLER receiving MESSAGES", name, "\n", event, "\n channel", channel);
 }
 
 function DEBUGMIDIMESSAGE(
@@ -52,15 +41,10 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
 
         const midicb = function (midi_event: MIDIMessageEvent): void {
             const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
-            const isListeningForMappingEdit =
-                _thunkAPI.getState().midiState.isListeningForMappingEdit;
-            const buttonIds = _thunkAPI
-                .getState()
-                .presetButtonsListState.presetButtons.map((btn) => btn.id);
+            const isListeningForMappingEdit = _thunkAPI.getState().midiState.isListeningForMappingEdit;
+            const buttonIds = _thunkAPI.getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
             const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;
-            const name = MIDIController.stripNativeLabelFromMIDIInputName(
-                midi_event.currentTarget.name
-            );
+            const name = MIDIController.stripNativeLabelFromMIDIInputName(midi_event.currentTarget.name);
             const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
             const channel = midi_event.data[1];
             const midiIntensity = midi_event.data[2];
@@ -83,23 +67,16 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             );
 
             if (
-                Object.keys(
-                    _thunkAPI?.getState()?.midiState?.midiMappingInUse?.midiMappingPreference?.[
-                        name
-                    ]
-                )?.length === 0
+                Object.keys(_thunkAPI?.getState()?.midiState?.midiMappingInUse?.midiMappingPreference?.[name])
+                    ?.length === 0
             ) {
                 pref = new MIDIMappingPreference(name, _thunkAPI.dispatch);
             } else {
                 pref = deepCopy(new MIDIMappingPreference(name, _thunkAPI.dispatch));
 
-                pref.mapping =
-                    _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name];
+                pref.mapping = _thunkAPI.getState().midiState.midiMappingInUse.midiMappingPreference[name];
 
-                MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(
-                    pref,
-                    _thunkAPI.dispatch
-                );
+                MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(pref, _thunkAPI.dispatch);
             }
 
             DEBUGMIDIMESSAGE(uiName, name, controlName, channel, midiIntensity);
@@ -109,13 +86,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
 
                 console.log("setting the new control mapping", name, controlName, channel, uiName);
 
-                MIDIController.mapMIDIChannelToInterface(
-                    name,
-                    controlName,
-                    channel,
-                    uiName,
-                    _thunkAPI.dispatch
-                );
+                MIDIController.mapMIDIChannelToInterface(name, controlName, channel, uiName, _thunkAPI.dispatch);
 
                 // have to do this because typescript complains that I can't just set a class instance directly into the slice state
                 pref = MIDIMappingPreference.updatePreferenceMapping(

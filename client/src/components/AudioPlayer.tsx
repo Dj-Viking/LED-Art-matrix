@@ -136,9 +136,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
                 </span>
                 {songs.map((song) => (
                     <div
-                        style={
-                            currentSong === song.filePath ? trackListStylePlaying : trackListStyle
-                        }
+                        style={currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
                         className={currentSong === song.filePath ? "anim-playing-text" : ""}
                         id={song.filePath}
                         key={song.trackName}

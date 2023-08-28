@@ -134,10 +134,7 @@ export type UIInterfaceDeviceName =
     | keyof IArtScrollerState["slider"]
     | PresetButtonName;
 
-export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<
-    UIInterfaceDeviceName,
-    XONEK2_ControlNames
-> = {
+export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceName, XONEK2_ControlNames> = {
     button_1_position: "1_a_button",
     button_2_position: "1_b_button",
     button_3_position: "1_c_button",
@@ -245,10 +242,7 @@ export const touchOsc_MIDI_CHANNEL_TABLE: TouchOscBridgeControlChannelTable = {
     27: "touch_pad_4_4",
 };
 
-export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<
-    TouchOscBridgeControlNames,
-    number
-> = {
+export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<TouchOscBridgeControlNames, number> = {
     fader_1: 0,
     fader_2: 1,
     fader_3: 2,
@@ -357,10 +351,7 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     touch_pad_4_4: unsetPreference,
 };
 
-export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
-    UIInterfaceDeviceName,
-    TouchOscBridgeControlNames
-> = {
+export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceName, TouchOscBridgeControlNames> = {
     /**
      * not yet implemented
      */
@@ -420,10 +411,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<
     startGifs: "" as any,
 };
 
-export const DEFAULT_CALLBACK_TABLE: Record<
-    UIInterfaceDeviceName,
-    (_midiIntensity: number) => void
-> = {
+export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (_midiIntensity: number) => void> = {
     animDuration: (_midiIntensity: number) => void 0,
     animVarCoeff: (_midiIntensity: number) => void 0,
     button_1_position: (_midiIntensity: number) => void 0,

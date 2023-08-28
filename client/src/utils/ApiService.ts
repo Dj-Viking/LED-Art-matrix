@@ -54,9 +54,7 @@ class ApiService implements IApiService {
 
     private static handleError(endpoint: string, error: Error): void {
         if (!IS_PROD) {
-            console.error(
-                `an error occurred with endpoint ${endpoint}` + error.message + `\n ${error.stack}`
-            );
+            console.error(`an error occurred with endpoint ${endpoint}` + error.message + `\n ${error.stack}`);
             throw error;
         } else {
             console.error("an error occurred with " + endpoint);
@@ -167,10 +165,7 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async addNewPreset(
-        args: ISaveUserPresetArgs,
-        token: string
-    ): Promise<IDBPreset[] | unknown> {
+    public static async addNewPreset(args: ISaveUserPresetArgs, token: string): Promise<IDBPreset[] | unknown> {
         const { presetName, animVarCoeff, displayName } = args;
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
@@ -250,11 +245,7 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async createGifs(
-        token: string,
-        gif: IGif,
-        listName: string
-    ): Promise<IGif[] | void> {
+    public static async createGifs(token: string, gif: IGif, listName: string): Promise<IGif[] | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
         headers = setAuthHeader(headers, token);
@@ -279,7 +270,7 @@ class ApiService implements IApiService {
         try {
             const gifs = await localGifHelper.handleRequest("getAll");
 
-            let haveLocalGifs = Array.isArray(gifs) && gifs.length;
+            let haveLocalGifs: boolean = Array.isArray(gifs) && gifs.length >= 0;
 
             if (haveLocalGifs && !getNew) {
                 haveLocalGifs = false;

@@ -9,12 +9,7 @@ import { Router } from "react-router-dom";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
-import {
-    LOGIN_MOCK_TOKEN,
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-    MOCK_PRESETS,
-} from "../../utils/mocks";
+import { LOGIN_MOCK_TOKEN, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS, MOCK_PRESETS } from "../../utils/mocks";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";
 // @ts-ignore need to implement a fake version of this for the jest test as expected

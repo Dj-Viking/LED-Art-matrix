@@ -24,10 +24,7 @@ import { Test } from "./pages/test";
 export const HiddenLocationDisplay = (): JSX.Element => {
     const location = useLocation();
     return (
-        <div
-            style={{ visibility: "hidden", height: 0, width: 0, color: "black" }}
-            data-testid="location-display"
-        >
+        <div style={{ visibility: "hidden", height: 0, width: 0, color: "black" }} data-testid="location-display">
             {location.pathname}
         </div>
     );
@@ -52,11 +49,7 @@ const App: React.FC = (): JSX.Element => {
                             <Route exact path="/forgotPassword" component={ForgotPassword} />
                             <Route exact path="/test" component={Test} />
                             <Route exact path="/ledWindow" component={LedWindow} />
-                            <Route
-                                exact
-                                path="/changePassword/:token?"
-                                component={ChangePassword}
-                            />
+                            <Route exact path="/changePassword/:token?" component={ChangePassword} />
                         </KeyListenerWrapper>
                         <HiddenLocationDisplay />
                     </BrowserRouter>

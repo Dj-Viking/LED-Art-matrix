@@ -5,11 +5,7 @@ import App from "../../App";
 import { Provider } from "react-redux";
 import user from "@testing-library/user-event";
 import { render, screen, fireEvent } from "@testing-library/react";
-import {
-    LOGIN_MOCK_PAYLOAD_EMAIL,
-    MOCK_ACCESS_INPUTS,
-    MOCK_ACCESS_OUTPUTS,
-} from "../../utils/mocks";
+import { LOGIN_MOCK_PAYLOAD_EMAIL, MOCK_ACCESS_INPUTS, MOCK_ACCESS_OUTPUTS } from "../../utils/mocks";
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -59,9 +55,7 @@ it("shows login error message", async () => {
 
     const formEls = {
         emailOrUsername: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
-        password: screen.getByPlaceholderText(
-            /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-        ) as HTMLInputElement,
+        password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
         login: screen.getAllByRole("button", { name: "Login" }).find((btn) => {
             return btn.classList.contains("form-btn");
         }) as HTMLElement,

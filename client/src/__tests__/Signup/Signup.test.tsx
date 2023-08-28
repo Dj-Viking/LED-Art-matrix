@@ -73,9 +73,7 @@ describe("Tests network error message", () => {
         const formEls = {
             username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
             email: screen.getByPlaceholderText(/example@email.com/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             btn: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,
@@ -146,9 +144,7 @@ describe("need to impl window.location.assign()", () => {
         const formEls = {
             username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
             email: screen.getByPlaceholderText(/example@email.com/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             btn: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,
@@ -223,9 +219,7 @@ describe("error signup", () => {
         const formEls = {
             username: screen.getByPlaceholderText(/my_username/g) as HTMLInputElement,
             email: screen.getByPlaceholderText(/example@email.com/g) as HTMLInputElement,
-            password: screen.getByPlaceholderText(
-                /\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g
-            ) as HTMLInputElement,
+            password: screen.getByPlaceholderText(/\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*/g) as HTMLInputElement,
             btn: screen.getAllByRole("button", { name: "Sign Up" }).find((btn) => {
                 return btn.classList.contains("form-btn");
             }) as HTMLElement,
