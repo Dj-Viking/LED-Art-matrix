@@ -281,7 +281,7 @@ class MIDIController implements IMIDIController {
         channel: number,
         uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
-    ): CallbackMapping<MIDIInputName> {
+    ): CallbackMapping {
         // have to create a copy otherwise these nested properties are read-only by default in JS classes (head asplode)
 
         let newPref = deepCopy(new MIDIMappingPreference(name, dispatch));
@@ -299,7 +299,7 @@ class MIDIController implements IMIDIController {
             currentPref.mapping[controlName].uiName === uiName
         ) {
             currentPref.mapping[controlName].channel = 9999;
-            currentPref.mapping[controlName].uiName = "";
+            currentPref.mapping[controlName].uiName = "" as any;
             window.localStorage.setItem(name, JSON.stringify(currentPref));
         }
 
@@ -418,8 +418,8 @@ class MIDIController implements IMIDIController {
         }
     }
 
-    private static _warnCallbackIfError<N extends MIDIInputName, P extends keyof CallbackMapping<N>>(
-        callback: CallbackMapping<typeof name>[P],
+    private static _warnCallbackIfError<P extends keyof CallbackMapping>(
+        callback: CallbackMapping[P],
         mapping: MIDIMappingPreference<typeof name>["mapping"],
         midi_channel: number,
         name: MIDIInputName

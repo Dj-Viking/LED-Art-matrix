@@ -59,7 +59,7 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
-        setCallbackMap: (state: MIDISliceState, action: PayloadAction<CallbackMapping<MIDIInputName>>) => {
+        setCallbackMap: (state: MIDISliceState, action: PayloadAction<CallbackMapping>) => {
             return produce(state, () => {
                 state.midiMappingInUse.callbackMap = action.payload;
             });

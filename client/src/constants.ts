@@ -281,14 +281,14 @@ export const DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING: Record<TouchOscBri
     touch_pad_4_4: 27,
 };
 
-export const unsetPreference = {
-    uiName: "",
+export const unsetPreference: { uiName: UIInterfaceDeviceName; channel: number } = {
+    uiName: "" as any,
     channel: 9999,
 };
 
 export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
     XONEK2_ControlNames,
-    { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+    { uiName: UIInterfaceDeviceName; channel: number }
 > = {
     "1_encoder": unsetPreference,
     "1_a_button": unsetPreference,

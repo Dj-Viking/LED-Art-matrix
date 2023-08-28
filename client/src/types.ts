@@ -211,7 +211,7 @@ export interface IDeleteModalState {
 export type IAccessRecordState = {
     controllerInUse: MIDIInputName;
     midiMappingInUse: {
-        callbackMap: CallbackMapping<MIDIInputName>;
+        callbackMap: CallbackMapping;
         recentlyUsed: MIDIInputName;
         hasPreference: boolean;
         midiMappingPreference: Record<MIDIInputName, MIDIMapping<MIDIInputName>>;

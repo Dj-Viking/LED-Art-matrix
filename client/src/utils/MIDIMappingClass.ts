@@ -20,12 +20,12 @@ import { PresetButtonsList } from "./PresetButtonsListClass";
 export type MIDIMapping<N extends MIDIInputName> = Record<
     GenericControlName<N>,
     {
-        uiName: GenericUIMIDIMappingName<N>;
+        uiName: UIInterfaceDeviceName;
         channel: number;
     }
 >;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CallbackMapping<N extends MIDIInputName> = Record<GenericUIMIDIMappingName<N>, (...args: any[]) => void>;
+export type CallbackMapping = typeof DEFAULT_CALLBACK_TABLE;
 
 /**
  * TODO
@@ -63,7 +63,7 @@ export type CallbackMapping<N extends MIDIInputName> = Record<GenericUIMIDIMappi
 export class MIDIMappingPreference<N extends MIDIInputName> {
     public name: N;
     public mapping: MIDIMapping<N> = {} as any;
-    public callbackMap: CallbackMapping<N> = {} as any;
+    public callbackMap: CallbackMapping = {} as any;
 
     public constructor(name: N, dispatch: ToolkitDispatch) {
         this.name = name;
@@ -102,10 +102,10 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
-    public static generateCallbackBasedOnUIName<N extends MIDIInputName, P extends keyof CallbackMapping<N>>(
+    public static generateCallbackBasedOnUIName<P extends keyof CallbackMapping>(
         uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
-    ): CallbackMapping<N>[P] {
+    ): CallbackMapping[P] {
         switch (uiName) {
             case "animDuration":
                 return (midiIntensity: number) => {
