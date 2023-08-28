@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { IArtScrollerState, ILedState } from "./types";
 
 export const IS_PROD = process.env.NODE_ENV === "production";
@@ -22,6 +23,7 @@ export const MY_INDEX_TO_KEY_MAP = {
 } as MyIndexToKeyMap;
 
 export type XONEK2_ControlNames =
+    | "1_encoder"
     | "1_upper_knob"
     | "1_upper_button"
     | "1_middle_button"
@@ -55,6 +57,7 @@ export type XONEK2_ControlNames =
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
 export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
+    0: "1_encoder",
     4: "1_upper_knob",
     8: "1_middle_knob",
     12: "1_lower_knob",
@@ -95,6 +98,7 @@ export type PresetButtonName =
     | "resetTimerButton";
 
 export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
+    "1_encoder": 0,
     "1_upper_knob": 4,
     "1_middle_knob": 8,
     "1_lower_knob": 12,
@@ -131,6 +135,7 @@ export type UIInterfaceDeviceName =
     | "figureOn"
     | "gifFetch"
     | "startGifs"
+    | "gifSelector"
     | keyof IArtScrollerState["slider"]
     | PresetButtonName;
 
@@ -162,6 +167,7 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceNam
     figureOn: "" as any,
     gifFetch: "" as any,
     startGifs: "" as any,
+    gifSelector: "" as any,
 };
 
 export type nanoKontrol2ControlNames = "something" | "else" | "not implemented yet";
@@ -284,6 +290,7 @@ export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
     XONEK2_ControlNames,
     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
 > = {
+    "1_encoder": unsetPreference,
     "1_a_button": unsetPreference,
     "1_b_button": unsetPreference,
     "1_c_button": unsetPreference,
@@ -409,27 +416,29 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDevic
     figureOn: "" as any,
     gifFetch: "" as any,
     startGifs: "" as any,
+    gifSelector: "" as any,
 };
 
-export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (_midiIntensity: number) => void> = {
-    animDuration: (_midiIntensity: number) => void 0,
-    animVarCoeff: (_midiIntensity: number) => void 0,
-    button_1_position: (_midiIntensity: number) => void 0,
-    button_2_position: (_midiIntensity: number) => void 0,
-    button_3_position: (_midiIntensity: number) => void 0,
-    button_4_position: (_midiIntensity: number) => void 0,
-    button_5_position: (_midiIntensity: number) => void 0,
-    circleWidth: (_midiIntensity: number) => void 0,
-    hPos: (_midiIntensity: number) => void 0,
-    invert: (_midiIntensity: number) => void 0,
-    isHSL: (_midiIntensity: number) => void 0,
-    presetName: (_midiIntensity: number) => void 0,
-    resetTimerButton: (_midiIntensity: number) => void 0,
-    resetTimerFn: (_midiIntensity: number) => void 0,
-    vertPos: (_midiIntensity: number) => void 0,
-    figureOn: (_midiIntensity: number) => void 0,
-    gifFetch: (_midiIntensity: number) => void 0,
-    startGifs: (_midiIntensity: number) => void 0,
+export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (...args: any[]) => void> = {
+    animDuration: (..._args: any[]) => void 0,
+    animVarCoeff: (..._args: any[]) => void 0,
+    button_1_position: (..._args: any[]) => void 0,
+    button_2_position: (..._args: any[]) => void 0,
+    button_3_position: (..._args: any[]) => void 0,
+    button_4_position: (..._args: any[]) => void 0,
+    button_5_position: (..._args: any[]) => void 0,
+    circleWidth: (..._args: any[]) => void 0,
+    hPos: (..._args: any[]) => void 0,
+    invert: (..._args: any[]) => void 0,
+    isHSL: (..._args: any[]) => void 0,
+    presetName: (..._args: any[]) => void 0,
+    resetTimerButton: (..._args: any[]) => void 0,
+    resetTimerFn: (..._args: any[]) => void 0,
+    vertPos: (..._args: any[]) => void 0,
+    figureOn: (..._args: any[]) => void 0,
+    gifFetch: (..._args: any[]) => void 0,
+    startGifs: (..._args: any[]) => void 0,
+    gifSelector: (..._args: any[]) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {

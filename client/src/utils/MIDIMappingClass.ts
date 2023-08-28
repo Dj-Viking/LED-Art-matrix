@@ -24,10 +24,8 @@ export type MIDIMapping<N extends MIDIInputName> = Record<
         channel: number;
     }
 >;
-export type CallbackMapping<N extends MIDIInputName> = Record<
-    GenericUIMIDIMappingName<N>,
-    (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => void
->;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CallbackMapping<N extends MIDIInputName> = Record<GenericUIMIDIMappingName<N>, (...args: any[]) => void>;
 
 /**
  * TODO
@@ -262,6 +260,53 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                             }
                         });
                     }
+                };
+            case "gifSelector":
+                return (midiIntensity: number) => {
+                    dispatch((dispatchcb, getState) => {
+                        // left
+                        if (midiIntensity === 127) {
+                            // select the gif list name upwards to the current one
+                            const listNames = getState().artScrollerState.listNames;
+                            const currentIndexState = Number(getState().artScrollerState.listNameIndex);
+
+                            let index: number;
+                            if (currentIndexState === 0) {
+                                index = 0;
+                            } else {
+                                index = currentIndexState - 1;
+                            }
+
+                            dispatchcb(
+                                artScrollerActions.selectListName({
+                                    listName: listNames[index],
+                                    listNameIndex: index.toString(),
+                                })
+                            );
+                            return;
+                        }
+                        // right
+                        if (midiIntensity === 1) {
+                            // select the gif list name upwards to the current one
+                            const listNames = getState().artScrollerState.listNames;
+                            const currentIndexState = Number(getState().artScrollerState.listNameIndex);
+
+                            let index: number;
+                            if (currentIndexState + 1 >= listNames.length) {
+                                index = currentIndexState;
+                            } else {
+                                index = currentIndexState + 1;
+                            }
+
+                            dispatchcb(
+                                artScrollerActions.selectListName({
+                                    listName: listNames[index],
+                                    listNameIndex: index.toString(),
+                                })
+                            );
+                            return;
+                        }
+                    });
                 };
             default:
                 return (_midiIntensity: number) => void 0;

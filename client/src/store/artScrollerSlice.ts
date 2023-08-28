@@ -7,6 +7,8 @@ import { newReducer } from "../utils/newReducer";
 const initialState: IArtScrollerState = {
     figureOn: false,
     gifs: [],
+    listNames: [],
+    listNameIndex: 0,
     listName: "",
     slider: {
         animDuration: "30",
@@ -25,9 +27,13 @@ export const artScrollerSlice = createSlice({
     name: "artScrollerSlice",
     initialState,
     reducers: {
-        setListName: (state: IArtScrollerState, action: PayloadAction<string>) => {
+        selectListName: (
+            state: IArtScrollerState,
+            action: PayloadAction<{ listName: string; listNameIndex: string }>
+        ) => {
             return produce(state, () => {
-                state.listName = action.payload;
+                state.listName = action.payload.listName;
+                state.listNameIndex = Number(action.payload.listNameIndex);
             });
         },
         setGifs: (state: IArtScrollerState, action: PayloadAction<IGif[]>) => {
@@ -54,11 +60,14 @@ export const artScrollerSlice = createSlice({
         newReducer(builder, getGifsAsync.fulfilled, (state, action) => {
             state.gifs = action.payload.gifs;
             state.listName = action.payload.newListName;
+            state.listNames = action.payload.gifs.map((gif) => gif.listName);
+            state.listNameIndex = state.listNames.indexOf(state.listName);
         });
 
         newReducer(builder, createGifCollectionAsync.fulfilled, (state, action) => {
             state.gifs = action.payload.gifs;
             state.listName = action.payload.newListName;
+            state.listNames = [...state.listNames, action.payload.newListName];
         });
     },
 });

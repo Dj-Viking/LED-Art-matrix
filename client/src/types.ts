@@ -86,6 +86,8 @@ export interface IArtScrollerState {
     figureOn: boolean;
     gifs: Array<IGif>;
     listName: string;
+    listNameIndex: number;
+    listNames: string[];
     slider: {
         animDuration: string;
         vertPos: string;

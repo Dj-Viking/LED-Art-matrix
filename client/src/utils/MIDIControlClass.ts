@@ -389,12 +389,14 @@ class MIDIController implements IMIDIController {
         const channel = midi_event.data[1];
         const midiIntensity = midi_event.data[2];
 
+        // optional chain the ui name here because we might have a physical mapping that doesn't exist yet
+        // from any supported or not supported MIDI controller
         switch (name) {
             case "TouchOSC Bridge":
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
-                    const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         callback(midiIntensity, buttonIds);
                     }
@@ -404,7 +406,7 @@ class MIDIController implements IMIDIController {
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
-                    const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]].uiName];
+                    const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         callback(midiIntensity, buttonIds);
                     }

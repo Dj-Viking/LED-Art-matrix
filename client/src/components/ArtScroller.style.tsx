@@ -12,6 +12,7 @@ import "./aux-styles/artScrollerLayoutStyle.css";
 import AuthService from "../utils/AuthService";
 import { modalActions } from "../store/modalSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
+import { keyGen } from "../utils/keyGen";
 
 const ArtScrollerMainContainer = styled.main`
     display: flex;
@@ -262,7 +263,12 @@ const ArtScrollerCircleWidthLabel: React.FC = () => {
 };
 
 const ArtScrollerGifListSelector: React.FC = () => {
-    const { gifs, listName, midiEditMode } = getGlobalState(useSelector);
+    const { gifs, listName, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
+
+    const uiName = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "gifSelector"
+    );
 
     const dispatch = useDispatch();
 
@@ -277,14 +283,24 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 flexDirection: "column",
             }}
         >
-            <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={"testing"} />
+            <MIDIMappingDisplay isMIDIEditMode={midiEditMode} mappingText={uiName} />
             <select
                 value={listName || "Choose a gif list"}
+                onClick={() => {
+                    if (midiEditMode) {
+                        MIDIMappingPreference.listeningForEditsHandler(dispatch, "gifSelector");
+                    }
+                }}
                 name="gif-list-selector"
                 id="gif-list-selector"
                 style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
                 onChange={(event) => {
-                    dispatch(artScrollerActions.setListName(event.target.value));
+                    dispatch(
+                        artScrollerActions.selectListName({
+                            listName: event.target.value,
+                            listNameIndex: event.target.id,
+                        })
+                    );
                 }}
             >
                 <option disabled value="Choose a gif list">
@@ -292,11 +308,11 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 </option>
                 {Array.isArray(gifs) &&
                     gifs.length > 0 &&
-                    gifs.map((gif) => {
+                    gifs.map((gif, index) => {
                         return (
                             <option
-                                key={gif._id}
-                                id={gif._id + "-" + gif.listOwner}
+                                key={gif._id + keyGen()}
+                                id={index.toString()}
                                 data-testid={gif._id + "-" + gif.listOwner}
                                 value={gif.listName}
                             >
