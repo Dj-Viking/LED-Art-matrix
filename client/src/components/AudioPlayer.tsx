@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // AUDIO PLAYER
 import AudioPlayer from "react-h5-audio-player";
@@ -10,6 +10,11 @@ import G6 from "./music/G6_-24_db_for_web_test.m4a";
 
 // TEXT ANIMATIONS
 import "./aux-styles/trackAnimStyles.css";
+import { PlayButtonSvg } from "./PlayButtonSvg";
+
+export interface NewAudioPlayerProps {
+    [key: string]: any;
+}
 
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [currentSong, setCurrentSong] = useState(G6);
@@ -85,8 +90,20 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         color: "white",
     };
 
+    const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
+        useEffect(() => {
+            console.log("MOUNTED NEW PLAYUER");
+        });
+        return (
+            <div>
+                <PlayButtonSvg fill={"green"} height={100} width={100} />
+            </div>
+        );
+    };
+
     return (
         <>
+            <NewAudioPlayer />
             <AudioPlayer
                 autoPlay={false}
                 preload="auto"
