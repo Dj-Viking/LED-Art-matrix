@@ -94,6 +94,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const StyledPlayButtonSVGContainer = styled.div`
         & {
             /* position: relative; */
+            margin: 0 auto;
         }
     `;
 
@@ -110,7 +111,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
 
     return (
         <div>
-            <div style={{ display: "flex", justifyContent: "center", height: 100, width: "100%", background: "white" }}>
+            <div style={{ display: "flex", height: 100, width: "100%", background: "white" }}>
                 <NewAudioPlayer />
             </div>
             <AudioPlayer

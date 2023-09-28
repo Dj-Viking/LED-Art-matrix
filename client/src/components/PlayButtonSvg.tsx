@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 const StyledSvg = styled.div`
     & {
-        position: absolute;
         color: ${(props) => (props.ref !== null ? "white" : "black")};
     }
 `;
