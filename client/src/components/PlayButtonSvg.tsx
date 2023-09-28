@@ -11,6 +11,7 @@ export interface SvgPlayButtonProps {
     height: number;
     width: number;
     fill: "black" | "white" | "green";
+    style?: React.CSSProperties;
 }
 export const PlayButtonSvg: React.FC<SvgPlayButtonProps> = (props) => {
     useEffect(() => {
@@ -20,15 +21,16 @@ export const PlayButtonSvg: React.FC<SvgPlayButtonProps> = (props) => {
     return (
         <>
             <StyledSvg
+                style={props.style}
                 dangerouslySetInnerHTML={{
                     __html: `
-                     <svg xmlns="http://www.w3.org/2000/svg" 
+                     <svg xmlns="http://www.w3.org/2000/svg"
                           focusable="false" 
                           width="${props.height}" 
                           height="${props.width}" 
                           preserveAspectRatio="xMidYMid meet" 
                           viewBox="0 0 24 24" 
-                          style="transform: rotate(360deg);"
+                          style="transform: rotate(360deg);cursor: pointer;"
                      >     
                         <path 
                             d="M10 16.5v-9l6 4.5M12 2A10 10 0 0 0 2 12a10 10 0 0 0 10 10a10 10 0 0 0 10-10A10 10 0 0 0 12 2z" 

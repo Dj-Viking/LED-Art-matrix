@@ -11,6 +11,7 @@ import G6 from "./music/G6_-24_db_for_web_test.m4a";
 // TEXT ANIMATIONS
 import "./aux-styles/trackAnimStyles.css";
 import { PlayButtonSvg } from "./PlayButtonSvg";
+import styled from "styled-components";
 
 export interface NewAudioPlayerProps {
     [key: string]: any;
@@ -90,20 +91,28 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         color: "white",
     };
 
+    const StyledPlayButtonSVGContainer = styled.div`
+        & {
+            /* position: relative; */
+        }
+    `;
+
     const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
         useEffect(() => {
             console.log("MOUNTED NEW PLAYUER");
         });
         return (
-            <div>
+            <StyledPlayButtonSVGContainer>
                 <PlayButtonSvg fill={"green"} height={100} width={100} />
-            </div>
+            </StyledPlayButtonSVGContainer>
         );
     };
 
     return (
-        <>
-            <NewAudioPlayer />
+        <div>
+            <div style={{ display: "flex", justifyContent: "center", height: 100, width: "100%", background: "white" }}>
+                <NewAudioPlayer />
+            </div>
             <AudioPlayer
                 autoPlay={false}
                 preload="auto"
@@ -163,7 +172,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
                     </div>
                 ))}
             </section>
-        </>
+        </div>
     );
 };
 
