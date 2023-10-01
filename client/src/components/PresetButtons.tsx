@@ -23,6 +23,7 @@ import {
     ToggleMIDIMapEditModeButton,
     StyledPresetButtonsParent,
     StyledPresetButton,
+    ToggleKeyMapEditModeButton,
 } from "./PresetButton.style";
 import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";
@@ -31,6 +32,7 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { UIInterfaceDeviceName } from "../constants";
+import { keyboardActions } from "../store/keyboardSlice";
 export interface IPresetButtonsProps {
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -75,6 +77,14 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         (event: any): void => {
             event.preventDefault();
             dispatch(midiActions.toggleMidiEditMode());
+        },
+        [dispatch]
+    );
+
+    const toggleKeyMapEditMode = React.useCallback(
+        (event: any): void => {
+            event.preventDefault();
+            dispatch(keyboardActions.toggleKeyEditMode());
         },
         [dispatch]
     );
@@ -138,6 +148,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
                 <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
+                <ToggleKeyMapEditModeButton toggleKeyMapEditMode={toggleKeyMapEditMode} />
             </PresetControlButtonsContainer>
 
             <StyledPresetButtonsParent data-testid="buttons-parent">
