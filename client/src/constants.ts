@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { IArtScrollerState, ILedState } from "./types";
+import { KeyChannel, KeyInputName } from "./utils/KeyMappingClass";
 
 export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
@@ -53,6 +54,8 @@ export type XONEK2_ControlNames =
     | "4_n_button"
     | "4_o_button"
     | "4_p_button";
+
+export type KeyInputControlName = "j" | "";
 
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
@@ -286,6 +289,19 @@ export const unsetPreference: { uiName: UIInterfaceDeviceName; channel: number }
     channel: 9999,
 };
 
+export const unsetKeyPreference: { uiName: UIInterfaceDeviceName; channel: KeyChannel } = {
+    uiName: "" as any,
+    channel: 69,
+} as const;
+
+export const DEFAULT_KEYBOARD_MAPPING_PREFERENCE_TABLE: Record<
+    KeyInputName,
+    { uiName: UIInterfaceDeviceName; channel: KeyChannel }
+> = {
+    _: unsetKeyPreference,
+    keyboard: unsetKeyPreference,
+};
+
 export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
     XONEK2_ControlNames,
     { uiName: UIInterfaceDeviceName; channel: number }
@@ -482,10 +498,12 @@ export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MI
     ? typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
     : Record<string, never>;
 
-export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+export type GenericControlName<Name extends MIDIInputName | KeyInputName> = Name extends "XONE:K2 MIDI"
     ? XONEK2_ControlNames
     : Name extends "TouchOSC Bridge"
     ? TouchOscBridgeControlNames
+    : Name extends KeyInputName
+    ? KeyInputControlName
     : string; // unimplemented controller name
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
