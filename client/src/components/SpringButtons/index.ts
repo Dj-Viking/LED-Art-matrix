@@ -162,3 +162,13 @@ export const _toggleMIDIMapEditModeButton = {
         opacity: 1,
     },
 };
+
+export const _toggleKeyMapEditModeButton = {
+    delay: 0,
+    from: {
+        opacity: 0,
+    },
+    to: {
+        opacity: 1,
+    },
+};

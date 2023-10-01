@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "@react-spring/web";
@@ -9,6 +10,7 @@ import {
     _openNewWindow,
     _toggleMIDIMapEditModeButton,
     _hslButton,
+    _toggleKeyMapEditModeButton,
 } from "./SpringButtons";
 import { useDispatch, useSelector } from "react-redux";
 import AuthService from "../utils/AuthService";
@@ -230,6 +232,29 @@ const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = 
             onClick={props.toggleMIDIMapEditMode}
         >
             {"Toggle MIDI Map Edit Mode"}
+        </animated.button>
+    );
+};
+
+export interface ToggleKeyMapEditModeButtonProps {
+    toggleKeyMapEditMode: () => void;
+}
+
+export const ToggleKeyMapEditModeButton: React.FC<ToggleKeyMapEditModeButtonProps> = (props) => {
+    const ToggleKeyMapEditModeButtonStyle = useSpring(_toggleKeyMapEditModeButton);
+    const { keyMapEditMode } = getGlobalState(useSelector);
+    return (
+        <animated.button
+            style={{ ...ToggleKeyMapEditModeButtonStyle, backgroundColor: `${keyMapEditMode ? "green" : "black"}` }}
+            role="button"
+            data-testid="toggleKeyMapEditMoide"
+            className="preset-button"
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                console.log("listening for edits click event", event);
+                props.toggleKeyMapEditMode();
+            }}
+        >
+            {"Toggle Key Map Edit Mode"}
         </animated.button>
     );
 };

@@ -2,7 +2,6 @@ import {
     DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE,
     MIDIInputName,
     GenericControlName,
-    GenericUIMIDIMappingName,
     DEFAULT_CALLBACK_TABLE,
     UIInterfaceDeviceName,
     DEFAULT_XONE_MAPPING_PREFERENCE_TABLE,
@@ -15,6 +14,7 @@ import { ToolkitDispatch } from "../store/store";
 import { IPresetButton } from "../types";
 import { calcPositionFromRange } from "./calcPositionFromRange";
 import { deepCopy } from "./deepCopy";
+
 import { PresetButtonsList } from "./PresetButtonsListClass";
 
 export type MIDIMapping<N extends MIDIInputName> = Record<
@@ -28,8 +28,6 @@ export type MIDIMapping<N extends MIDIInputName> = Record<
 export type CallbackMapping = typeof DEFAULT_CALLBACK_TABLE;
 
 /**
- * TODO
- * restructure mapping preference table like this - a table of tables
  *
  * @example
  * const preference = {

@@ -7,6 +7,7 @@ import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
+import { KeyboardSliceState } from "./store/keyboardSlice";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
@@ -27,6 +28,7 @@ declare global {
         requestMIDIAccess(): Promise<MIDIAccessRecord>;
     }
     interface EventTarget {
+        id: string;
         value: any;
     }
     interface CanvasRenderingContext2D {
@@ -122,7 +124,8 @@ export interface IPresetButton {
     clickHandler: React.MouseEventHandler<HTMLElement>;
 }
 
-export type GlobalState = IAccessRecordState &
+export type GlobalState = KeyboardSliceState &
+    IAccessRecordState &
     CombinedFormState &
     CombinedModalState &
     ILedState &

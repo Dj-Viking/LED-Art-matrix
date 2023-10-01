@@ -2,6 +2,8 @@ import { IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
+import { ToolkitDispatch } from "../store/store";
+import { keyboardActions } from "../store/keyboardSlice";
 
 export interface IDBPreset {
     _id: string;
@@ -24,9 +26,7 @@ class PresetButtonsList {
                 presetName: preset.presetName,
                 displayName: this._createDisplayName(preset.displayName, preset.presetName),
                 testid: this._createDisplayName(preset.displayName, preset.presetName),
-                clickHandler: (event) => {
-                    clickHandler(event);
-                },
+                clickHandler: clickHandler,
             };
         });
     }
@@ -62,7 +62,7 @@ class PresetButtonsList {
         return MY_INDEX_TO_KEY_MAP[(index + 1) as keyof MyIndexToKeyMap];
     }
 
-    public static generateOfflinePresets(): IPresetButton[] {
+    public static generateOfflinePresets(dispatch: ToolkitDispatch): IPresetButton[] {
         const presetNames = ["rainbowTest", "v2", "waves", "spiral", "dm5"];
 
         const tempPresets = presetNames.map((name) => {
@@ -76,6 +76,7 @@ class PresetButtonsList {
 
         const buttons = new PresetButtonsList((event: any) => {
             event.preventDefault();
+            console.log("BUTTON CALLBACK in the generate offline presets static method");
         }, tempPresets).getList() as IPresetButton[];
 
         return buttons;

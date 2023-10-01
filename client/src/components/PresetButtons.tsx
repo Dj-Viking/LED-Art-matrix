@@ -23,6 +23,7 @@ import {
     ToggleMIDIMapEditModeButton,
     StyledPresetButtonsParent,
     StyledPresetButton,
+    ToggleKeyMapEditModeButton,
 } from "./PresetButton.style";
 import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";
@@ -31,6 +32,8 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { UIInterfaceDeviceName } from "../constants";
+import { keyboardActions } from "../store/keyboardSlice";
+import { KeyMappingClass } from "../utils/KeyMappingClass";
 export interface IPresetButtonsProps {
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -48,7 +51,9 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalContext,
         presetButtons,
         midiEditMode,
+        keyMapEditMode,
         midiMappingInUse,
+        keyboardMappingInUse,
         controllerInUse,
     } = getGlobalState(useSelector);
 
@@ -79,6 +84,10 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         [dispatch]
     );
 
+    const toggleKeyMapEditMode = React.useCallback((): void => {
+        dispatch(keyboardActions.toggleKeyEditMode());
+    }, [dispatch]);
+
     function handleOpenNewWindow(event: any): void {
         event.preventDefault();
         window.open(window.location + "LedWindow");
@@ -94,7 +103,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         if (Auth.loggedIn()) {
             dispatch(presetButtonsListActions.getPresetsAsync());
         } else {
-            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets()));
+            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets(dispatch)));
         }
         return () => {
             /*do nothing on unmount */
@@ -138,6 +147,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
                 <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
+                <ToggleKeyMapEditModeButton toggleKeyMapEditMode={toggleKeyMapEditMode} />
             </PresetControlButtonsContainer>
 
             <StyledPresetButtonsParent data-testid="buttons-parent">
@@ -154,12 +164,23 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                         uiName
                     );
 
+                    const keyMapping = KeyMappingClass.getControlNameFromControllerInUseMapping(
+                        keyboardMappingInUse.keyMappingPreference["j"],
+                        "resetTimerButton"
+                    );
+
                     return (
                         <StyledPresetButton key={button.id}>
                             {midiEditMode && (
                                 <>
                                     <span>{"<MIDI>"}</span>
                                     <span>{`(${uiMapping})`}</span>
+                                </>
+                            )}
+                            {keyMapEditMode && (
+                                <>
+                                    <span>{"<KEY>"}</span>
+                                    <span>{`(${keyMapping})`}</span>
                                 </>
                             )}
                             <PresetButton index={index} button={{ ...button }} />

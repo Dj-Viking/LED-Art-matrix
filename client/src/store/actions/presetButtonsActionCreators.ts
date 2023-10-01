@@ -3,6 +3,7 @@ import { IPresetButton, MyThunkConfig } from "../../types";
 import { ApiService } from "../../utils/ApiService";
 import AuthService from "../../utils/AuthService";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
+import { keyboardActions } from "../keyboardSlice";
 import { ledActions } from "../ledSlice";
 import { presetButtonsListActions } from "../presetButtonListSlice";
 
@@ -18,8 +19,8 @@ export const buildGetPresetButtonsAction = createAsyncThunk<{ presetButtons: IPr
         const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
 
         buttons = new PresetButtonsList(
-            (event: any) => {
-                event.preventDefault();
+            (event: React.MouseEvent<HTMLButtonElement>) => {
+                console.log("calling click hanlder of button class!!!", event);
             },
             dbButtons,
             defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
