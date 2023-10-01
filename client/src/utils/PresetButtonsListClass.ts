@@ -76,15 +76,7 @@ class PresetButtonsList {
 
         const buttons = new PresetButtonsList((event: any) => {
             event.preventDefault();
-            console.log("BUTTON CLALBACK");
-            dispatch((dispatchcb, getState) => {
-                const isListeningForEdits = getState().keyboardState.isListeningForMappingEdit;
-                const keyboardMapping = getState().keyboardState.keyboardMappingInUse;
-                if (isListeningForEdits) {
-                    console.log("is listening and about to edit the mapping");
-                    dispatchcb(keyboardActions.updateKeyMapping([event, event.type]));
-                }
-            });
+            console.log("BUTTON CALLBACK in the generate offline presets static method");
         }, tempPresets).getList() as IPresetButton[];
 
         return buttons;

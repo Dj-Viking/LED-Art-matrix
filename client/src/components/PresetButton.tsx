@@ -9,6 +9,7 @@ import { getGlobalState } from "../store/store";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { UIInterfaceDeviceName } from "../constants";
+import { KeyMappingClass } from "../utils/KeyMappingClass";
 
 interface PresetButtonProps {
     index: number;
@@ -30,7 +31,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
     const { id, role, presetName, displayName, animVarCoeff, testid, isActive, clickHandler, keyBinding } = button;
 
     const dispatch = useDispatch();
-    const { deleteModeActive, midiEditMode } = getGlobalState(useSelector);
+    const { deleteModeActive, midiEditMode, keyMapEditMode } = getGlobalState(useSelector);
 
     const deriveUiNameFromIndex = React.useCallback((index: number): UIInterfaceDeviceName => {
         switch (index) {
@@ -76,6 +77,10 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
                 MIDIMappingPreference.listeningForEditsHandler(dispatch, deriveUiNameFromIndex(index));
                 return;
             }
+            if (keyMapEditMode) {
+                KeyMappingClass.listeningForEditsHandler(dispatch, deriveUiNameFromIndex(index));
+                return;
+            }
             if (!deleteModeActive) {
                 dispatch(
                     presetButtonsListActions.checkPresetButtonsActive({
@@ -91,6 +96,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
         [
             animVarCoeff,
             clickHandler,
+            keyMapEditMode,
             deleteModeActive,
             deriveUiNameFromIndex,
             displayName,

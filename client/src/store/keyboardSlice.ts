@@ -2,20 +2,22 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { produce } from "immer";
 
-import { newReducer } from "../utils/newReducer";
-import { deepCopy } from "../utils/deepCopy";
 import { CallbackMapping } from "../utils/MIDIMappingClass";
 import { KeyChannel, KeyInputName, KeyMapping } from "../utils/KeyMappingClass";
 import React from "react";
+import { UIInterfaceDeviceName } from "../constants";
 
 export type KeyboardSliceState = {
+    mappingEditOptions: {
+        uiName: UIInterfaceDeviceName;
+    };
     keyboardMappingInUse: {
         recentlyUsed: KeyInputName;
         callbackMap: CallbackMapping;
         hasPreference: boolean;
         keyMappingPreference: Record<KeyInputName, KeyMapping<KeyInputName>>;
     };
-    isListeningForMappingEdit: boolean;
+    isListeningForKeyMappingEdit: boolean;
     keyMapEditMode: boolean;
     channel: KeyChannel;
 };
@@ -25,13 +27,15 @@ export const defaultMappingEditOptions = {
 
 export const initialKeyboardSliceState: KeyboardSliceState = {
     keyMapEditMode: false,
-    isListeningForMappingEdit: false,
+    isListeningForKeyMappingEdit: false,
     channel: 69,
+    mappingEditOptions: defaultMappingEditOptions,
     keyboardMappingInUse: {
         recentlyUsed: "keyboard",
         hasPreference: false,
         keyMappingPreference: {
             j: {} as any,
+            space: {} as any,
             keyboard: {} as any,
             _: {} as any,
         },
@@ -48,28 +52,36 @@ export const keyboardSlice = createSlice({
                 state.keyboardMappingInUse.callbackMap = action.payload;
             });
         },
+        setMappingEditOptions: (
+            state: KeyboardSliceState,
+            action: PayloadAction<Partial<KeyboardSliceState["mappingEditOptions"]>>
+        ) => {
+            return produce(state, () => {
+                state.mappingEditOptions = {
+                    ...state.mappingEditOptions,
+                    ...action.payload,
+                };
+            });
+        },
         toggleKeyEditMode: (state: KeyboardSliceState) => {
             return produce(state, () => {
                 // if we're currently toggling edit mode off then stop listening for midi preference editing changes
-                console.log("setting listen foir key map in keyboard actiaon");
                 if (state.keyMapEditMode) {
-                    console.log("setting listen foir key map in keyboard actiaon");
-                    state.isListeningForMappingEdit = false;
-                } else {
-                    state.isListeningForMappingEdit = true;
+                    state.isListeningForKeyMappingEdit = false;
                 }
                 state.keyMapEditMode = !state.keyMapEditMode;
             });
         },
-        updateKeyMapping: (
-            state: KeyboardSliceState,
-            action: PayloadAction<
-                Tuple<React.MouseEvent<HTMLButtonElement>, React.MouseEvent<HTMLButtonElement>["type"]>
-            >
-        ) => {
+        setIsListeningForEdits: (state: KeyboardSliceState, action: PayloadAction<boolean>) => {
             return produce(state, () => {
-                if (action.payload[1] === "keyDown") {
-                    //
+                state.isListeningForKeyMappingEdit = action.payload;
+            });
+        },
+        updateKeyMapping: (state: KeyboardSliceState, action: PayloadAction<KeyInputName>) => {
+            return produce(state, () => {
+                if (action.payload) {
+                    console.warn("TODO", "keyboard mapping not implemented yet");
+                    console.log("key was passed to map!!!", action.payload);
                 }
             });
         },

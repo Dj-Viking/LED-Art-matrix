@@ -237,7 +237,7 @@ const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = 
 };
 
 export interface ToggleKeyMapEditModeButtonProps {
-    toggleKeyMapEditMode: (event: any) => void;
+    toggleKeyMapEditMode: () => void;
 }
 
 export const ToggleKeyMapEditModeButton: React.FC<ToggleKeyMapEditModeButtonProps> = (props) => {
@@ -251,7 +251,7 @@ export const ToggleKeyMapEditModeButton: React.FC<ToggleKeyMapEditModeButtonProp
             className="preset-button"
             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                 console.log("listening for edits click event", event);
-                props.toggleKeyMapEditMode(event);
+                props.toggleKeyMapEditMode();
             }}
         >
             {"Toggle Key Map Edit Mode"}

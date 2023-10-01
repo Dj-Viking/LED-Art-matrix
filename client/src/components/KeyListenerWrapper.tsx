@@ -5,10 +5,13 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ledActions } from "../store/ledSlice";
 import { IPresetButton } from "../types";
 import { getGlobalState } from "../store/store";
+import { keyboardActions } from "../store/keyboardSlice";
+import { KeyInputName } from "../utils/KeyMappingClass";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
-    const { deleteModeActive, presetButtons, saveModalIsOpen, figureOn } = getGlobalState(useSelector);
+    const { deleteModeActive, presetButtons, saveModalIsOpen, figureOn, keyMapEditMode, isListeningForKeyMappingEdit } =
+        getGlobalState(useSelector);
 
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
@@ -28,6 +31,11 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             if (deleteModeActive) return;
             if (saveModalIsOpen) return;
 
+            if (keyMapEditMode && isListeningForKeyMappingEdit) {
+                // update key mapping for the ey that was just pressed
+                dispatch(keyboardActions.updateKeyMapping(event.key as KeyInputName));
+            }
+
             //clear led screen
             // TODO: change the LED styles to still have the dimensions of being empty but no color as to not remove the dimensional grid from the DOM
             if (event.key === "c" || event.key === "C") {
@@ -45,7 +53,16 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
 
             setStyle(preset);
         },
-        [deleteModeActive, saveModalIsOpen, presetButtons, setStyle, dispatch, figureOn]
+        [
+            deleteModeActive,
+            saveModalIsOpen,
+            presetButtons,
+            setStyle,
+            dispatch,
+            figureOn,
+            keyMapEditMode,
+            isListeningForKeyMappingEdit,
+        ]
     );
 
     useEffect(() => {

@@ -5,10 +5,11 @@ import {
     GenericControlName,
     UIInterfaceDeviceName,
 } from "../constants";
+import { keyboardActions } from "../store/keyboardSlice";
 import { ToolkitDispatch } from "../store/store";
 import { CallbackMapping } from "./MIDIMappingClass";
 
-export type KeyInputName = "keyboard" | "_" | "j";
+export type KeyInputName = "keyboard" | "_" | "j" | "space";
 
 export type KeyChannel = 69;
 
@@ -63,6 +64,16 @@ export class KeyMappingClass<N extends KeyInputName> {
         KeyMappingClass.setKeyCallbackMapBasedOnKeyInputName(this, dispatch);
 
         this._initLocalStoragePreferencesIfNotExists(dispatch);
+    }
+
+    public static listeningForEditsHandler(dispatch: ToolkitDispatch, uiName: UIInterfaceDeviceName): void {
+        console.log("listening for edits on keyboard preference mapping");
+        dispatch(keyboardActions.setIsListeningForEdits(true));
+        dispatch(
+            keyboardActions.setMappingEditOptions({
+                uiName: uiName,
+            })
+        );
     }
 
     public static getControlNameFromControllerInUseMapping(

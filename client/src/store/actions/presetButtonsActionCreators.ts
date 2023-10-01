@@ -20,13 +20,7 @@ export const buildGetPresetButtonsAction = createAsyncThunk<{ presetButtons: IPr
 
         buttons = new PresetButtonsList(
             (event: React.MouseEvent<HTMLButtonElement>) => {
-                console.log("calling click hanlder of button class!!!");
-                event.preventDefault();
-                const isListeningForEdits = _thunkAPI.getState().keyboardState.isListeningForMappingEdit;
-                const isKeyboardMapEditMode = _thunkAPI.getState().keyboardState.isListeningForMappingEdit;
-                if (isListeningForEdits && isKeyboardMapEditMode) {
-                    _thunkAPI.dispatch(keyboardActions.updateKeyMapping([event, event.type]));
-                }
+                console.log("calling click hanlder of button class!!!", event);
             },
             dbButtons,
             defaultPreset && defaultPreset._id ? defaultPreset._id : void 0

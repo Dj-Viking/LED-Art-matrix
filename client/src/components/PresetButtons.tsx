@@ -84,13 +84,9 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         [dispatch]
     );
 
-    const toggleKeyMapEditMode = React.useCallback(
-        (event: any): void => {
-            event.preventDefault();
-            dispatch(keyboardActions.toggleKeyEditMode());
-        },
-        [dispatch]
-    );
+    const toggleKeyMapEditMode = React.useCallback((): void => {
+        dispatch(keyboardActions.toggleKeyEditMode());
+    }, [dispatch]);
 
     function handleOpenNewWindow(event: any): void {
         event.preventDefault();
