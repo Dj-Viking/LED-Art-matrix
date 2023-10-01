@@ -28,6 +28,7 @@ declare global {
         requestMIDIAccess(): Promise<MIDIAccessRecord>;
     }
     interface EventTarget {
+        id: string;
         value: any;
     }
     interface CanvasRenderingContext2D {

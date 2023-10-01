@@ -55,7 +55,7 @@ export type XONEK2_ControlNames =
     | "4_o_button"
     | "4_p_button";
 
-export type KeyInputControlName = "j" | "";
+export type KeyInputControlName = "j" | "" | "keyboard";
 
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
@@ -299,6 +299,7 @@ export const DEFAULT_KEYBOARD_MAPPING_PREFERENCE_TABLE: Record<
     { uiName: UIInterfaceDeviceName; channel: KeyChannel }
 > = {
     _: unsetKeyPreference,
+    j: unsetKeyPreference,
     keyboard: unsetKeyPreference,
 };
 

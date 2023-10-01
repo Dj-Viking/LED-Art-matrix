@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
     DEFAULT_CALLBACK_TABLE,
     DEFAULT_KEYBOARD_MAPPING_PREFERENCE_TABLE,
@@ -7,7 +8,7 @@ import {
 import { ToolkitDispatch } from "../store/store";
 import { CallbackMapping } from "./MIDIMappingClass";
 
-export type KeyInputName = "keyboard" | "_";
+export type KeyInputName = "keyboard" | "_" | "j";
 
 export type KeyChannel = 69;
 
@@ -60,6 +61,41 @@ export class KeyMappingClass<N extends KeyInputName> {
         this.#setKeyMappingBasedOnInputName(name);
 
         KeyMappingClass.setKeyCallbackMapBasedOnKeyInputName(this, dispatch);
+
+        this._initLocalStoragePreferencesIfNotExists(dispatch);
+    }
+
+    public static getControlNameFromControllerInUseMapping(
+        mappingInUse: KeyMapping<KeyInputName>,
+        uiName: UIInterfaceDeviceName
+    ): string {
+        let ret = "";
+
+        for (const controlName of Object.keys(mappingInUse)) {
+            if (uiName === mappingInUse[controlName].uiName) {
+                //
+                ret = controlName;
+            } else {
+                ret = "unknown key controlName mapping";
+            }
+        }
+
+        return ret;
+    }
+
+    // for each new midi controller to support this has to be expanded
+    private _initLocalStoragePreferencesIfNotExists(dispatch: ToolkitDispatch): void {
+        let pref = null;
+        // unfortunately functions are not serializable to JSON in local storage
+        if (!window.localStorage.getItem("keyboard" as KeyInputName)) {
+            // create
+            const initPref = new KeyMappingClass("keyboard", dispatch);
+            pref = initPref;
+            console.log("pref to initialize into local storage", pref);
+            window.localStorage.setItem("keyboard" as KeyInputName, JSON.stringify(initPref));
+            const gotPref = window.localStorage.getItem("keyboard")!;
+            console.log("got pref from local storage", JSON.parse(gotPref));
+        }
     }
 
     #setKeyMappingBasedOnInputName(name: N): void {
@@ -96,10 +132,10 @@ export class KeyMappingClass<N extends KeyInputName> {
         // TODO: MUSIC PLAYER CONTROLS HERE???
         switch (uiName) {
             case "resetTimerButton":
-                return (keyEvent: "keyDown") => {
+                return (eventType: "keyDown") => {
                     dispatch((_dispatchcb, getState) => {
                         const fn = getState().ledState.resetTimerFn;
-                        if (keyEvent === "keyDown") {
+                        if (eventType === "keyDown") {
                             fn();
                         }
                     });

@@ -70,7 +70,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
     }
 
     const onClickHandler = React.useCallback(
-        (event: any): void => {
+        (event: React.MouseEvent<HTMLButtonElement>): void => {
             clickHandler(event);
             if (midiEditMode) {
                 MIDIMappingPreference.listeningForEditsHandler(dispatch, deriveUiNameFromIndex(index));

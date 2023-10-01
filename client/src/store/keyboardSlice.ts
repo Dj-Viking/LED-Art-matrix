@@ -6,6 +6,7 @@ import { newReducer } from "../utils/newReducer";
 import { deepCopy } from "../utils/deepCopy";
 import { CallbackMapping } from "../utils/MIDIMappingClass";
 import { KeyChannel, KeyInputName, KeyMapping } from "../utils/KeyMappingClass";
+import React from "react";
 
 export type KeyboardSliceState = {
     keyboardMappingInUse: {
@@ -30,6 +31,7 @@ export const initialKeyboardSliceState: KeyboardSliceState = {
         recentlyUsed: "keyboard",
         hasPreference: false,
         keyMappingPreference: {
+            j: {} as any,
             keyboard: {} as any,
             _: {} as any,
         },
@@ -49,10 +51,26 @@ export const keyboardSlice = createSlice({
         toggleKeyEditMode: (state: KeyboardSliceState) => {
             return produce(state, () => {
                 // if we're currently toggling edit mode off then stop listening for midi preference editing changes
+                console.log("setting listen foir key map in keyboard actiaon");
                 if (state.keyMapEditMode) {
+                    console.log("setting listen foir key map in keyboard actiaon");
                     state.isListeningForMappingEdit = false;
+                } else {
+                    state.isListeningForMappingEdit = true;
                 }
                 state.keyMapEditMode = !state.keyMapEditMode;
+            });
+        },
+        updateKeyMapping: (
+            state: KeyboardSliceState,
+            action: PayloadAction<
+                Tuple<React.MouseEvent<HTMLButtonElement>, React.MouseEvent<HTMLButtonElement>["type"]>
+            >
+        ) => {
+            return produce(state, () => {
+                if (action.payload[1] === "keyDown") {
+                    //
+                }
             });
         },
     },

@@ -33,6 +33,7 @@ import { midiActions } from "../store/midiSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { UIInterfaceDeviceName } from "../constants";
 import { keyboardActions } from "../store/keyboardSlice";
+import { KeyMappingClass } from "../utils/KeyMappingClass";
 export interface IPresetButtonsProps {
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -50,7 +51,9 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalContext,
         presetButtons,
         midiEditMode,
+        keyMapEditMode,
         midiMappingInUse,
+        keyboardMappingInUse,
         controllerInUse,
     } = getGlobalState(useSelector);
 
@@ -104,7 +107,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         if (Auth.loggedIn()) {
             dispatch(presetButtonsListActions.getPresetsAsync());
         } else {
-            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets()));
+            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets(dispatch)));
         }
         return () => {
             /*do nothing on unmount */
@@ -165,12 +168,23 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                         uiName
                     );
 
+                    const keyMapping = KeyMappingClass.getControlNameFromControllerInUseMapping(
+                        keyboardMappingInUse.keyMappingPreference["j"],
+                        "resetTimerButton"
+                    );
+
                     return (
                         <StyledPresetButton key={button.id}>
                             {midiEditMode && (
                                 <>
                                     <span>{"<MIDI>"}</span>
                                     <span>{`(${uiMapping})`}</span>
+                                </>
+                            )}
+                            {keyMapEditMode && (
+                                <>
+                                    <span>{"<KEY>"}</span>
+                                    <span>{`(${keyMapping})`}</span>
                                 </>
                             )}
                             <PresetButton index={index} button={{ ...button }} />
