@@ -73,13 +73,13 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         }
     }
 
-    const StyledPlayButtonSVGContainer = styled.div`
+    const StyledAudioPlayerContainer = styled.div`
         & {
             margin: 0 auto;
         }
     `;
 
-    const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
+    const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (_props) => {
         const audioElRef = React.useRef<HTMLAudioElement>(null);
         const [volumeState, setVolumeState] = useState(0);
         const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
@@ -93,28 +93,30 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         }, []);
 
         return (
-            <StyledPlayButtonSVGContainer>
-                <PlayButtonSvg audioRef={audioElRef} fill={"green"} height={100} width={100} />
-                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
-                    <input
-                        id="volume-input"
-                        name="volume"
-                        type="range"
-                        min="0"
-                        max="1"
-                        step="0.1"
-                        onInput={handleVolumeInput}
-                    />
-                    <span style={{ margin: "0 auto" }}>Volume: {volumeState}</span>
-                </div>
+            <>
+                <StyledAudioPlayerContainer>
+                    <PlayButtonSvg audioRef={audioElRef} fill={"green"} height={100} width={100} />
+                    <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                        <input
+                            id="volume-input"
+                            name="volume"
+                            type="range"
+                            min="0"
+                            max="1"
+                            step="0.1"
+                            onInput={handleVolumeInput}
+                        />
+                        <span style={{ margin: "0 auto" }}>Volume: {volumeState}</span>
+                    </div>
 
-                <audio
-                    autoPlay={false}
-                    // style={{ display: "none" }}
-                    src={currentSong}
-                    ref={audioElRef}
-                />
-            </StyledPlayButtonSVGContainer>
+                    <audio
+                        autoPlay={false}
+                        // style={{ display: "none" }}
+                        src={currentSong}
+                        ref={audioElRef}
+                    />
+                </StyledAudioPlayerContainer>
+            </>
         );
     };
 
