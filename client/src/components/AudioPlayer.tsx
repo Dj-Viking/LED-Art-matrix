@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-// AUDIO PLAYER
-import "react-h5-audio-player/lib/styles.css";
-
 // SONGS
 import G6 from "./music/G6_-24_db_for_web_test.m4a";
 import REVERB_STUDY from "./music/175-Reverb-study.m4a";
