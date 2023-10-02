@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 const StyledSvg = styled.div`
     & {
+        display: flex;
+        justify-content: center;
+
         color: ${(props) => (props.ref !== null ? "white" : "black")};
     }
 `;
@@ -11,8 +14,18 @@ export interface SvgPlayButtonProps {
     width: number;
     fill: "black" | "white" | "green";
     style?: React.CSSProperties;
+    audioRef: React.RefObject<HTMLAudioElement>;
 }
 export const PlayButtonSvg: React.FC<SvgPlayButtonProps> = (props) => {
+    const clickHandler = React.useCallback(() => {
+        console.log("clicked svg player button!!!!", props);
+        if (props.audioRef.current) {
+            (async () => {
+                await props.audioRef.current?.play();
+            })();
+        }
+        //
+    }, [props]);
     useEffect(() => {
         console.log("mounted svg player button!!!!", props);
         return () => console.log("unmounted play button");
@@ -20,6 +33,7 @@ export const PlayButtonSvg: React.FC<SvgPlayButtonProps> = (props) => {
     return (
         <>
             <StyledSvg
+                onClick={clickHandler}
                 style={props.style}
                 dangerouslySetInnerHTML={{
                     __html: `

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 // AUDIO PLAYER
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 // SONGS
@@ -74,106 +73,102 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         }
     }
 
-    // volume slider state
-    const [volumeState, setVolumeState] = useState(0);
-    // eslint-disable-next-line
-    function handleVolumeChange(event: any, data: number) {
-        setVolumeState(event.target.value || data);
-    }
-
-    const sliderContainerStyle = {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-    };
-
-    const labelStyle = {
-        color: "white",
-    };
-
     const StyledPlayButtonSVGContainer = styled.div`
         & {
-            /* position: relative; */
             margin: 0 auto;
         }
     `;
 
     const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
-        useEffect(() => {
-            console.log("MOUNTED NEW PLAYUER");
-        });
+        const audioElRef = React.useRef<HTMLAudioElement>(null);
+        const [volumeState, setVolumeState] = useState(0);
+        const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
+            //
+            if (audioElRef.current) {
+                const audio = audioElRef.current;
+
+                audio.volume = event.target.value;
+                setVolumeState(event.target.value);
+            }
+        }, []);
+
         return (
             <StyledPlayButtonSVGContainer>
-                <PlayButtonSvg fill={"green"} height={100} width={100} />
+                <PlayButtonSvg audioRef={audioElRef} fill={"green"} height={100} width={100} />
+                <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>
+                    <input
+                        id="volume-input"
+                        name="volume"
+                        type="range"
+                        min="0"
+                        max="1"
+                        step="0.1"
+                        onInput={handleVolumeInput}
+                    />
+                    <span style={{ margin: "0 auto" }}>Volume: {volumeState}</span>
+                </div>
+
+                <audio
+                    autoPlay={false}
+                    // style={{ display: "none" }}
+                    src={currentSong}
+                    ref={audioElRef}
+                />
             </StyledPlayButtonSVGContainer>
         );
     };
 
     return (
-        <div>
-            <div style={{ display: "flex", height: 100, width: "100%", background: "white" }}>
+        <>
+            <div style={{ display: "flex", height: 150, width: "100%", background: "grey", justifyContent: "center" }}>
                 <NewAudioPlayer />
             </div>
-            <AudioPlayer
-                autoPlay={false}
-                preload="auto"
-                src={currentSong}
-                volume={volumeState}
-                onVolumeChange={(event: any) => {
-                    handleVolumeChange(event, event.target.volume);
-                    setVolumeState(event.target.volume);
-                }}
-            />
-            {/* @ts-expect-error not sure why its incompatible? */}
-            <div style={sliderContainerStyle}>
-                <label htmlFor="player-volume" style={labelStyle}>
-                    Music Player Volume: {volumeState}
-                </label>
-            </div>
-            <section
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    textAlign: "center",
-                    marginTop: "10px",
-                }}
-            >
-                <div
+            <div>
+                <section
                     style={{
-                        borderTop: "ridge 5px rgb(67, 26, 163)",
-                        width: "80%",
-                        borderRadius: "50%",
                         display: "flex",
-                        margin: "0 auto",
-                    }}
-                />
-                <span
-                    style={{
-                        borderRadius: "50%",
-                        width: "80%",
-                        display: "flex",
-                        justifyContent: "center",
-                        margin: "0 auto",
-                        marginTop: "5px",
-                        marginBottom: "5px",
-                        color: "white",
+                        flexDirection: "column",
+                        textAlign: "center",
+                        marginTop: "10px",
                     }}
                 >
-                    Track List
-                </span>
-                {songs.map((song) => (
                     <div
-                        style={currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
-                        className={currentSong === song.filePath ? "anim-playing-text" : ""}
-                        id={song.filePath}
-                        key={song.trackName}
-                        onClick={handleTrackChange}
+                        style={{
+                            borderTop: "ridge 5px rgb(67, 26, 163)",
+                            width: "80%",
+                            borderRadius: "50%",
+                            display: "flex",
+                            margin: "0 auto",
+                        }}
+                    />
+                    <span
+                        style={{
+                            borderRadius: "50%",
+                            width: "80%",
+                            display: "flex",
+                            justifyContent: "center",
+                            margin: "0 auto",
+                            marginTop: "5px",
+                            marginBottom: "5px",
+                            color: "white",
+                        }}
                     >
-                        {song.trackName}
-                    </div>
-                ))}
-            </section>
-        </div>
+                        Track List
+                    </span>
+                    {songs.map((song) => (
+                        <div
+                            style={currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
+                            className={currentSong === song.filePath ? "anim-playing-text" : ""}
+                            id={song.filePath}
+                            key={song.trackName}
+                            onClick={handleTrackChange}
+                        >
+                            {song.trackName}
+                        </div>
+                    ))}
+                </section>
+            </div>
+        </>
     );
 };
 
