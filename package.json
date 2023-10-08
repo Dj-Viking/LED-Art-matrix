@@ -12,6 +12,7 @@
     "start": "sh start.sh",
     "start:prod": "sh server.sh",
     "server:dev": "sh server.sh",
+    "postinstall": "echo 'postinstall!!!!'",
     "start-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File start.ps1",
     "test-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1",
     "test:ci": "npm run cover:ci",

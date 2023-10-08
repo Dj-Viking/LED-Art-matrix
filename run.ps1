@@ -1,5 +1,9 @@
 param(
-    [switch]$prettier = $false
+    [switch]$prettier = $false,
+    [System.String]$prettierArgs = "",
+    [System.String]$serverArgs = "node .\server\node_modules\nodemon\bin\nodemon.js -L .\server\dist\index.js",
+    [System.String]$clientArgs = "node .\client\scripts\start.js",
+    [System.String]$tswatchArgs = "node tswatch.js"
 )
 
 $Env:MY_OS = $Env:OS
@@ -13,11 +17,6 @@ else {
     $filepath = ".\env.sample.txt"
     $Env:ENV_TXT = Get-Content -Path $filepath -Raw
 }
-
-[String]$prettierArgs = ""
-[String]$serverArgs = "node .\server\node_modules\nodemon\bin\nodemon.js -L .\server\dist\index.js"
-[String]$clientArgs = "node .\client\scripts\start.js"
-[String]$tswatchArgs = "node tswatch.js"
 
 if ($prettier) {
     Write-Host "[INFO]: running prettier and lint before start for formatting standards" -ForegroundColor Cyan

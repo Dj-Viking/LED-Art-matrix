@@ -6,6 +6,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { MIDIController, MIDIMessageEvent, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
+import { getRandomIntLimit } from "../../utils/helpers";
 
 export function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
     console.log("UNIMPLEMENTED CONTROLLER receiving MESSAGES", name, "\n", event, "\n channel", channel);
@@ -46,8 +47,8 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;
             const name = MIDIController.stripNativeLabelFromMIDIInputName(midi_event.currentTarget.name);
             const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
-            const channel = midi_event.data[1];
-            const midiIntensity = midi_event.data[2];
+            const channel = midi_event.data[1] || 1;
+            const midiIntensity = midi_event.data[2] || 65;
 
             // will get updated if we are in edit mode and listening for changes
             // only make a new one if it's not currently set in state yet

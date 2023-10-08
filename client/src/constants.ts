@@ -55,8 +55,19 @@ export type XONEK2_ControlNames =
     | "4_o_button"
     | "4_p_button";
 
+
+
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
+export type LKMK3_ControlNames = 
+    | "NOT SET YET"
+    | "";
+
+export type LKMK3_MIDIChannelTable = Record<number, LKMK3_ControlNames>;
+
+export const LKMK3_MIDI_CHANNEL_TABLE: LKMK3_MIDIChannelTable = {
+    1: "NOT SET YET",
+};
 export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     0: "1_encoder",
     4: "1_upper_knob",
@@ -472,6 +483,7 @@ export type ControllerName =
     | "UltraLite mk3 Hybrid"
     | "XONE:K2 MIDI"
     | "nanoKontrol2"
+    | "LKMK3 MIDI"
     | "UltraLite mk3 Hybrid MIDI Port"
     | "TouchOSC Bridge"
     | "UltraLite mk3 Hybrid Sync Port";
@@ -485,6 +497,8 @@ export type ControllerLookup<Name extends ControllerName> = Record<
         ? TouchOscBridgeControlChannelTable //------// then
         : Name extends "nanoKontrol2" //-------------// else if
         ? nanoKontrol2_MIDIChannelTable //-----------// then
+        : Name extends "LKMK3 MIDI" //----------------// else if
+        ? LKMK3_MIDIChannelTable //-------------------// then
         : Nullable<Record<number, string>> //--------// else
 >;
 
@@ -506,6 +520,8 @@ export type GenericControlName<Name extends MIDIInputName | KeyInputName> = Name
     ? TouchOscBridgeControlNames
     : Name extends KeyInputName
     ? KeyInputControlName
+    : Name extends "LKMK3"
+    ? LKMK3_ControlNames
     : string; // unimplemented controller name
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
@@ -516,6 +532,7 @@ export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends 
 
 export const SUPPORTED_CONTROLLERS = {
     "Not Found": {} as any,
+    "LKMK3 MIDI": LKMK3_MIDI_CHANNEL_TABLE,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid": {} as any,
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,

@@ -39,6 +39,7 @@ export interface MIDIListenerWrapperProps {
 }
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
+
     const dispatch = useDispatch();
     const {
         access: accessState,
@@ -48,6 +49,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         midiEditMode,
         usingFader,
         usingKnob,
+        usingMidi,
         channel,
         intensity,
         isListeningForMappingEdit,
@@ -56,14 +58,15 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     } = getGlobalState(useSelector);
 
     const [option, setOption] = useState<string>("");
-
     useEffect(() => {
         MIDIController.isMIDIPreferenceLocalStorageSet(controllerInUse, dispatch);
     }, [controllerInUse, dispatch]);
 
     useEffect(() => {
-        dispatch(midiActions.getMIDIAccess());
-    }, [dispatch]);
+        if (usingMidi) { 
+            dispatch(midiActions.getMIDIAccess());
+        }
+    }, [dispatch, usingMidi]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
         return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
@@ -114,6 +117,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <TestMIDI
                     testid="test-midi"
                     midi_access={{
+                        usingMidi: true,
                         isListeningForMappingEdit,
                         mappingEditOptions: defaultMappingEditOptions,
                         controllerInUse: "XONE:K2 MIDI",
@@ -139,6 +143,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <MIDISelectContainer>
                         <MIDISelect setOption={setOptionCallback} option={option} midi_inputs={accessInputs} />
                     </MIDISelectContainer>
+                    <button style={{ margin: "0 auto", color: "white", backgroundColor: "black", border: "solid 1px white",  width: "10%", height: 30}} onClick={() => {
+                        dispatch(midiActions.toggleUsingMidi());
+                    }}>
+                        toggle using midi
+                    </button>
                     {option && (
                         <DeviceInterfaceContainer
                             statename={getInput(accessInputs, option)?.state || "disconnected"}

@@ -23,6 +23,7 @@ export const defaultMappingEditOptions = {
 };
 
 export const initialMidiSliceState: MIDISliceState = {
+    usingMidi: false,
     controllerInUse: "XONE:K2 MIDI",
     // TODO: could be custom set - Will fetch from local storage and/or user preferences set in their db
     midiMappingInUse: {
@@ -59,6 +60,11 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
+        toggleUsingMidi: (state: MIDISliceState) => {
+            return produce(state, () => {
+                state.usingMidi = !state.usingMidi;
+            });
+        },
         setCallbackMap: (state: MIDISliceState, action: PayloadAction<CallbackMapping>) => {
             return produce(state, () => {
                 state.midiMappingInUse.callbackMap = action.payload;
