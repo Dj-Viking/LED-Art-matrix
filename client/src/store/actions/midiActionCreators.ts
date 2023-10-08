@@ -48,7 +48,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             const name = MIDIController.stripNativeLabelFromMIDIInputName(midi_event.currentTarget.name);
             const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
             const channel = midi_event.data[1] || 1;
-            const midiIntensity = midi_event.data[2] || 65;
+            const midiIntensity = midi_event.data[2] || 1;
 
             // will get updated if we are in edit mode and listening for changes
             // only make a new one if it's not currently set in state yet
