@@ -84,7 +84,6 @@ describe("faking navigator for midiaccess testing", () => {
                     } as any);
                     // call onmidimessage
                     Object.keys(SUPPORTED_CONTROLLERS).forEach((key: string) => {
-                        console.log("what is env here", process.env.NODE_ENV);
                         const name = testMidi.props().midi_access.inputs[0].name;
                         if (key.includes(name)) {
                             for (const key of Object.keys(SUPPORTED_CONTROLLERS[name]!)) {
