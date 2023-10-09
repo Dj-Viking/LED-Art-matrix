@@ -146,7 +146,15 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <button style={{ margin: "0 auto", color: "white", backgroundColor: "black", border: "solid 1px white",  width: "10%", height: 30}} onClick={() => {
                         dispatch(midiActions.toggleUsingMidi());
                     }}>
-                        toggle using midi
+                        {usingMidi ? (
+                            <span>
+                                turn off using midi
+                            </span>
+                        ) : (
+                            <span>
+                                toggle using midi
+                            </span>
+                        )}
                     </button>
                     {option && (
                         <DeviceInterfaceContainer
