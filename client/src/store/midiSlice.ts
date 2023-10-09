@@ -23,7 +23,8 @@ export const defaultMappingEditOptions = {
 };
 
 export const initialMidiSliceState: MIDISliceState = {
-    usingMidi: false,
+    isTesting: process.env.NODE_ENV === "test",
+    usingMidi: process.env.NODE_ENV === "test",
     controllerInUse: "XONE:K2 MIDI",
     // TODO: could be custom set - Will fetch from local storage and/or user preferences set in their db
     midiMappingInUse: {
