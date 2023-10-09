@@ -36,11 +36,15 @@ function DEBUGMIDIMESSAGE(
 export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyThunkConfig>(
     "midiSlice/midiAccess",
     async (_params, _thunkAPI) => {
+        // let count = 0;
         const browserAccess = await MIDIController.requestMIDIAccess();
 
         const mc = new MIDIController(browserAccess, _thunkAPI.dispatch);
 
         const midicb = function (midi_event: MIDIMessageEvent): void {
+            // count++;
+
+            // console.log("count of times this was called", count);
             const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
             const isListeningForMappingEdit = _thunkAPI.getState().midiState.isListeningForMappingEdit;
             const buttonIds = _thunkAPI.getState().presetButtonsListState.presetButtons.map((btn) => btn.id);

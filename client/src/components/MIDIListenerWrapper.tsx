@@ -40,6 +40,7 @@ export interface MIDIListenerWrapperProps {
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
 
+
     const dispatch = useDispatch();
     const {
         access: accessState,
@@ -54,6 +55,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         intensity,
         isListeningForMappingEdit,
         controllerInUse,
+        isTesting,
         midiMappingInUse: { hasPreference },
     } = getGlobalState(useSelector);
 
@@ -114,30 +116,33 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     flexDirection: "column",
                 }}
             >
-                <TestMIDI
-                    testid="test-midi"
-                    midi_access={{
-                        usingMidi: true,
-                        isListeningForMappingEdit,
-                        mappingEditOptions: defaultMappingEditOptions,
-                        controllerInUse: "XONE:K2 MIDI",
-                        midiMappingInUse: {
-                            callbackMap: {} as any,
-                            recentlyUsed: "XONE:K2 MIDI",
-                            midiMappingPreference: {} as any,
-                            hasPreference: false,
-                        },
-                        access: accessState,
-                        inputs: accessInputs,
-                        outputs: accessOutputs,
-                        midiEditMode,
-                        online: accessOnline,
-                        usingFader,
-                        usingKnob,
-                        channel,
-                        intensity,
-                    }}
-                />
+                {isTesting && (
+                    <TestMIDI
+                        testid="test-midi"
+                        midi_access={{
+                            isTesting: true,
+                            usingMidi: true,
+                            isListeningForMappingEdit,
+                            mappingEditOptions: defaultMappingEditOptions,
+                            controllerInUse: "XONE:K2 MIDI",
+                            midiMappingInUse: {
+                                callbackMap: {} as any,
+                                recentlyUsed: "XONE:K2 MIDI",
+                                midiMappingPreference: {} as any,
+                                hasPreference: false,
+                            },
+                            access: accessState,
+                            inputs: accessInputs,
+                            outputs: accessOutputs,
+                            midiEditMode,
+                            online: accessOnline,
+                            usingFader,
+                            usingKnob,
+                            channel,
+                            intensity,
+                        }}
+                    />
+                )}
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
@@ -146,7 +151,15 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <button style={{ margin: "0 auto", color: "white", backgroundColor: "black", border: "solid 1px white",  width: "10%", height: 30}} onClick={() => {
                         dispatch(midiActions.toggleUsingMidi());
                     }}>
-                        toggle using midi
+                        {usingMidi ? (
+                            <span>
+                                turn off using midi
+                            </span>
+                        ) : (
+                            <span>
+                                toggle using midi
+                            </span>
+                        )}
                     </button>
                     {option && (
                         <DeviceInterfaceContainer

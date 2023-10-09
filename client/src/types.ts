@@ -212,6 +212,7 @@ export interface IDeleteModalState {
 }
 
 export type IAccessRecordState = {
+    isTesting: boolean;
     usingMidi: boolean;
     controllerInUse: MIDIInputName;
     midiMappingInUse: {
