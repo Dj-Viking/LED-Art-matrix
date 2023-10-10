@@ -58,18 +58,19 @@ export const AudioPlayerRangeInput: React.FC<AudioPlayerRangeInputProps> = (prop
 };
 
 export interface TrackListProps {
-    songs: Track[];
-    currentSong: string;
-    setCurrentSong: React.Dispatch<React.SetStateAction<string>>;
+    tracks: Track[];
+    currentTrack: Track;
+    setCurrentTrack: React.Dispatch<React.SetStateAction<Track>>;
 }
 
 export const TrackList: React.FC<TrackListProps> = (props) => {
+    const { tracks, currentTrack, setCurrentTrack } = props;
     // eslint-disable-next-line
     const handleTrackChange = React.useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-        if (event.target.id !== props.currentSong) {
-            props.setCurrentSong(event.target.id);
+        if (event.target.id !== currentTrack.trackName) {
+            setCurrentTrack(tracks.find(track => track.filePath === event.target.id) || { filePath: "", "trackName": "nothing" } );
         }
-    }, []);
+    }, [currentTrack, setCurrentTrack, tracks]);
     return (
         <div>
             <section
@@ -103,12 +104,12 @@ export const TrackList: React.FC<TrackListProps> = (props) => {
                 >
                     Track List
                 </span>
-                {props.songs.map((song) => (
+                {tracks.map((song) => (
                     <div
-                        style={props.currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
-                        className={props.currentSong === song.filePath ? "anim-playing-text" : ""}
+                        style={currentTrack.filePath === song.filePath ? trackListStylePlaying : trackListStyle}
+                        className={currentTrack.filePath === song.filePath ? "anim-playing-text" : ""}
                         id={song.filePath}
-                        key={song.trackName}
+                        key={song.filePath}
                         onClick={handleTrackChange}
                     >
                         {song.trackName}

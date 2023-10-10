@@ -16,65 +16,68 @@ import {
 } from "./AudioPlayer.style";
 
 export interface NewAudioPlayerProps {
-    [key: string]: any;
+    currentTrack: Track;
 }
 export type Track = {
     trackName: string;
     filePath: string;
 };
+
+// ARRAY OF LOCAL SONG FILE PATHS
+export const tracks: Track[] = [
+    {
+        trackName: "g6",
+        filePath: G6,
+    },
+    {
+        trackName: "ReverbStudy",
+        filePath: REVERB_STUDY,
+    },
+    // {
+    //   trackName: 'Waterfalls',
+    //   filePath: WATERFALLS
+    // },
+];
+
+export const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
+    const { currentTrack } = props;
+    const audioElRef = React.useRef<HTMLAudioElement>(null);
+    const [volumeState, setVolumeState] = useState(0);
+    const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
+        //
+        if (audioElRef.current) {
+            const audio = audioElRef.current;
+
+            audio.volume = event.target.value;
+            setVolumeState(event.target.value);
+        }
+    }, []);
+
+    return (
+        <>
+            <StyledAudioPlayerContainer>
+                <PlayButtonSvg currentTrack={currentTrack} audioRef={audioElRef} fill={"green"} height={100} width={100} />
+                <AudioRangeInputContainer>
+                    <AudioPlayerRangeInput handleInput={handleVolumeInput} />
+                    <AudioRangeInputVolumeText volumeState={volumeState} />
+                </AudioRangeInputContainer>
+
+                <audio autoPlay={false} src={currentTrack.filePath} ref={audioElRef} />
+            </StyledAudioPlayerContainer>
+        </>
+    );
+};
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
-    const [currentSong, setCurrentSong] = useState(G6);
-
-    // ARRAY OF LOCAL SONG FILE PATHS
-    const songs: Track[] = [
-        {
-            trackName: "g6",
-            filePath: G6,
-        },
-        {
-            trackName: "ReverbStudy",
-            filePath: REVERB_STUDY,
-        },
-        // {
-        //   trackName: 'Waterfalls',
-        //   filePath: WATERFALLS
-        // },
-    ];
-
-    const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (_props) => {
-        const audioElRef = React.useRef<HTMLAudioElement>(null);
-        const [volumeState, setVolumeState] = useState(0);
-        const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
-            //
-            if (audioElRef.current) {
-                const audio = audioElRef.current;
-
-                audio.volume = event.target.value;
-                setVolumeState(event.target.value);
-            }
-        }, []);
-
-        return (
-            <>
-                <StyledAudioPlayerContainer>
-                    <PlayButtonSvg audioRef={audioElRef} fill={"green"} height={100} width={100} />
-                    <AudioRangeInputContainer>
-                        <AudioPlayerRangeInput handleInput={handleVolumeInput} />
-                        <AudioRangeInputVolumeText volumeState={volumeState} />
-                    </AudioRangeInputContainer>
-
-                    <audio autoPlay={false} src={currentSong} ref={audioElRef} />
-                </StyledAudioPlayerContainer>
-            </>
-        );
-    };
+    const [_currentTrack, _setCurrentTrack] = useState<Track>(tracks[0]);
 
     return (
         <>
             <div style={{ display: "flex", height: 150, width: "100%", background: "grey", justifyContent: "center" }}>
-                <NewAudioPlayer />
+                <NewAudioPlayer currentTrack={_currentTrack}/>
             </div>
-            <TrackList setCurrentSong={setCurrentSong} currentSong={currentSong} songs={songs} />
+            <TrackList setCurrentTrack={(track) => {
+                _setCurrentTrack(track);
+            }} currentTrack={_currentTrack} tracks={tracks} />
         </>
     );
 };
