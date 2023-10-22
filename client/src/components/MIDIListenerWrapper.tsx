@@ -18,13 +18,14 @@ import {
     MIDISelectContainer,
     MIDISelect,
     ControlSvg,
+    MIDIToggleButton,
 } from "./MIDIListenerWrapper.style";
 import { IAccessRecordState } from "../types";
 import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
-import { defaultMappingEditOptions, midiActions } from "../store/midiSlice";
+import { defaultMappingEditOptions, midiActions, MIDISliceState } from "../store/midiSlice";
 
 export interface ITestMIDIProps {
     testid: string;
@@ -39,8 +40,6 @@ export interface MIDIListenerWrapperProps {
 }
 
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
-
-
     const dispatch = useDispatch();
     const {
         access: accessState,
@@ -65,9 +64,10 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     }, [controllerInUse, dispatch]);
 
     useEffect(() => {
-        if (usingMidi) { 
-            dispatch(midiActions.getMIDIAccess());
-        }
+        // if (usingMidi) {
+        //     dispatch(midiActions.getMIDIAccess());
+        // }
+        dispatch(midiActions.getMIDIAccess());
     }, [dispatch, usingMidi]);
 
     function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
@@ -93,8 +93,9 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
     }
 
     const setOptionCallback = useCallback(
-        (option: string) => {
+        (option: string & MIDISliceState["selectedController"]) => {
             setOption(option);
+            dispatch(midiActions.setSelectedController(option));
             // may have a native label given by the browser so strip native label name
             dispatch(
                 midiActions.setControllerInUse({
@@ -120,6 +121,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <TestMIDI
                         testid="test-midi"
                         midi_access={{
+                            selectedController: "XONE:K2 MIDI",
                             isTesting: true,
                             usingMidi: true,
                             isListeningForMappingEdit,
@@ -148,19 +150,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     <MIDISelectContainer>
                         <MIDISelect setOption={setOptionCallback} option={option} midi_inputs={accessInputs} />
                     </MIDISelectContainer>
-                    <button style={{ margin: "0 auto", color: "white", backgroundColor: "black", border: "solid 1px white",  width: "10%", height: 30}} onClick={() => {
-                        dispatch(midiActions.toggleUsingMidi());
-                    }}>
-                        {usingMidi ? (
-                            <span>
-                                turn off using midi
-                            </span>
-                        ) : (
-                            <span>
-                                toggle using midi
-                            </span>
-                        )}
-                    </button>
+                    <MIDIToggleButton />
                     {option && (
                         <DeviceInterfaceContainer
                             statename={getInput(accessInputs, option)?.state || "disconnected"}

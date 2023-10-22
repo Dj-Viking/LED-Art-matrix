@@ -23,6 +23,7 @@ export const defaultMappingEditOptions = {
 };
 
 export const initialMidiSliceState: MIDISliceState = {
+    selectedController: "XONE:K2 MIDI",
     isTesting: process.env.NODE_ENV === "test",
     usingMidi: process.env.NODE_ENV === "test",
     controllerInUse: "XONE:K2 MIDI",
@@ -61,6 +62,11 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
+        setSelectedController: (state: MIDISliceState, action: PayloadAction<MIDISliceState["selectedController"]>) => {
+            return produce(state, () => {
+                state.selectedController = action.payload;
+            });
+        },
         toggleUsingMidi: (state: MIDISliceState) => {
             return produce(state, () => {
                 state.usingMidi = !state.usingMidi;

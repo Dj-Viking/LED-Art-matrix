@@ -8,6 +8,7 @@ import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
 import { KeyboardSliceState } from "./store/keyboardSlice";
+import { KeyInputName } from "./utils/KeyMappingClass";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
@@ -212,6 +213,7 @@ export interface IDeleteModalState {
 }
 
 export type IAccessRecordState = {
+    selectedController: MIDIInputName | KeyInputName;
     isTesting: boolean;
     usingMidi: boolean;
     controllerInUse: MIDIInputName;

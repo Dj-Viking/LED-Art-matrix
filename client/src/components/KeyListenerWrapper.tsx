@@ -33,7 +33,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
 
             if (keyMapEditMode && isListeningForKeyMappingEdit) {
                 // update key mapping for the ey that was just pressed
-                dispatch(keyboardActions.updateKeyMapping(event.key as KeyInputName));
+                // dispatch(keyboardActions.updateKeyMapping(event.key as KeyInputName));
             }
 
             //clear led screen

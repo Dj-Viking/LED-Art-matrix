@@ -147,7 +147,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
                 <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
-                <ToggleKeyMapEditModeButton toggleKeyMapEditMode={toggleKeyMapEditMode} />
+                {/* <ToggleKeyMapEditModeButton toggleKeyMapEditMode={toggleKeyMapEditMode} /> */}
             </PresetControlButtonsContainer>
 
             <StyledPresetButtonsParent data-testid="buttons-parent">

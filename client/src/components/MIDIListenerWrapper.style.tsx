@@ -4,6 +4,9 @@ import { MIDIPortDeviceState, MIDIInput, MIDIController } from "../utils/MIDICon
 import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../constants";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
 import { isLedWindow } from "../App";
+import { getGlobalState } from "../store/store";
+import { useSelector } from "react-redux";
+import { MIDISliceState } from "../store/midiSlice";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
@@ -35,6 +38,27 @@ export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) =>
         <h2 style={{ margin: "0 auto", marginBottom: "10px" }} className={isLedWindow() ? "no-height" : ""}>
             {heading}
         </h2>
+    );
+};
+
+export const MIDIToggleButton: React.FC = () => {
+    const { usingMidi } = getGlobalState(useSelector);
+    return (
+        <button
+            style={{
+                margin: "0 auto",
+                color: "white",
+                backgroundColor: "black",
+                border: "solid 1px white",
+                width: "10%",
+                height: 30,
+            }}
+            onClick={() => {
+                // dispatch(midiActions.toggleUsingMidi());
+            }}
+        >
+            {usingMidi ? <span>toggle using midi off</span> : <span>toggle using midi on</span>}
+        </button>
     );
 };
 
@@ -75,7 +99,7 @@ export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
 };
 
 interface MIDISelectProps {
-    setOption: (option: string) => void;
+    setOption: (option: string & MIDISliceState["selectedController"]) => void;
     children?: ReactNode | ReactNode[];
     midi_inputs: MIDIInput[];
     option: string;
