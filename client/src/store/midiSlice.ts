@@ -62,9 +62,30 @@ export const midiSlice = createSlice({
     name: "midiSlice",
     initialState: initialMidiSliceState,
     reducers: {
+        resetState: (state: MIDISliceState) => {
+            return produce(state, () => {
+                Object.assign(state, initialMidiSliceState);
+            });
+        },
+        sortMIDIInputsByRecentlyused: (state: MIDISliceState) => {
+            return produce(state, () => {
+                const activeController = state.inputs.find(
+                    (input) =>
+                        MIDIController.stripNativeLabelFromMIDIInputName(input?.name) === state.selectedController
+                );
+                const filtered = state.inputs.filter(
+                    (input) =>
+                        MIDIController.stripNativeLabelFromMIDIInputName(input?.name) !== state.selectedController
+                );
+
+                const newarr: MIDIInput[] = [activeController as any, ...filtered];
+
+                state.inputs = newarr;
+            });
+        },
         setSelectedController: (state: MIDISliceState, action: PayloadAction<MIDISliceState["selectedController"]>) => {
             return produce(state, () => {
-                state.selectedController = action.payload;
+                state.selectedController = MIDIController.stripNativeLabelFromMIDIInputName(action.payload);
             });
         },
         toggleUsingMidi: (state: MIDISliceState) => {
@@ -107,8 +128,6 @@ export const midiSlice = createSlice({
         ) => {
             return produce(state, () => {
                 const { controllerName, hasPreference } = action.payload;
-
-                // TODO: redo this part to use the new midi mapping class object structure
 
                 const preference = MIDIController.getMIDIMappingPreferenceFromStorage(
                     controllerName,

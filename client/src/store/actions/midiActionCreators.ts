@@ -6,7 +6,6 @@ import { deepCopy } from "../../utils/deepCopy";
 import { MIDIController, MIDIMessageEvent, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
-import { getRandomIntLimit } from "../../utils/helpers";
 
 export function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
     console.log("UNIMPLEMENTED CONTROLLER receiving MESSAGES", name, "\n", event, "\n channel", channel);
@@ -68,6 +67,13 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
                 midiActions.setControllerInUse({
                     controllerName: name,
                     hasPreference: hasPref,
+                })
+            );
+
+            _thunkAPI.dispatch(
+                midiActions.determineDeviceControl({
+                    usingFader: /fader/g.test(controlName),
+                    usingKnob: /knob/g.test(controlName),
                 })
             );
 

@@ -32,13 +32,13 @@ export const toolkitStore = configureStore({
 });
 
 export function getGlobalState(selectorFn: typeof useSelector): GlobalState {
-    const state = selectorFn((state: MyRootState) => state);
+    const rootState = selectorFn((state: MyRootState) => state);
 
     let ret = {} as GlobalState;
 
-    for (const stateKey of Object.keys(state)) {
-        for (const stateValueKey of Object.keys(state[stateKey])) {
-            ret[stateValueKey] = state[stateKey][stateValueKey];
+    for (const sliceName of Object.keys(rootState)) {
+        for (const sliceProp of Object.keys(rootState[sliceName])) {
+            ret[sliceProp] = rootState[sliceName][sliceProp];
         }
     }
 

@@ -4,11 +4,10 @@ import { produce } from "immer";
 
 import { CallbackMapping } from "../utils/MIDIMappingClass";
 import { KeyChannel, KeyInputName, KeyMapping } from "../utils/KeyMappingClass";
-import React from "react";
 import { UIInterfaceDeviceName } from "../constants";
 
 export type KeyboardSliceState = {
-    mappingEditOptions: {
+    keyMappingEditOptions: {
         uiName: UIInterfaceDeviceName;
     };
     keyboardMappingInUse: {
@@ -19,7 +18,7 @@ export type KeyboardSliceState = {
     };
     isListeningForKeyMappingEdit: boolean;
     keyMapEditMode: boolean;
-    channel: KeyChannel;
+    keyChannel: KeyChannel;
 };
 export const defaultMappingEditOptions = {
     uiName: "" as any,
@@ -28,16 +27,13 @@ export const defaultMappingEditOptions = {
 export const initialKeyboardSliceState: KeyboardSliceState = {
     keyMapEditMode: false,
     isListeningForKeyMappingEdit: false,
-    channel: 69,
-    mappingEditOptions: defaultMappingEditOptions,
+    keyChannel: 69,
+    keyMappingEditOptions: defaultMappingEditOptions,
     keyboardMappingInUse: {
         recentlyUsed: "keyboard",
         hasPreference: false,
         keyMappingPreference: {
-            j: {} as any,
-            space: {} as any,
             keyboard: {} as any,
-            _: {} as any,
         },
         callbackMap: {} as any,
     },
@@ -54,11 +50,11 @@ export const keyboardSlice = createSlice({
         },
         setMappingEditOptions: (
             state: KeyboardSliceState,
-            action: PayloadAction<Partial<KeyboardSliceState["mappingEditOptions"]>>
+            action: PayloadAction<Partial<KeyboardSliceState["keyMappingEditOptions"]>>
         ) => {
             return produce(state, () => {
-                state.mappingEditOptions = {
-                    ...state.mappingEditOptions,
+                state.keyMappingEditOptions = {
+                    ...state.keyMappingEditOptions,
                     ...action.payload,
                 };
             });

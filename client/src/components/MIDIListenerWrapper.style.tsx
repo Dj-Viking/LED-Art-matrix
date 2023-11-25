@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from "styled-components";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import { MIDIPortDeviceState, MIDIInput, MIDIController } from "../utils/MIDIControlClass";
 import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../constants";
 import { Fader, Knob } from "../lib/deviceControlSvgs";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
-import { useSelector } from "react-redux";
-import { MIDISliceState } from "../store/midiSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { defaultMappingEditOptions, midiActions, MIDISliceState } from "../store/midiSlice";
+import { IAccessRecordState } from "../types";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
@@ -43,21 +45,30 @@ export const MIDIWrapperHeader: React.FC<{ heading: string }> = ({ heading }) =>
 
 export const MIDIToggleButton: React.FC = () => {
     const { usingMidi } = getGlobalState(useSelector);
+    const dispatch = useDispatch();
+    const handleToggleClick = React.useCallback(() => {
+        if (usingMidi) {
+            dispatch(midiActions.resetState());
+        } else {
+            dispatch(midiActions.toggleUsingMidi());
+        }
+    }, [usingMidi, dispatch]);
     return (
         <button
             style={{
                 margin: "0 auto",
                 color: "white",
-                backgroundColor: "black",
+                borderRadius: "5px",
+                marginTop: "1em",
+                marginBottom: "1em",
+                backgroundColor: `${usingMidi ? "green" : "black"}`,
                 border: "solid 1px white",
                 width: "10%",
                 height: 30,
             }}
-            onClick={() => {
-                // dispatch(midiActions.toggleUsingMidi());
-            }}
+            onClick={handleToggleClick}
         >
-            {usingMidi ? <span>toggle using midi off</span> : <span>toggle using midi on</span>}
+            {usingMidi ? <span>MIDI control ON</span> : <span>MIDI control OFF</span>}
         </button>
     );
 };
@@ -73,6 +84,60 @@ export const MIDIWrapperContainer: React.FC<any> = ({ children }) => {
         >
             {children}
         </div>
+    );
+};
+
+export interface ITestMIDIProps {
+    testid: string;
+    midi_access: IAccessRecordState;
+}
+
+export const TestMIDI: React.FC<ITestMIDIProps> = (_props) => {
+    return <div style={{ display: "none" }}></div>;
+};
+
+export const TestMidiComponent: React.FC = () => {
+    const {
+        isListeningForMappingEdit,
+        access: accessState,
+        inputs: accessInputs,
+        outputs: accessOutputs,
+        midiEditMode,
+        online: accessOnline,
+        usingFader,
+        usingKnob,
+        channel,
+        intensity,
+    } = getGlobalState(useSelector);
+    return (
+        <>
+            <TestMIDI
+                testid="test-midi"
+                midi_access={{
+                    selectedController: "XONE:K2 MIDI",
+                    isTesting: true,
+                    usingMidi: true,
+                    isListeningForMappingEdit,
+                    mappingEditOptions: defaultMappingEditOptions,
+                    controllerInUse: "XONE:K2 MIDI",
+                    midiMappingInUse: {
+                        callbackMap: {} as any,
+                        recentlyUsed: "XONE:K2 MIDI",
+                        midiMappingPreference: {} as any,
+                        hasPreference: false,
+                    },
+                    access: accessState,
+                    inputs: accessInputs,
+                    outputs: accessOutputs,
+                    midiEditMode,
+                    online: accessOnline,
+                    usingFader,
+                    usingKnob,
+                    channel,
+                    intensity,
+                }}
+            />
+        </>
     );
 };
 
@@ -102,33 +167,47 @@ interface MIDISelectProps {
     setOption: (option: string & MIDISliceState["selectedController"]) => void;
     children?: ReactNode | ReactNode[];
     midi_inputs: MIDIInput[];
-    option: string;
 }
 
-export const MIDISelect: React.FC<MIDISelectProps> = ({ setOption, midi_inputs, option }) => {
+export const MIDISelect = React.forwardRef<HTMLSelectElement, MIDISelectProps>((props, ref) => {
+    const { selectedController, usingMidi, inputs } = getGlobalState(useSelector);
+    const { setOption, midi_inputs } = props;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(midiActions.sortMIDIInputsByRecentlyused());
+    }, [dispatch, selectedController, usingMidi, inputs.length]);
+
     return (
-        <select
-            className={isLedWindow() ? "no-height" : ""}
-            data-testid="midi-select"
-            value={option || "Select A Connected Device"}
-            onChange={(e) => {
-                setOption(e.target.value);
-            }}
-            style={{ backgroundColor: "black" }}
-        >
-            <option data-testid="select-option" value="Select A Connected Device" disabled>
-                Select A Connected Device
-            </option>
-            {midi_inputs.map((input) => {
-                return (
-                    <option data-testid="select-option" key={input.id} value={input.name}>
-                        {MIDIController.stripNativeLabelFromMIDIInputName(input.name)}
+        <>
+            {usingMidi && midi_inputs.length > 0 && (
+                <select
+                    ref={ref}
+                    className={isLedWindow() ? "no-height" : ""}
+                    data-testid="midi-select"
+                    value={selectedController || "Select A Connected Device"}
+                    onChange={(e) => {
+                        setOption(e.target.value);
+                    }}
+                    style={{ backgroundColor: "black" }}
+                >
+                    <option data-testid="select-option" value="Select A Connected Device" disabled>
+                        Select A Connected Device
                     </option>
-                );
-            })}
-        </select>
+                    {midi_inputs.map((input) => {
+                        return (
+                            <option data-testid="select-option" key={input?.id} value={input?.name}>
+                                {MIDIController.stripNativeLabelFromMIDIInputName(input?.name)}
+                            </option>
+                        );
+                    })}
+                </select>
+            )}
+        </>
     );
-};
+});
+
+MIDISelect.displayName = "MIDISelect";
 
 export const MIDISelectContainer: React.FC<any> = ({ children }) => {
     return (

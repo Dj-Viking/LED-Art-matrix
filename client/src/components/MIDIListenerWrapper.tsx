@@ -3,7 +3,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 //
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect } from "react";
 import { MIDIController, MIDIInput } from "../utils/MIDIControlClass";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -19,21 +19,13 @@ import {
     MIDISelect,
     ControlSvg,
     MIDIToggleButton,
+    TestMidiComponent,
 } from "./MIDIListenerWrapper.style";
-import { IAccessRecordState } from "../types";
-import { SUPPORTED_CONTROLLERS, MIDIInputName } from "../constants";
+import { SUPPORTED_CONTROLLERS, MIDIInputName, ControllerName } from "../constants";
 import IntensityBar from "./IntensityBar";
 import { isLedWindow } from "../App";
 import { getGlobalState } from "../store/store";
-import { defaultMappingEditOptions, midiActions, MIDISliceState } from "../store/midiSlice";
-
-export interface ITestMIDIProps {
-    testid: string;
-    midi_access: IAccessRecordState;
-}
-export const TestMIDI: React.FC<ITestMIDIProps> = (_props) => {
-    return <div style={{ display: "none" }}></div>;
-};
+import { midiActions, MIDISliceState } from "../store/midiSlice";
 
 export interface MIDIListenerWrapperProps {
     children?: ReactNode | ReactNode[];
@@ -42,60 +34,63 @@ export interface MIDIListenerWrapperProps {
 const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element => {
     const dispatch = useDispatch();
     const {
-        access: accessState,
         online: accessOnline,
         inputs: accessInputs,
-        outputs: accessOutputs,
-        midiEditMode,
         usingFader,
         usingKnob,
         usingMidi,
         channel,
         intensity,
-        isListeningForMappingEdit,
         controllerInUse,
+        selectedController,
         isTesting,
         midiMappingInUse: { hasPreference },
     } = getGlobalState(useSelector);
 
-    const [option, setOption] = useState<string>("");
     useEffect(() => {
         MIDIController.isMIDIPreferenceLocalStorageSet(controllerInUse, dispatch);
     }, [controllerInUse, dispatch]);
 
     useEffect(() => {
-        // if (usingMidi) {
-        //     dispatch(midiActions.getMIDIAccess());
-        // }
-        dispatch(midiActions.getMIDIAccess());
+        if (usingMidi) {
+            dispatch(midiActions.getMIDIAccess());
+        }
     }, [dispatch, usingMidi]);
 
-    function getInputName(all_inputs: MIDIInput[], option: string): MIDIInputName {
-        return all_inputs?.find((item) => item.name === option)?.name || "Not Found";
-    }
+    const selectRef = React.createRef<HTMLSelectElement>();
+
+    const getInputName = React.useCallback((): MIDIInputName => {
+        const name = MIDIController.stripNativeLabelFromMIDIInputName(
+            accessInputs?.find(
+                (input) => MIDIController.stripNativeLabelFromMIDIInputName(input?.name) === selectedController
+            )?.name || "Not Found"
+        );
+        return name;
+    }, [accessInputs, selectedController]);
 
     function getStrippedInputName(name: string): MIDIInputName {
         return MIDIController.stripNativeLabelFromMIDIInputName(name);
     }
 
-    function getInput(all_inputs: MIDIInput[], option: string): MIDIInput {
-        return all_inputs?.find((item) => item?.name === option)!;
-    }
+    const getInput = React.useCallback((): MIDIInput => {
+        return accessInputs?.find(
+            (item) => MIDIController.stripNativeLabelFromMIDIInputName(item?.name) === selectedController
+        )!;
+    }, [accessInputs, selectedController]);
 
-    function getControlName(inputname: MIDIInputName, channel: number): string {
-        const strippedName = MIDIController.stripNativeLabelFromMIDIInputName(inputname);
+    const getControlName = React.useCallback((): ControllerName | "unsupported controller" => {
+        const strippedName = MIDIController.stripNativeLabelFromMIDIInputName(selectedController);
 
         if (!SUPPORTED_CONTROLLERS[strippedName]) {
             return "unsupported controller";
         }
 
         return SUPPORTED_CONTROLLERS[strippedName]![channel] || "unknown control name";
-    }
+    }, [channel, selectedController]);
 
     const setOptionCallback = useCallback(
         (option: string & MIDISliceState["selectedController"]) => {
-            setOption(option);
-            dispatch(midiActions.setSelectedController(option));
+            dispatch(midiActions.setSelectedController(MIDIController.stripNativeLabelFromMIDIInputName(option)));
             // may have a native label given by the browser so strip native label name
             dispatch(
                 midiActions.setControllerInUse({
@@ -104,7 +99,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 })
             );
         },
-        [setOption, dispatch, hasPreference]
+        [dispatch, hasPreference]
     );
 
     return (
@@ -117,55 +112,28 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                     flexDirection: "column",
                 }}
             >
-                {isTesting && (
-                    <TestMIDI
-                        testid="test-midi"
-                        midi_access={{
-                            selectedController: "XONE:K2 MIDI",
-                            isTesting: true,
-                            usingMidi: true,
-                            isListeningForMappingEdit,
-                            mappingEditOptions: defaultMappingEditOptions,
-                            controllerInUse: "XONE:K2 MIDI",
-                            midiMappingInUse: {
-                                callbackMap: {} as any,
-                                recentlyUsed: "XONE:K2 MIDI",
-                                midiMappingPreference: {} as any,
-                                hasPreference: false,
-                            },
-                            access: accessState,
-                            inputs: accessInputs,
-                            outputs: accessOutputs,
-                            midiEditMode,
-                            online: accessOnline,
-                            usingFader,
-                            usingKnob,
-                            channel,
-                            intensity,
-                        }}
-                    />
-                )}
+                {isTesting && <TestMidiComponent />}
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
                 <MIDIWrapperContainer>
                     <MIDISelectContainer>
-                        <MIDISelect setOption={setOptionCallback} option={option} midi_inputs={accessInputs} />
+                        {usingMidi && accessInputs.length > 0 && (
+                            <MIDISelect ref={selectRef} setOption={setOptionCallback} midi_inputs={accessInputs} />
+                        )}
                     </MIDISelectContainer>
                     <MIDIToggleButton />
-                    {option && (
+                    {usingMidi && accessInputs.length > 0 && (
                         <DeviceInterfaceContainer
-                            statename={getInput(accessInputs, option)?.state || "disconnected"}
-                            controllerName={getStrippedInputName(getInputName(accessInputs, option))}
+                            statename={getInput()?.state || "disconnected"}
+                            controllerName={getStrippedInputName(getInputName())}
                         >
-                            <InputName name={getInputName(accessInputs, option)} />
+                            <InputName name={getInputName()} />
                             <DeviceSvgContainer>
                                 <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
                             </DeviceSvgContainer>
                             <IntensityBar intensity={intensity || 0} />
                             <ControlNameContainer>
                                 <ChannelNumber channel={channel || 0} />
-                                <MIDIChannelControl
-                                    name={getControlName(getInputName(accessInputs, option), channel)}
-                                />
+                                <MIDIChannelControl name={getControlName()} />
                             </ControlNameContainer>
                         </DeviceInterfaceContainer>
                     )}

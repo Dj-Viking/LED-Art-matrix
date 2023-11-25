@@ -9,7 +9,7 @@ import { keyboardActions } from "../store/keyboardSlice";
 import { ToolkitDispatch } from "../store/store";
 import { CallbackMapping } from "./MIDIMappingClass";
 
-export type KeyInputName = "keyboard" | "_" | "j" | "space";
+export type KeyInputName = "keyboard";
 
 export type KeyChannel = 69;
 
@@ -27,12 +27,12 @@ export type KeyMapping<N extends KeyInputName> = Record<
  * const preference = {
  *     [this.name]: {
  *         mapping: {
- *             [controlName]: {
+ *             ["a"]: {
  *                 uiName: "circleWidth"
  *                 channel: 4
  *             },
  *             // other control names
- *             ["fader_1"]: {
+ *             ["b"]: {
  *                 uiName: "animDuration"
  *                 channel: 0
  *             }
@@ -53,7 +53,7 @@ export type KeyMapping<N extends KeyInputName> = Record<
  * callbackMap[uiName]()
  */
 export class KeyMappingClass<N extends KeyInputName> {
-    public name: KeyInputName = "_";
+    public name: KeyInputName = "keyboard";
     public mapping: KeyMapping<N> = {} as any;
     public callbackMap: CallbackMapping = {} as any;
     public constructor(name: N, dispatch: ToolkitDispatch) {

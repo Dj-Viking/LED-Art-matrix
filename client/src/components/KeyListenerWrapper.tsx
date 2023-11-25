@@ -5,13 +5,19 @@ import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ledActions } from "../store/ledSlice";
 import { IPresetButton } from "../types";
 import { getGlobalState } from "../store/store";
-import { keyboardActions } from "../store/keyboardSlice";
-import { KeyInputName } from "../utils/KeyMappingClass";
+import { midiActions } from "../store/midiSlice";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
-    const { deleteModeActive, presetButtons, saveModalIsOpen, figureOn, keyMapEditMode, isListeningForKeyMappingEdit } =
-        getGlobalState(useSelector);
+    const {
+        deleteModeActive,
+        presetButtons,
+        saveModalIsOpen,
+        figureOn,
+        keyMapEditMode,
+        isListeningForKeyMappingEdit,
+        usingMidi,
+    } = getGlobalState(useSelector);
 
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
@@ -32,6 +38,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             if (saveModalIsOpen) return;
 
             if (keyMapEditMode && isListeningForKeyMappingEdit) {
+                console.log("event.key => ", event.key);
                 // update key mapping for the ey that was just pressed
                 // dispatch(keyboardActions.updateKeyMapping(event.key as KeyInputName));
             }
@@ -41,6 +48,14 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             if (event.key === "c" || event.key === "C") {
                 dispatch(ledActions.setPresetName(""));
                 dispatch(presetButtonsListActions.setAllInactive());
+            }
+
+            if (event.key === "m" || event.key === "M") {
+                if (usingMidi) {
+                    dispatch(midiActions.resetState());
+                } else {
+                    dispatch(midiActions.toggleUsingMidi());
+                }
             }
 
             if (event.key === "b" || event.key === "B") {
@@ -56,6 +71,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
         [
             deleteModeActive,
             saveModalIsOpen,
+            usingMidi,
             presetButtons,
             setStyle,
             dispatch,

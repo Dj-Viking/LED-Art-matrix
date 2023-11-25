@@ -25,6 +25,7 @@ export const MY_INDEX_TO_KEY_MAP = {
 
 export type XONEK2_ControlNames =
     | "1_encoder"
+    | "2_encoder"
     | "1_upper_knob"
     | "1_upper_button"
     | "1_middle_button"
@@ -55,13 +56,9 @@ export type XONEK2_ControlNames =
     | "4_o_button"
     | "4_p_button";
 
-
-
 export type XONEK2_MIDIChannelTable = Record<number, XONEK2_ControlNames>;
 
-export type LKMK3_ControlNames = 
-    | "NOT SET YET"
-    | "";
+export type LKMK3_ControlNames = "NOT SET YET" | "";
 
 export type LKMK3_MIDIChannelTable = Record<number, LKMK3_ControlNames>;
 
@@ -70,6 +67,7 @@ export const LKMK3_MIDI_CHANNEL_TABLE: LKMK3_MIDIChannelTable = {
 };
 export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     0: "1_encoder",
+    1: "2_encoder",
     4: "1_upper_knob",
     8: "1_middle_knob",
     12: "1_lower_knob",
@@ -111,6 +109,7 @@ export type PresetButtonName =
 
 export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
     "1_encoder": 0,
+    "2_encoder": 1,
     "1_upper_knob": 4,
     "1_middle_knob": 8,
     "1_lower_knob": 12,
@@ -320,6 +319,7 @@ export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
     { uiName: UIInterfaceDeviceName; channel: number }
 > = {
     "1_encoder": unsetPreference,
+    "2_encoder": unsetPreference,
     "1_a_button": unsetPreference,
     "1_b_button": unsetPreference,
     "1_c_button": unsetPreference,

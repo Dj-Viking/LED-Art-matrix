@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
     MIDIInputName,
@@ -239,6 +240,7 @@ class MIDIController implements IMIDIController {
     }
 
     public static stripNativeLabelFromMIDIInputName(name: string): MIDIInputName {
+        if (!name) return "Not Found";
         return name.replace(/(\d-\s)/g, "") as MIDIInputName;
     }
 
@@ -398,7 +400,9 @@ class MIDIController implements IMIDIController {
                     const mapping = pref.mapping;
                     const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
-                        callback(midiIntensity, buttonIds);
+                        setTimeout(() => {
+                            callback(midiIntensity, buttonIds);
+                        }, 100);
                     }
                 }
                 break;
@@ -408,7 +412,9 @@ class MIDIController implements IMIDIController {
                     const mapping = pref.mapping;
                     const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
-                        callback(midiIntensity, buttonIds);
+                        setTimeout(() => {
+                            callback(midiIntensity, buttonIds);
+                        }, 100);
                     }
                 }
                 break;

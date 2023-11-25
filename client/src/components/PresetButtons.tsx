@@ -165,7 +165,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     );
 
                     const keyMapping = KeyMappingClass.getControlNameFromControllerInUseMapping(
-                        keyboardMappingInUse.keyMappingPreference["j"],
+                        keyboardMappingInUse.keyMappingPreference["keyboard"],
                         "resetTimerButton"
                     );
 
