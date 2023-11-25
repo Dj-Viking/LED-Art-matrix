@@ -10,7 +10,7 @@ import { SavePresetModal } from "./Modal/SavePresetModal";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 import { Slider } from "./Slider";
 import { DeletePresetModal } from "./Modal/DeletePresetConfirmModal";
-import MIDIListenerWrapper from "./MIDIListenerWrapper";
+import { MIDIListenerWrapper } from "./MIDIListenerWrapper";
 import {
     ResetTimerButton,
     DeleteButton,
@@ -23,7 +23,6 @@ import {
     ToggleMIDIMapEditModeButton,
     StyledPresetButtonsParent,
     StyledPresetButton,
-    ToggleKeyMapEditModeButton,
 } from "./PresetButton.style";
 import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";

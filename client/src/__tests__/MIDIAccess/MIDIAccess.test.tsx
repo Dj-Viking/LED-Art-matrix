@@ -15,7 +15,7 @@ import { LOCATION_DISPLAY_ID, SUPPORTED_CONTROLLERS } from "../../constants";
 import { MIDIAccessRecord, MIDIConnectionEvent, MIDIMessageEvent } from "../../utils/MIDIControlClass";
 import { TestService } from "../../utils/TestServiceClass";
 import { act } from "react-dom/test-utils";
-import { ITestMIDIProps, TestMIDI } from "../../components/MIDIListenerWrapper";
+import { ITestMIDIProps, TestMIDI } from "../../components/MIDIListenerWrapper.style";
 import { toolkitStore } from "../../store/store";
 
 const MOCK_MIDI_ACCESS_RECORD = {

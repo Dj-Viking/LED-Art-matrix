@@ -1,5 +1,5 @@
 import React from "react";
-import MIDIListenerWrapper from "../components/MIDIListenerWrapper";
+import { MIDIListenerWrapper } from "../components/MIDIListenerWrapper";
 
 const LedWindow: React.FC = () => {
     return (
