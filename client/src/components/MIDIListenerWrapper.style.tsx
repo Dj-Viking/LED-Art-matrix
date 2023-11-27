@@ -58,6 +58,7 @@ export const MIDIToggleButton: React.FC = () => {
             style={{
                 margin: "0 auto",
                 color: "white",
+                cursor: "pointer",
                 borderRadius: "5px",
                 marginTop: "1em",
                 marginBottom: "1em",
@@ -214,6 +215,7 @@ export const MIDISelectContainer: React.FC<any> = ({ children }) => {
         <div
             className={isLedWindow() ? "no-height" : ""}
             style={{
+                height: "19px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
