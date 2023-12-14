@@ -41,15 +41,15 @@ $env:MY_OS = $env:OS
 
 if ($All) {
 
-    # start typescript compilation in watch mode for server 
+    # start typescript compilation in watch mode for server
     Push-Location ".\server";
-
-    Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc -b . --watch";
-    
+    Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch";
     Pop-Location;
-    # start the server
-    Start-Process node -ArgumentList ".\server\dist\index.js";
-    
+
+    # start the server in watch mode
+    Push-Location ".\server\dist";
+    Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js"
+    Pop-Location;
     
     # start the client
     Start-Process node -ArgumentList ".\client\scripts\start.js";
@@ -60,11 +60,15 @@ elseif (!$All -and ($Client -or $Server)) {
     }
     
     if ($Server) {
-        # start typescript compilation in watch mode for server 
-        Start-Process node -ArgumentList ".\server\node_modules\typescript\bin\tsc\ -b . --watch";
+        # start typescript compilation in watch mode for server
+        Push-Location ".\server";
+        Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch";
+        Pop-Location;
 
-        # start the server
-        Start-Process node -ArgumentList ".\server\dist\index.js";
+        # start the server in watch mode
+        Push-Location ".\server\dist";
+        Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js"
+        Pop-Location;
     }
 }
 else {
