@@ -1,9 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { KeyInputName } from "../../utils/KeyMappingClass";
+import { KeyInputName, KeyMappingClass } from "../../utils/KeyMappingClass";
 
 import { MyThunkConfig } from "../../types";
 import { deepCopy } from "../../utils/deepCopy";
-import { KeyMappingClass } from "../../utils/KeyMappingClass";
 import { keyboardActions } from "../keyboardSlice";
 import { UNIMPLEMENTED } from "./midiActionCreators";
 

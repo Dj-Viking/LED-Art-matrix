@@ -14,6 +14,8 @@
     "server:dev": "sh server.sh",
     "postinstall": "echo 'postinstall!!!!'",
     "start-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File start.ps1",
+    "start-windows2": "powershell -NoProfile -ExecutionPolicy ByPass -File start2.ps1",
+    "stop-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File stop.ps1",
     "test-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1",
     "test:ci": "npm run cover:ci",
     "test:jest": "jest --verbose --coverage --watchAll=false --config='./client/src/jest.config.ts'",

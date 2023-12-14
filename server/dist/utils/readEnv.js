@@ -5,7 +5,7 @@ function readEnv() {
     let entries = {};
     let env;
     if (typeof process.env.ENV_TXT !== "undefined") {
-        env = process.env.ENV_TXT.split("\n");
+        env = process.env.ENV_TXT.split(/\r\n|\n/);
         for (let i = 0; i < env.length; i++) {
             if (env[i] === "") {
                 continue;

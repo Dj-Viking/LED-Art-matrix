@@ -11,15 +11,16 @@ npm install
 
 Write-Host "[INFO]: Installing server javascript dependencies..." -ForegroundColor Cyan 
 
-Set-Location -Path "$($Server)";
+Push-Location -Path "$($Server)";
 npm install
+Pop-Location;
 Write-Host "[INFO]: Done installing server dependencies" -ForegroundColor Green 
 
-Set-Location -Path "..";
-Set-Location -Path "$($Client)";
+Push-Location -Path "$($Client)";
 
 Write-Host "[INFO]: Installing client javascript dependencies..." -ForegroundColor Cyan 
 
 npm install
 
+Pop-Location;
 Write-Host "[INFO]: Done installing client dependencies" -ForegroundColor Green
