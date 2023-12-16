@@ -1,12 +1,71 @@
 import React from "react";
 import styled from "styled-components";
 import { Track } from "./AudioPlayer";
+import { PauseButtonSvg } from "./PauseButtonSvg";
+import { PlayButtonSvg } from "./PlayButtonSvg";
 
 export const StyledAudioPlayerContainer = styled.div`
     & {
         margin: 0 auto;
     }
 `;
+
+export type FillType = "black" | "white" | "green" | "grey";
+export type PauseButtonFill = Record<"button" | "pauseBars", FillType>;
+
+export interface PlayPauseButtonControlProps {
+    height: number;
+    width: number;
+    fill: PauseButtonFill | FillType;
+    audioRef: React.RefObject<HTMLAudioElement>;
+    isPlaying: boolean;
+    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface PlayPauseControlProps extends Omit<PlayPauseButtonControlProps, "width" | "height" | "fill"> {
+    playButtonFill: FillType;
+    pauseButtonFill: PauseButtonFill;
+    playButtonHeight: number;
+    pauseButtonHeight: number;
+    playButtonWidth: number;
+    pauseButtonWidth: number;
+}
+export const PlayPauseControl: React.FC<PlayPauseControlProps> = (props) => {
+    const {
+        isPlaying,
+        setIsPlaying,
+        audioRef,
+        playButtonFill,
+        pauseButtonFill,
+        playButtonHeight,
+        pauseButtonHeight,
+        playButtonWidth,
+        pauseButtonWidth,
+    } = props;
+    return (
+        <>
+            {!isPlaying ? (
+                <PlayButtonSvg
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                    audioRef={audioRef}
+                    fill={playButtonFill}
+                    height={playButtonHeight}
+                    width={playButtonWidth}
+                />
+            ) : (
+                <PauseButtonSvg
+                    fill={pauseButtonFill}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                    audioRef={audioRef}
+                    height={pauseButtonHeight}
+                    width={pauseButtonWidth}
+                />
+            )}
+        </>
+    );
+};
 
 export const trackListStyle = {
     textDecoration: "none",
@@ -64,12 +123,16 @@ export interface TrackListProps {
 }
 
 export const TrackList: React.FC<TrackListProps> = (props) => {
+    const { setCurrentSong, songs, currentSong } = props;
     // eslint-disable-next-line
-    const handleTrackChange = React.useCallback<React.MouseEventHandler<HTMLDivElement>>((event) => {
-        if (event.target.id !== props.currentSong) {
-            props.setCurrentSong(event.target.id);
-        }
-    }, []);
+    const handleTrackChange = React.useCallback<React.MouseEventHandler<HTMLDivElement>>(
+        (event) => {
+            if (event.target.id !== currentSong) {
+                setCurrentSong(event.target.id);
+            }
+        },
+        [currentSong, setCurrentSong]
+    );
     return (
         <div>
             <section
@@ -103,10 +166,10 @@ export const TrackList: React.FC<TrackListProps> = (props) => {
                 >
                     Track List
                 </span>
-                {props.songs.map((song) => (
+                {songs.map((song) => (
                     <div
-                        style={props.currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
-                        className={props.currentSong === song.filePath ? "anim-playing-text" : ""}
+                        style={currentSong === song.filePath ? trackListStylePlaying : trackListStyle}
+                        className={currentSong === song.filePath ? "anim-playing-text" : ""}
                         id={song.filePath}
                         key={song.trackName}
                         onClick={handleTrackChange}

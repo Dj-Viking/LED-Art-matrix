@@ -1,16 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 
 // SONGS
-import G6 from "./music/G6_-24_db_for_web_test.m4a";
-import REVERB_STUDY from "./music/175-Reverb-study.m4a";
+import G6 from "../music/G6_-24_db_for_web_test.m4a";
+import REVERB_STUDY from "../music/175-Reverb-study.m4a";
 
 // TEXT ANIMATIONS
-import "./aux-styles/trackAnimStyles.css";
-import { PlayButtonSvg } from "./PlayButtonSvg";
+import "../aux-styles/trackAnimStyles.css";
 import {
     AudioPlayerRangeInput,
     AudioRangeInputContainer,
     AudioRangeInputVolumeText,
+    PauseButtonFill,
+    PlayPauseControl,
     StyledAudioPlayerContainer,
     TrackList,
 } from "./AudioPlayer.style";
@@ -22,6 +24,9 @@ export type Track = {
     trackName: string;
     filePath: string;
 };
+
+const controlBackgroundColor = "grey";
+
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [currentSong, setCurrentSong] = useState(G6);
 
@@ -44,6 +49,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (_props) => {
         const audioElRef = React.useRef<HTMLAudioElement>(null);
         const [volumeState, setVolumeState] = useState(0);
+        const [isPlaying, setIsPlaying] = useState(false);
         const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
             //
             if (audioElRef.current) {
@@ -54,10 +60,25 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
             }
         }, []);
 
+        const pauseButtonFill: PauseButtonFill = {
+            button: "green",
+            pauseBars: controlBackgroundColor,
+        };
+
         return (
             <>
                 <StyledAudioPlayerContainer>
-                    <PlayButtonSvg audioRef={audioElRef} fill={"green"} height={100} width={100} />
+                    <PlayPauseControl
+                        playButtonFill={"green"}
+                        pauseButtonFill={pauseButtonFill}
+                        playButtonHeight={100}
+                        pauseButtonHeight={100}
+                        playButtonWidth={100}
+                        pauseButtonWidth={100}
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
+                        audioRef={audioElRef}
+                    />
                     <AudioRangeInputContainer>
                         <AudioPlayerRangeInput handleInput={handleVolumeInput} />
                         <AudioRangeInputVolumeText volumeState={volumeState} />
@@ -71,7 +92,15 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
 
     return (
         <>
-            <div style={{ display: "flex", height: 150, width: "100%", background: "grey", justifyContent: "center" }}>
+            <div
+                style={{
+                    display: "flex",
+                    height: 150,
+                    width: "100%",
+                    background: controlBackgroundColor,
+                    justifyContent: "center",
+                }}
+            >
                 <NewAudioPlayer />
             </div>
             <TrackList setCurrentSong={setCurrentSong} currentSong={currentSong} songs={songs} />
