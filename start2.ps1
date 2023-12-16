@@ -43,31 +43,31 @@ if ($All) {
 
     # start typescript compilation in watch mode for server
     Push-Location ".\server";
-    Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch";
+    Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch" -WindowStyle Minimized;
     Pop-Location;
 
     # start the server in watch mode
     Push-Location ".\server\dist";
-    Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js"
+    Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js" -WindowStyle Minimized;
     Pop-Location;
     
     # start the client
-    Start-Process node -ArgumentList ".\client\scripts\start.js";
+    Start-Process node -ArgumentList ".\client\scripts\start.js" -WindowStyle Minimized;
 }
 elseif (!$All -and ($Client -or $Server)) {
     if ($Client) {
-        Start-Process node -ArgumentList ".\client\scripts\start.js";
+        Start-Process node -ArgumentList ".\client\scripts\start.js" -WindowStyle Minimized;
     }
     
     if ($Server) {
         # start typescript compilation in watch mode for server
         Push-Location ".\server";
-        Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch";
+        Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch" -WindowStyle Minimized;
         Pop-Location;
 
         # start the server in watch mode
         Push-Location ".\server\dist";
-        Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js"
+        Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js" -WindowStyle Minimized;
         Pop-Location;
     }
 }
