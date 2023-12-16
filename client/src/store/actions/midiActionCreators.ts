@@ -127,7 +127,9 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
 
         // no use for setting output midi controller callbacks (yet)
 
-        console.log("what is mc here on initialization of midi control", mc);
+        if (!_thunkAPI.getState().midiState.isTesting) {
+            console.log("what is mc here on initialization of midi control", mc);
+        }
         return mc;
     }
 );

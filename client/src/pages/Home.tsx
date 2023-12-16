@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Auth from "../utils/AuthService";
 
-import AudioPlayerComponent from "../components/AudioPlayer";
+import AudioPlayerComponent from "../components/AudioPlayer/AudioPlayer";
 import { useHistory } from "react-router-dom";
 import { loggedInActions } from "../store/loggedInSlice";
 import { Canvas } from "../components/Canvas";
