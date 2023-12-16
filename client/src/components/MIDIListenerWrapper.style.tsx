@@ -9,6 +9,7 @@ import { getGlobalState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { defaultMappingEditOptions, midiActions, MIDISliceState } from "../store/midiSlice";
 import { IAccessRecordState } from "../types";
+import { keyGen } from "../utils/keyGen";
 
 export const DeviceSvgContainer = styled.div`
     position: relative;
@@ -192,12 +193,12 @@ export const MIDISelect = React.forwardRef<HTMLSelectElement, MIDISelectProps>((
                     }}
                     style={{ backgroundColor: "black" }}
                 >
-                    <option data-testid="select-option" value="Select A Connected Device" disabled>
+                    <option key={keyGen()} data-testid="select-option" value="Select A Connected Device" disabled>
                         Select A Connected Device
                     </option>
                     {midi_inputs.map((input) => {
                         return (
-                            <option data-testid="select-option" key={input?.id} value={input?.name}>
+                            <option data-testid="select-option" key={keyGen()} value={input?.name}>
                                 {MIDIController.stripNativeLabelFromMIDIInputName(input?.name)}
                             </option>
                         );
