@@ -18,7 +18,10 @@ import {
 } from "./AudioPlayer.style";
 
 export interface NewAudioPlayerProps {
-    [key: string]: any;
+    currentSong: string;
+    audioRef: React.RefObject<HTMLAudioElement>;
+    isPlaying: boolean;
+    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export type Track = {
     trackName: string;
@@ -27,8 +30,57 @@ export type Track = {
 
 const controlBackgroundColor = "grey";
 
+const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
+    const { currentSong, audioRef: audioElRef, isPlaying, setIsPlaying } = props;
+    const [volumeState, setVolumeState] = useState(0);
+
+    const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>(
+        (event) => {
+            //
+            if (audioElRef.current) {
+                const audio = audioElRef.current;
+
+                audio.volume = event.target.value;
+                setVolumeState(event.target.value);
+            }
+        },
+        [audioElRef]
+    );
+
+    const pauseButtonFill: PauseButtonFill = {
+        button: "green",
+        pauseBars: controlBackgroundColor,
+    };
+
+    return (
+        <>
+            <StyledAudioPlayerContainer>
+                <PlayPauseControl
+                    playButtonFill={"green"}
+                    pauseButtonFill={pauseButtonFill}
+                    playButtonHeight={100}
+                    pauseButtonHeight={100}
+                    playButtonWidth={100}
+                    pauseButtonWidth={100}
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                    audioRef={audioElRef}
+                />
+                <AudioRangeInputContainer>
+                    <AudioPlayerRangeInput handleInput={handleVolumeInput} />
+                    <AudioRangeInputVolumeText volumeState={volumeState} />
+                </AudioRangeInputContainer>
+
+                <audio autoPlay={false} src={currentSong} ref={audioElRef} />
+            </StyledAudioPlayerContainer>
+        </>
+    );
+};
+
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [currentSong, setCurrentSong] = useState(G6);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const audioElRef = React.useRef<HTMLAudioElement>(null);
 
     // ARRAY OF LOCAL SONG FILE PATHS
     const songs: Track[] = [
@@ -46,50 +98,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         // },
     ];
 
-    const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (_props) => {
-        const audioElRef = React.useRef<HTMLAudioElement>(null);
-        const [volumeState, setVolumeState] = useState(0);
-        const [isPlaying, setIsPlaying] = useState(false);
-        const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>((event) => {
-            //
-            if (audioElRef.current) {
-                const audio = audioElRef.current;
-
-                audio.volume = event.target.value;
-                setVolumeState(event.target.value);
-            }
-        }, []);
-
-        const pauseButtonFill: PauseButtonFill = {
-            button: "green",
-            pauseBars: controlBackgroundColor,
-        };
-
-        return (
-            <>
-                <StyledAudioPlayerContainer>
-                    <PlayPauseControl
-                        playButtonFill={"green"}
-                        pauseButtonFill={pauseButtonFill}
-                        playButtonHeight={100}
-                        pauseButtonHeight={100}
-                        playButtonWidth={100}
-                        pauseButtonWidth={100}
-                        isPlaying={isPlaying}
-                        setIsPlaying={setIsPlaying}
-                        audioRef={audioElRef}
-                    />
-                    <AudioRangeInputContainer>
-                        <AudioPlayerRangeInput handleInput={handleVolumeInput} />
-                        <AudioRangeInputVolumeText volumeState={volumeState} />
-                    </AudioRangeInputContainer>
-
-                    <audio autoPlay={false} src={currentSong} ref={audioElRef} />
-                </StyledAudioPlayerContainer>
-            </>
-        );
-    };
-
     return (
         <>
             <div
@@ -101,9 +109,21 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
                     justifyContent: "center",
                 }}
             >
-                <NewAudioPlayer />
+                <NewAudioPlayer
+                    isPlaying={isPlaying}
+                    setIsPlaying={setIsPlaying}
+                    currentSong={currentSong}
+                    audioRef={audioElRef}
+                />
             </div>
-            <TrackList setCurrentSong={setCurrentSong} currentSong={currentSong} songs={songs} />
+            <TrackList
+                isPlaying={isPlaying}
+                setIsPlaying={setIsPlaying}
+                audioRef={audioElRef}
+                setCurrentSong={setCurrentSong}
+                currentSong={currentSong}
+                songs={songs}
+            />
         </>
     );
 };

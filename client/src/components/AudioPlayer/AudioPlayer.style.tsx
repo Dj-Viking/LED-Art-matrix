@@ -117,21 +117,44 @@ export const AudioPlayerRangeInput: React.FC<AudioPlayerRangeInputProps> = (prop
 };
 
 export interface TrackListProps {
+    isPlaying: boolean;
+    setIsPlaying: React.Dispatch<React.SetStateAction<boolean>>;
     songs: Track[];
     currentSong: string;
+    audioRef: React.RefObject<HTMLAudioElement>;
     setCurrentSong: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const TrackList: React.FC<TrackListProps> = (props) => {
-    const { setCurrentSong, songs, currentSong } = props;
-    // eslint-disable-next-line
+    const { setCurrentSong, songs, currentSong, audioRef, isPlaying, setIsPlaying } = props;
+    // have to do some set timeout shit because of weird browser event loop bullshit
+    // otherwise it will try to play a track before it's fully loaded into the audio ref element
+    // i guess. (shrugs)
     const handleTrackChange = React.useCallback<React.MouseEventHandler<HTMLDivElement>>(
         (event) => {
-            if (event.target.id !== currentSong) {
-                setCurrentSong(event.target.id);
-            }
+            (async () => {
+                if (audioRef.current) {
+                    if (event.target.id !== currentSong) {
+                        if (isPlaying) {
+                            audioRef.current?.pause();
+                            setIsPlaying(false);
+                            setCurrentSong(event.target.id);
+                            setTimeout(async () => {
+                                await audioRef.current?.play();
+                                setIsPlaying(true);
+                            }, 100);
+                        } else {
+                            setCurrentSong(event.target.id);
+                            setTimeout(async () => {
+                                await audioRef.current?.play();
+                                setIsPlaying(true);
+                            }, 100);
+                        }
+                    }
+                }
+            })();
         },
-        [currentSong, setCurrentSong]
+        [currentSong, setCurrentSong, audioRef, isPlaying, setIsPlaying]
     );
     return (
         <div>
