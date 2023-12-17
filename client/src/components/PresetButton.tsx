@@ -45,8 +45,16 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
                 return "button_4_position";
             case 4:
                 return "button_5_position";
-            default:
-                return "button_1_position";
+            case 5:
+                return "button_6_position";
+            case 6:
+                return "button_7_position";
+            case 7:
+                return "button_8_position";
+            default: {
+                // hmm maybe this could work for dynamic stuff? // will need to make a dynamic type somehow
+                return `button_${index + 1}_position` as any;
+            }
         }
     }, []);
 

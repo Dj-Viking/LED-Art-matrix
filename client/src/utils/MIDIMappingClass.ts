@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
     DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE,
     MIDIInputName,
@@ -100,6 +102,16 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
+    public static createButtonCallback(dispatch: ToolkitDispatch, btnId: string): void {
+        dispatch((dispatchcb, getState) => {
+            const presetButtonsInState = getState().presetButtonsListState.presetButtons;
+            const btn = presetButtonsInState.find((btn) => btn.id === btnId)!;
+            dispatchcb(presetButtonsListActions.setActiveButton(btnId as string));
+
+            PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff);
+        });
+    }
+
     public static generateCallbackBasedOnUIName<P extends keyof CallbackMapping>(
         uiName: UIInterfaceDeviceName,
         dispatch: ToolkitDispatch
@@ -125,41 +137,49 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
             case "button_1_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[0] as string));
-
-                        PresetButtonsList.setStyle(dispatch, "rainbowTest", "1");
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[0] as string);
                     }
                 };
             case "button_2_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[1] as string));
-
-                        PresetButtonsList.setStyle(dispatch, "v2", "1");
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[1] as string);
                     }
                 };
             case "button_3_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[2] as string));
-
-                        PresetButtonsList.setStyle(dispatch, "waves", "1");
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[2] as string);
                     }
                 };
             case "button_4_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[3] as string));
-
-                        PresetButtonsList.setStyle(dispatch, "spiral", "1");
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[3] as string);
                     }
                 };
             case "button_5_position":
                 return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
                     if (midiIntensity === 127) {
-                        dispatch(presetButtonsListActions.setActiveButton(buttonIds?.[4] as string));
-
-                        PresetButtonsList.setStyle(dispatch, "dm5", "1");
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[4] as string);
+                    }
+                };
+            case "button_6_position":
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[5] as string);
+                    }
+                };
+            case "button_7_position":
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[6] as string);
+                    }
+                };
+            case "button_8_position":
+                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                    if (midiIntensity === 127) {
+                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[7] as string);
                     }
                 };
             case "circleWidth":
