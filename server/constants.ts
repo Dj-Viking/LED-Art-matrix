@@ -25,10 +25,6 @@ export const INITIAL_PRESETS = [
         displayName: "spiral",
     },
     {
-        presetName: "fourSpirals",
-        displayName: "fourSpirals",
-    },
-    {
         presetName: "dm5",
         displayName: "dm5",
     },

@@ -105,6 +105,9 @@ export type PresetButtonName =
     | "button_3_position"
     | "button_4_position"
     | "button_5_position"
+    | "button_6_position"
+    | "button_7_position"
+    | "button_8_position"
     | "resetTimerButton";
 
 export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
@@ -156,6 +159,9 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceNam
     button_3_position: "" as any,
     button_4_position: "" as any,
     button_5_position: "" as any,
+    button_6_position: "" as any,
+    button_7_position: "" as any,
+    button_8_position: "" as any,
     circleWidth: "" as any,
     vertPos: "" as any,
     hPos: "" as any,
@@ -388,45 +394,18 @@ export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
 };
 
 export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceName, TouchOscBridgeControlNames> = {
-    /**
-     * not yet implemented
-     */
     button_1_position: "" as any,
-    /**
-     * not yet implemented
-     */
     button_2_position: "" as any,
-    /**
-     * not yet implemented
-     */
     button_3_position: "" as any,
-    /**
-     * not yet implemented
-     */
     button_4_position: "" as any,
-    /**
-     * not yet implemented
-     */
     button_5_position: "" as any,
-    /**
-     * not yet implemented
-     */
+    button_6_position: "" as any,
+    button_7_position: "" as any,
+    button_8_position: "" as any,
     circleWidth: "" as any,
-    /**
-     * not yet implemented
-     */
     vertPos: "" as any,
-    /**
-     * not yet implemented
-     */
     hPos: "" as any,
-    /**
-     * not yet implemented
-     */
     invert: "" as any,
-    /**
-     * not yet implemented
-     */
     animDuration: "" as any,
     resetTimerButton: "" as any,
     animVarCoeff: "" as any,
@@ -456,6 +435,9 @@ export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (...args: any
     button_3_position: (..._args: any[]) => void 0,
     button_4_position: (..._args: any[]) => void 0,
     button_5_position: (..._args: any[]) => void 0,
+    button_6_position: (..._args: any[]) => void 0,
+    button_7_position: (..._args: any[]) => void 0,
+    button_8_position: (..._args: any[]) => void 0,
     circleWidth: (..._args: any[]) => void 0,
     hPos: (..._args: any[]) => void 0,
     invert: (..._args: any[]) => void 0,

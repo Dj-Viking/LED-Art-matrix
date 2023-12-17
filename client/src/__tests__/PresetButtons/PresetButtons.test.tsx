@@ -147,7 +147,6 @@ describe("test logging in and checking buttons are there", () => {
         );
 
         const saveDefaultButton = wrapper.find(SaveDefaultButton);
-        const slider = wrapper.find(Slider);
         const savePresetModal = wrapper.find(SavePresetModal);
         const deletePresetModal = wrapper.find(DeletePresetModal);
         const deleteButton = wrapper.find(DeleteButton);
@@ -155,9 +154,6 @@ describe("test logging in and checking buttons are there", () => {
         const isHSLButton = wrapper.find(IsHSLButton);
 
         saveDefaultButton.props().clickHandler?.({ preventDefault: () => null });
-
-        // adjust slider to cover handle change
-        slider.props().handleChange?.({ target: { value: "64 " }, preventDefault: () => null } as any);
 
         // cover save preset modal
         savePresetModal.props().onClose?.({ preventDefault: () => null } as any);

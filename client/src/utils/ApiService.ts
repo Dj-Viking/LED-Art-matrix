@@ -30,6 +30,7 @@ export interface IApiService {
     getGifs: () => Promise<Array<IGif>>;
     forgotPassword: (email: string) => Promise<boolean | void>;
     changePassword: (password: string) => Promise<{ done: boolean; token: string } | void>;
+    createAllDefaultPresets: (token: string) => Promise<IDBPreset[] | void>;
 }
 
 class ApiService implements IApiService {
@@ -44,6 +45,8 @@ class ApiService implements IApiService {
     public getGifs!: () => Promise<Array<IGif>>;
     public forgotPassword!: (email: string) => Promise<boolean | void>;
     public changePassword!: (password: string) => Promise<{ done: boolean; token: string } | void>;
+    public createAllDefaultPresets!: (token: string) => Promise<IDBPreset[] | void>;
+
     constructor(isAlive: any) {
         this.isAlive = isAlive;
     }
@@ -162,6 +165,26 @@ class ApiService implements IApiService {
         });
         if (res.status !== 200) {
             throw new Error("Error during the deleting of a preset!");
+        }
+    }
+
+    public static async createAllDefaultPresets(token: string): Promise<IDBPreset[] | void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+        headers = setAuthHeader(headers, token);
+        try {
+            const res = await fetch(`${API_URL}/user/createAllDefaultPresets`, {
+                method: "POST",
+                headers,
+            });
+            if (res.status !== 200) {
+                throw new Error(" There was a problem creating all the default presets");
+            }
+            const data = await res.json();
+            return data.presets;
+        } catch (error) {
+            const err = error as Error;
+            throw new Error(err.message);
         }
     }
 

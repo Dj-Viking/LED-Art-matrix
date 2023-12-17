@@ -187,24 +187,6 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                     );
                 })}
             </StyledPresetButtonsParent>
-            <MIDIListenerWrapper />
-
-            <Slider
-                name="led-anim-var"
-                testid="led-anim-variation"
-                label="LED Animation Variation"
-                inputValueState={animVarCoeff}
-                handleChange={(event) => {
-                    event.preventDefault();
-                    dispatch(ledActions.setAnimVarCoeff(event.target.value));
-                    dispatch(
-                        modalActions.setSaveModalContext({
-                            presetName: presetName,
-                            animVarCoeff: event.target.value,
-                        })
-                    );
-                }}
-            />
         </>
     );
 };

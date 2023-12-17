@@ -16,13 +16,15 @@ function handleError(endpoint, error, res) {
         if (!constants_1.IS_PROD) {
             console.error(error);
             return res.status(500).json({
-                error: "an error occured with " + endpoint + " " + error.message + `\n ${error.stack}`,
+                error: "an error occured with " + endpoint,
+                message: error.message,
+                stack: error.stack,
             });
         }
         else {
             return res
                 .status(500)
-                .json({ error: "an error occurred with " + endpoint + " " + error.message });
+                .json({ error: "an error occurred with " + endpoint, message: error.message });
         }
     });
 }

@@ -3,7 +3,6 @@ import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
 import { ToolkitDispatch } from "../store/store";
-import { keyboardActions } from "../store/keyboardSlice";
 
 export interface IDBPreset {
     _id: string;

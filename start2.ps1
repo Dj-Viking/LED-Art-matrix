@@ -29,15 +29,15 @@ if ($Prettier) {
 }
 # set environment variables
 if (Test-Path ".\env.txt") {
-    $env:ENV_TXT = Get-Content ".\env.txt"
+    $txt = Get-Content ".\env.txt"
+    $env:ENV_TXT = $txt -join [System.Environment]::NewLine;
 }
 else {
-    $env:ENV_TXT = Get-Content ".\env.sample.txt"
+    $txt = Get-Content ".\env.sample.txt"
+    $env:ENV_TXT = $txt -join [System.Environment]::NewLine;
 }
 
 $env:MY_OS = $env:OS
-
-
 
 if ($All) {
 
