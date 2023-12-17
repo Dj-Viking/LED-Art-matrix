@@ -98,9 +98,9 @@ describe("tests the logout works", () => {
             formEls.login.dispatchEvent(new MouseEvent("click", { bubbles: true }));
         });
 
-        expect(fetch).toHaveBeenCalledTimes(3);
+        expect(fetch).toHaveBeenCalledTimes(4);
         expect(fetch).toHaveBeenNthCalledWith(1, "http://localhost:3001/user/login", {
-            body: "{\"usernameOrEmail\":{\"email\":\"iexist@exist.com\"},\"password\":\"believe it\"}",
+            body: '{"usernameOrEmail":{"email":"iexist@exist.com"},"password":"believe it"}',
             headers: {
                 "Content-Type": "application/json",
             },

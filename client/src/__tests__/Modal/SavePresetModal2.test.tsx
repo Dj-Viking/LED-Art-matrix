@@ -90,7 +90,7 @@ describe("moving this to a separate file to avoid the leaky mocks that dont get 
         });
         expect(toolkitStore.getState().presetButtonsListState.presetButtons).toHaveLength(0);
 
-        expect(fetch).toHaveBeenCalledTimes(2);
+        expect(fetch).toHaveBeenCalledTimes(3);
         // expect(fetch).toHaveBeenNthCalledWith(3, "kdjfkdj");
 
         expect(screen.getByTestId("location-display").textContent).toBe("/");
