@@ -80,7 +80,7 @@ export const UserController = {
                     token,
                     defaultPreset: {
                         presetName: "waves",
-                        animVarCoeff: "64",
+                        animVarCoeff: "1",
                         displayName: "waves",
                     },
                 },
@@ -91,45 +91,74 @@ export const UserController = {
             return handleError("signup", error, res);
         }
     },
+    createAllDefaultPresets: async function (
+        req: Express.MyRequest,
+        res: Response
+    ): Promise<Response | void> {
+        try {
+            const updatedUser = await User.findOneAndUpdate(
+                { email: req!.user!.email },
+                {
+                    $set: {
+                        presets: INITIAL_PRESETS,
+                    },
+                    defaultPreset: {
+                        presetName: "waves",
+                        animVarCoeff: "1",
+                        displayName: "waves",
+                    },
+                },
+                { new: true }
+            ).select("-password");
+
+            return res.status(200).json({ presets: updatedUser!.presets });
+        } catch (error) {
+            handleError("createAllDefaultPresets", error, res);
+        }
+    },
     deleteUserPreset: async function (
         req: Express.MyRequest,
         res: Response
     ): Promise<Response | void> {
-        const { _id } = req.body;
+        try {
+            const { _id } = req.body;
 
-        //get the default and check if the id matches the one in the req.body
-        const user: UserClass = (await User.findOne({ email: req!.user!.email })) as UserClass;
+            //get the default and check if the id matches the one in the req.body
+            const user: UserClass = (await User.findOne({ email: req!.user!.email })) as UserClass;
 
-        // @ts-ignore have to use toHexString in the endpoint
-        // somehow in the test it comes back as a string but straight from the database
-        // it is still a type of object as ObjectId("_id")
-        const defId = user!.defaultPreset!._id.toHexString();
+            // @ts-ignore have to use toHexString in the endpoint
+            // somehow in the test it comes back as a string but straight from the database
+            // it is still a type of object as ObjectId("_id")
+            const defId = user!.defaultPreset!._id.toHexString();
 
-        const updateOptions = ((bodyId: string, defId: string) => {
-            if (bodyId === defId) {
-                return {
-                    //initialize the default preset to something blank if the preset being deleted is the default one
-                    $set: {
-                        defaultPreset: {
-                            presetName: "",
-                            animVarCoeff: "64",
-                            displayName: "",
+            const updateOptions = ((bodyId: string, defId: string) => {
+                if (bodyId === defId) {
+                    return {
+                        //initialize the default preset to something blank if the preset being deleted is the default one
+                        $set: {
+                            defaultPreset: {
+                                presetName: "",
+                                animVarCoeff: "1",
+                                displayName: "",
+                            },
                         },
-                    },
+                        $pull: {
+                            presets: { _id: bodyId },
+                        },
+                    };
+                }
+                return {
                     $pull: {
                         presets: { _id: bodyId },
                     },
                 };
-            }
-            return {
-                $pull: {
-                    presets: { _id: bodyId },
-                },
-            };
-        })(_id, defId);
+            })(_id, defId);
 
-        await User.findOneAndUpdate({ email: req!.user!.email }, updateOptions);
-        res.status(200).json({ message: "deleted the preset" });
+            await User.findOneAndUpdate({ email: req!.user!.email }, updateOptions);
+            res.status(200).json({ message: "deleted the preset" });
+        } catch (error) {
+            handleError("deleteUserPreset", error, res);
+        }
     },
     addNewPreset: async function (req: Express.MyRequest, res: Response): Promise<Response | void> {
         try {

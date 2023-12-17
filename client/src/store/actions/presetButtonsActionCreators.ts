@@ -3,7 +3,6 @@ import { IPresetButton, MyThunkConfig } from "../../types";
 import { ApiService } from "../../utils/ApiService";
 import AuthService from "../../utils/AuthService";
 import { IDBPreset, PresetButtonsList } from "../../utils/PresetButtonsListClass";
-import { keyboardActions } from "../keyboardSlice";
 import { ledActions } from "../ledSlice";
 import { presetButtonsListActions } from "../presetButtonListSlice";
 
@@ -18,13 +17,28 @@ export const buildGetPresetButtonsAction = createAsyncThunk<{ presetButtons: IPr
 
         const defaultPreset = await ApiService.getDefaultPreset(AuthService.getToken() as string);
 
-        buttons = new PresetButtonsList(
-            (event: React.MouseEvent<HTMLButtonElement>) => {
-                console.log("calling click hanlder of button class!!!", event);
-            },
-            dbButtons,
-            defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
-        ).getList();
+        if (dbButtons.length > 0) {
+            buttons = new PresetButtonsList(
+                (event: React.MouseEvent<HTMLButtonElement>) => {
+                    console.log("calling click hanlder of button class!!!", event);
+                },
+                dbButtons,
+                defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
+            ).getList();
+        } else {
+            // request to the server to create the default presets again if there are none on the page
+            const dbButtons = (await ApiService.createAllDefaultPresets(
+                AuthService.getToken() as string
+            )) as IDBPreset[];
+
+            buttons = new PresetButtonsList(
+                (event: React.MouseEvent<HTMLButtonElement>) => {
+                    console.log("calling click hanlder of button class!!!", event);
+                },
+                dbButtons,
+                defaultPreset && defaultPreset._id ? defaultPreset._id : void 0
+            ).getList();
+        }
 
         return {
             presetButtons: buttons,

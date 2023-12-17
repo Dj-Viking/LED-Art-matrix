@@ -13,6 +13,7 @@ const {
     changePassword,
     createGifCollection,
     removeGifCollection,
+    createAllDefaultPresets,
 } = UserController;
 
 // /user
@@ -28,6 +29,7 @@ router.route("/add-preset").post(authMiddleware, addNewPreset);
 router.route("/presets").get(authMiddleware, getUserPresets);
 router.route("/createGifCollection").post(authMiddleware, createGifCollection);
 router.route("/removeGifCollection").delete(authMiddleware, removeGifCollection);
+router.route("/createAllDefaultPresets").post(authMiddleware, createAllDefaultPresets);
 
 // reset token is handled in the endpoint, maybe use middleware??
 router.route("/change-pass").put(changePassword);

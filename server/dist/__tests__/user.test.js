@@ -66,7 +66,7 @@ describe("test this runs through CRUD of a user entity", () => {
         expect(parsed.preset.presetName).toBe("waves");
         defaultPresetId = parsed.preset._id;
         expect(parsed.preset.displayName).toBe("waves");
-        expect(parsed.preset.animVarCoeff).toBe("64");
+        expect(parsed.preset.animVarCoeff).toBe("1");
     }));
     test("POST /user/login with just email", () => __awaiter(void 0, void 0, void 0, function* () {
         const login = yield (0, supertest_1.default)(app)
@@ -274,7 +274,7 @@ describe("test this runs through CRUD of a user entity", () => {
         });
         expect(user.status).toBe(200);
         const parsed = JSON.parse(user.text);
-        expect(parsed.preset.animVarCoeff).toBe("64");
+        expect(parsed.preset.animVarCoeff).toBe("1");
         expect(parsed.preset.presetName).toBe("");
         expect(parsed.preset.displayName).toBe("");
     }));

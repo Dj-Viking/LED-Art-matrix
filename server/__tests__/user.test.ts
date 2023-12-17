@@ -79,7 +79,7 @@ describe("test this runs through CRUD of a user entity", () => {
         //@ts-ignore
         defaultPresetId = parsed.preset._id;
         expect(parsed.preset.displayName).toBe("waves");
-        expect(parsed.preset.animVarCoeff).toBe("64");
+        expect(parsed.preset.animVarCoeff).toBe("1");
     });
 
     test("POST /user/login with just email", async () => {
@@ -304,7 +304,7 @@ describe("test this runs through CRUD of a user entity", () => {
             });
         expect(user.status).toBe(200);
         const parsed = JSON.parse(user.text) as IGetUserDefaultPresetResponse;
-        expect(parsed.preset.animVarCoeff).toBe("64");
+        expect(parsed.preset.animVarCoeff).toBe("1");
         expect(parsed.preset.presetName).toBe("");
         expect(parsed.preset.displayName).toBe("");
     });

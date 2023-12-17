@@ -78,7 +78,7 @@ exports.UserController = {
                     token,
                     defaultPreset: {
                         presetName: "waves",
-                        animVarCoeff: "64",
+                        animVarCoeff: "1",
                         displayName: "waves",
                     },
                 }, { new: true }).select("-password");
@@ -89,34 +89,59 @@ exports.UserController = {
             }
         });
     },
+    createAllDefaultPresets: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const updatedUser = yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                    $set: {
+                        presets: constants_1.INITIAL_PRESETS,
+                    },
+                    defaultPreset: {
+                        presetName: "waves",
+                        animVarCoeff: "1",
+                        displayName: "waves",
+                    },
+                }, { new: true }).select("-password");
+                return res.status(200).json({ presets: updatedUser.presets });
+            }
+            catch (error) {
+                (0, handleApiError_1.handleError)("createAllDefaultPresets", error, res);
+            }
+        });
+    },
     deleteUserPreset: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { _id } = req.body;
-            const user = (yield models_1.User.findOne({ email: req.user.email }));
-            const defId = user.defaultPreset._id.toHexString();
-            const updateOptions = ((bodyId, defId) => {
-                if (bodyId === defId) {
-                    return {
-                        $set: {
-                            defaultPreset: {
-                                presetName: "",
-                                animVarCoeff: "64",
-                                displayName: "",
+            try {
+                const { _id } = req.body;
+                const user = (yield models_1.User.findOne({ email: req.user.email }));
+                const defId = user.defaultPreset._id.toHexString();
+                const updateOptions = ((bodyId, defId) => {
+                    if (bodyId === defId) {
+                        return {
+                            $set: {
+                                defaultPreset: {
+                                    presetName: "",
+                                    animVarCoeff: "1",
+                                    displayName: "",
+                                },
                             },
-                        },
+                            $pull: {
+                                presets: { _id: bodyId },
+                            },
+                        };
+                    }
+                    return {
                         $pull: {
                             presets: { _id: bodyId },
                         },
                     };
-                }
-                return {
-                    $pull: {
-                        presets: { _id: bodyId },
-                    },
-                };
-            })(_id, defId);
-            yield models_1.User.findOneAndUpdate({ email: req.user.email }, updateOptions);
-            res.status(200).json({ message: "deleted the preset" });
+                })(_id, defId);
+                yield models_1.User.findOneAndUpdate({ email: req.user.email }, updateOptions);
+                res.status(200).json({ message: "deleted the preset" });
+            }
+            catch (error) {
+                (0, handleApiError_1.handleError)("deleteUserPreset", error, res);
+            }
         });
     },
     addNewPreset: function (req, res) {

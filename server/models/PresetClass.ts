@@ -9,7 +9,7 @@ class PresetClass {
     @prop({ trim: true, default: "" })
     public displayName: string;
 
-    @prop({ default: "64" })
+    @prop({ default: "1" })
     public animVarCoeff: string;
 }
 

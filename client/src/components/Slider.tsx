@@ -1,24 +1,35 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ledActions } from "../store/ledSlice";
+import { modalActions } from "../store/modalSlice";
 import { getGlobalState } from "../store/store";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import "./aux-styles/ledSliderStyles.css";
 
 interface SliderProps {
-    inputValueState: string;
-    name: string;
-    testid: string;
-    label: string;
-    handleChange: React.ChangeEventHandler<HTMLInputElement>;
+    [key: string]: any;
 }
 
-const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, handleChange }) => {
+const Slider: React.FC<SliderProps> = () => {
     const dispatch = useDispatch();
-    const { midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
+    const { midiEditMode, midiMappingInUse, controllerInUse, presetName, animVarCoeff } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
         "animVarCoeff"
     );
+    const handleChange = React.useCallback(
+        (event) => {
+            dispatch(ledActions.setAnimVarCoeff(event.target.value));
+            dispatch(
+                modalActions.setSaveModalContext({
+                    presetName: presetName,
+                    animVarCoeff: event.target.value,
+                })
+            );
+        },
+        [dispatch, presetName]
+    );
+    const name = "led-anim-var";
     return (
         <>
             <div className="led-slider-container">
@@ -35,8 +46,8 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                     <p style={{ margin: "0 auto", marginBottom: "5px" }}>
                         {midiEditMode ? `<MIDI> (${uiMapping})` : ""}
                     </p>
-                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>{label}</p>
-                    <p style={{ margin: "0 auto" }}>{inputValueState}</p>
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>{"LED Animation Variation"}</p>
+                    <p style={{ margin: "0 auto" }}>{animVarCoeff}</p>
                 </label>
 
                 {/* TODO figure out what kinds of labels to use for particular sliders */}
@@ -47,14 +58,14 @@ const Slider: React.FC<SliderProps> = ({ inputValueState, name, testid, label, h
                 <input
                     name={name}
                     className="slider-style"
-                    data-testid={testid}
+                    data-testid={"led-anim-variation"}
                     type="range"
                     min="1"
                     max="255"
                     onClick={() => {
                         MIDIMappingPreference.listeningForEditsHandler(dispatch, "animVarCoeff");
                     }}
-                    value={inputValueState || "64"}
+                    value={animVarCoeff}
                     onChange={handleChange}
                 />
             </div>
