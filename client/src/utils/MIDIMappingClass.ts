@@ -102,7 +102,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
-    public static createButtonCallback(dispatch: ToolkitDispatch, btnId: string): void {
+    private static createButtonCallback(dispatch: ToolkitDispatch, btnId: string): void {
         dispatch((dispatchcb, getState) => {
             const presetButtonsInState = getState().presetButtonsListState.presetButtons;
             const btn = presetButtonsInState.find((btn) => btn.id === btnId)!;
