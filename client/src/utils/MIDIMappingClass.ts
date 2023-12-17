@@ -106,7 +106,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         dispatch((dispatchcb, getState) => {
             const presetButtonsInState = getState().presetButtonsListState.presetButtons;
             const btn = presetButtonsInState.find((btn) => btn.id === btnId)!;
-            dispatchcb(presetButtonsListActions.setActiveButton(btnId as string));
+            dispatchcb(presetButtonsListActions.setActiveButton(btnId));
 
             PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff);
         });
