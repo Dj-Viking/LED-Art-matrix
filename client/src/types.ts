@@ -29,6 +29,7 @@ declare global {
     }
     interface EventTarget {
         id: string;
+        currentTime: number;
         value: any;
     }
     interface CanvasRenderingContext2D {

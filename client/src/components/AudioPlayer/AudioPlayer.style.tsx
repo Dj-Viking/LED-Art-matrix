@@ -7,6 +7,7 @@ import { PlayButtonSvg } from "./PlayButtonSvg";
 export const StyledAudioPlayerContainer = styled.div`
     & {
         margin: 0 auto;
+        width: 100%;
     }
 `;
 
@@ -99,11 +100,11 @@ export const trackListStylePlaying = {
 };
 
 export const AudioRangeInputContainer: React.FC = (props) => {
-    return <div style={{ display: "flex", justifyContent: "center", flexDirection: "column" }}>{props.children}</div>;
+    return <div style={{ display: "flex", flexDirection: "column" }}>{props.children}</div>;
 };
 
 export const AudioRangeInputVolumeText: React.FC<{ volumeState: number }> = (props) => {
-    return <span style={{ margin: "0 auto" }}>Volume: {props.volumeState}</span>;
+    return <span style={{ marginLeft: "10%" }}>Volume: {props.volumeState}</span>;
 };
 
 export interface AudioPlayerRangeInputProps extends React.DOMAttributes<HTMLInputElement> {
@@ -112,7 +113,16 @@ export interface AudioPlayerRangeInputProps extends React.DOMAttributes<HTMLInpu
 
 export const AudioPlayerRangeInput: React.FC<AudioPlayerRangeInputProps> = (props) => {
     return (
-        <input id="volume-input" name="volume" type="range" min="0" max="1" step="0.01" onInput={props.handleInput} />
+        <input
+            style={{ marginRight: "70%" }}
+            id="volume-input"
+            name="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            onInput={props.handleInput}
+        />
     );
 };
 

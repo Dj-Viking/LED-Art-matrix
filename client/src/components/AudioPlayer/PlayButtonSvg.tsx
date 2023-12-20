@@ -4,8 +4,6 @@ import styled from "styled-components";
 import { PlayPauseButtonControlProps } from "./AudioPlayer.style";
 const StyledSvg = styled.div`
     & {
-        display: flex;
-        justify-content: center;
     }
 `;
 export const PlayButtonSvg: React.FC<PlayPauseButtonControlProps> = (props) => {

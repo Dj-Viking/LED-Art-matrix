@@ -4,11 +4,9 @@ import styled from "styled-components";
 import { PauseButtonFill, PlayPauseButtonControlProps } from "./AudioPlayer.style";
 const StyledSvg = styled.div`
     & {
-        display: flex;
+        margin-bottom: 20px;
         height: 83.33px;
-        width: 83.33px;
-        margin: 0 auto 17px auto;
-        justify-content: center;
+        width: 100px;
     }
 `;
 
@@ -36,12 +34,12 @@ export const PauseButtonSvg: React.FC<PlayPauseButtonControlProps> = (props) => 
                 __html: `
             
                     <svg
-                        width="${width}" 
+                        width="${width - 10}"
                         height="${height}" 
                         viewBox="0 0 55 53" 
                         fill="none" 
                         xmlns="http://www.w3.org/2000/svg"
-                        style="cursor: pointer;"
+                        style="cursor: pointer;margin-left: 10px;"
                     >
                         <ellipse cx="27.5" cy="26.5" rx="27.5" ry="26.5" fill="${fill.button}"/>
                         <rect x="14" y="10" width="9" height="32" rx="0" fill="${fill.pauseBars}"/>
