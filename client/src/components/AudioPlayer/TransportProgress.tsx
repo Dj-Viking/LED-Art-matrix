@@ -33,7 +33,6 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
         [audioRef]
     );
 
-    // TODO: handle drag events across progress??
     const handleMouseDrag = React.useCallback(
         (e: React.MouseEvent<HTMLProgressElement>) => {
             if (mouseIsDown.current) {
