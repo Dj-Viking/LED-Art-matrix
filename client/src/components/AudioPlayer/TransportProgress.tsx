@@ -10,17 +10,23 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     const { audioRef } = props;
 
     const RAFRef = React.useRef<number>(0);
-    const [, setTime] = React.useState<number>(0);
+    const mouseIsDown = React.useRef<boolean>(false);
+    const transportRefForDrag = React.useRef<number>(0);
+    const [time, setTime] = React.useState<number>(0);
 
     const handleTimeUpdate = React.useCallback((event: Event) => {
-        setTime(event.target!.currentTime);
+        if (!mouseIsDown.current) {
+            setTime(event.target!.currentTime);
+        }
     }, []);
 
     const animate = React.useCallback(
         (_rafTime?: number): void => {
             if (audioRef.current) {
                 // re-render at the speed of the screen's refresh rate
-                setTime(audioRef.current!.currentTime);
+                if (!mouseIsDown.current) {
+                    setTime(audioRef.current!.currentTime);
+                }
             }
             RAFRef.current = window.requestAnimationFrame(animate);
         },
@@ -28,6 +34,25 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     );
 
     // TODO: handle drag events across progress??
+    const handleMouseDrag = React.useCallback(
+        (e: React.MouseEvent<HTMLProgressElement>) => {
+            if (mouseIsDown.current) {
+                const target = e.target as HTMLProgressElement;
+                const rect = target.getBoundingClientRect();
+                const transportPosition = calcPositionFromRange(
+                    e.clientX,
+                    0,
+                    audioRef.current!.duration,
+                    rect.x,
+                    rect.x + rect.width
+                );
+                transportRefForDrag.current = transportPosition;
+                setTime(transportPosition);
+            }
+        },
+        [audioRef]
+    );
+
     const handleClickTransport = React.useCallback(
         (event: React.MouseEvent<HTMLProgressElement>) => {
             const target = event.target as HTMLProgressElement;
@@ -76,17 +101,30 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
         };
     }, [handleTimeUpdate, audioRef]);
 
+    /**
+     * TODO:
+     * create own element that can be dragged to aesthetically show a circle that glides across
+     * the transport progress bar as time elapses and can be moved with clicking and dragging
+     */
     return (
         <div style={{ display: "flex", flexDirection: "column", marginLeft: "30px", width: "100%" }}>
             <progress
                 style={{ cursor: "pointer", width: "79%" }}
                 onClick={handleClickTransport}
+                onMouseDown={() => {
+                    mouseIsDown.current = true;
+                }}
+                onMouseMove={handleMouseDrag}
+                onMouseUp={() => {
+                    mouseIsDown.current = false;
+                    audioRef.current!.currentTime = transportRefForDrag.current;
+                }}
                 max={audioRef.current?.duration || 0}
-                value={audioRef.current?.currentTime || 0}
+                value={time || 0}
             />
             {audioRef.current?.currentTime ? (
                 <span>
-                    {convertTime(audioRef.current?.currentTime)} -- {convertTime(audioRef.current?.duration)}
+                    {convertTime(time)} -- {convertTime(audioRef.current?.duration)}
                 </span>
             ) : (
                 <span style={{ visibility: "visible" }}>00:00:00 -- 00:00:00</span>
