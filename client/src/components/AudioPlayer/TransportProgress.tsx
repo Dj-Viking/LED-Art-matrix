@@ -106,9 +106,9 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
      * the transport progress bar as time elapses and can be moved with clicking and dragging
      */
     return (
-        <div style={{ display: "flex", flexDirection: "column", marginLeft: "30px", width: "100%" }}>
+        <div style={{ display: "flex", flexDirection: "column", marginLeft: "30px", width: "60%" }}>
             <progress
-                style={{ cursor: "pointer", width: "79%" }}
+                style={{ cursor: "pointer", width: "100%" }}
                 onClick={handleClickTransport}
                 onMouseDown={() => {
                     mouseIsDown.current = true;

@@ -57,7 +57,7 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
     return (
         <>
             <StyledAudioPlayerContainer>
-                <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%" }}>
                     <PlayPauseControl
                         playButtonFill={"green"}
                         pauseButtonFill={pauseButtonFill}
