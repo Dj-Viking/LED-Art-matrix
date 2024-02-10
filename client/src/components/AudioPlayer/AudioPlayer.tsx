@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
 
@@ -16,6 +17,7 @@ import {
     StyledAudioPlayerContainer,
     TrackList,
 } from "./AudioPlayer.style";
+import { TransportProgress } from "./TransportProgress";
 
 export interface NewAudioPlayerProps {
     currentSong: string;
@@ -55,22 +57,24 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
     return (
         <>
             <StyledAudioPlayerContainer>
-                <PlayPauseControl
-                    playButtonFill={"green"}
-                    pauseButtonFill={pauseButtonFill}
-                    playButtonHeight={100}
-                    pauseButtonHeight={100}
-                    playButtonWidth={100}
-                    pauseButtonWidth={100}
-                    isPlaying={isPlaying}
-                    setIsPlaying={setIsPlaying}
-                    audioRef={audioElRef}
-                />
+                <div style={{ display: "flex", flexDirection: "row", alignItems: "center", width: "100%" }}>
+                    <PlayPauseControl
+                        playButtonFill={"green"}
+                        pauseButtonFill={pauseButtonFill}
+                        playButtonHeight={100}
+                        pauseButtonHeight={100}
+                        playButtonWidth={100}
+                        pauseButtonWidth={100}
+                        isPlaying={isPlaying}
+                        setIsPlaying={setIsPlaying}
+                        audioRef={audioElRef}
+                    />
+                    <TransportProgress audioRef={audioElRef} />
+                </div>
                 <AudioRangeInputContainer>
                     <AudioPlayerRangeInput handleInput={handleVolumeInput} />
                     <AudioRangeInputVolumeText volumeState={volumeState} />
                 </AudioRangeInputContainer>
-
                 <audio autoPlay={false} src={currentSong} ref={audioElRef} />
             </StyledAudioPlayerContainer>
         </>
