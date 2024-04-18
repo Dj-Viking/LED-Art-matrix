@@ -9,7 +9,10 @@ param(
     $Server
 )
 
-Write-Host "[INFO]: running tests for both client and server..." -ForegroundColor Cyan
+if (-not $All -and -not $Client -and -not $Server) {
+    throw "must choose a parameter -All | -Client | -Server to run all the tests on your local machine"
+}
+
 Write-Host ""
 
 $filepath = ".\env.txt"
@@ -26,6 +29,8 @@ else {
 }
 
 if ($All) {
+    Write-Host "[INFO]: running tests for both client and server..." -ForegroundColor Cyan
+
     Write-Host "[INFO]: running client tests..." -ForegroundColor Cyan
     
     Push-Location -Path ".\client"
