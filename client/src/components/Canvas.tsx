@@ -28,7 +28,6 @@ export const Canvas: React.FC = () => {
     // read only reference as an element when initialized to null
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    // initial setup for di
     useEffect(() => {
         if (canvasRef.current) {
             const currentCanvas = canvasRef.current;
