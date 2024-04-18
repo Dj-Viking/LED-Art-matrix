@@ -1,7 +1,7 @@
 export class CanvasLED {
     public readonly h = 32;
     public readonly radii = [4];
-    public w = 0;
+    public w = 1;
     public x = 0;
     public y = 0;
     public fillStyle = "";
@@ -73,7 +73,7 @@ export class CanvasLED {
             //
         } else if (dimensionWidth <= 1024) {
             //
-            this.x = col * 31 * (dimensionWidth / 1024);
+            this.x = col * 31 * (dimensionWidth / 1024 < 1 ? 0.587 : dimensionWidth / 1024);
 
             // width offset when screen width is less than 1024
             this.w = dimensionWidth / this.w;

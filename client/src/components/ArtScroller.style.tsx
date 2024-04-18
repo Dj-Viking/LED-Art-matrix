@@ -232,7 +232,7 @@ const StyledSliderContainer = styled.div<{ midiEditMode: boolean }>`
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin-top: ${(props) => (props.midiEditMode ? "40px" : "0px")};
+        margin-top: ${(props) => (props.midiEditMode ? "60px" : "20px")};
     }
 `;
 
