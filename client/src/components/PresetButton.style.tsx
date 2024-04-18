@@ -273,7 +273,8 @@ export const StyledPresetControlButtonsContainer = styled.div`
 export const StyledPresetButton = styled.div`
     & {
         display: flex;
-        padding: 0 10px;
+        padding: 10px 10px;
+        padding-bottom: 0px;
         flex-direction: column;
         justify-content: center;
         text-align: center;
@@ -284,6 +285,7 @@ export const StyledPresetButtonsParent = styled.div`
     & {
         display: flex;
         margin: 0 auto;
+        flex-wrap: wrap;
         margin-bottom: 2em;
     }
 `;
