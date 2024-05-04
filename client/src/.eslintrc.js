@@ -3,7 +3,6 @@ module.exports = {
         browser: true,
         es2021: true,
         node: true,
-        "react-native/react-native": true,
     },
     extends: [
         "plugin:react/recommended",
@@ -30,7 +29,7 @@ module.exports = {
             },
         },
     ],
-    plugins: ["react", "@typescript-eslint", "react-native"],
+    plugins: ["react", "@typescript-eslint"],
     rules: {
         "prefer-const": "off",
         "testing-library/no-container": "off",
@@ -83,13 +82,6 @@ module.exports = {
         "react/prop-types": "off",
         "no-void": "off",
         "import/no-unresolved": [2, { caseSensitive: false }],
-        "react-native/split-platform-components": [
-            2,
-            {
-                androidPathRegex: "\\.android.(js|jsx|ts|tsx)$",
-                iosPathRegex: "\\.ios.(js|jsx|ts|tsx)$",
-            },
-        ],
     },
     settings: {
         "import/resolver": {

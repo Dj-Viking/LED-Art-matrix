@@ -29,11 +29,9 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    mongoose.connection.db.dropDatabase(async () => {
+    mongoose.connection.db.dropDatabase().then(async () => {
         await mongoose.connection.close();
     });
-
-    // mongoose.connection.close(() => done());
 });
 
 //test.js

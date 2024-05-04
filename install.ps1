@@ -1,26 +1,23 @@
 param(
-    [System.String]$Server = "$($PSScriptRoot)\server",
-    [System.String]$Client = "$($PSScriptRoot)\client"
+    [System.String]$ServerPath = "$($PSScriptRoot)\server",
+    [System.String]$ClientPath = "$($PSScriptRoot)\client"
 )
 
 Write-Host "[INFO]: running install for windows..." -ForegroundColor Green
-Write-Host "[INFO]: Installing root javascript dependencies..." -ForegroundColor Cyan 
 Write-Host "[INFO]: For more debug output during install use --verbose flag" -ForegroundColor Cyan
-
-npm install
 
 Write-Host "[INFO]: Installing server javascript dependencies..." -ForegroundColor Cyan 
 
-Push-Location -Path "$($Server)";
-npm install
+Push-Location -Path "$($ServerPath)";
+npm install --legacy-peer-deps;
 Pop-Location;
 Write-Host "[INFO]: Done installing server dependencies" -ForegroundColor Green 
 
-Push-Location -Path "$($Client)";
+Push-Location -Path "$($ClientPath)";
 
 Write-Host "[INFO]: Installing client javascript dependencies..." -ForegroundColor Cyan 
 
-npm install
+npm install --legacy-peer-deps;
 
 Pop-Location;
 Write-Host "[INFO]: Done installing client dependencies" -ForegroundColor Green

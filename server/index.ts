@@ -59,7 +59,7 @@ if (process.env.NODE_ENV === "production") {
 
 //OPEN DATABASE AND THEN START SERVER
 connection.once("open", () => {
-    console.log("mongdb connection opened");
+    console.log("mongodb connection opened");
     app.listen(PORT, () => {
         //SERVER LISTENING ON PORT
         setTimeout(() => {

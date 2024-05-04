@@ -32,7 +32,7 @@ describe("test the CRUD on gifs", () => {
         yield mongoose_1.default.connect(constants_1.TEST_DB_URL);
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        mongoose_1.default.connection.db.dropDatabase(() => __awaiter(void 0, void 0, void 0, function* () {
+        mongoose_1.default.connection.db.dropDatabase().then(() => __awaiter(void 0, void 0, void 0, function* () {
             yield mongoose_1.default.connection.close();
         }));
     }));
