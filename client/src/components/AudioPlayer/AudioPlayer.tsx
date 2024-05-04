@@ -34,7 +34,7 @@ const controlBackgroundColor = "grey";
 
 const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
     const { currentSong, audioRef: audioElRef, isPlaying, setIsPlaying } = props;
-    const [volumeState, setVolumeState] = useState(0);
+    const [volumeState, setVolumeState] = useState(0.01);
 
     const handleVolumeInput = React.useCallback<React.FormEventHandler<HTMLInputElement>>(
         (event) => {
@@ -72,7 +72,7 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
                     <TransportProgress audioRef={audioElRef} />
                 </div>
                 <AudioRangeInputContainer>
-                    <AudioPlayerRangeInput handleInput={handleVolumeInput} />
+                    <AudioPlayerRangeInput value={volumeState} handleInput={handleVolumeInput} />
                     <AudioRangeInputVolumeText volumeState={volumeState} />
                 </AudioRangeInputContainer>
                 <audio autoPlay={false} src={currentSong} ref={audioElRef} />
@@ -82,9 +82,15 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
 };
 
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
-    const [currentSong, setCurrentSong] = useState(G6);
+    const [currentSong, setCurrentSong] = useState(REVERB_STUDY);
     const [isPlaying, setIsPlaying] = useState(false);
     const audioElRef = React.useRef<HTMLAudioElement>(null);
+
+    React.useEffect(() => {
+        if (audioElRef.current) {
+            audioElRef.current.volume = 0.01;
+        }
+    }, []);
 
     // ARRAY OF LOCAL SONG FILE PATHS
     const songs: Track[] = [

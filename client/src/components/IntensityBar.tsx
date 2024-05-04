@@ -16,7 +16,7 @@ const IntensityBar: React.FC<IntensityBarProps> = ({ intensity }) => {
                     alignItems: "center",
                 }}
             >
-                <progress style={{ width: "50%" }} value={intensity} max={127}></progress>
+                <input className="myrangestyle" type="range" style={{ width: "50%" }} value={intensity} max={127} />
             </div>
         </>
     );

@@ -335,7 +335,11 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
     return (
         <input
             name="scroller-circle-width"
-            className="slider-style"
+            style={{
+                width: "70%",
+                margin: "5px auto",
+            }}
+            className="myrangestyle"
             type="range"
             data-testid="circle-width"
             min="0"
@@ -376,22 +380,20 @@ const ArtScrollerVerticalPositionSliderLabel: React.FC = () => {
 };
 type ArtScrollerVerticalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 
-export const StyledSlider = styled.input`
-    & {
-        width: 70%;
-        margin: 0 auto;
-    }
-`;
-
 const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSliderProps> = () => {
     const {
         slider: { vertPos },
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <StyledSlider
+        <input
+            style={{
+                width: "70%",
+                margin: "5px auto",
+            }}
             name="vertical-positioning"
             data-testid="vert-pos"
+            className="myrangestyle"
             type="range"
             min="0"
             max="200"
@@ -438,7 +440,12 @@ const ArtScrollerHorizontalPositionSlider: React.FC<ArtScrollerHorizontalPositio
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <StyledSlider
+        <input
+            className="myrangestyle"
+            style={{
+                width: "70%",
+                margin: "5px auto",
+            }}
             name="horizontal-positioning"
             type="range"
             min="0"
@@ -494,7 +501,12 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <StyledSlider
+        <input
+            className="myrangestyle"
+            style={{
+                width: "70%",
+                margin: "5px auto",
+            }}
             name="invert"
             type="range"
             data-testid="invert"
@@ -543,7 +555,12 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
-        <StyledSlider
+        <input
+            className="myrangestyle"
+            style={{
+                width: "70%",
+                margin: "5px auto",
+            }}
             name="animation-duration"
             type="range"
             data-testid="anim-duration"
