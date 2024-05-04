@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React from "react";
 import { calcPositionFromRange } from "../../utils/calcPositionFromRange";
@@ -10,9 +11,19 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     const { audioRef } = props;
 
     const RAFRef = React.useRef<number>(0);
+    const progressRef = React.useRef<HTMLProgressElement>(null);
+    const clientXRef = React.useRef<number>(0);
+    const rectRef = React.useRef<DOMRect>({} as any);
     const mouseIsDown = React.useRef<boolean>(false);
     const transportRefForDrag = React.useRef<number>(0);
     const [time, setTime] = React.useState<number>(0);
+
+    React.useEffect(() => {
+        if (progressRef.current) {
+            rectRef.current = progressRef.current.getBoundingClientRect();
+            clientXRef.current = progressRef.current.offsetLeft;
+        }
+    }, []);
 
     const handleTimeUpdate = React.useCallback((event: Event) => {
         if (!mouseIsDown.current) {
@@ -34,10 +45,12 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     );
 
     const handleMouseDrag = React.useCallback(
-        (e: React.MouseEvent<HTMLProgressElement>) => {
+        (e: React.MouseEvent<HTMLElement>) => {
             if (mouseIsDown.current) {
-                const target = e.target as HTMLProgressElement;
+                const target = e.target as HTMLElement;
+
                 const rect = target.getBoundingClientRect();
+                rectRef.current = rect;
                 const transportPosition = calcPositionFromRange(
                     e.clientX,
                     0,
@@ -53,11 +66,11 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     );
 
     const handleClickTransport = React.useCallback(
-        (event: React.MouseEvent<HTMLProgressElement>) => {
-            const target = event.target as HTMLProgressElement;
+        (event: React.MouseEvent<HTMLElement>) => {
+            const target = event.target as HTMLElement;
 
             const rect = target.getBoundingClientRect();
-
+            rectRef.current = rect;
             // rect x position is 130, and rect width is 160
             // so mouse event client X position along the progress rect clicked will produce
             // what current time to set the currently playing audio track
@@ -75,6 +88,18 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
         [audioRef]
     );
 
+    const onMouseUp = React.useCallback(
+        (_) => {
+            mouseIsDown.current = false;
+            audioRef.current!.currentTime = transportRefForDrag.current;
+        },
+        [audioRef]
+    );
+
+    const onMouseDown = React.useCallback((_) => {
+        mouseIsDown.current = true;
+    }, []);
+
     function convertTime(secs: number): string {
         const date = new Date(0);
         date.setSeconds(secs);
@@ -83,7 +108,6 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
     }
 
     React.useEffect(() => {
-        // animate();
         RAFRef.current = window.requestAnimationFrame(animate);
         return () => window.cancelAnimationFrame(RAFRef.current);
     }, [animate]);
@@ -100,27 +124,25 @@ export const TransportProgress: React.FC<TransportProgressProps> = (props) => {
         };
     }, [handleTimeUpdate, audioRef]);
 
-    /**
-     * TODO:
-     * create own element that can be dragged to aesthetically show a circle that glides across
-     * the transport progress bar as time elapses and can be moved with clicking and dragging
-     */
     return (
         <div style={{ display: "flex", flexDirection: "column", marginLeft: "30px", width: "60%" }}>
-            <progress
-                style={{ cursor: "pointer", width: "100%" }}
-                onClick={handleClickTransport}
-                onMouseDown={() => {
-                    mouseIsDown.current = true;
-                }}
-                onMouseMove={handleMouseDrag}
-                onMouseUp={() => {
-                    mouseIsDown.current = false;
-                    audioRef.current!.currentTime = transportRefForDrag.current;
-                }}
-                max={audioRef.current?.duration || 0}
-                value={time || 0}
-            />
+            <div style={{ position: "relative" }}>
+                <input
+                    className="myrangestyle"
+                    onChange={() => {
+                        return null;
+                    }}
+                    onClick={handleClickTransport}
+                    onMouseDown={onMouseDown}
+                    onMouseMove={handleMouseDrag}
+                    onMouseUp={onMouseUp}
+                    type="range"
+                    min="0"
+                    step=".001"
+                    value={time || 0}
+                    max={audioRef.current?.duration || 0}
+                />
+            </div>
             {audioRef.current?.currentTime ? (
                 <span>
                     {convertTime(time)} -- {convertTime(audioRef.current?.duration)}

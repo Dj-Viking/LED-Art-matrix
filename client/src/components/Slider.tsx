@@ -57,7 +57,11 @@ const Slider: React.FC<SliderProps> = () => {
 
                 <input
                     name={name}
-                    className="slider-style"
+                    style={{
+                        width: "70%",
+                        margin: "0 auto",
+                    }}
+                    className="myrangestyle"
                     data-testid={"led-anim-variation"}
                     type="range"
                     min="1"

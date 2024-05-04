@@ -113,11 +113,22 @@ export const AudioRangeInputVolumeText: React.FC<{ volumeState: number }> = (pro
 
 export interface AudioPlayerRangeInputProps extends React.DOMAttributes<HTMLInputElement> {
     handleInput: React.FormEventHandler<HTMLInputElement>;
+    value: number;
 }
 
 export const AudioPlayerRangeInput: React.FC<AudioPlayerRangeInputProps> = (props) => {
     return (
-        <input id="volume-input" name="volume" type="range" min="0" max="1" step="0.01" onInput={props.handleInput} />
+        <input
+            className="myrangestyle"
+            value={props.value}
+            id="volume-input"
+            name="volume"
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            onInput={props.handleInput}
+        />
     );
 };
 
