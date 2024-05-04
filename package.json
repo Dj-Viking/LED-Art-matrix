@@ -13,6 +13,7 @@
     "start:prod": "sh server.sh",
     "server:dev": "sh server.sh",
     "postinstall": "echo 'postinstall!!!!'",
+    "heroku-postbuild": "cd client && npm run build",
     "start-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File start.ps1",
     "stop-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File stop.ps1",
     "test-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1 -All",
