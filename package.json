@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "16.14.2",
-    "npm": "8.5.0"
+    "node": "20.12.2",
+    "npm": "10.5.0"
   },
   "scripts": {
     "test": "sh test.sh",
@@ -14,13 +14,11 @@
     "server:dev": "sh server.sh",
     "postinstall": "echo 'postinstall!!!!'",
     "start-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File start.ps1",
-    "start2": "powershell -NoProfile -ExecutionPolicy ByPass -File start2.ps1 -All",
     "stop-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File stop.ps1",
     "test-windows": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1 -All",
     "test-windows-server": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1 -Server",
     "test-windows-client": "powershell -NoProfile -ExecutionPolicy ByPass -File test.ps1 -Client",
     "test:ci": "npm run cover:ci",
-    "test:jest": "jest --verbose --coverage --watchAll=false --config='./client/src/jest.config.ts'",
     "cover": "npm run cover:all",
     "cover:all": "npm run test:server; npm run test:client; npx codecov",
     "cover:ci": "npm run cover:all:ci",
@@ -32,23 +30,19 @@
     "clear:jest": "cd server && npm run clear:jest",
     "client:dev": "cd client && npm start",
     "start:dev": "ENV_TXT=$(cat env.txt) concurrently \"cd server && npm run tsw\" \"cd server && npm run dev:tsc\" \"cd client && npm start\"",
-    "install": "cd server && npm install && cd ../client && npm install --force",
-    "seed": "cd server && npm run seed",
-    "heroku-postbuild": "cd client && npm run build"
+    "install": "cd server && npm install && cd ../client && npm install --legacy-peer-deps",
+    "seed": "cd server && npm run seed"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Dj-Viking/03-project.git"
+    "url": "git+https://github.com/Dj-Viking/LED-Art-matrix.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Dj-Viking/03-project/issues"
+    "url": "https://github.com/Dj-Viking/LED-Art-matrix/issues"
   },
-  "homepage": "https://github.com/Dj-Viking/03-project#readme",
+  "homepage": "https://github.com/Dj-Viking/LED-Art-matrix#readme",
   "dependencies": {
-    "concurrently": "^5.3.0",
-    "istanbul-lib-coverage": "^3.2.0",
-    "nyc": "^15.1.0"
   }
 }
