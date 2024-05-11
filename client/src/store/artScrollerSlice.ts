@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IArtScrollerState, IGif } from "../types";
 import { produce } from "immer";
-import { buildCreateGifsAction, buildGetGifsAction } from "./actions/gifActionCreators";
+import { buildCreateGifsAction, buildGetGifsAction, getNewGifsAsync } from "./actions/gifActionCreators";
 import { newReducer } from "../utils/newReducer";
 
 const initialState: IArtScrollerState = {
@@ -69,6 +69,12 @@ export const artScrollerSlice = createSlice({
             state.listName = action.payload.newListName;
             state.listNames = [...state.listNames, action.payload.newListName];
         });
+
+        newReducer(builder, getNewGifsAsync.fulfilled, (state, action) => {
+            state.gifs = action.payload.gifs;
+            state.listName = action.payload.newListName;
+            state.listNames = [...state.listNames, action.payload.newListName];
+        });
     },
 });
 
@@ -76,4 +82,5 @@ export const artScrollerActions = {
     ...artScrollerSlice.actions,
     getGifsAsync,
     createGifCollectionAsync,
+    getNewGifsAsync,
 };

@@ -106,7 +106,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
             dispatch(artScrollerActions.setFigureOn(true));
         }
 
-        dispatch(artScrollerActions.getGifsAsync({ getNew: true }));
+        dispatch(artScrollerActions.getNewGifsAsync());
     }
 
     async function gifStartClickHandler(): Promise<void> {
