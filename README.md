@@ -17,9 +17,8 @@ An LED Art Matrix with user interactability to maximize the audio visual experie
 
 ## Table of Contents
 * [Installation](#installation)
-* [LocalSetup](#running-locally)
+* [LocalSetup](#local-setup)
 * [Credits](#credits)
-* [HowToContribute](#contribute)
 * [ContributionNotes](#contribution-notes)
 * [Testing](#testing)
 * [License](#license)
@@ -36,7 +35,7 @@ PWA accessible! just install by clicking the + on the right side of the browser 
 * My Three Cats!
 
 ---
-## Contribute
+## Local Setup
 
 * Running Locally
     - For bcrypt to install properly on windows, one must install Visual Studio C++ Desktop Development SDK
@@ -136,7 +135,7 @@ PWA accessible! just install by clicking the + on the right side of the browser 
     - must have env.txt created and located in the right directories for the server tests to pass. the client tests should be self contained
     - If anybody knows a better way to do dependency injection for the MIDI controller testing I am looking for some help on this!
     - You can see the istanbul code coverage report by going into the coverage folders inside server and client folders to see line coverage.
-        * ![coverage](./docs//images/coverage.png)
+        * ![coverage](./docs/images/coverage.png)
     
 
     ## Contribution Notes
