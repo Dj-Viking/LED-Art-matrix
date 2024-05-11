@@ -52,6 +52,46 @@ exports.GifsController = {
             }
         });
     },
+    getGifsAsDataStrings: function (_, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${(0, utils_1.getRandomIntLimit)(10, 15)}&offset=${(0, utils_1.getRandomIntLimit)(1, 5)}&rating=g&lang=en`;
+                const gifInfo = yield (0, node_fetch_1.default)(gifLink);
+                const gifJson = yield gifInfo.json();
+                let gif = {};
+                const gifPromises = gifJson.data.map((data) => {
+                    const mediaUrl = "https://i.giphy.com/";
+                    const extension = ".webp";
+                    void mediaUrl;
+                    void extension;
+                    const gifID = data.images.original.url.split("/")[4];
+                    return (0, node_fetch_1.default)(`${mediaUrl}${gifID}${extension}`);
+                });
+                const gifResults = yield Promise.all(gifPromises);
+                const gifBlobPromises = gifResults.map((res) => __awaiter(this, void 0, void 0, function* () {
+                    return res.blob();
+                }));
+                const gifBlobs = yield Promise.all(gifBlobPromises);
+                const blobArrayBufferPromises = gifBlobs.map((blob) => {
+                    return blob.arrayBuffer();
+                });
+                const blobArrayBuffers = yield Promise.all(blobArrayBufferPromises);
+                const blobStrs = blobArrayBuffers.map((buffer) => {
+                    return `data:image/webp;base64, ${Buffer.from(buffer).toString("base64")}`;
+                });
+                gif = {
+                    _id: uuid.v4(),
+                    listOwner: "nobody",
+                    listName: "free",
+                    gifSrcs: blobStrs,
+                };
+                return res.status(200).json({ gifs: [gif] });
+            }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("getGifsAsBase64Strings", error, res);
+            }
+        });
+    },
     getMyGifs: function (req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

@@ -46,6 +46,55 @@ export const GifsController = {
         }
     },
 
+    getGifsAsDataStrings: async function (_: Express.MyRequest, res: Response): Promise<Response> {
+        try {
+            const gifLink = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=trippy&limit=${getRandomIntLimit(
+                10,
+                15
+            )}&offset=${getRandomIntLimit(1, 5)}&rating=g&lang=en`;
+
+            const gifInfo = await fetch(gifLink);
+            const gifJson = await gifInfo.json();
+
+            let gif = {} as Omit<IGif, "_id">;
+
+            const gifPromises = gifJson.data.map((data: any) => {
+                const mediaUrl = "https://i.giphy.com/";
+                const extension = ".webp";
+                void mediaUrl;
+                void extension;
+                const gifID = (data.images.original.url as string).split("/")[4];
+                return fetch(`${mediaUrl}${gifID}${extension}`);
+            });
+
+            const gifResults = await Promise.all(gifPromises);
+            const gifBlobPromises = gifResults.map(async (res: any) => {
+                return res.blob();
+            });
+            const gifBlobs = await Promise.all(gifBlobPromises);
+            const blobArrayBufferPromises: Promise<string>[] = gifBlobs.map((blob: Blob) => {
+                return blob.arrayBuffer();
+            });
+
+            const blobArrayBuffers = await Promise.all(blobArrayBufferPromises);
+
+            const blobStrs: string[] = blobArrayBuffers.map((buffer) => {
+                // data:image/${fileExtension};base64, <string>
+                return `data:image/webp;base64, ${Buffer.from(buffer).toString("base64")}`;
+            });
+
+            gif = {
+                _id: uuid.v4(),
+                listOwner: "nobody",
+                listName: "free",
+                gifSrcs: blobStrs,
+            } as IGif;
+            return res.status(200).json({ gifs: [gif] });
+        } catch (error) {
+            return handleError("getGifsAsBase64Strings", error, res);
+        }
+    },
+
     getMyGifs: async function (req: Express.MyRequest, res: Response): Promise<Response> {
         try {
             const user = await User.findOne({ _id: req.user!._id });

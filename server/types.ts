@@ -70,10 +70,13 @@ export interface ICreateUserPayload {
     password?: string;
     email?: string;
 }
+
+type Base64String = string;
 export interface IGif {
     listOwner: string;
     listName: string;
-    gifSrcs: string[];
+    // TODO: soon to be base64 strings
+    gifSrcs: Base64String[];
     _id: string;
 }
 

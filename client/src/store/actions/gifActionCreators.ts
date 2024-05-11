@@ -37,7 +37,7 @@ export const getNewGifsAsync = createAsyncThunk<GetGifsResult, void, MyThunkConf
 
         let newListName = "";
 
-        const freeGifs = (await ApiService.getUnloggedInGifs(true)) as IGif[];
+        const freeGifs = (await ApiService.getGifsAsStrs()) as IGif[];
 
         newListName = freeGifs[0].listName + " " + _thunkAPI.getState().artScrollerState.gifs.length.toString();
 

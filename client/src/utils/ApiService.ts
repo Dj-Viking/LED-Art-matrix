@@ -286,6 +286,21 @@ class ApiService implements IApiService {
         }
     }
 
+    public static async getGifsAsStrs(): Promise<Array<IGif> | void> {
+        headers = clearHeaders(headers);
+        headers = setInitialHeaders(headers);
+
+        try {
+            const gifs = await fetch(API_URL + "/gifs/getGifsAsDataStrings");
+            const data = await gifs.json();
+
+            return data.gifs;
+        } catch (error) {
+            const err = error as Error;
+            ApiService.handleError("getGifsAsStrs", err);
+        }
+    }
+
     public static async getGifs(token: string, getNew: boolean): Promise<Array<IGif> | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
