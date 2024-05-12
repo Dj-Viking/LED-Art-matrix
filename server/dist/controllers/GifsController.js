@@ -52,6 +52,24 @@ exports.GifsController = {
             }
         });
     },
+    saveGifsAsStrings: function (req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (process.env.NODE_ENV === "test") {
+                }
+                else {
+                    const { listName } = req.body;
+                    const { files } = req;
+                    const gifSrcs = [];
+                    console.log("files", files);
+                }
+                return res.status(200).json({ success: true });
+            }
+            catch (error) {
+                return (0, handleApiError_1.handleError)("saveGifsAsStrings", error, res);
+            }
+        });
+    },
     getGifsAsDataStrings: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

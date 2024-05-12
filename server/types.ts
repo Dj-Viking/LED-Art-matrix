@@ -56,6 +56,21 @@ declare global {
 export namespace Express {
     export type MyRequest = Request & {
         user?: MyJwtData | null;
+        files?: Record<
+            string,
+            {
+                fieldName: string;
+                originalFilename: string;
+                path: string;
+                headers: Record<string, string>;
+                size: number;
+                name: string;
+                type: string;
+            }
+        >;
+        _readableState?: {
+            buffer: Buffer[];
+        };
     };
 }
 

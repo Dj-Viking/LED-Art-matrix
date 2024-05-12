@@ -20,8 +20,10 @@ const cors_1 = __importDefault(require("cors"));
 const app = (0, express_1.default)();
 const router_1 = __importDefault(require("./router"));
 const PORT = process.env.PORT || 3001;
+const formData = require("express-form-data");
 const corsRegexp = (() => new RegExp(constants_1.APP_DOMAIN_PREFIX, "g"))();
 app.use(express_1.default.urlencoded({ extended: false }));
+app.use(formData.parse());
 app.use(express_1.default.json());
 app.use((0, cors_1.default)({
     origin: constants_1.IS_PROD ? corsRegexp : "http://localhost:3000",

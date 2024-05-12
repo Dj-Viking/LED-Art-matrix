@@ -1,25 +1,95 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import request from "supertest";
 import mongoose from "mongoose";
-import { MOCK_GIPHY_RES, TEST_DB_URL } from "../constants";
+const uuid = require("uuid");
+const { data: base64StringOfWebPImage } = require("../testutils/base64String.json");
+import {
+    MOCK_GIPHY_RES,
+    TEST_DB_URL,
+    TEST_EMAIL,
+    TEST_PASSWORD,
+    TEST_USERNAME,
+} from "../constants";
 import { createTestServer } from "../testServer";
-import { IGetGifsResponse } from "../types";
+import { ICreateUserPayload, ICreateUserResponse, IGetGifsResponse, IGif } from "../types";
 
 //@ts-ignore
 import fetch from "node-fetch";
+import { User } from "../models";
+import { base64ToBlob_Server } from "../utils/base64ToBlob";
 
-const app = createTestServer();
+let app: ReturnType<typeof createTestServer>;
+
+let newUserToken = "";
+let newUserId = "";
 
 describe("test the CRUD on gifs", () => {
+    // test("kjsdfkjfed", () => {
+    //     expect(true).toBe(true);
+    // });
+
+    // beforeAll(async () => {
+    //     await mongoose.connect(TEST_DB_URL).then(() => {
+    //         mongoose.connection.db.dropDatabase().then(async () => {
+    //             await mongoose.connection.close();
+    //         });
+    //     });
+    // });
+    beforeEach(() => {
+        app = createTestServer();
+    });
+
+    // afterEach(() => {
+    //     // @ts-ignore
+    //     app = null;
+    // });
+
     beforeAll(async () => {
         await mongoose.connect(TEST_DB_URL);
     });
 
     afterAll(async () => {
+        if (newUserId) {
+            (async () => {
+                await User.deleteOne({ _id: newUserId as string });
+            })();
+        }
         mongoose.connection.db.dropDatabase().then(async () => {
             await mongoose.connection.close();
         });
+    });
+
+    test("/POST a user gets created", async () => {
+        const createUser = await request(app)
+            .post("/user")
+            .send({
+                username: TEST_USERNAME,
+                email: TEST_EMAIL,
+                password: TEST_PASSWORD,
+            } as ICreateUserPayload);
+
+        const parsed = JSON.parse(createUser.text) as ICreateUserResponse;
+        expect(createUser.status).toBe(201);
+        expect(typeof parsed._id).toBe("string");
+        newUserId = parsed._id;
+        expect(typeof parsed.token).toBe("string");
+        newUserToken = parsed.token;
+    });
+
+    test("when array of blobs for gif strings are sent to server\
+    can parse those blobs as strings again and then save to database", async () => {
+        const fileblob = base64ToBlob_Server(base64StringOfWebPImage, "image/webp");
+        const fileBuf = Buffer.from(await fileblob.text());
+
+        const res = await request(app)
+            .post("/gifs/saveGifsAsStrings")
+            .set({
+                authorization: `Bearer ${newUserToken}`,
+            })
+            .attach("gif image", fileBuf, "test gif");
+        expect(res.status).toBe(200);
     });
 
     test("get gifs and then download the files on the server and then\

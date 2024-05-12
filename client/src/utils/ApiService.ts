@@ -6,6 +6,7 @@ import { IGif, ISaveUserPresetArgs } from "../types";
 
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { localGifHelper } from "./IdbClass";
+import { base64ToBlob_Client } from "./base64StringToBlob";
 
 let headers = {};
 interface ISignupArgs {
@@ -265,6 +266,39 @@ class ApiService implements IApiService {
         } catch (error) {
             const err = error as Error;
             ApiService.handleError("getUnloggedInGifs", err);
+        }
+    }
+
+    public static async saveGifsAsStrings(token: string, gif: IGif, listName: string): Promise<boolean> {
+        headers = clearHeaders(headers);
+        headers = setAuthHeader(headers, token);
+
+        const gifBlobs = gif.gifSrcs.map((fileStr: string) => {
+            const newStr = fileStr.split(";base64, ")[1];
+            const result = base64ToBlob_Client(newStr, "image/webp");
+            return result;
+        });
+
+        try {
+            const promises = gifBlobs.map((blob: Blob, i: number) => {
+                const formData = new FormData();
+                formData.append("listName", listName);
+                formData.append("imageName", "gifImage_" + i);
+                formData.append("gifImage_" + i, blob);
+                return fetch(`${API_URL}/gifs/saveGifsAsStrings`, {
+                    method: "POST",
+                    body: formData,
+                    headers,
+                });
+            });
+
+            await Promise.all(promises);
+
+            return true;
+        } catch (error) {
+            const err = error as Error;
+            ApiService.handleError("saveGifsAsStrings", err);
+            return false;
         }
     }
 

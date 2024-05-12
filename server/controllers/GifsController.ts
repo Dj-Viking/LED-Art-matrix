@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 // @ts-expect-error i know there isn't a type declaration file - i don't care
 import fetch from "node-fetch";
+import fs from "fs";
 import { Gif, User } from "../models";
 import { getRandomIntLimit } from "../utils";
 import { Express, IGif } from "../types";
 import { Response } from "express";
 import { readEnv } from "../utils";
 import { handleError } from "../utils/handleApiError";
+import { Blob } from "buffer";
 const uuid = require("uuid");
 readEnv();
 const { API_KEY } = process.env;
@@ -43,6 +46,49 @@ export const GifsController = {
             return res.status(200).json({ gifs: [gif] });
         } catch (error) {
             return handleError("getGifs", error, res);
+        }
+    },
+
+    saveGifsAsStrings: async function (req: Express.MyRequest, res: Response): Promise<Response> {
+        try {
+            if (process.env.NODE_ENV === "test") {
+                // console.log("str", Buffer.from(req._readableState.buffer[0]).toString("base64").length);
+            } else {
+                const { listName } = req.body as { listName: string; imageName: string };
+                const { files } = req;
+                const gifSrcs: string[] = [];
+
+                console.log("files", files);
+                // for (const [, value] of Object.entries(files!)) {
+                //     const buffer = fs.readFileSync(value.path);
+                //     gifSrcs.push(Buffer.from(buffer).toString("base64"));
+                // }
+
+                // const newGif = {
+                //     listOwner: req.user!._id,
+                //     listName,
+                //     gifSrcs,
+                // };
+
+                // const mongoGif = await Gif.create(newGif);
+                // console.log("mongo gif??", mongoGif);
+
+                // await User.findOneAndUpdate(
+                //     { _id: req.user!._id },
+                //     {
+                //         $push: {
+                //             gifs: mongoGif,
+                //         },
+                //     },
+                //     { new: true }
+                // );
+            }
+
+            // for testing in jest you MUST send a FUCKING .json({}) at least otherwise there will be
+            // open handles hell upon you!!!!!!!!
+            return res.status(200).json({ success: true });
+        } catch (error) {
+            return handleError("saveGifsAsStrings", error, res);
         }
     },
 

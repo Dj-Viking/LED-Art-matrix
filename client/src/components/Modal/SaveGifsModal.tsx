@@ -3,7 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { INewGifsModalState } from "../../types";
 import styled from "styled-components";
 import { getGlobalState } from "../../store/store";
-import { artScrollerActions } from "../../store/artScrollerSlice";
+import { ApiService } from "../../utils/ApiService";
+import AuthService from "../../utils/AuthService";
 
 const StyledModalCloseButton = styled.button`
     & {
@@ -159,7 +160,6 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
     const [error, setError] = useState<string>("");
     const [input, setInput] = useState<string>(listName);
     const { gifsModalIsOpen } = getGlobalState(useSelector);
-    const dispatch = useDispatch();
 
     useEffect(() => {
         setInput(listName);
@@ -174,7 +174,7 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
         async (event: any): Promise<void> => {
             event.preventDefault();
             try {
-                dispatch(artScrollerActions.createGifCollectionAsync({ gif, listName: input }));
+                await ApiService.saveGifsAsStrings(AuthService.getToken() as string, gif, input);
 
                 return void 0;
             } catch (error) {
@@ -184,7 +184,7 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
                 return void 0;
             }
         },
-        [dispatch, gif, input]
+        [gif, input]
     );
 
     return (

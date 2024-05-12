@@ -62,9 +62,11 @@ export interface ILedState {
     animVarCoeff: string;
 }
 
+type Base64String = string;
+
 export interface IGif {
     listName: string;
-    gifSrcs: string[];
+    gifSrcs: Base64String[];
     listOwner: string;
     _id: string;
 }
