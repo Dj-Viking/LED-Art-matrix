@@ -65,7 +65,7 @@ exports.GifsController = {
                     const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
                     const filestr = Buffer.from(buffer).toString("base64");
                     console.log("str len\n------\n", filestr.length);
-                    const jsonPath = __dirname + "/gifs.json";
+                    const jsonPath = __dirname + "../../../../gifs.json";
                     let gifsJson;
                     if (fs_1.default.existsSync(jsonPath)) {
                         console.log("\x1b[32m file exists \x1b[00m ");
@@ -79,7 +79,7 @@ exports.GifsController = {
                         if (gifsJson.gif.gifSrcs.length === gifCountNum) {
                             fs_1.default.unlinkSync(jsonPath);
                             const gifToSave = {
-                                gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 10000000),
+                                gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 1000000),
                                 listOwner: req.user._id,
                                 listName: listName,
                             };

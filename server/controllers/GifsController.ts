@@ -73,7 +73,7 @@ export const GifsController = {
 
                 console.log("str len\n------\n", filestr.length);
 
-                const jsonPath = __dirname + "/gifs.json";
+                const jsonPath = __dirname + "../../../../gifs.json";
 
                 let gifsJson: Record<"gif", { gifSrcs: string[] }>;
                 if (fs.existsSync(jsonPath)) {
@@ -87,11 +87,10 @@ export const GifsController = {
                     }
                     if (gifsJson.gif.gifSrcs.length === gifCountNum) {
                         fs.unlinkSync(jsonPath);
-                        // reached last one save to user one by one
                         const gifToSave = {
                             // reduce the size of query by filtering out strings that
                             // are longer than a some big number (for now)
-                            gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 10_000_000),
+                            gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 1_000_000),
                             listOwner: req!.user!._id,
                             listName: listName,
                         } as IGif;
