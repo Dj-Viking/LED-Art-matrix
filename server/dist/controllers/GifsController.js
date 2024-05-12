@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GifsController = void 0;
 const node_fetch_1 = __importDefault(require("node-fetch"));
+const fs_1 = __importDefault(require("fs"));
 const models_1 = require("../models");
 const utils_1 = require("../utils");
 const utils_2 = require("../utils");
@@ -58,10 +59,51 @@ exports.GifsController = {
                 if (process.env.NODE_ENV === "test") {
                 }
                 else {
-                    const { listName } = req.body;
+                    const { listName, gifCount } = req.body;
                     const { files } = req;
-                    const gifSrcs = [];
-                    console.log("files", files);
+                    const gifCountNum = Number(gifCount);
+                    const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
+                    const filestr = Buffer.from(buffer).toString("base64");
+                    console.log("str len\n------\n", filestr.length);
+                    const jsonPath = __dirname + "/gifs.json";
+                    let gifsJson;
+                    if (fs_1.default.existsSync(jsonPath)) {
+                        console.log("\x1b[32m file exists \x1b[00m ");
+                        gifsJson = require(jsonPath);
+                        if (gifsJson.gif.gifSrcs.length <= gifCountNum - 1) {
+                            gifsJson.gif.gifSrcs.push(`data:image/webp;base64, ${filestr}`);
+                            fs_1.default.writeFileSync(jsonPath, JSON.stringify(gifsJson, null, 4), {
+                                encoding: "utf-8",
+                            });
+                        }
+                        if (gifsJson.gif.gifSrcs.length === gifCountNum) {
+                            fs_1.default.unlinkSync(jsonPath);
+                            const gifToSave = {
+                                gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 10000000),
+                                listOwner: req.user._id,
+                                listName: listName,
+                            };
+                            console.log("about to create gif");
+                            const mongoGif = yield models_1.Gif.create(gifToSave);
+                            console.log("mongo gif", mongoGif._id);
+                            yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
+                                $push: {
+                                    gifs: mongoGif,
+                                },
+                            }, { new: true });
+                        }
+                    }
+                    else {
+                        console.log("\x1b[32m file does not exist \x1b[00m");
+                        const obj = {
+                            gif: {
+                                gifSrcs: [`data:image/webp;base64, ${filestr}`],
+                            },
+                        };
+                        fs_1.default.writeFileSync(jsonPath, JSON.stringify(obj, null, 4), {
+                            encoding: "utf-8",
+                        });
+                    }
                 }
                 return res.status(200).json({ success: true });
             }

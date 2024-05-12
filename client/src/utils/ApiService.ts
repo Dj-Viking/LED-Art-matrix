@@ -273,6 +273,8 @@ class ApiService implements IApiService {
         headers = clearHeaders(headers);
         headers = setAuthHeader(headers, token);
 
+        // TODO: figure out how to send gifs that are huge
+        // mongo has query size limit to ~17MB
         const gifBlobs = gif.gifSrcs.map((fileStr: string) => {
             const newStr = fileStr.split(";base64, ")[1];
             const result = base64ToBlob_Client(newStr, "image/webp");
@@ -280,9 +282,10 @@ class ApiService implements IApiService {
         });
 
         try {
-            const promises = gifBlobs.map((blob: Blob, i: number) => {
+            const promises = gifBlobs.map((blob: Blob, i: number, array: Blob[]) => {
                 const formData = new FormData();
                 formData.append("listName", listName);
+                formData.append("gifCount", array.length.toString());
                 formData.append("imageName", "gifImage_" + i);
                 formData.append("gifImage_" + i, blob);
                 return fetch(`${API_URL}/gifs/saveGifsAsStrings`, {

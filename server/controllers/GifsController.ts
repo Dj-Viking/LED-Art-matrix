@@ -54,34 +54,76 @@ export const GifsController = {
             if (process.env.NODE_ENV === "test") {
                 // console.log("str", Buffer.from(req._readableState.buffer[0]).toString("base64").length);
             } else {
-                const { listName } = req.body as { listName: string; imageName: string };
+                const { listName, gifCount } = req.body as { listName: string; gifCount: string };
                 const { files } = req;
-                const gifSrcs: string[] = [];
+                const gifCountNum = Number(gifCount);
 
-                console.log("files", files);
-                // for (const [, value] of Object.entries(files!)) {
-                //     const buffer = fs.readFileSync(value.path);
-                //     gifSrcs.push(Buffer.from(buffer).toString("base64"));
-                // }
+                // console.log("files", files);
+                // since i can't save more than 17MB in a mongo db transaction
+                // just going to save the gifs one by one since one isn't bigger than 17MB i think
 
-                // const newGif = {
-                //     listOwner: req.user!._id,
-                //     listName,
-                //     gifSrcs,
-                // };
+                // idea for now - write to a temporary json file each new gif image
+                // then when the amount of keys in that json equal the count of gifs I'm sending
+                // then update the user with a new collection
+                // update user's new gif collection one by one because
+                // the transaction is going to be too big
+                const buffer = fs.readFileSync(Object.values(files!)[0].path);
 
-                // const mongoGif = await Gif.create(newGif);
-                // console.log("mongo gif??", mongoGif);
+                const filestr = Buffer.from(buffer).toString("base64");
 
-                // await User.findOneAndUpdate(
-                //     { _id: req.user!._id },
-                //     {
-                //         $push: {
-                //             gifs: mongoGif,
-                //         },
-                //     },
-                //     { new: true }
-                // );
+                console.log("str len\n------\n", filestr.length);
+
+                const jsonPath = __dirname + "/gifs.json";
+
+                let gifsJson: Record<"gif", { gifSrcs: string[] }>;
+                if (fs.existsSync(jsonPath)) {
+                    console.log("\x1b[32m file exists \x1b[00m ");
+                    gifsJson = require(jsonPath);
+                    if (gifsJson.gif.gifSrcs.length <= gifCountNum - 1) {
+                        gifsJson.gif.gifSrcs.push(`data:image/webp;base64, ${filestr}`);
+                        fs.writeFileSync(jsonPath, JSON.stringify(gifsJson, null, 4), {
+                            encoding: "utf-8",
+                        });
+                    }
+                    if (gifsJson.gif.gifSrcs.length === gifCountNum) {
+                        fs.unlinkSync(jsonPath);
+                        // reached last one save to user one by one
+                        const gifToSave = {
+                            // reduce the size of query by filtering out strings that
+                            // are longer than a some big number (for now)
+                            gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 10_000_000),
+                            listOwner: req!.user!._id,
+                            listName: listName,
+                        } as IGif;
+
+                        console.log("about to create gif");
+
+                        const mongoGif = await Gif.create(gifToSave);
+
+                        console.log("mongo gif", mongoGif._id);
+
+                        await User.findOneAndUpdate(
+                            { _id: req.user!._id },
+                            {
+                                $push: {
+                                    gifs: mongoGif,
+                                },
+                            },
+                            { new: true }
+                        );
+                    }
+                } else {
+                    console.log("\x1b[32m file does not exist \x1b[00m");
+                    // add the first one
+                    const obj: Record<"gif", { gifSrcs: string[] }> = {
+                        gif: {
+                            gifSrcs: [`data:image/webp;base64, ${filestr}`],
+                        },
+                    };
+                    fs.writeFileSync(jsonPath, JSON.stringify(obj, null, 4), {
+                        encoding: "utf-8",
+                    });
+                }
             }
 
             // for testing in jest you MUST send a FUCKING .json({}) at least otherwise there will be
