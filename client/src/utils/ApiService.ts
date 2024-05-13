@@ -297,6 +297,10 @@ class ApiService implements IApiService {
 
             await Promise.all(promises);
 
+            // TODO: redo the actions which update the state such as
+            // closing the modal and updating the modal context
+            // and the selected listName as the gif list that was
+            // just saved in the db
             return true;
         } catch (error) {
             const err = error as Error;
