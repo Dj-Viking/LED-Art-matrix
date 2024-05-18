@@ -3,9 +3,9 @@
 // @ts-expect-error i know there isn't a type declaration file - i don't care
 import fetch from "node-fetch";
 import fs from "fs";
-import { Gif, User } from "../models";
+import { Gif, GifStorage, User } from "../models";
 import { getRandomIntLimit } from "../utils";
-import { Express, IGif } from "../types";
+import { Express, IGif, IGifStorage } from "../types";
 import { Response } from "express";
 import { readEnv } from "../utils";
 import { handleError } from "../utils/handleApiError";
@@ -54,7 +54,10 @@ export const GifsController = {
             if (process.env.NODE_ENV === "test") {
                 // console.log("str", Buffer.from(req._readableState.buffer[0]).toString("base64").length);
             } else {
-                const { listName, gifCount } = req.body as { listName: string; gifCount: string };
+                const { listName: reqListName, gifCount } = req.body as {
+                    listName: string;
+                    gifCount: string;
+                };
                 const { files } = req;
                 const gifCountNum = Number(gifCount);
 
@@ -73,33 +76,58 @@ export const GifsController = {
 
                 console.log("str len\n------\n", filestr.length);
 
-                const jsonPath = __dirname + "../../../../gifs.json";
-
-                let gifsJson: Record<"gif", { gifSrcs: string[] }>;
-                if (fs.existsSync(jsonPath)) {
+                let gifStorage: IGifStorage = {} as any;
+                // db call here
+                gifStorage = (await GifStorage.findOne({ listName: reqListName })) as IGifStorage;
+                if (gifStorage != null) {
                     console.log("\x1b[32m file exists \x1b[00m ");
-                    gifsJson = require(jsonPath);
-                    if (gifsJson.gif.gifSrcs.length <= gifCountNum - 1) {
-                        gifsJson.gif.gifSrcs.push(`data:image/webp;base64, ${filestr}`);
-                        fs.writeFileSync(jsonPath, JSON.stringify(gifsJson, null, 4), {
-                            encoding: "utf-8",
-                        });
+
+                    console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
+
+                    if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
+                        await GifStorage.findOneAndUpdate(
+                            { listname: reqListName },
+                            filestr.length > 500_000
+                                ? {
+                                      $push: {
+                                          gifSrcs: `data:image/webp;base64, ${filestr}`,
+                                      },
+                                  }
+                                : {}
+                        );
                     }
-                    if (gifsJson.gif.gifSrcs.length === gifCountNum) {
-                        fs.unlinkSync(jsonPath);
+                    if (gifStorage.gifSrcs.length === gifCountNum) {
+                        // TODO: delete to save space??
+                        // await GifStorage
+                        // fs.unlinkSync(jsonPath);
+
+                        // use existing storage
+                        gifStorage = (await GifStorage.findOne({
+                            listName: reqListName,
+                        })) as IGifStorage;
+
                         const gifToSave = {
                             // reduce the size of query by filtering out strings that
                             // are longer than a some big number (for now)
-                            gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 1_000_000),
-                            listOwner: req!.user!._id,
-                            listName: listName,
+                            gifSrcs: [...gifStorage.gifSrcs],
+                            listOwner: req!.user!._id.toHexString(),
+                            listName: gifStorage.listName,
                         } as IGif;
 
-                        console.log("about to create gif");
+                        console.log("about to create gif", gifToSave);
 
                         const mongoGif = await Gif.create(gifToSave);
 
                         console.log("mongo gif", mongoGif._id);
+
+                        // const gifStorageUpdate = await GifStorage.findOneAndDelete({
+                        //     listName: gifToSave.listName,
+                        // });
+
+                        // console.log(
+                        //     "about to create gifstorage for next time request with matched listname",
+                        //     gifStorageUpdate
+                        // );
 
                         await User.findOneAndUpdate(
                             { _id: req.user!._id },
@@ -114,14 +142,11 @@ export const GifsController = {
                 } else {
                     console.log("\x1b[32m file does not exist \x1b[00m");
                     // add the first one
-                    const obj: Record<"gif", { gifSrcs: string[] }> = {
-                        gif: {
-                            gifSrcs: [`data:image/webp;base64, ${filestr}`],
-                        },
-                    };
-                    fs.writeFileSync(jsonPath, JSON.stringify(obj, null, 4), {
-                        encoding: "utf-8",
-                    });
+                    gifStorage = (await GifStorage.create({
+                        listOwner: req!.user!._id as string as any,
+                        listName: reqListName,
+                        gifSrcs: [`data:image/webp;base64, ${filestr}`],
+                    })) as any;
                 }
             }
 

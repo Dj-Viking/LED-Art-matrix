@@ -5,6 +5,7 @@ import { CategoryClass } from "./Category";
 import { OrderClass } from "./Order";
 import { SearchTermClass } from "./SearchTerm";
 import { GifClass } from "./Gif";
+import { GifStorageClass } from "./GifStorage";
 
 const Product = getModelForClass(ProductClass);
 const User = getModelForClass(UserClass);
@@ -12,5 +13,6 @@ const Order = getModelForClass(OrderClass);
 const SearchTerm = getModelForClass(SearchTermClass);
 const Category = getModelForClass(CategoryClass);
 const Gif = getModelForClass(GifClass);
+const GifStorage = getModelForClass(GifStorageClass);
 
-export { User, SearchTerm, Product, Category, Order, Gif };
+export { GifStorage, User, SearchTerm, Product, Category, Order, Gif };

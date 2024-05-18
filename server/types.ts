@@ -3,10 +3,11 @@ import { DocumentType } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
 import { UserClass } from "./models/User";
 import * as typegoose from "@typegoose/typegoose";
+import { Types } from "mongoose";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
-    _id: string;
+    _id: Types.ObjectId & string;
     username: string;
     email: string;
     uuid?: string;
@@ -93,6 +94,14 @@ export interface IGif {
     // TODO: soon to be base64 strings
     gifSrcs: Base64String[];
     _id: string;
+}
+
+export interface IGifStorage {
+    listOwner: string;
+
+    listName: string;
+
+    gifSrcs: Base64String[];
 }
 
 export interface IAddPresetResponse {

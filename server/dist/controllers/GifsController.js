@@ -59,31 +59,36 @@ exports.GifsController = {
                 if (process.env.NODE_ENV === "test") {
                 }
                 else {
-                    const { listName, gifCount } = req.body;
+                    const { listName: reqListName, gifCount } = req.body;
                     const { files } = req;
                     const gifCountNum = Number(gifCount);
                     const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
                     const filestr = Buffer.from(buffer).toString("base64");
                     console.log("str len\n------\n", filestr.length);
-                    const jsonPath = __dirname + "../../../../gifs.json";
-                    let gifsJson;
-                    if (fs_1.default.existsSync(jsonPath)) {
+                    let gifStorage = {};
+                    gifStorage = (yield models_1.GifStorage.findOne({ listName: reqListName }));
+                    if (gifStorage != null) {
                         console.log("\x1b[32m file exists \x1b[00m ");
-                        gifsJson = require(jsonPath);
-                        if (gifsJson.gif.gifSrcs.length <= gifCountNum - 1) {
-                            gifsJson.gif.gifSrcs.push(`data:image/webp;base64, ${filestr}`);
-                            fs_1.default.writeFileSync(jsonPath, JSON.stringify(gifsJson, null, 4), {
-                                encoding: "utf-8",
-                            });
+                        console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
+                        if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
+                            yield models_1.GifStorage.findOneAndUpdate({ listname: reqListName }, filestr.length > 500000
+                                ? {
+                                    $push: {
+                                        gifSrcs: `data:image/webp;base64, ${filestr}`,
+                                    },
+                                }
+                                : {});
                         }
-                        if (gifsJson.gif.gifSrcs.length === gifCountNum) {
-                            fs_1.default.unlinkSync(jsonPath);
+                        if (gifStorage.gifSrcs.length === gifCountNum) {
+                            gifStorage = (yield models_1.GifStorage.findOne({
+                                listName: reqListName,
+                            }));
                             const gifToSave = {
-                                gifSrcs: gifsJson.gif.gifSrcs.filter((src) => src.length < 1000000),
-                                listOwner: req.user._id,
-                                listName: listName,
+                                gifSrcs: [...gifStorage.gifSrcs],
+                                listOwner: req.user._id.toHexString(),
+                                listName: gifStorage.listName,
                             };
-                            console.log("about to create gif");
+                            console.log("about to create gif", gifToSave);
                             const mongoGif = yield models_1.Gif.create(gifToSave);
                             console.log("mongo gif", mongoGif._id);
                             yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
@@ -95,14 +100,11 @@ exports.GifsController = {
                     }
                     else {
                         console.log("\x1b[32m file does not exist \x1b[00m");
-                        const obj = {
-                            gif: {
-                                gifSrcs: [`data:image/webp;base64, ${filestr}`],
-                            },
-                        };
-                        fs_1.default.writeFileSync(jsonPath, JSON.stringify(obj, null, 4), {
-                            encoding: "utf-8",
-                        });
+                        gifStorage = (yield models_1.GifStorage.create({
+                            listOwner: req.user._id,
+                            listName: reqListName,
+                            gifSrcs: [`data:image/webp;base64, ${filestr}`],
+                        }));
                     }
                 }
                 return res.status(200).json({ success: true });
