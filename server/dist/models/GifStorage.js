@@ -28,7 +28,7 @@ __decorate([
 ], GifStorageClass.prototype, "gifSrcs", void 0);
 GifStorageClass = __decorate([
     (0, typegoose_1.modelOptions)({
-        schemaOptions: { collection: "gifs" },
+        schemaOptions: { collection: "gifStorage" },
     })
 ], GifStorageClass);
 exports.GifStorageClass = GifStorageClass;

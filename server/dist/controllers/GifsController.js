@@ -71,13 +71,14 @@ exports.GifsController = {
                         console.log("\x1b[32m file exists \x1b[00m ");
                         console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
                         if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
-                            yield models_1.GifStorage.findOneAndUpdate({ listname: reqListName }, filestr.length > 500000
+                            let gifStorageToUpdate = yield models_1.GifStorage.findOneAndUpdate({ listname: reqListName }, filestr.length > 500000
                                 ? {
                                     $push: {
                                         gifSrcs: `data:image/webp;base64, ${filestr}`,
                                     },
                                 }
-                                : {});
+                                : {}, { new: true });
+                            console.log("updated existing gifStorage to update", gifStorageToUpdate);
                         }
                         if (gifStorage.gifSrcs.length === gifCountNum) {
                             gifStorage = (yield models_1.GifStorage.findOne({

@@ -2,7 +2,7 @@ import { prop, modelOptions, Severity, mongoose, Ref } from "@typegoose/typegoos
 import { UserClass } from "./User";
 
 @modelOptions({
-    schemaOptions: { collection: "gifs" },
+    schemaOptions: { collection: "gifStorage" },
 })
 export class GifStorageClass {
     @prop({ ref: () => UserClass })

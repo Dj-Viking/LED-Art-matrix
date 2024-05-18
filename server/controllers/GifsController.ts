@@ -85,7 +85,7 @@ export const GifsController = {
                     console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
 
                     if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
-                        await GifStorage.findOneAndUpdate(
+                        let gifStorageToUpdate = await GifStorage.findOneAndUpdate(
                             { listname: reqListName },
                             filestr.length > 500_000
                                 ? {
@@ -93,8 +93,10 @@ export const GifsController = {
                                           gifSrcs: `data:image/webp;base64, ${filestr}`,
                                       },
                                   }
-                                : {}
+                                : {},
+                            { new: true }
                         );
+                        console.log("updated existing gifStorage to update", gifStorageToUpdate);
                     }
                     if (gifStorage.gifSrcs.length === gifCountNum) {
                         // TODO: delete to save space??
