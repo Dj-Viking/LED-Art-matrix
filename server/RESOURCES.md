@@ -19,10 +19,3 @@ fetch.mockImplementation(() => {
   });
 });
 ```
-
-# TODO:
-* fix the problem where the JSON is not in a new state after deleting it and recreating the JSON file again
-probably some file handle bullshit that NODEJS does under the hood
-even when doing require(jsonPath) or JSON.parse(fs.readFileSync(jsonPath, { encoding: "utf-8" }));
-the value read from either of these two things is the same value as the file state
-as it was before the file was deleted FOR THE FIRST TIME!!! which is BULLSHIT!! 
