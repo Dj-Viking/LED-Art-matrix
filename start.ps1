@@ -15,6 +15,14 @@ param(
     $Prettier
 )
 
+# clean the data jsons for the current implementation of saving gifs as strings in the user's gif collection
+# if they exist
+Get-ChildItem -Path "." | Where-Object { 
+    $_.FullName -match "data_" 
+} | ForEach-Object {
+    Remove-Item -Force $_.FullName
+}
+
 # if node modules didn't exist then run install scripts
 # otherwise just start the app
 if (!(Test-Path -Path ".\client\node_modules") -or !(Test-Path -Path ".\server\node_modules")) {
