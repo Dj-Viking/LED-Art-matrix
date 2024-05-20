@@ -32,7 +32,7 @@ const ArtScroller: React.FC = (): JSX.Element => {
                     <S.ArtScrollerGifButtonContainer>
                         <S.ArtScrollerStartButton />
                         <S.ArtScrollerToggleButton />
-                        <S.ArtScrollerMakeNewGifCollection />
+                        <S.ArtScrollerSaveNewGifCollection />
                     </S.ArtScrollerGifButtonContainer>
                     {/* sliders */}
                     <S.ArtScrollerSliderContainer>

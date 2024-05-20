@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { getGlobalState } from "../../store/store";
 import { ApiService } from "../../utils/ApiService";
 import AuthService from "../../utils/AuthService";
+import { artScrollerActions } from "../../store/artScrollerSlice";
 
 const StyledModalCloseButton = styled.button`
     & {
@@ -157,6 +158,7 @@ interface SaveGifsModalProps {
 }
 
 const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listName, gif } }) => {
+    const dispatch = useDispatch();
     const [error, setError] = useState<string>("");
     const [input, setInput] = useState<string>(listName);
     const { gifsModalIsOpen } = getGlobalState(useSelector);
@@ -172,10 +174,17 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
 
     const handleSubmit = React.useCallback(
         async (event: any): Promise<void> => {
+            console.log("ksdjfsakdjfkasjdfkj");
             event.preventDefault();
             try {
-                await ApiService.saveGifsAsStrings(AuthService.getToken() as string, gif, input);
+                // await ApiService.saveGifsAsStrings(AuthService.getToken() as string, gif, input);
 
+                dispatch(
+                    artScrollerActions.saveNewGifsAsync({
+                        gif,
+                        newListName: input,
+                    })
+                );
                 return void 0;
             } catch (error) {
                 // TODO: create global error handler!
@@ -184,7 +193,7 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
                 return void 0;
             }
         },
-        [gif, input]
+        [gif, input, dispatch]
     );
 
     return (

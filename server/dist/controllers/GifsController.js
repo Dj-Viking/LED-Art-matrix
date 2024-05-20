@@ -22,6 +22,7 @@ const handleApiError_1 = require("../utils/handleApiError");
 const uuid = require("uuid");
 (0, utils_2.readEnv)();
 const { API_KEY } = process.env;
+const something = "";
 exports.GifsController = {
     storedGifs: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -59,56 +60,46 @@ exports.GifsController = {
                 if (process.env.NODE_ENV === "test") {
                 }
                 else {
-                    const { listName: reqListName, gifCount } = req.body;
+                    const { listName: reqListName, gifCount, reqId, } = req.body;
                     const { files } = req;
                     const gifCountNum = Number(gifCount);
                     const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
                     const filestr = Buffer.from(buffer).toString("base64");
+                    const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
                     console.log("str len\n------\n", filestr.length);
-                    let gifStorage = {};
-                    gifStorage = (yield models_1.GifStorage.findOne({ listName: reqListName }));
-                    if (gifStorage != null) {
-                        console.log("\x1b[32m file exists \x1b[00m ");
-                        console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
-                        if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
-                            let gifStorageToUpdate = yield models_1.GifStorage.findOneAndUpdate({ listname: reqListName }, filestr.length > 500000
-                                ? {
-                                    $push: {
-                                        gifSrcs: `data:image/webp;base64, ${filestr}`,
-                                    },
-                                }
-                                : {}, { new: true });
-                            console.log("updated existing gifStorage to update", gifStorageToUpdate);
-                        }
-                        if (gifStorage.gifSrcs.length === gifCountNum) {
-                            gifStorage = (yield models_1.GifStorage.findOne({
+                    if (!fs_1.default.existsSync(tempJsonPath)) {
+                        fs_1.default.writeFileSync(tempJsonPath, JSON.stringify([`data:image/webp;base64, ${filestr}`], null, 4));
+                    }
+                    const existingData = JSON.parse(fs_1.default.readFileSync(tempJsonPath, { encoding: "utf-8" }));
+                    if (existingData.length === gifCountNum) {
+                        const mongoGif = yield models_1.Gif.create({
+                            listName: reqListName,
+                            listOwner: req.user._id.toString(),
+                            gifSrcs: existingData.filter((str) => str.length < 500000),
+                        });
+                        yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                            $push: {
+                                gifs: mongoGif,
+                            },
+                        }, { new: true });
+                        yield models_1.Gif.deleteMany({ listName: reqListName });
+                        fs_1.default.unlinkSync(tempJsonPath);
+                        return res.status(200).json([
+                            {
+                                _id: mongoGif._id.toString(),
+                                gifSrcs: mongoGif.gifSrcs,
                                 listName: reqListName,
-                            }));
-                            const gifToSave = {
-                                gifSrcs: [...gifStorage.gifSrcs],
-                                listOwner: req.user._id.toHexString(),
-                                listName: gifStorage.listName,
-                            };
-                            console.log("about to create gif", gifToSave);
-                            const mongoGif = yield models_1.Gif.create(gifToSave);
-                            console.log("mongo gif", mongoGif._id);
-                            yield models_1.User.findOneAndUpdate({ _id: req.user._id }, {
-                                $push: {
-                                    gifs: mongoGif,
-                                },
-                            }, { new: true });
-                        }
+                                listOwner: req.user._id.toString(),
+                            },
+                        ]);
                     }
                     else {
-                        console.log("\x1b[32m file does not exist \x1b[00m");
-                        gifStorage = (yield models_1.GifStorage.create({
-                            listOwner: req.user._id,
-                            listName: reqListName,
-                            gifSrcs: [`data:image/webp;base64, ${filestr}`],
-                        }));
+                        existingData.push(filestr);
+                        fs_1.default.writeFileSync(tempJsonPath, JSON.stringify(existingData, null, 4));
+                        return res.status(200).json([]);
                     }
                 }
-                return res.status(200).json({ success: true });
+                return res.status(200).json([]);
             }
             catch (error) {
                 return (0, handleApiError_1.handleError)("saveGifsAsStrings", error, res);

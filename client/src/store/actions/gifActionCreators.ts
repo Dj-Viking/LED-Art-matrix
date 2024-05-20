@@ -28,6 +28,35 @@ export const buildCreateGifsAction = createAsyncThunk<
     };
 });
 
+export const saveNewGifsAsync = createAsyncThunk<
+    { gifs: IGif[]; newListName: string },
+    { gif: IGif; newListName: string },
+    MyThunkConfig
+>(moduleName + "/saveNewGifsAsync", async (params, thunkAPI) => {
+    try {
+        const gifs = await ApiService.saveGifsAsStrings(
+            AuthService.getToken() as string,
+            params.gif,
+            params.newListName
+        );
+
+        thunkAPI.dispatch(modalActions.setGifModalIsOpen(false));
+        thunkAPI.dispatch(modalActions.setGifModalContext({ listName: params.newListName, gif: {} as any }));
+
+        return {
+            gifs,
+            newListName: params.newListName,
+        };
+    } catch (e) {
+        const err = e as Error;
+        console.error("failed to save gifs", err);
+        return {
+            gifs: [],
+            newListName: "ERROR",
+        };
+    }
+});
+
 // get new gifs no matter what even if we're logged in or not
 // TODO: check if internet is not working???
 export const getNewGifsAsync = createAsyncThunk<GetGifsResult, void, MyThunkConfig>(

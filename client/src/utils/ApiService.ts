@@ -7,6 +7,7 @@ import { IGif, ISaveUserPresetArgs } from "../types";
 import { IDBPreset } from "../utils/PresetButtonsListClass";
 import { localGifHelper } from "./IdbClass";
 import { base64ToBlob_Client } from "./base64StringToBlob";
+const uuid = require("uuid");
 
 let headers = {};
 interface ISignupArgs {
@@ -269,22 +270,25 @@ class ApiService implements IApiService {
         }
     }
 
-    public static async saveGifsAsStrings(token: string, gif: IGif, listName: string): Promise<boolean> {
+    public static async saveGifsAsStrings(token: string, gif: IGif, listName: string): Promise<IGif[]> {
         headers = clearHeaders(headers);
         headers = setAuthHeader(headers, token);
 
-        // TODO: figure out how to send gifs that are huge
-        // mongo has query size limit to ~17MB
-        const gifBlobs = gif.gifSrcs.map((fileStr: string) => {
-            const newStr = fileStr.split(";base64, ")[1];
-            const result = base64ToBlob_Client(newStr, "image/webp");
-            return result;
-        });
-
         try {
+            // TODO: figure out how to send gifs that are huge
+            // mongo has query size limit to ~17MB
+            const gifBlobs = gif.gifSrcs.map((fileStr: string) => {
+                const newStr = fileStr.split(";base64, ")[1];
+                const result = base64ToBlob_Client(newStr, "image/webp");
+                return result;
+            });
+
+            const reqId = uuid.v4();
+
             const promises = gifBlobs.map((blob: Blob, i: number, array: Blob[]) => {
                 const formData = new FormData();
                 formData.append("listName", listName);
+                formData.append("reqId", reqId);
                 formData.append("gifCount", array.length.toString());
                 formData.append("imageName", "gifImage_" + i);
                 formData.append("gifImage_" + i, blob);
@@ -295,17 +299,28 @@ class ApiService implements IApiService {
                 });
             });
 
-            await Promise.all(promises);
+            const results = await Promise.all(promises);
+
+            const jsonPromises = results.map((res) => {
+                return res.json();
+            });
+
+            const jsons = (await Promise.all(jsonPromises)) as IGif[][];
+
+            console.log("DATA FROM SAVING", jsons);
+
+            const data = jsons.find((json) => json?.length > 0);
 
             // TODO: redo the actions which update the state such as
             // closing the modal and updating the modal context
             // and the selected listName as the gif list that was
             // just saved in the db
-            return true;
+            // @ts-ignore
+            return data;
         } catch (error) {
             const err = error as Error;
             ApiService.handleError("saveGifsAsStrings", err);
-            return false;
+            return [];
         }
     }
 

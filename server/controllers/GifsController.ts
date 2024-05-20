@@ -3,9 +3,9 @@
 // @ts-expect-error i know there isn't a type declaration file - i don't care
 import fetch from "node-fetch";
 import fs from "fs";
-import { Gif, GifStorage, User } from "../models";
+import { Gif, User } from "../models";
 import { getRandomIntLimit } from "../utils";
-import { Express, IGif, IGifStorage } from "../types";
+import { Express, IGif } from "../types";
 import { Response } from "express";
 import { readEnv } from "../utils";
 import { handleError } from "../utils/handleApiError";
@@ -13,7 +13,7 @@ import { Blob } from "buffer";
 const uuid = require("uuid");
 readEnv();
 const { API_KEY } = process.env;
-
+const something = "";
 export const GifsController = {
     storedGifs: async function (_: Express.MyRequest, res: Response): Promise<Response> {
         const gifs = await Gif.find();
@@ -49,112 +49,82 @@ export const GifsController = {
         }
     },
 
+    // @ts-ignore
     saveGifsAsStrings: async function (req: Express.MyRequest, res: Response): Promise<Response> {
         try {
             if (process.env.NODE_ENV === "test") {
-                // console.log("str", Buffer.from(req._readableState.buffer[0]).toString("base64").length);
             } else {
-                const { listName: reqListName, gifCount } = req.body as {
+                const {
+                    listName: reqListName,
+                    gifCount,
+                    reqId,
+                } = req.body as {
                     listName: string;
                     gifCount: string;
+                    reqId: string;
                 };
                 const { files } = req;
                 const gifCountNum = Number(gifCount);
 
-                // console.log("files", files);
                 // since i can't save more than 17MB in a mongo db transaction
                 // just going to save the gifs one by one since one isn't bigger than 17MB i think
 
-                // idea for now - write to a temporary json file each new gif image
-                // then when the amount of keys in that json equal the count of gifs I'm sending
-                // then update the user with a new collection
-                // update user's new gif collection one by one because
-                // the transaction is going to be too big
                 const buffer = fs.readFileSync(Object.values(files!)[0].path);
 
                 const filestr = Buffer.from(buffer).toString("base64");
 
+                const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
+
                 console.log("str len\n------\n", filestr.length);
 
-                let gifStorage: IGifStorage = {} as any;
-                // db call here
-                gifStorage = (await GifStorage.findOne({ listName: reqListName })) as IGifStorage;
-                if (gifStorage != null) {
-                    console.log("\x1b[32m file exists \x1b[00m ");
+                if (!fs.existsSync(tempJsonPath)) {
+                    // new data
+                    fs.writeFileSync(
+                        tempJsonPath,
+                        JSON.stringify([`data:image/webp;base64, ${filestr}`], null, 4)
+                    );
+                }
+                const existingData = JSON.parse(
+                    fs.readFileSync(tempJsonPath, { encoding: "utf-8" })
+                ) as string[];
 
-                    console.log("\x1b[32m gif storage exists!!!", "\n", gifStorage, "\x1b[00m");
-
-                    if (gifStorage.gifSrcs.length <= gifCountNum - 1) {
-                        let gifStorageToUpdate = await GifStorage.findOneAndUpdate(
-                            { listname: reqListName },
-                            filestr.length > 500_000
-                                ? {
-                                      $push: {
-                                          gifSrcs: `data:image/webp;base64, ${filestr}`,
-                                      },
-                                  }
-                                : {},
-                            { new: true }
-                        );
-                        console.log("updated existing gifStorage to update", gifStorageToUpdate);
-                    }
-                    if (gifStorage.gifSrcs.length === gifCountNum) {
-                        // TODO: delete to save space??
-                        // await GifStorage
-                        // fs.unlinkSync(jsonPath);
-
-                        // use existing storage
-                        gifStorage = (await GifStorage.findOne({
-                            listName: reqListName,
-                        })) as IGifStorage;
-
-                        const gifToSave = {
-                            // reduce the size of query by filtering out strings that
-                            // are longer than a some big number (for now)
-                            gifSrcs: [...gifStorage.gifSrcs],
-                            listOwner: req!.user!._id.toHexString(),
-                            listName: gifStorage.listName,
-                        } as IGif;
-
-                        console.log("about to create gif", gifToSave);
-
-                        const mongoGif = await Gif.create(gifToSave);
-
-                        console.log("mongo gif", mongoGif._id);
-
-                        // const gifStorageUpdate = await GifStorage.findOneAndDelete({
-                        //     listName: gifToSave.listName,
-                        // });
-
-                        // console.log(
-                        //     "about to create gifstorage for next time request with matched listname",
-                        //     gifStorageUpdate
-                        // );
-
-                        await User.findOneAndUpdate(
-                            { _id: req.user!._id },
-                            {
-                                $push: {
-                                    gifs: mongoGif,
-                                },
-                            },
-                            { new: true }
-                        );
-                    }
-                } else {
-                    console.log("\x1b[32m file does not exist \x1b[00m");
-                    // add the first one
-                    gifStorage = (await GifStorage.create({
-                        listOwner: req!.user!._id as string as any,
+                if (existingData.length === gifCountNum) {
+                    const mongoGif = await Gif.create({
                         listName: reqListName,
-                        gifSrcs: [`data:image/webp;base64, ${filestr}`],
-                    })) as any;
+                        listOwner: req!.user!._id.toString(),
+                        gifSrcs: existingData.filter((str) => str.length < 500_000),
+                    });
+                    await User.findOneAndUpdate(
+                        { email: req!.user!.email },
+                        {
+                            $push: {
+                                gifs: mongoGif,
+                            },
+                        },
+                        { new: true }
+                    );
+
+                    await Gif.deleteMany({ listName: reqListName });
+
+                    // NOTE(Anders): the file handle will be released when the node process is killed
+                    // file handle is still open while node process is running
+                    fs.unlinkSync(tempJsonPath);
+
+                    return res.status(200).json([
+                        {
+                            _id: mongoGif._id.toString(),
+                            gifSrcs: mongoGif.gifSrcs,
+                            listName: reqListName,
+                            listOwner: req!.user!._id.toString(),
+                        } as IGif,
+                    ]);
+                } else {
+                    existingData.push(filestr);
+                    fs.writeFileSync(tempJsonPath, JSON.stringify(existingData, null, 4));
+                    return res.status(200).json([]);
                 }
             }
-
-            // for testing in jest you MUST send a FUCKING .json({}) at least otherwise there will be
-            // open handles hell upon you!!!!!!!!
-            return res.status(200).json({ success: true });
+            return res.status(200).json([]);
         } catch (error) {
             return handleError("saveGifsAsStrings", error, res);
         }

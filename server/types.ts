@@ -96,14 +96,6 @@ export interface IGif {
     _id: string;
 }
 
-export interface IGifStorage {
-    listOwner: string;
-
-    listName: string;
-
-    gifSrcs: Base64String[];
-}
-
 export interface IAddPresetResponse {
     presets: IPreset[];
 }
