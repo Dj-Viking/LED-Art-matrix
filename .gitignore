@@ -7,3 +7,4 @@ env.txt
 coverage
 coverage.json
 .nyc_output
+data_*.json
