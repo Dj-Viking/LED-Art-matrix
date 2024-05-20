@@ -22,7 +22,6 @@ const handleApiError_1 = require("../utils/handleApiError");
 const uuid = require("uuid");
 (0, utils_2.readEnv)();
 const { API_KEY } = process.env;
-const something = "";
 exports.GifsController = {
     storedGifs: function (_, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -66,7 +65,6 @@ exports.GifsController = {
                     const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
                     const filestr = Buffer.from(buffer).toString("base64");
                     const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
-                    console.log("str len\n------\n", filestr.length);
                     if (!fs_1.default.existsSync(tempJsonPath)) {
                         fs_1.default.writeFileSync(tempJsonPath, JSON.stringify([`data:image/webp;base64, ${filestr}`], null, 4));
                     }
@@ -77,24 +75,17 @@ exports.GifsController = {
                             listOwner: req.user._id.toString(),
                             gifSrcs: existingData.filter((str) => str.length < 500000),
                         });
-                        yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
+                        const updatedUser = yield models_1.User.findOneAndUpdate({ email: req.user.email }, {
                             $push: {
                                 gifs: mongoGif,
                             },
                         }, { new: true });
                         yield models_1.Gif.deleteMany({ listName: reqListName });
                         fs_1.default.unlinkSync(tempJsonPath);
-                        return res.status(200).json([
-                            {
-                                _id: mongoGif._id.toString(),
-                                gifSrcs: mongoGif.gifSrcs,
-                                listName: reqListName,
-                                listOwner: req.user._id.toString(),
-                            },
-                        ]);
+                        return res.status(200).json([...updatedUser.gifs]);
                     }
                     else {
-                        existingData.push(filestr);
+                        existingData.push(`data:image/webp;base64, ${filestr}`);
                         fs_1.default.writeFileSync(tempJsonPath, JSON.stringify(existingData, null, 4));
                         return res.status(200).json([]);
                     }

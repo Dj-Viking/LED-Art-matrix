@@ -602,7 +602,7 @@ const Gifs: React.FC = () => {
                 !!_gifs[0]?.gifSrcs &&
                 _gifs[0].gifSrcs.map((src, index) => (
                     <img
-                        key={src}
+                        key={`${keyGen()}`}
                         data-testid={`gif-${index}`}
                         id={`gif-${keyGen()}`}
                         alt={"somegif"}

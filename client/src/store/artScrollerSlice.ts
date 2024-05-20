@@ -84,6 +84,7 @@ export const artScrollerSlice = createSlice({
         newReducer(builder, saveNewGifsAsync.fulfilled, (state, action) => {
             state.gifs = action.payload.gifs;
             state.listName = action.payload.newListName;
+            state.listNames = [...state.listNames, action.payload.newListName];
         });
     },
 });

@@ -307,8 +307,6 @@ class ApiService implements IApiService {
 
             const jsons = (await Promise.all(jsonPromises)) as IGif[][];
 
-            console.log("DATA FROM SAVING", jsons);
-
             const data = jsons.find((json) => json?.length > 0);
 
             // TODO: redo the actions which update the state such as

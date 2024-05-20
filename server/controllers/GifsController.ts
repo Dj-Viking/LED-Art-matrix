@@ -13,7 +13,6 @@ import { Blob } from "buffer";
 const uuid = require("uuid");
 readEnv();
 const { API_KEY } = process.env;
-const something = "";
 export const GifsController = {
     storedGifs: async function (_: Express.MyRequest, res: Response): Promise<Response> {
         const gifs = await Gif.find();
@@ -75,8 +74,6 @@ export const GifsController = {
 
                 const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
 
-                console.log("str len\n------\n", filestr.length);
-
                 if (!fs.existsSync(tempJsonPath)) {
                     // new data
                     fs.writeFileSync(
@@ -94,7 +91,7 @@ export const GifsController = {
                         listOwner: req!.user!._id.toString(),
                         gifSrcs: existingData.filter((str) => str.length < 500_000),
                     });
-                    await User.findOneAndUpdate(
+                    const updatedUser = await User.findOneAndUpdate(
                         { email: req!.user!.email },
                         {
                             $push: {
@@ -110,16 +107,9 @@ export const GifsController = {
                     // file handle is still open while node process is running
                     fs.unlinkSync(tempJsonPath);
 
-                    return res.status(200).json([
-                        {
-                            _id: mongoGif._id.toString(),
-                            gifSrcs: mongoGif.gifSrcs,
-                            listName: reqListName,
-                            listOwner: req!.user!._id.toString(),
-                        } as IGif,
-                    ]);
+                    return res.status(200).json([...updatedUser!.gifs]);
                 } else {
-                    existingData.push(filestr);
+                    existingData.push(`data:image/webp;base64, ${filestr}`);
                     fs.writeFileSync(tempJsonPath, JSON.stringify(existingData, null, 4));
                     return res.status(200).json([]);
                 }

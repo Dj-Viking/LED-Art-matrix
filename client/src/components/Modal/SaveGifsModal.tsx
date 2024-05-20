@@ -174,11 +174,8 @@ const SaveGifsModal: React.FC<SaveGifsModalProps> = ({ onClose, context: { listN
 
     const handleSubmit = React.useCallback(
         async (event: any): Promise<void> => {
-            console.log("ksdjfsakdjfkasjdfkj");
             event.preventDefault();
             try {
-                // await ApiService.saveGifsAsStrings(AuthService.getToken() as string, gif, input);
-
                 dispatch(
                     artScrollerActions.saveNewGifsAsync({
                         gif,
