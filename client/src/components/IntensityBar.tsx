@@ -16,7 +16,16 @@ const IntensityBar: React.FC<IntensityBarProps> = ({ intensity }) => {
                     alignItems: "center",
                 }}
             >
-                <input className="myrangestyle" type="range" style={{ width: "50%" }} value={intensity} max={127} />
+                <input
+                    onChange={() => {
+                        /* */
+                    }}
+                    className="myrangestyle"
+                    type="range"
+                    style={{ width: "50%" }}
+                    value={intensity}
+                    max={127}
+                />
             </div>
         </>
     );

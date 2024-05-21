@@ -7,9 +7,9 @@ exports.IS_PROD = process.env.NODE_ENV === "production";
 exports.APP_DOMAIN_PREFIX = exports.IS_PROD
     ? "https://led-matrices.herokuapp.com"
     : "http://localhost:3000";
-exports.TEST_USERNAME = "test-user";
-exports.TEST_EMAIL = "test@email.com";
-exports.TEST_PASSWORD = "test password";
+exports.TEST_USERNAME = `test-user`;
+exports.TEST_EMAIL = `test@email.com`;
+exports.TEST_PASSWORD = `test password `;
 exports.INITIAL_PRESETS = [
     {
         presetName: "rainbowTest",

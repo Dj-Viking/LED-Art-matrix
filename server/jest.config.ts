@@ -2,6 +2,7 @@ import type { Config } from "@jest/types";
 
 export default async (): Promise<Config.InitialOptions> => {
     return {
+        testTimeout: 6000,
         testEnvironment: "node",
         transform: {
             "^.+\\.tsx?$": "ts-jest",

@@ -26,7 +26,6 @@ export type MIDIMapping<N extends MIDIInputName> = Record<
         channel: number;
     }
 >;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type CallbackMapping = typeof DEFAULT_CALLBACK_TABLE;
 
 /**

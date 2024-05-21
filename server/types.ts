@@ -3,10 +3,11 @@ import { DocumentType } from "@typegoose/typegoose";
 import jwt from "jsonwebtoken";
 import { UserClass } from "./models/User";
 import * as typegoose from "@typegoose/typegoose";
+import { Types } from "mongoose";
 
 export type MyJwtData = IJwtData;
 export interface IJwtData extends jwt.JwtPayload {
-    _id: string;
+    _id: Types.ObjectId & string;
     username: string;
     email: string;
     uuid?: string;
@@ -56,6 +57,21 @@ declare global {
 export namespace Express {
     export type MyRequest = Request & {
         user?: MyJwtData | null;
+        files?: Record<
+            string,
+            {
+                fieldName: string;
+                originalFilename: string;
+                path: string;
+                headers: Record<string, string>;
+                size: number;
+                name: string;
+                type: string;
+            }
+        >;
+        _readableState?: {
+            buffer: Buffer[];
+        };
     };
 }
 
@@ -70,10 +86,13 @@ export interface ICreateUserPayload {
     password?: string;
     email?: string;
 }
+
+type Base64String = string;
 export interface IGif {
     listOwner: string;
     listName: string;
-    gifSrcs: string[];
+    // TODO: soon to be base64 strings
+    gifSrcs: Base64String[];
     _id: string;
 }
 

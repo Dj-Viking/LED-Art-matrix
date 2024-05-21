@@ -106,7 +106,7 @@ const ArtScrollerStartButton: React.FC<ArtScrollerStartButtonProps> = () => {
             dispatch(artScrollerActions.setFigureOn(true));
         }
 
-        dispatch(artScrollerActions.getGifsAsync({ getNew: true }));
+        dispatch(artScrollerActions.getNewGifsAsync());
     }
 
     async function gifStartClickHandler(): Promise<void> {
@@ -153,7 +153,7 @@ type ArtScrollerToggleButtonProps = DOMAttributes<HTMLButtonElement>;
 const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     const scrollerOnOffButtonSpring = useSpring(_scrollerOnOffButtonSpring);
     const dispatch = useDispatch();
-    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse } = getGlobalState(useSelector);
+    const { figureOn, midiEditMode, midiMappingInUse, controllerInUse, listNames } = getGlobalState(useSelector);
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
         "figureOn"
@@ -171,6 +171,9 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
                     if (midiEditMode) {
                         MIDIMappingPreference.listeningForEditsHandler(dispatch, "figureOn");
                         return;
+                    }
+                    if (listNames.length === 0) {
+                        dispatch(artScrollerActions.getNewGifsAsync());
                     }
                     dispatch(artScrollerActions.setFigureOn(!figureOn));
                 }}
@@ -191,9 +194,9 @@ const ArtScrollerToggleButton: React.FC<ArtScrollerToggleButtonProps> = () => {
     );
 };
 
-type ArtScrollerMakeNewGifCollectionProps = React.DOMAttributes<HTMLButtonElement>;
+type ArtScrollerSaveNewGifCollectionProps = React.DOMAttributes<HTMLButtonElement>;
 
-const ArtScrollerMakeNewGifCollection: React.FC<ArtScrollerMakeNewGifCollectionProps> = () => {
+const ArtScrollerSaveNewGifCollection: React.FC<ArtScrollerSaveNewGifCollectionProps> = () => {
     const dispatch = useDispatch();
     const scrollerSaveGifsButtonSpring = useSpring(_scrollerSaveGifsButtonSpring);
     const { gifs, listName } = getGlobalState(useSelector);
@@ -599,10 +602,10 @@ const Gifs: React.FC = () => {
                 !!_gifs[0]?.gifSrcs &&
                 _gifs[0].gifSrcs.map((src, index) => (
                     <img
-                        key={src}
+                        key={`${keyGen()}`}
                         data-testid={`gif-${index}`}
-                        id={`gif-${src}`}
-                        alt={`gif-${src}`}
+                        id={`gif-${keyGen()}`}
+                        alt={"somegif"}
                         src={src}
                         style={{
                             position: "absolute",
@@ -652,7 +655,7 @@ export type {
     ArtScrollerVerticalPositionSliderProps,
     ArtScrollerHorizontalPositionSliderProps,
     ArtScrollerInvertColorsSliderProps,
-    ArtScrollerMakeNewGifCollectionProps,
+    ArtScrollerSaveNewGifCollectionProps,
 };
 export {
     ArtScrollerMainContainer,
@@ -674,6 +677,6 @@ export {
     ArtScrollerSpeedSliderLabel,
     ArtScrollerSpeedSlider,
     ArtScrollerGifs,
-    ArtScrollerMakeNewGifCollection,
+    ArtScrollerSaveNewGifCollection,
     ArtScrollerGifListSelector,
 };

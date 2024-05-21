@@ -7,8 +7,10 @@ import cors from "cors";
 const app = express();
 import router from "./router";
 const PORT = process.env.PORT || 3001;
+const formData = require("express-form-data");
 const corsRegexp = (() => new RegExp(APP_DOMAIN_PREFIX, "g"))();
 app.use(express.urlencoded({ extended: false }));
+app.use(formData.parse());
 app.use(express.json());
 // this cors package is handling setting the correct headers for
 // cross origin resource sharing between client and server

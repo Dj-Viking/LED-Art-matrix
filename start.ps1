@@ -6,6 +6,9 @@ param(
     $Server,
 
     [switch]
+    $ServerWatch = $false,
+
+    [switch]
     $All,
 
     [switch]
@@ -56,15 +59,30 @@ elseif (!$All -and ($Client -or $Server)) {
     }
     
     if ($Server) {
-        # start typescript compilation in watch mode for server
-        Push-Location ".\server";
-        Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch" -WindowStyle Minimized;
-        Pop-Location;
 
-        # start the server in watch mode
-        Push-Location ".\server\dist";
-        Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js" -WindowStyle Minimized;
-        Pop-Location;
+        if ($ServerWatch) {
+            # start typescript compilation in watch mode for server
+            Push-Location ".\server";
+            Start-Process node -ArgumentList ".\node_modules\typescript\bin\tsc\ -b . --watch" -WindowStyle Minimized;
+            Pop-Location;
+    
+            # start the server in watch mode
+            Push-Location ".\server\dist";
+            Start-Process node -ArgumentList "..\node_modules\nodemon\bin\nodemon.js -L index.js" -WindowStyle Minimized;
+            Pop-Location;
+        }
+        else {
+            # start typescript compilation in watch mode for server
+            Push-Location ".\server";
+            node ".\node_modules\typescript\bin\tsc";
+            Pop-Location;
+    
+            # start the server in watch mode
+            Push-Location ".\server\dist";
+            Start-Process node -ArgumentList "index.js";
+            Pop-Location;
+
+        }
     }
 }
 else {
