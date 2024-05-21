@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable no-empty */
 import Auth from "./AuthService";
 import { setInitialHeaders, clearHeaders, setAuthHeader } from "./headersUtils";
@@ -20,43 +21,7 @@ interface ILoginArgs {
     password: string;
 }
 
-export interface IApiService {
-    alive: () => any;
-    signup: (args: ISignupArgs) => Promise<boolean | void>;
-    login: (args: ILoginArgs) => Promise<boolean | void>;
-    getDefaultPreset: (token: string) => Promise<string | boolean>;
-    updateDefaultPreset: (token: string) => Promise<string | void>;
-    deletePreset: (_id: string, token: string) => Promise<IDBPreset[] | void>;
-    addNewPreset: (args: ISaveUserPresetArgs) => Promise<IDBPreset[] | unknown>;
-    getUserPresets: (token: string) => Promise<IDBPreset[] | void>;
-    getGifs: () => Promise<Array<IGif>>;
-    forgotPassword: (email: string) => Promise<boolean | void>;
-    changePassword: (password: string) => Promise<{ done: boolean; token: string } | void>;
-    createAllDefaultPresets: (token: string) => Promise<IDBPreset[] | void>;
-}
-
-class ApiService implements IApiService {
-    protected isAlive: any;
-    public signup!: (args: ISignupArgs) => Promise<boolean | void>;
-    public login!: (args: ILoginArgs) => Promise<boolean | void>;
-    public getDefaultPreset!: (token: string) => Promise<string | boolean>;
-    public updateDefaultPreset!: (token: string) => Promise<string | void>;
-    public deletePreset!: (_id: string, token: string) => Promise<IDBPreset[] | void>;
-    public addNewPreset!: (args: ISaveUserPresetArgs) => Promise<IDBPreset[] | unknown>;
-    public getUserPresets!: (token: string) => Promise<IDBPreset[] | void>;
-    public getGifs!: () => Promise<Array<IGif>>;
-    public forgotPassword!: (email: string) => Promise<boolean | void>;
-    public changePassword!: (password: string) => Promise<{ done: boolean; token: string } | void>;
-    public createAllDefaultPresets!: (token: string) => Promise<IDBPreset[] | void>;
-
-    constructor(isAlive: any) {
-        this.isAlive = isAlive;
-    }
-
-    public alive(): any {
-        return this.isAlive;
-    }
-
+class ApiService {
     private static handleError(endpoint: string, error: Error): void {
         if (!IS_PROD) {
             console.error(`an error occurred with endpoint ${endpoint}` + error.message + `\n ${error.stack}`);
@@ -307,13 +272,8 @@ class ApiService implements IApiService {
 
             const jsons = (await Promise.all(jsonPromises)) as IGif[][];
 
-            const data = jsons.find((json) => json?.length > 0);
+            const data = jsons.find((json) => json?.length > 0)!;
 
-            // TODO: redo the actions which update the state such as
-            // closing the modal and updating the modal context
-            // and the selected listName as the gif list that was
-            // just saved in the db
-            // @ts-ignore
             return data;
         } catch (error) {
             const err = error as Error;
