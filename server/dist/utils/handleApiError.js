@@ -22,9 +22,11 @@ function handleError(endpoint, error, res) {
             });
         }
         else {
-            return res
-                .status(500)
-                .json({ error: "an error occurred with " + endpoint, message: error.message });
+            return res.status(500).json({
+                error: "an error occurred with " + endpoint,
+                message: error.message,
+                stack: error.stack,
+            });
         }
     });
 }
