@@ -17,8 +17,10 @@ require("dotenv").config();
 const constants_1 = require("./constants");
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const app = (0, express_1.default)();
 const router_1 = __importDefault(require("./router"));
+const connection_1 = __importDefault(require("./config/connection"));
+const models_1 = require("./models");
+const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3001;
 const formData = require("express-form-data");
 const corsRegexp = (() => new RegExp(constants_1.APP_DOMAIN_PREFIX, "g"))();
@@ -30,8 +32,6 @@ app.use((0, cors_1.default)({
     credentials: true,
 }));
 app.use(router_1.default);
-const connection_1 = __importDefault(require("./config/connection"));
-const models_1 = require("./models");
 function seedSearchTerms() {
     return __awaiter(this, void 0, void 0, function* () {
         const getSearchTerm = yield models_1.SearchTerm.find();

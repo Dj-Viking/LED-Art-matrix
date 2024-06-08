@@ -4,8 +4,11 @@ require("dotenv").config();
 import { APP_DOMAIN_PREFIX, IS_PROD } from "./constants";
 import express from "express";
 import cors from "cors";
-const app = express();
 import router from "./router";
+import connection from "./config/connection";
+import { SearchTerm } from "./models";
+
+const app = express();
 const PORT = process.env.PORT || 3001;
 const formData = require("express-form-data");
 const corsRegexp = (() => new RegExp(APP_DOMAIN_PREFIX, "g"))();
@@ -22,9 +25,6 @@ app.use(
 );
 app.use(router);
 
-import connection from "./config/connection";
-import { SearchTerm } from "./models";
-
 async function seedSearchTerms(): Promise<void> {
     //check if search terms exist
     const getSearchTerm = await SearchTerm.find();
@@ -38,10 +38,7 @@ async function seedSearchTerms(): Promise<void> {
         console.log("\x1b[37m", "starting categories already seeded...", "\x1b[00m");
     }
 }
-//STATIC PUBLIC FRONT END ASSETS WHILE IN DEVELOPMENT
-// app.use('/images', express.static(path.join(__dirname, '../client/images')));
 
-//IF-ENV IN DEPLOYMENT
 if (process.env.NODE_ENV === "production") {
     //STATIC ASSETS FROM REACT BUILD FOLDER
     app.use(express.static(path.resolve("../client/build")));
@@ -49,6 +46,8 @@ if (process.env.NODE_ENV === "production") {
     app.get("*", (_, res) => {
         console.log("IN THE GET STAR");
         res.sendFile(path.resolve("../client/build/index.html"));
+        // TODO(anders): react client to make this page possible.
+        // may trigger a 404 error page if react client is configured to do so.
     });
     //REDIRECT HTTP TRAFFIC TO HTTPS
     app.use((req, res, next) => {
