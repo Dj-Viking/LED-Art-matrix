@@ -64,7 +64,11 @@ exports.GifsController = {
                     const gifCountNum = Number(gifCount);
                     const buffer = fs_1.default.readFileSync(Object.values(files)[0].path);
                     const filestr = Buffer.from(buffer).toString("base64");
-                    const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
+                    const tempJsonPath = (() => {
+                        return process.env.NODE_ENV === "development"
+                            ? __dirname + `../../../../data_${reqId}.json`
+                            : `/opt/render/project/data_${reqId}.json`;
+                    })();
                     if (!fs_1.default.existsSync(tempJsonPath)) {
                         fs_1.default.writeFileSync(tempJsonPath, JSON.stringify([`data:image/webp;base64, ${filestr}`], null, 4));
                     }

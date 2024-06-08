@@ -72,7 +72,11 @@ export const GifsController = {
 
                 const filestr = Buffer.from(buffer).toString("base64");
 
-                const tempJsonPath = __dirname + `../../../../data_${reqId}.json`;
+                const tempJsonPath = (() => {
+                    return process.env.NODE_ENV === "development"
+                        ? __dirname + `../../../../data_${reqId}.json`
+                        : `/opt/render/project/data_${reqId}.json`;
+                })();
 
                 if (!fs.existsSync(tempJsonPath)) {
                     // new data
