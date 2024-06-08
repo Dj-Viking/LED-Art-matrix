@@ -304,7 +304,7 @@ export const UserController = {
         res: Response
     ): Promise<Response | void> {
         try {
-            const { email } = req.body;
+            const { email } = req.body as { email: string };
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             //silently dont send the email if the email wasn't the right format
             if (!emailRegex.test(email)) return res.status(200).json({ message: "success" });
