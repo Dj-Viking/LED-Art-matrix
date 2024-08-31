@@ -3,6 +3,7 @@ import { MyThunkConfig, IGif } from "../../types";
 import { ApiService } from "../../utils/ApiService";
 import AuthService from "../../utils/AuthService";
 import { modalActions } from "../modalSlice";
+import { localGifHelper } from "../../utils/IdbClass";
 
 const moduleName = "artScrollerSlice";
 
@@ -66,7 +67,7 @@ export const getNewGifsAsync = createAsyncThunk<GetGifsResult, void, MyThunkConf
 
         let newListName = "";
 
-        const freeGifs = (await ApiService.getGifsAsStrs()) as IGif[];
+        const freeGifs = (await ApiService.getGifsAsDataStrings()) as IGif[];
 
         newListName = freeGifs[0].listName + " " + _thunkAPI.getState().artScrollerState.gifs.length.toString();
 
@@ -121,11 +122,21 @@ export const buildGetGifsAction = createAsyncThunk<GetGifsResult, { getNew: bool
         } else {
             // not logged in get some gifs anyway from giphy api
             // NOTE(Anders): routes through indexedDB here
-            const freeGifs = (await ApiService.getUnloggedInGifs(false)) as IGif[];
 
-            newListName = freeGifs[0].listName + " " + _thunkAPI.getState().artScrollerState.gifs.length.toString();
+            // look into indexedDB first!
+            const idb_gifs = await localGifHelper.handleRequest("getAll") as IGif[];
+            let freeGifs: IGif[] = [];
+            if (idb_gifs.length > 0) {
+                freeGifs = idb_gifs;
+                newListName = freeGifs[0].listName + " " + _thunkAPI.getState().artScrollerState.gifs.length.toString();
+                freeGifs[0].listName = newListName;
+            } else {
+                freeGifs = (await ApiService.getGifsAsDataStrings()) as IGif[];
+                newListName = freeGifs[0].listName + " " + _thunkAPI.getState().artScrollerState.gifs.length.toString();
+                freeGifs[0].listName = newListName;
 
-            freeGifs[0].listName = newListName;
+                localGifHelper.handleRequest("put", freeGifs[0]);
+            }
 
             _thunkAPI.dispatch(
                 modalActions.setGifModalContext({

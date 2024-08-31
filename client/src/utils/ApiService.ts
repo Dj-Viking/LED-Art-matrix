@@ -300,7 +300,7 @@ class ApiService {
         }
     }
 
-    public static async getGifsAsStrs(): Promise<Array<IGif> | void> {
+    public static async getGifsAsDataStrings(): Promise<Array<IGif> | void> {
         headers = clearHeaders(headers);
         headers = setInitialHeaders(headers);
 
@@ -311,7 +311,7 @@ class ApiService {
             return data.gifs;
         } catch (error) {
             const err = error as Error;
-            ApiService.handleError("getGifsAsStrs", err);
+            ApiService.handleError("getGifsAsDataStrings", err);
         }
     }
 

@@ -14,6 +14,7 @@ import { MIDIMappingPreference, CallbackMapping } from "./MIDIMappingClass";
 import { deepCopy } from "./deepCopy";
 import { IPresetButton } from "../types";
 import { UNIMPLEMENTED } from "../store/actions/midiActionCreators";
+import type React from "react";
 /**
  * @see https://www.w3.org/TR/webmidi/#idl-def-MIDIPort
  * interface MIDIPort : EventTarget {
@@ -376,17 +377,20 @@ class MIDIController implements IMIDIController {
         _dispatchcb: ToolkitDispatch,
         pref: MIDIMappingPreference<typeof name>,
         name: MIDIInputName,
-        buttonIds: Array<IPresetButton["id"]>
+        buttonIds: Array<IPresetButton["id"]>,
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): void {
-        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds);
+        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds, timeoutRef);
     }
 
     private static _invokeCallbackOrWarn(
         pref: MIDIMappingPreference<typeof name>,
         name: MIDIInputName,
         midi_event: MIDIMessageEvent,
-        buttonIds: IPresetButton["id"][]
+        buttonIds: IPresetButton["id"][],
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
     ): void {
+        const TIMEOUT = 1;
         //
         const channel = midi_event.data[1];
         const midiIntensity = midi_event.data[2];
@@ -400,9 +404,9 @@ class MIDIController implements IMIDIController {
                     const mapping = pref.mapping;
                     const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
-                        setTimeout(() => {
+                        timeoutRef.current = setTimeout(() => {
                             callback(midiIntensity, buttonIds);
-                        }, 100);
+                        }, TIMEOUT);
                     }
                 }
                 break;
@@ -412,9 +416,9 @@ class MIDIController implements IMIDIController {
                     const mapping = pref.mapping;
                     const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
-                        setTimeout(() => {
+                        timeoutRef.current = setTimeout(() => {
                             callback(midiIntensity, buttonIds);
-                        }, 100);
+                        }, TIMEOUT);
                     }
                 }
                 break;

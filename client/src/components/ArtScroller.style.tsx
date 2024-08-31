@@ -596,7 +596,7 @@ const Gifs: React.FC = () => {
 
     let _gifs = gifs?.filter((gif) => gif.listName === listName);
 
-    return (
+    return React.useMemo(() => 
         <>
             {Array.isArray(_gifs) &&
                 !!_gifs[0]?.gifSrcs &&
@@ -629,7 +629,15 @@ const Gifs: React.FC = () => {
                     />
                 ))}
         </>
-    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    , [
+        _gifs.length,
+        animDuration,
+        circleWidth,
+        hPos,
+        invert,
+        vertPos,
+    ]);
 };
 
 const ArtScrollerGifs: React.FC = () => {

@@ -47,15 +47,17 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         midiMappingInUse: { hasPreference },
     } = getGlobalState(useSelector);
 
+    const timeoutRef = React.useRef<NodeJS.Timeout>({} as any);
+
     useEffect(() => {
         MIDIController.isMIDIPreferenceLocalStorageSet(controllerInUse, dispatch);
     }, [controllerInUse, dispatch]);
 
     useEffect(() => {
         if (usingMidi) {
-            dispatch(midiActions.getMIDIAccess());
+            dispatch(midiActions.getMIDIAccess({ timeoutRef }));
         }
-    }, [dispatch, usingMidi]);
+    }, [dispatch, usingMidi, timeoutRef]);
 
     const selectRef = React.createRef<HTMLSelectElement>();
 

@@ -6,6 +6,7 @@ import { deepCopy } from "../../utils/deepCopy";
 import { MIDIController, MIDIMessageEvent, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 import { midiActions } from "../midiSlice";
+import React from "react";
 
 export function UNIMPLEMENTED(name: MIDIInputName, event: MIDIMessageEvent, channel: number): void {
     console.log("UNIMPLEMENTED CONTROLLER receiving MESSAGES", name, "\n", event, "\n channel", channel);
@@ -32,9 +33,9 @@ function DEBUGMIDIMESSAGE(
     );
 }
 
-export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyThunkConfig>(
+export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, { timeoutRef: React.MutableRefObject<NodeJS.Timeout>}, MyThunkConfig>(
     "midiSlice/midiAccess",
-    async (_params, _thunkAPI) => {
+    async ({ timeoutRef }, _thunkAPI) => {
         // let count = 0;
         const browserAccess = await MIDIController.requestMIDIAccess();
 
@@ -111,7 +112,7 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, void, MyTh
             }
 
             // TODO: call action to update midi state preference mappings
-            MIDIController.handleMIDIMessage(midi_event, _thunkAPI.dispatch, pref, name, buttonIds);
+            MIDIController.handleMIDIMessage(midi_event, _thunkAPI.dispatch, pref, name, buttonIds, timeoutRef);
         };
         const onstatechangecb = (event: MIDIConnectionEvent): void => {
             console.log("input had a change event", event);
