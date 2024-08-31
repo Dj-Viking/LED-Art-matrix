@@ -1,18 +1,18 @@
 @keyframes scrollAnim {
   0% {
-    opacity: 0;
+    opacity: .3;
   }
   25% {
-    opacity: .1;
+    opacity: .4;
   }
   50% {
     opacity: .55;
   }
   75% {
-    opacity: .1;
+    opacity: .4;
   }
   100% {
-    opacity: 0;
+    opacity: .3;
   }
 }
 

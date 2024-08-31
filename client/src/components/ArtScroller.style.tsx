@@ -618,7 +618,7 @@ const Gifs: React.FC = () => {
                                 (Number(animDuration) / 100) * (index + getRandomIntLimit(index, 20))
                             }s`,
                             animationDelay: `0.${index + 1}`,
-                            animationTimingFunction: "ease-in",
+                            animationTimingFunction: "cubic-bezier(0, 1.17, 0, 1.04)",
                             animationDirection: "reverse",
                             animationIterationCount: "infinite",
                             top: `${vertPos}vh`,
