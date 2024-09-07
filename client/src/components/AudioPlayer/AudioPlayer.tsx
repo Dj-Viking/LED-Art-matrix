@@ -91,7 +91,7 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
         if (audioElRef.current) {
             audioElRef.current.volume = 0.01;            
         }
-    }, [isPlaying]);
+    }, []);
 
     // ARRAY OF LOCAL SONG FILE PATHS
     const songs: Track[] = [
