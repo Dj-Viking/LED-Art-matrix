@@ -86,22 +86,10 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [isPlaying, setIsPlaying] = useState(false);
     
     const audioElRef = React.useRef<HTMLAudioElement>(null);
-    const audioCtxRef = React.useRef<AudioContext>();
-    const sourceRef = React.useRef<MediaElementAudioSourceNode>();
 
     React.useEffect(() => {
         if (audioElRef.current) {
-            audioElRef.current.volume = 0.01;
-
-            // if (!audioCtxRef.current && isPlaying) {
-            //     audioCtxRef.current = new AudioContext();
-            //     console.log("got ocontext?", audioCtxRef.current);
-            //     if (!sourceRef.current) {
-            //         sourceRef.current = audioCtxRef.current.createMediaElementSource(audioElRef.current);
-            //     }
-            // }
-            
-            console.log("got source?", sourceRef.current);
+            audioElRef.current.volume = 0.01;            
         }
     }, [isPlaying]);
 
