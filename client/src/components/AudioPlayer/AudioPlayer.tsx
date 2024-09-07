@@ -84,13 +84,26 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [currentSong, setCurrentSong] = useState(REVERB_STUDY);
     const [isPlaying, setIsPlaying] = useState(false);
+    
     const audioElRef = React.useRef<HTMLAudioElement>(null);
+    const audioCtxRef = React.useRef<AudioContext>();
+    const sourceRef = React.useRef<MediaElementAudioSourceNode>();
 
     React.useEffect(() => {
         if (audioElRef.current) {
             audioElRef.current.volume = 0.01;
+
+            // if (!audioCtxRef.current && isPlaying) {
+            //     audioCtxRef.current = new AudioContext();
+            //     console.log("got ocontext?", audioCtxRef.current);
+            //     if (!sourceRef.current) {
+            //         sourceRef.current = audioCtxRef.current.createMediaElementSource(audioElRef.current);
+            //     }
+            // }
+            
+            console.log("got source?", sourceRef.current);
         }
-    }, []);
+    }, [isPlaying]);
 
     // ARRAY OF LOCAL SONG FILE PATHS
     const songs: Track[] = [
@@ -102,10 +115,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
             trackName: "ReverbStudy",
             filePath: REVERB_STUDY,
         },
-        // {
-        //   trackName: 'Waterfalls',
-        //   filePath: WATERFALLS
-        // },
     ];
 
     return (
