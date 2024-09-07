@@ -6,7 +6,10 @@ import { CanvasLED } from "../utils/CanvasLED";
 import { ledActions } from "../store/ledSlice";
 import { LED_AMOUNT } from "../constants";
 
-export const Canvas: React.FC = () => {
+interface CanvasProps {
+    analyserNodeRef: React.MutableRefObject<AnalyserNode>
+}
+export const Canvas: React.FC<CanvasProps> = (props) => {
     const { animVarCoeff, presetName, isHSL } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
@@ -15,6 +18,8 @@ export const Canvas: React.FC = () => {
     const timeRef = useRef<number>(0);
     const countRef = useRef<number>(0);
     const ledRef = useRef<CanvasLED>({} as any);
+    const samplesRef = useRef<Float32Array>(new Float32Array(0));
+    const samplesLengthRef = useRef<number>(0);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -63,7 +68,8 @@ export const Canvas: React.FC = () => {
                                 animVarCoeff,
                                 countRef.current,
                                 isHSL,
-                                presetName
+                                presetName,
+                                samplesRef.current
                             );
 
                             ctx.fillStyle = ledRef.current.fillStyle;
