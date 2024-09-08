@@ -6,6 +6,7 @@ export const IS_PROD = process.env.NODE_ENV === "production";
 export const API_URL = IS_PROD ? "https://led-matrices.onrender.com" : "http://localhost:3001";
 export const LOCATION_DISPLAY_ID = "location-display";
 export const LED_AMOUNT = 32;
+export const INITIAL_GAIN = 0.01;
 
 export type MyIndexToKeyMap = Record<number, string>;
 export const MY_INDEX_TO_KEY_MAP = {
