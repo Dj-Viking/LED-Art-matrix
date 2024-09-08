@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import React, { useCallback, useEffect, useRef } from "react";
 import { getGlobalState } from "../store/store";
@@ -6,11 +7,8 @@ import { CanvasLED } from "../utils/CanvasLED";
 import { ledActions } from "../store/ledSlice";
 import { LED_AMOUNT } from "../constants";
 
-interface CanvasProps {
-    analyserNodeRef: React.MutableRefObject<AnalyserNode>
-}
-export const Canvas: React.FC<CanvasProps> = (props) => {
-    const { animVarCoeff, presetName, isHSL } = getGlobalState(useSelector);
+export const Canvas: React.FC = () => {
+    const { animVarCoeff, presetName, isHSL, samplesLength, analyserNodeRef } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
     // create reference to store the requestAnimationFrame ID when raf is called
@@ -19,7 +17,6 @@ export const Canvas: React.FC<CanvasProps> = (props) => {
     const countRef = useRef<number>(0);
     const ledRef = useRef<CanvasLED>({} as any);
     const samplesRef = useRef<Float32Array>(new Float32Array(0));
-    const samplesLengthRef = useRef<number>(0);
 
     const INITIAL_WIDTH = window.innerWidth;
 
@@ -32,6 +29,12 @@ export const Canvas: React.FC<CanvasProps> = (props) => {
 
     // read only reference as an element when initialized to null
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    useEffect(() => {
+        if (samplesLength > 0) {
+            samplesRef.current = new Float32Array(samplesLength);
+        }
+    }, [samplesLength]);
 
     useEffect(() => {
         if (canvasRef.current) {
@@ -48,12 +51,18 @@ export const Canvas: React.FC<CanvasProps> = (props) => {
             if (time) {
                 if (timeRef.current > 0) {
                     const deltaTime = time - timeRef.current;
+                    // console.log("samples", samples);
 
                     // using count ref here because re-rendering with a setCount was stopping the animations!
                     countRef.current += deltaTime * 0.1 * Number(animVarCoeff);
 
                     const currentCanvas = canvasRef.current;
                     if (!currentCanvas) return;
+
+                    // update the sample fft data ref array thing on each frame of animation
+                    if (analyserNodeRef.current instanceof AnalyserNode) {
+                        analyserNodeRef.current.getFloatFrequencyData(samplesRef.current);
+                    }
 
                     const ctx = currentCanvas?.getContext("2d") as CanvasRenderingContext2D;
 
@@ -69,7 +78,8 @@ export const Canvas: React.FC<CanvasProps> = (props) => {
                                 countRef.current,
                                 isHSL,
                                 presetName,
-                                samplesRef.current
+                                samplesRef.current,
+                                samplesLength
                             );
 
                             ctx.fillStyle = ledRef.current.fillStyle;
@@ -94,7 +104,7 @@ export const Canvas: React.FC<CanvasProps> = (props) => {
             }
             //
         },
-        [dimensions.width, isHSL, animVarCoeff, presetName]
+        [dimensions.width, isHSL, animVarCoeff, presetName, samplesLength, analyserNodeRef]
     );
 
     /**

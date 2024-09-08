@@ -15,7 +15,8 @@ export class CanvasLED {
         countRef: number,
         isHSL: boolean,
         presetName: string,
-        samples?: Float32Array
+        samples: Float32Array,
+        samplesLength: number
     ) {
         this.presetName = presetName || "spiral";
 
@@ -39,7 +40,7 @@ export class CanvasLED {
         // TODO: if using HSL it's good for FFT visualizing
         if (isHSL) {
             // TODO: use any preset here for spectrum analysis wheel for color
-            // get samples from somewhere
+            // WE GOT SAMPLES now draw with those samples somehow!!!
             // if (false!) {
             //     const wheel: number = this.getWheelFromFFTData(samples || new Float32Array(0));
             //     this.fillStyle = `hsl(${wheel / 4} 50 50)`;

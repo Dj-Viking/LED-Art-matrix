@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Auth from "../utils/AuthService";
 
 import AudioPlayerComponent from "../components/AudioPlayer/AudioPlayer";
@@ -13,6 +13,8 @@ import { PresetButtons } from "../components/PresetButtons";
 import { MIDIListenerWrapper } from "../components/MIDIListenerWrapper";
 import { Slider } from "../components/Slider";
 import styled from "styled-components";
+import { getGlobalState } from "../store/store";
+import { audioActions } from "../store/audioSlice";
 
 const INITIAL_GAIN = 0.01;
 
@@ -22,11 +24,7 @@ const HomeDevicesWrapper = styled.div`
     justify-content: center;
 `;
 
-const ShowAudioPlayerButton = (props: { ctx: any, showAudioPlayer: boolean, setShowAudioPlayer: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
-    
-    useEffect(() => {
-        console.log("ctx in another component", props.ctx);
-    }, [props.ctx]);
+const ShowAudioPlayerButton = (props: { showAudioPlayer: boolean, setShowAudioPlayer: React.Dispatch<React.SetStateAction<boolean>> }): JSX.Element => {
     
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "0.5em" }}>
@@ -39,36 +37,84 @@ const ShowAudioPlayerButton = (props: { ctx: any, showAudioPlayer: boolean, setS
         </div>
     );
 };
-interface AudioContextStartButtonProps { analyserNodeRef: React.MutableRefObject<AnalyserNode>, gainNodeRef: React.MutableRefObject<GainNode>, audioCtx: React.MutableRefObject<AudioContext>, started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>> };
+interface AudioContextStartButtonProps { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>> };
 const AudioContextStartButton = (props: AudioContextStartButtonProps): JSX.Element => {
-
+    const dispatch = useDispatch();
+    const { audioCtxRef, gainNodeRef, analyserNodeRef } = getGlobalState(useSelector);
+    const ctxref = React.useRef<AudioContext>();
+    const gainref = React.useRef<GainNode>();
+    const analyserref = React.useRef<AnalyserNode>();
 
     useEffect(() => {
         if (props.started) {
-            (async () => {
-                
-                // TODO: get microphone from usermedia after the user gesture
-                props.audioCtx.current = new AudioContext();
-                
-                const source = props.audioCtx.current.createMediaStreamSource({ microphonegoeshere: "" } as any);
-
-                props.gainNodeRef.current = props.audioCtx.current.createGain();
-                props.analyserNodeRef.current = props.audioCtx.current.createAnalyser();
-                props.analyserNodeRef.current.fftSize = 2048;
-                const samplesLength = props.analyserNodeRef.current.frequencyBinCount;
-                const samples = new Float32Array();
-                props.analyserNodeRef.current.getFloatFrequencyData(samples);
-                
-                // TODO: stream connect to gain node
-                source.connect(props.gainNodeRef.current);
-
-                props.gainNodeRef.current.connect(props.analyserNodeRef.current);
-
-                props.gainNodeRef.current.connect(props.audioCtx.current.destination);
-                
-            })();
+            ctxref.current = new AudioContext();
+            dispatch(audioActions.setAudioCtxRef(ctxref as any));
         }
-    }, [props.started, props.audioCtx, props.gainNodeRef, props.analyserNodeRef]);
+    }, [dispatch, props.started]);
+
+    useEffect(() => {
+        if (audioCtxRef.current instanceof AudioContext) {
+            console.log("state has context brooo", audioCtxRef);
+
+            gainref.current = audioCtxRef.current.createGain();
+
+            // DO ANY INITIALIZATION HERE 
+            gainref.current.gain.value = INITIAL_GAIN;
+            dispatch(audioActions.setGainRef(gainref as any));
+            
+            // DO ANY INITIALIZATION HERE 
+            analyserref.current = audioCtxRef.current.createAnalyser();
+            analyserref.current.fftSize = 2048;
+            dispatch(audioActions.setSamplesLength(analyserref.current.frequencyBinCount));
+            dispatch(audioActions.setAnalyserRef(analyserref as any));
+            
+
+        }
+    }, [audioCtxRef, dispatch]);
+
+    // final init with current required state
+    useEffect(() => {
+        if (audioCtxRef.current instanceof AudioContext
+            && gainNodeRef.current instanceof GainNode
+            && analyserNodeRef.current instanceof AnalyserNode
+            
+        ) {
+            window.navigator.getUserMedia({ audio: true },
+                async (stream) => {
+                    // just grab the first track since chrome only has one input set as a "microphone input"
+                    const audioTrack = stream.getAudioTracks()[0];
+
+                    stream.removeTrack(audioTrack);
+
+                    await audioTrack.applyConstraints({
+                        autoGainControl: false,
+                        noiseSuppression: false,
+                        echoCancellation: false,
+                    });
+
+                    console.log("audio track", audioTrack);
+                    console.log("audio track constraints", audioTrack.getConstraints());
+
+                    stream.addTrack(audioTrack);
+
+                    const source = audioCtxRef.current.createMediaStreamSource(stream);
+                    
+                    source.connect(gainNodeRef.current);
+                    
+                    gainNodeRef.current.connect(analyserNodeRef.current);
+                    gainNodeRef.current.connect(audioCtxRef.current.destination);
+                },
+                (e) => {throw new Error("could not get usermedia" + e);}
+            );
+        }
+    }, [gainNodeRef, dispatch, analyserNodeRef, audioCtxRef]);
+
+    useEffect(() => {
+        // if (analyserNodeRef.current instanceof AnalyserNode) {
+        // }
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [analyserNodeRef, dispatch]);
 
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "0.5em" }}>
@@ -86,13 +132,7 @@ const Home: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    // this should probably be in redux so that we can have one copy that everyone can refer too (i think)
-    // there should only be one audio context at a time
-    const audioCtxRef = useRef<AudioContext>({} as any);
-    const analyserNodeRef = useRef<AnalyserNode>({} as any);
-    const gainNodeRef = useRef<GainNode>({} as any);
-
-    console.log("current node ref", analyserNodeRef.current);
+    const { gainNodeRef } = getGlobalState(useSelector);
 
     const [showAudioPlayer, setShowAudioPlayer] = React.useState(false);
     const [started, setStarted] = React.useState(false);
@@ -104,7 +144,7 @@ const Home: React.FC = (): JSX.Element => {
 
     return (
         <>
-            <ShowAudioPlayerButton ctx={audioCtxRef || null} showAudioPlayer={showAudioPlayer} setShowAudioPlayer={setShowAudioPlayer}/>
+            <ShowAudioPlayerButton showAudioPlayer={showAudioPlayer} setShowAudioPlayer={setShowAudioPlayer}/>
             {
                 showAudioPlayer ? (
                     <AudioPlayerComponent />
@@ -113,16 +153,15 @@ const Home: React.FC = (): JSX.Element => {
                         <div style={{ display: "flex", justifyContent: "center", width: "100%"}}>
                             <input step="0.01" min="0" max="1" type="range" onInput={(e) => {
                                 setGain(e.target.value);
-                                gainNodeRef.current = {
-                                    ...gainNodeRef.current,
-                                    gain: e.target.value
-                                };
+                                if (gainNodeRef.current) {
+                                    dispatch(audioActions.setGainRefGain(e.target.value));
+                                }
                             }} value={gain} />
                         </div>
                         <div style={{ display: "flex", justifyContent: "center", width: "100%"}}>
                             <p style={{ margin: 0 }}>{gain}</p>
                         </div>
-                        <AudioContextStartButton analyserNodeRef={analyserNodeRef} gainNodeRef={gainNodeRef} audioCtx={audioCtxRef || {} as any} started={started} setStarted={setStarted}/>
+                        <AudioContextStartButton started={started} setStarted={setStarted}/>
                     </>
                 ) 
             }
@@ -132,7 +171,7 @@ const Home: React.FC = (): JSX.Element => {
                 <MIDIListenerWrapper />
                 <Slider />
 
-                <Canvas analyserNodeRef={analyserNodeRef} />
+                <Canvas />
             </HomeDevicesWrapper>
         </>
     );
