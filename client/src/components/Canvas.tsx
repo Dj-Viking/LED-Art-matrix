@@ -31,7 +31,7 @@ export const Canvas: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
     useEffect(() => {
-        if (samplesLength > 0) {
+        if (samplesLength > 0 && samplesRef.current.length === 0) {
             samplesRef.current = new Float32Array(samplesLength);
         }
     }, [samplesLength]);
