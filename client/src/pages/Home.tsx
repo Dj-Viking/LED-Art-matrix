@@ -47,8 +47,14 @@ const AudioContextStartButton = (props: AudioContextStartButtonProps): JSX.Eleme
 
     useEffect(() => {
         if (props.started) {
-            ctxref.current = new AudioContext();
-            dispatch(audioActions.setAudioCtxRef(ctxref as any));
+            // if i start a new context again it's going to mess up
+            // all the connections made in a previous render cycle
+            // so only instantiate a new one as the first one that 
+            // exists ever and just use a reference to it everywhere using redux
+            if (!(ctxref.current instanceof AudioContext)) {
+                ctxref.current = new AudioContext();
+                dispatch(audioActions.setAudioCtxRef(ctxref as any));
+            }
         }
     }, [dispatch, props.started]);
 
