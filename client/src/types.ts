@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 import jwt from "jsonwebtoken";
 import { MIDIAccessRecord, MIDIInput, MIDIOutput, onstatechangeHandler } from "./utils/MIDIControlClass";
 import { CallbackMapping, MIDIMapping } from "./utils/MIDIMappingClass";
@@ -8,11 +9,19 @@ import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
 import { KeyboardSliceState } from "./store/keyboardSlice";
+import React from "react";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
 
 type RecordKey = string | number | symbol;
 declare global {
+    interface Navigator {
+        getUserMedia(
+            options: { video?: boolean; audio?: boolean },
+            success: (stream: MediaStream) => void,
+            error?: (error: string) => void
+        ): void;
+    }
     type Tuple<First, Second> = [First, Second];
     // make own overloads to the object static class methods
     interface ObjectConstructor {
@@ -60,6 +69,12 @@ export interface ILedState {
     isHSL: boolean;
     presetName: string;
     animVarCoeff: string;
+}
+export interface IAudioState {
+    audioCtxRef: React.MutableRefObject<AudioContext>,
+    analyserNodeRef: React.MutableRefObject<AnalyserNode>,
+    gainNodeRef: React.MutableRefObject<GainNode>,
+    samplesLength: number,
 }
 
 type Base64String = string;
@@ -128,6 +143,7 @@ export interface IPresetButton {
 }
 
 export type GlobalState = KeyboardSliceState &
+    IAudioState &
     IAccessRecordState &
     CombinedFormState &
     CombinedModalState &
