@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Auth from "../utils/AuthService";
 
 import AudioPlayerComponent from "../components/AudioPlayer/AudioPlayer";
@@ -11,6 +13,9 @@ import { PresetButtons } from "../components/PresetButtons";
 import { MIDIListenerWrapper } from "../components/MIDIListenerWrapper";
 import { Slider } from "../components/Slider";
 import styled from "styled-components";
+import { AudioContextStartButton, GainControl, ShowAudioPlayerButton } from "../components/AudioPlayer/AudioAnalyserInit";
+import { INITIAL_GAIN } from "../constants";
+
 
 const HomeDevicesWrapper = styled.div`
     display: flex;
@@ -18,10 +23,15 @@ const HomeDevicesWrapper = styled.div`
     justify-content: center;
 `;
 
+
 // audio player and big led box
 const Home: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const [showAudioPlayer, setShowAudioPlayer] = React.useState(false);
+    const [started, setStarted] = React.useState(false);
+    const [gain, setGain] = React.useState(INITIAL_GAIN);
 
     useEffect(() => {
         Auth.loggedIn() ? dispatch(loggedInActions.login()) : dispatch(loggedInActions.logout());
@@ -29,7 +39,17 @@ const Home: React.FC = (): JSX.Element => {
 
     return (
         <>
-            <AudioPlayerComponent />
+            <ShowAudioPlayerButton showAudioPlayer={showAudioPlayer} setShowAudioPlayer={setShowAudioPlayer}/>
+            {
+                showAudioPlayer ? (
+                    <AudioPlayerComponent />
+                ) : (
+                    <>
+                        <GainControl gain={gain} setGain={setGain} />
+                        <AudioContextStartButton started={started} setStarted={setStarted}/>
+                    </>
+                ) 
+            }
             <HomeDevicesWrapper>
                 <ArtScroller />
                 <PresetButtons />

@@ -84,11 +84,12 @@ const NewAudioPlayer: React.FC<NewAudioPlayerProps> = (props) => {
 const AudioPlayerComponent: React.FC = (): JSX.Element => {
     const [currentSong, setCurrentSong] = useState(REVERB_STUDY);
     const [isPlaying, setIsPlaying] = useState(false);
+    
     const audioElRef = React.useRef<HTMLAudioElement>(null);
 
     React.useEffect(() => {
         if (audioElRef.current) {
-            audioElRef.current.volume = 0.01;
+            audioElRef.current.volume = 0.01;            
         }
     }, []);
 
@@ -102,10 +103,6 @@ const AudioPlayerComponent: React.FC = (): JSX.Element => {
             trackName: "ReverbStudy",
             filePath: REVERB_STUDY,
         },
-        // {
-        //   trackName: 'Waterfalls',
-        //   filePath: WATERFALLS
-        // },
     ];
 
     return (

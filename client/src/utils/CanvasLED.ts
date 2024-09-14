@@ -6,7 +6,6 @@ export class CanvasLED {
     public y = 0;
     public fillStyle = "";
     public presetName = "";
-
     public constructor(
         col: number,
         row: number,
@@ -14,19 +13,24 @@ export class CanvasLED {
         animVarCoeff: string,
         countRef: number,
         isHSL: boolean,
-        presetName: string
+        presetName: string,
     ) {
         this.presetName = presetName || "spiral";
 
         this.#setXCoordAndWidth(col, dimensionWidth);
-
         this.#setYCoord(row);
 
         // creating fill style will eventually be set by a user saved preset given certain parameters
         this.#setFillStyle(col, row, countRef, animVarCoeff, isHSL);
     }
 
-    #setFillStyle(col: number, row: number, countRef: number, animVarCoeff: string, isHSL: boolean): void {
+    #setFillStyle(
+        col: number, 
+        row: number, 
+        countRef: number, 
+        animVarCoeff: string, 
+        isHSL: boolean, 
+    ): void {
         const hexString = this._determineHexStringFromPreset(row, col, animVarCoeff, countRef);
 
         const hslValue = parseInt(CanvasLED._createPaddedHexString(hexString), 16);
