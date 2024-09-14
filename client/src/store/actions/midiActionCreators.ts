@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { MIDIInputName, SUPPORTED_CONTROLLERS } from "../../constants";
+import { DEBUG, MIDIInputName, SUPPORTED_CONTROLLERS } from "../../constants";
 
 import { MyThunkConfig } from "../../types";
 import { deepCopy } from "../../utils/deepCopy";
@@ -91,7 +91,10 @@ export const buildMIDIAccessGetter = createAsyncThunk<MIDIController, { timeoutR
                 MIDIMappingPreference.setMIDICallbackMapBasedOnControllerName(pref, _thunkAPI.dispatch);
             }
 
-            DEBUGMIDIMESSAGE(uiName, name, controlName, channel, midiIntensity);
+            if (DEBUG) {
+                DEBUGMIDIMESSAGE(uiName, name, controlName, channel, midiIntensity);
+            }
+
 
             if (isEditMode && isListeningForMappingEdit) {
                 _thunkAPI.dispatch(midiActions.setListeningForMappingEdit(false));

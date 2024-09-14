@@ -6,7 +6,6 @@ export class CanvasLED {
     public y = 0;
     public fillStyle = "";
     public presetName = "";
-
     public constructor(
         col: number,
         row: number,
@@ -15,20 +14,23 @@ export class CanvasLED {
         countRef: number,
         isHSL: boolean,
         presetName: string,
-        samples: Float32Array,
-        samplesLength: number
     ) {
         this.presetName = presetName || "spiral";
 
         this.#setXCoordAndWidth(col, dimensionWidth);
-
         this.#setYCoord(row);
 
         // creating fill style will eventually be set by a user saved preset given certain parameters
-        this.#setFillStyle(col, row, countRef, animVarCoeff, isHSL, samples);
+        this.#setFillStyle(col, row, countRef, animVarCoeff, isHSL);
     }
 
-    #setFillStyle(col: number, row: number, countRef: number, animVarCoeff: string, isHSL: boolean, samples?: Float32Array): void {
+    #setFillStyle(
+        col: number, 
+        row: number, 
+        countRef: number, 
+        animVarCoeff: string, 
+        isHSL: boolean, 
+    ): void {
         const hexString = this._determineHexStringFromPreset(row, col, animVarCoeff, countRef);
 
         const hslValue = parseInt(CanvasLED._createPaddedHexString(hexString), 16);
@@ -37,16 +39,8 @@ export class CanvasLED {
         const blue = CanvasLED._createPaddedHexString(hexString);
         const green = CanvasLED._createPaddedHexString((10).toString(16));
 
-        // TODO: if using HSL it's good for FFT visualizing
         if (isHSL) {
-            // TODO: use any preset here for spectrum analysis wheel for color
-            // WE GOT SAMPLES now draw with those samples somehow!!!
-            // if (false!) {
-            //     const wheel: number = this.getWheelFromFFTData(samples || new Float32Array(0));
-            //     this.fillStyle = `hsl(${wheel / 4} 50 50)`;
-            // }
             if (this.presetName === "dm5") {
-
                 const lightnessBasedOnRow = this._generateLightness(col, row, animVarCoeff, countRef);
                 this.fillStyle = `hsl(100, 100%, ${lightnessBasedOnRow}%)`;
             } else {
@@ -89,12 +83,6 @@ export class CanvasLED {
             this.w = dimensionWidth / this.w;
             //
         }
-    }
-
-    private getWheelFromFFTData(fftData: Float32Array): number {
-        let result = 0;
-
-        return result;
     }
 
     private _generateLightness(row: number, col: number, animVarCoeff: string, countRef: number): string {
