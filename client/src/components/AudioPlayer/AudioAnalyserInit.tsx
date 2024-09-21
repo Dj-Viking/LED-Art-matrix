@@ -14,6 +14,8 @@ export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }
         <>
             <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                 <input
+                    style={{ width: "50%"}}
+                    className="myrangestyle"
                     step="0.01"
                     min="0"
                     max="1"
