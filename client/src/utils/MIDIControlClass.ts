@@ -378,9 +378,10 @@ class MIDIController implements IMIDIController {
         pref: MIDIMappingPreference<typeof name>,
         name: MIDIInputName,
         buttonIds: Array<IPresetButton["id"]>,
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>, 
+        gainNodeRef: React.MutableRefObject<GainNode>
     ): void {
-        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds, timeoutRef);
+        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds, timeoutRef, gainNodeRef);
     }
 
     private static _invokeCallbackOrWarn(
@@ -388,7 +389,8 @@ class MIDIController implements IMIDIController {
         name: MIDIInputName,
         midi_event: MIDIMessageEvent,
         buttonIds: IPresetButton["id"][],
-        timeoutRef: React.MutableRefObject<NodeJS.Timeout>
+        timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
+        gainNodeRef: React.MutableRefObject<GainNode>
     ): void {
         const TIMEOUT = 1;
         //
@@ -405,7 +407,7 @@ class MIDIController implements IMIDIController {
                     const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
-                            callback(midiIntensity, buttonIds);
+                            callback(midiIntensity, buttonIds, gainNodeRef);
                         }, TIMEOUT);
                     }
                 }
@@ -417,7 +419,7 @@ class MIDIController implements IMIDIController {
                     const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
-                            callback(midiIntensity, buttonIds);
+                            callback(midiIntensity, buttonIds, gainNodeRef);
                         }, TIMEOUT);
                     }
                 }

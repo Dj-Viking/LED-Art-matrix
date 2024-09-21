@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
+import React from "react";
 import {
     DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE,
     MIDIInputName,
@@ -9,6 +10,7 @@ import {
     DEFAULT_XONE_MAPPING_PREFERENCE_TABLE,
 } from "../constants";
 import { artScrollerActions } from "../store/artScrollerSlice";
+import { audioActions } from "../store/audioSlice";
 import { ledActions } from "../store/ledSlice";
 import { midiActions } from "../store/midiSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
@@ -116,6 +118,24 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         dispatch: ToolkitDispatch
     ): CallbackMapping[P] {
         switch (uiName) {
+            case "gainValue": 
+                return (midiIntensity: number, _buttonIds?: Array<string>, gainRef?: React.MutableRefObject<GainNode>) => {
+                    if (gainRef && 
+                        gainRef.current && gainRef.current.gain) 
+                    {
+                        console.log(midiIntensity);
+                        if (midiIntensity === 0) {
+                            dispatch(
+                                audioActions.setGainRefGain(0)
+                            );
+                        }
+                        dispatch(
+                            audioActions.setGainRefGain(
+                                calcPositionFromRange(midiIntensity, 0, 1, 0, 127, false)
+                            )
+                        );
+                    }
+                };
             case "animDuration":
                 return (midiIntensity: number) => {
                     dispatch(

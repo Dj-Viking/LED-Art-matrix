@@ -554,6 +554,7 @@ type ArtScrollerSpeedSliderProps = DOMAttributes<HTMLInputElement>;
 
 const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
     const {
+        midiEditMode,
         slider: { animDuration },
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
@@ -571,7 +572,7 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
             max="100"
             value={animDuration}
             onClick={() => {
-                MIDIMappingPreference.listeningForEditsHandler(dispatch, "animDuration");
+                midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "animDuration");
             }}
             onChange={(event) => {
                 event.preventDefault();

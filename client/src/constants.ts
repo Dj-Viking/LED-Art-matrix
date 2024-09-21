@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { IArtScrollerState, ILedState } from "./types";
+import { IArtScrollerState, IAudioState, ILedState } from "./types";
 import { KeyChannel, KeyInputName } from "./utils/KeyMappingClass";
 
 export const IS_PROD = process.env.NODE_ENV === "production";
@@ -149,6 +149,7 @@ export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlN
 export type UIInterfaceDeviceName =
     | keyof ILedState
     | "figureOn"
+    | "gainValue"
     | "gifFetch"
     | "startGifs"
     | "gifSelector"
@@ -164,6 +165,7 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceNam
     button_6_position: "" as any,
     button_7_position: "" as any,
     button_8_position: "" as any,
+    gainValue: "" as any,
     circleWidth: "" as any,
     vertPos: "" as any,
     hPos: "" as any,
@@ -404,6 +406,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDevic
     button_6_position: "" as any,
     button_7_position: "" as any,
     button_8_position: "" as any,
+    gainValue: "" as any,
     circleWidth: "" as any,
     vertPos: "" as any,
     hPos: "" as any,
@@ -452,6 +455,7 @@ export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (...args: any
     gifFetch: (..._args: any[]) => void 0,
     startGifs: (..._args: any[]) => void 0,
     gifSelector: (..._args: any[]) => void 0,
+    gainValue: (..._args: any[]) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {

@@ -5,6 +5,7 @@
  * @param maxPercentage maximum percentage value
  * @param minInput minimum input value the range can be
  * @param maxInput maximum input value the range can be
+ * @param floor decide to floor the number or keep it a floating point number
  * @returns the precentage calculation value from the input given the range the input number lies within
  */
 export function calcPositionFromRange(
@@ -12,7 +13,14 @@ export function calcPositionFromRange(
     minPercentage: number,
     maxPercentage: number,
     minInput: number,
-    maxInput: number
+    maxInput: number,
+    // default behavior for all controls is floor the number
+    // but for values between 0 and 1 don't floor
+    floor = true
 ): number {
-    return Math.floor(((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) + minPercentage);
+    if (floor) {
+        return Math.floor(((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) + minPercentage);
+    } else {
+        return ((maxPercentage - minPercentage) * (input - minInput)) / (maxInput - minInput) + minPercentage;
+    }
 }
