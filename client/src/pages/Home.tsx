@@ -11,7 +11,7 @@ import { Canvas } from "../components/Canvas";
 import { ArtScroller } from "../components/ArtScroller";
 import { PresetButtons } from "../components/PresetButtons";
 import { MIDIListenerWrapper } from "../components/MIDIListenerWrapper";
-import { Slider } from "../components/Slider";
+import { AudioSliderThing1, Slider } from "../components/Slider";
 import styled from "styled-components";
 import { AudioContextStartButton, GainControl, ShowAudioPlayerButton } from "../components/AudioPlayer/AudioAnalyserInit";
 import { INITIAL_GAIN } from "../constants";
@@ -61,6 +61,7 @@ const Home: React.FC = (): JSX.Element => {
                 <PresetButtons />
                 <MIDIListenerWrapper />
                 <Slider />
+                <AudioSliderThing1 />
 
                 <Canvas />
             </HomeDevicesWrapper>

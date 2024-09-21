@@ -66,10 +66,12 @@ export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }
                         midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "gainValue");
                     }}
                     onInput={(e) => {
-                        props.setGain(e.target.value);
-                        if (gainNodeRef.current) {
-                            if (!midiEditMode) {
-                                dispatch(audioActions.setGainRefGain(e.target.value));
+                        if (!midiEditMode) {
+                            props.setGain(e.target.value);
+                            if (gainNodeRef.current) {
+                                if (!midiEditMode) {
+                                    dispatch(audioActions.setGainRefGain(e.target.value));
+                                }
                             }
                         }
                     }}

@@ -298,12 +298,14 @@ const ArtScrollerGifListSelector: React.FC = () => {
                 id="gif-list-selector"
                 style={{ textAlign: "center", backgroundColor: "black", width: "100%" }}
                 onChange={(event) => {
-                    dispatch(
-                        artScrollerActions.selectListName({
-                            listName: event.target.value,
-                            listNameIndex: event.target.id,
-                        })
-                    );
+                    if (!midiEditMode) {
+                        dispatch(
+                            artScrollerActions.selectListName({
+                                listName: event.target.value,
+                                listNameIndex: event.target.id,
+                            })
+                        );
+                    }
                 }}
             >
                 <option disabled value="Choose a gif list">
@@ -333,6 +335,7 @@ type ArtScrollerCircleWidthSliderProps = DOMAttributes<HTMLInputElement>;
 const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> = () => {
     const {
         slider: { circleWidth },
+        midiEditMode
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
@@ -349,16 +352,18 @@ const ArtScrollerCircleWidthSlider: React.FC<ArtScrollerCircleWidthSliderProps> 
             max="100"
             value={circleWidth}
             onClick={() => {
-                MIDIMappingPreference.listeningForEditsHandler(dispatch, "circleWidth");
+                midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "circleWidth");
             }}
             onChange={(event) => {
-                event.preventDefault();
-                dispatch(
-                    artScrollerActions.setSlider({
-                        control: "circleWidth",
-                        value: event.target.value,
-                    })
-                );
+                if (!midiEditMode) {
+                    event.preventDefault();
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "circleWidth",
+                            value: event.target.value,
+                        })
+                    );
+                }
             }}
         />
     );
@@ -386,6 +391,7 @@ type ArtScrollerVerticalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSliderProps> = () => {
     const {
         slider: { vertPos },
+        midiEditMode
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
@@ -402,16 +408,18 @@ const ArtScrollerVerticalPositionSlider: React.FC<ArtScrollerVerticalPositionSli
             max="200"
             value={vertPos}
             onClick={() => {
-                MIDIMappingPreference.listeningForEditsHandler(dispatch, "vertPos");
+                midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "vertPos");
             }}
             onChange={(event) => {
-                event.preventDefault();
-                dispatch(
-                    artScrollerActions.setSlider({
-                        control: "vertPos",
-                        value: event.target.value,
-                    })
-                );
+                if (!midiEditMode) {
+                    event.preventDefault();
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "vertPos",
+                            value: event.target.value,
+                        })
+                    );
+                }
             }}
         />
     );
@@ -440,6 +448,7 @@ type ArtScrollerHorizontalPositionSliderProps = DOMAttributes<HTMLInputElement>;
 const ArtScrollerHorizontalPositionSlider: React.FC<ArtScrollerHorizontalPositionSliderProps> = () => {
     const {
         slider: { hPos },
+        midiEditMode
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
@@ -456,16 +465,18 @@ const ArtScrollerHorizontalPositionSlider: React.FC<ArtScrollerHorizontalPositio
             max="100"
             value={hPos}
             onClick={() => {
-                MIDIMappingPreference.listeningForEditsHandler(dispatch, "hPos");
+                midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "hPos");
             }}
             onChange={(event) => {
-                event.preventDefault();
-                dispatch(
-                    artScrollerActions.setSlider({
-                        control: "hPos",
-                        value: event.target.value,
-                    })
-                );
+                if (!midiEditMode) {
+                    event.preventDefault();
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "hPos",
+                            value: event.target.value,
+                        })
+                    );
+                }
             }}
         />
     );
@@ -501,6 +512,7 @@ type ArtScrollerInvertColorsSliderProps = DOMAttributes<HTMLInputElement>;
 const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps> = () => {
     const {
         slider: { invert },
+        midiEditMode,
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
     return (
@@ -517,16 +529,18 @@ const ArtScrollerInvertColorsSlider: React.FC<ArtScrollerInvertColorsSliderProps
             max="100"
             value={invert}
             onClick={() => {
-                MIDIMappingPreference.listeningForEditsHandler(dispatch, "invert");
+                midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "invert");
             }}
             onChange={(event) => {
-                event.preventDefault();
-                dispatch(
-                    artScrollerActions.setSlider({
-                        control: "invert",
-                        value: event.target.value,
-                    })
-                );
+                if (!midiEditMode) {
+                    event.preventDefault();
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "invert",
+                            value: event.target.value,
+                        })
+                    );
+                }
             }}
         />
     );
@@ -575,13 +589,16 @@ const ArtScrollerSpeedSlider: React.FC<ArtScrollerSpeedSliderProps> = () => {
                 midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "animDuration");
             }}
             onChange={(event) => {
-                event.preventDefault();
-                dispatch(
-                    artScrollerActions.setSlider({
-                        control: "animDuration",
-                        value: event.target.value,
-                    })
-                );
+                if (!midiEditMode) {
+                    event.preventDefault();
+                    dispatch(
+                        artScrollerActions.setSlider({
+                            control: "animDuration",
+                            value: event.target.value,
+                        })
+                    );
+                
+                }
             }}
         />
     );

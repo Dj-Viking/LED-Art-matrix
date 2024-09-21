@@ -21,6 +21,12 @@ export const audioSlice = createSlice({
             });
         },
 
+        setAnalyserRefSmoothing: (state, action: PayloadAction<number>) => {
+            return produce(state, () => {
+                state.analyserNodeRef.current.smoothingTimeConstant = action.payload;
+            });
+        },
+
         setGainRefGain: (state, action: PayloadAction<number>) => {
             return produce(state, () => {
                 state.gainNodeRef.current.gain.value = action.payload;

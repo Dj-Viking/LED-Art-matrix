@@ -118,22 +118,39 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         dispatch: ToolkitDispatch
     ): CallbackMapping[P] {
         switch (uiName) {
+            case "smoothing": 
+                return (midiIntensity: number, _buttonIds?: any, _gainRef?: any, analyserNodeRef?: React.MutableRefObject<AnalyserNode>) => {
+                    if (analyserNodeRef && analyserNodeRef.current) {
+                        if (midiIntensity === 0) {
+                            dispatch(
+                                audioActions.setAnalyserRefSmoothing(0)
+                            );
+                        } else {
+                            dispatch(
+                                audioActions.setAnalyserRefSmoothing(
+                                    calcPositionFromRange(midiIntensity, 0, 1, 0, 127, false)
+                                )
+                            );
+                            
+                        }
+                    }
+                };
             case "gainValue": 
                 return (midiIntensity: number, _buttonIds?: Array<string>, gainRef?: React.MutableRefObject<GainNode>) => {
                     if (gainRef && 
                         gainRef.current && gainRef.current.gain) 
                     {
-                        console.log(midiIntensity);
                         if (midiIntensity === 0) {
                             dispatch(
                                 audioActions.setGainRefGain(0)
                             );
+                        } else {
+                            dispatch(
+                                audioActions.setGainRefGain(
+                                    calcPositionFromRange(midiIntensity, 0, 1, 0, 127, false)
+                                )
+                            );
                         }
-                        dispatch(
-                            audioActions.setGainRefGain(
-                                calcPositionFromRange(midiIntensity, 0, 1, 0, 127, false)
-                            )
-                        );
                     }
                 };
             case "animDuration":

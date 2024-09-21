@@ -44,7 +44,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         controllerInUse,
         selectedController,
         isTesting,
-        midiMappingInUse: { hasPreference },
+        midiMappingInUse
     } = getGlobalState(useSelector);
 
     const timeoutRef = React.useRef<NodeJS.Timeout>({} as any);
@@ -97,11 +97,11 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
             dispatch(
                 midiActions.setControllerInUse({
                     controllerName: MIDIController.stripNativeLabelFromMIDIInputName(option),
-                    hasPreference,
+                    hasPreference: midiMappingInUse.hasPreference,
                 })
             );
         },
-        [dispatch, hasPreference]
+        [dispatch, midiMappingInUse.hasPreference]
     );
 
     return (

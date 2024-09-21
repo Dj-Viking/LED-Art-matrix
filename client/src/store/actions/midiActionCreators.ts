@@ -53,6 +53,7 @@ const midicb = function (
     // since I'm not mapping shit from this at the moment
     if (name.includes("Yamaha AG06MK2")) return;
     
+    const analyserNodeRef = _thunkAPI.getState().audioState.analyserNodeRef;
     const gainNodeRef = _thunkAPI.getState().audioState.gainNodeRef;
     const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
     const isListeningForMappingEdit = _thunkAPI.getState().midiState.isListeningForMappingEdit;
@@ -127,7 +128,7 @@ const midicb = function (
         _thunkAPI.dispatch, 
         pref, name, 
         buttonIds, 
-        timeoutRef, gainNodeRef
+        timeoutRef, gainNodeRef, analyserNodeRef
     );
 };
 
