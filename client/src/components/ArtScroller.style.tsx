@@ -671,7 +671,7 @@ const ShowScrollerButtonToggle: React.FC<ShowScrollerButtonToggleProps> = (props
             padding: "0.5em",
             cursor: "pointer",
         }} onClick={() => props.setshowscroller(!props.showscroller)}>
-            <button className="nav-button" onClick={() => props.setshowscroller(!props.showscroller)}>
+            <button style={{ cursor: "pointer" }} className="nav-button" onClick={() => props.setshowscroller(!props.showscroller)}>
                 {
                     props.showscroller ? "hide scroller" : "show scroller"
                 }

@@ -67,6 +67,10 @@ export type LKMK3_MIDIChannelTable = Record<number, LKMK3_ControlNames>;
 export const LKMK3_MIDI_CHANNEL_TABLE: LKMK3_MIDIChannelTable = {
     1: "NOT SET YET",
 };
+
+export const YAMAHA_AG06_MIDI_CHANNEL_TABLE: LKMK3_MIDIChannelTable = {
+    1: "NOT SET YET",
+};
 export const XONEK2_MIDI_CHANNEL_TABLE: XONEK2_MIDIChannelTable = {
     0: "1_encoder",
     1: "2_encoder",
@@ -522,6 +526,8 @@ export const SUPPORTED_CONTROLLERS = {
     "Not Found": {} as any,
     "LKMK3 MIDI": LKMK3_MIDI_CHANNEL_TABLE,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
+    "Yamaha AG06MK2": YAMAHA_AG06_MIDI_CHANNEL_TABLE,
+    "Yamaha AG06MK2-1": YAMAHA_AG06_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid": {} as any,
     nanoKontrol2: nanoKontrol2_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid Sync Port": ULTRALITE_MK3_HYBRID_SYNC_PORT,
