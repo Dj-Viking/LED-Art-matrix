@@ -7,7 +7,17 @@ import { INITIAL_GAIN } from "../../constants";
 import { StyledSliderLabel } from "../ArtScroller.style";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
 
-
+function getGainControlDisplayValue(gainNodeRef: React.MutableRefObject<GainNode>): number | string {
+    if (gainNodeRef.current && gainNodeRef.current.gain && gainNodeRef.current.gain.value) {
+        if (gainNodeRef.current.gain.value >= 0.09) {
+            return gainNodeRef.current.gain.value;
+        } else {
+            return "0";
+        }
+    } else {
+        return "0";
+    }
+}
 const GainControlLabel: React.FC = () => {
     const {
         gainNodeRef,
@@ -19,17 +29,7 @@ const GainControlLabel: React.FC = () => {
         midiMappingInUse.midiMappingPreference[controllerInUse],
         "gainValue"
     );
-    const value = ((): any => {
-        if (gainNodeRef.current && gainNodeRef.current.gain && gainNodeRef.current.gain.value) {
-            if (gainNodeRef.current.gain.value >= 0.09) {
-                return gainNodeRef.current.gain.value;
-            } else {
-                return "0";
-            }
-        } else {
-            return "0";
-        }
-    })();
+    const value = getGainControlDisplayValue(gainNodeRef);
 
     return (
         <div style={{ display: "flex", justifyContent: "center", margin: "0 auto"}}>
@@ -49,17 +49,7 @@ export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }
     const dispatch = useDispatch();
     const { gainNodeRef, midiEditMode } = getGlobalState(useSelector);
 
-    const value = ((): any => {
-        if (gainNodeRef.current && gainNodeRef.current.gain && gainNodeRef.current.gain.value) {
-            if (gainNodeRef.current.gain.value >= 0.09) {
-                return gainNodeRef.current.gain.value;
-            } else {
-                return "0";
-            }
-        } else {
-            return "0";
-        }
-    })();
+    const value = getGainControlDisplayValue(gainNodeRef);
     
     return (
         <>
