@@ -8,7 +8,14 @@ import { ledActions } from "../store/ledSlice";
 import { LED_AMOUNT } from "../constants";
 
 export const Canvas: React.FC = () => {
-    const { animVarCoeff, presetName, isHSL, samplesLength, analyserNodeRef } = getGlobalState(useSelector);
+    const { 
+        animVarCoeff, 
+        presetName, 
+        isHSL, 
+        samplesLength, 
+        analyserNodeRef,
+        energyModifier, 
+    } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
     // create reference to store the requestAnimationFrame ID when raf is called
@@ -51,12 +58,15 @@ export const Canvas: React.FC = () => {
         y: number, 
         sample: number,
         sample_index: number,
+        energyModifier: number,
+        deltaTime?: number,
     ): string => {
         void(x);
-        void(y);
-
-        let changeme = 360;
-        let something = sample + (changeme) * (sample_index || 1);
+        if (x % 5 === 0) {
+            console.log("current time", deltaTime);
+        }
+        console.log(deltaTime);
+        let something = sample + (energyModifier / deltaTime!) * ((sample_index * y) || 1);
         let wheel = something;
         let fillstyle = `hsl(${wheel}, 100%, 50%)`;
         
@@ -123,7 +133,12 @@ export const Canvas: React.FC = () => {
                                     // @ts-ignore fix compiler lib option maybe?? saying float32array doesn't have .at() method..... es2022 
                                     sample = samplesRef.current.at(samples_index);
                                 }
-                                ctx.fillStyle = createHSLStyleFromSamplesAndCoords(col, row, sample, samples_index);
+                                ctx.fillStyle = createHSLStyleFromSamplesAndCoords(
+                                    col, row, 
+                                    sample, samples_index, 
+                                    energyModifier,
+                                    countRef.current
+                                );
                             } else {
                                 ctx.fillStyle = ledRef.current.fillStyle;
                             }
@@ -157,7 +172,7 @@ export const Canvas: React.FC = () => {
             }
             //
         },
-        [dimensions.width, isHSL, animVarCoeff, presetName, samplesLength, analyserNodeRef]
+        [dimensions.width, isHSL, animVarCoeff, presetName, samplesLength, analyserNodeRef, energyModifier]
     );
 
     /**

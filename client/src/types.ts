@@ -75,6 +75,7 @@ export interface IAudioState {
     analyserNodeRef: React.MutableRefObject<AnalyserNode>,
     gainNodeRef: React.MutableRefObject<GainNode>,
     samplesLength: number,
+    energyModifier: number,
 }
 
 type Base64String = string;

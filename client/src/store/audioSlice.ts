@@ -7,13 +7,20 @@ export const initialAudioState: IAudioState = {
     audioCtxRef: {} as any,
     analyserNodeRef: {} as any,
     gainNodeRef: {} as any,
-    samplesLength: 0
+    samplesLength: 0,
+    energyModifier: 0
 };
 
 export const audioSlice = createSlice({
     name: "audioSlice",
     initialState: initialAudioState,
     reducers: {
+
+        setEnergyModifier: (state, a: PayloadAction<number>) => {
+            return produce(state, () => {
+                state.energyModifier = a.payload;
+            });
+        },
 
         setSamplesLength: (state, action: PayloadAction<number>) => {
             return produce(state, () => {

@@ -118,6 +118,16 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         dispatch: ToolkitDispatch
     ): CallbackMapping[P] {
         switch (uiName) {
+            case "energy":
+                return (midiIntensity: number) => {
+                    //
+
+                    dispatch(
+                        audioActions.setEnergyModifier(
+                            calcPositionFromRange(midiIntensity, 0, 360, 0, 127, true)
+                        )
+                    );
+                };
             case "smoothing": 
                 return (midiIntensity: number, _buttonIds?: any, _gainRef?: any, analyserNodeRef?: React.MutableRefObject<AnalyserNode>) => {
                     if (analyserNodeRef && analyserNodeRef.current) {

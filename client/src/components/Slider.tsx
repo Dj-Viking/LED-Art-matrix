@@ -88,7 +88,7 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
         midiEditMode 
     } = getGlobalState(useSelector);
 
-    const [smoothing, setsmoothing] = React.useState(0);
+    const [smoothing, setenergy] = React.useState(0);
 
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
@@ -107,7 +107,7 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
                     )
                 );
             }
-            setsmoothing(event.target.value);
+            setenergy(event.target.value);
         },
         [dispatch, analyserNodeRef]
     );
@@ -115,9 +115,9 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
     React.useEffect(() => {
         if (analyserNodeRef.current) {
             if (analyserNodeRef.current.smoothingTimeConstant >= 0.09) {
-                setsmoothing(analyserNodeRef.current.smoothingTimeConstant);
+                setenergy(analyserNodeRef.current.smoothingTimeConstant);
             } else {
-                setsmoothing(0);
+                setenergy(0);
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -164,6 +164,99 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
                         midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "smoothing");
                     }}
                     value={smoothing}
+                    onChange={(e) => {
+                        if (!midiEditMode) {
+                            handleChange(e);
+                        }
+                    }}
+                />
+            </div>
+        </>
+    );
+};
+
+// some part of the canvas HSL wheel constants...
+export const AudioSliderThing2: React.FC<SliderProps> = () => {
+    const dispatch = useDispatch();
+    const { 
+        energyModifier,
+        midiMappingInUse, 
+        controllerInUse,
+        midiEditMode 
+    } = getGlobalState(useSelector);
+
+    const [energy, setenergy] = React.useState(0);
+
+    const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
+        midiMappingInUse.midiMappingPreference[controllerInUse],
+        "energy"
+    );
+    const handleChange = React.useCallback(
+        (event) => {
+            if (Number.isInteger(energyModifier)) {
+                dispatch(
+                    audioActions.setEnergyModifier(
+                        Number(
+                            event.target.value
+                        )
+                    )
+                );
+            }
+            setenergy(event.target.value);
+        },
+        [dispatch, energyModifier]
+    );
+
+    React.useEffect(() => {
+        if (Number.isInteger(energyModifier)) {
+            setenergy(energyModifier);
+        }
+    }, [energyModifier]);
+
+    const name = "energy";
+    return (
+        <>
+            <div className="led-slider-container">
+                <label
+                    htmlFor={name}
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        flexDirection: "column",
+                        color: "white",
+                        margin: "0 auto",
+                    }}
+                >
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>
+                        {midiEditMode ? `<MIDI> (${uiMapping})` : ""}
+                    </p>
+                    {/** label.. */}
+                    <p style={{ margin: "0 auto", marginBottom: "5px" }}>
+                        {"Energy"}
+                    </p>
+                    <p style={{ margin: "0 auto" }}>{energy}</p>
+                </label>
+
+                <span style={{ color: "white", marginLeft: "20%" }}>
+                    &nbsp; <span style={{ color: "white", marginLeft: "60%" }}>&nbsp;</span>
+                </span>
+
+                <input
+                    name={name}
+                    style={{
+                        width: "70%",
+                        margin: "0 auto",
+                    }}
+                    className="myrangestyle"
+                    data-testid={"analyser-node-energy"}
+                    type="range"
+                    min="0"
+                    max="360"
+                    step="1"
+                    onClick={() => {
+                        midiEditMode && MIDIMappingPreference.listeningForEditsHandler(dispatch, "energy");
+                    }}
+                    value={energy}
                     onChange={(e) => {
                         if (!midiEditMode) {
                             handleChange(e);

@@ -153,6 +153,7 @@ export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlN
 export type AudioUIDeviceName = 
 | "gainValue"
 | "smoothing"
+| "energy"
 
 export type UIInterfaceDeviceName =
     | keyof ILedState
@@ -173,6 +174,7 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceNam
     button_6_position: "" as any,
     button_7_position: "" as any,
     button_8_position: "" as any,
+    energy: "" as any,
     smoothing: "" as any,
     gainValue: "" as any,
     circleWidth: "" as any,
@@ -416,6 +418,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDevic
     button_7_position: "" as any,
     button_8_position: "" as any,
     gainValue: "" as any,
+    energy: "" as any,
     smoothing: "" as any,
     circleWidth: "" as any,
     vertPos: "" as any,
@@ -467,6 +470,7 @@ export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (...args: any
     gifSelector: (..._args: any[]) => void 0,
     gainValue: (..._args: any[]) => void 0,
     smoothing: (..._args: any[]) => void 0,
+    energy: (..._args: any[]) => void 0,
 };
 
 export const ULTRALITE_MK3_HYBRID_SYNC_PORT = {
