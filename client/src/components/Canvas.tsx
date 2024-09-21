@@ -62,10 +62,6 @@ export const Canvas: React.FC = () => {
         deltaTime?: number,
     ): string => {
         void(x);
-        if (x % 5 === 0) {
-            console.log("current time", deltaTime);
-        }
-        console.log(deltaTime);
         let something = sample + (energyModifier / deltaTime!) * ((sample_index * y) || 1);
         let wheel = something;
         let fillstyle = `hsl(${wheel}, 100%, 50%)`;
