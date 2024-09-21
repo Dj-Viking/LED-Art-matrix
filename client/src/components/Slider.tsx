@@ -88,7 +88,7 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
         midiEditMode 
     } = getGlobalState(useSelector);
 
-    const [smoothing, setenergy] = React.useState(0);
+    const [smoothing, setsmoothing] = React.useState(0);
 
     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(
         midiMappingInUse.midiMappingPreference[controllerInUse],
@@ -107,7 +107,7 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
                     )
                 );
             }
-            setenergy(event.target.value);
+            setsmoothing(event.target.value);
         },
         [dispatch, analyserNodeRef]
     );
@@ -115,9 +115,9 @@ export const AudioSliderThing1: React.FC<SliderProps> = () => {
     React.useEffect(() => {
         if (analyserNodeRef.current) {
             if (analyserNodeRef.current.smoothingTimeConstant >= 0.09) {
-                setenergy(analyserNodeRef.current.smoothingTimeConstant);
+                setsmoothing(analyserNodeRef.current.smoothingTimeConstant);
             } else {
-                setenergy(0);
+                setsmoothing(0);
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
