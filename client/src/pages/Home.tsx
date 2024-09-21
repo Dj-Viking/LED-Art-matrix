@@ -15,6 +15,7 @@ import { Slider } from "../components/Slider";
 import styled from "styled-components";
 import { AudioContextStartButton, GainControl, ShowAudioPlayerButton } from "../components/AudioPlayer/AudioAnalyserInit";
 import { INITIAL_GAIN } from "../constants";
+import { ShowScrollerButtonToggle } from "../components/ArtScroller.style";
 
 
 const HomeDevicesWrapper = styled.div`
@@ -23,7 +24,6 @@ const HomeDevicesWrapper = styled.div`
     justify-content: center;
 `;
 
-
 // audio player and big led box
 const Home: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
@@ -31,6 +31,7 @@ const Home: React.FC = (): JSX.Element => {
 
     const [showAudioPlayer, setShowAudioPlayer] = React.useState(false);
     const [started, setStarted] = React.useState(false);
+    const [showscroller, setshowscroller] = React.useState(false);
     const [gain, setGain] = React.useState(INITIAL_GAIN);
 
     useEffect(() => {
@@ -51,7 +52,12 @@ const Home: React.FC = (): JSX.Element => {
                 ) 
             }
             <HomeDevicesWrapper>
-                <ArtScroller />
+                <ShowScrollerButtonToggle setshowscroller={setshowscroller} showscroller={showscroller} />
+                {
+                    showscroller && (
+                        <ArtScroller />
+                    )
+                }
                 <PresetButtons />
                 <MIDIListenerWrapper />
                 <Slider />

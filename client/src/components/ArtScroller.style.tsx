@@ -656,7 +656,31 @@ const ArtScrollerGifs: React.FC = () => {
     );
 };
 
+
+interface ShowScrollerButtonToggleProps {
+    showscroller: boolean;
+    setshowscroller: React.Dispatch<React.SetStateAction<boolean>>;
+}
+const ShowScrollerButtonToggle: React.FC<ShowScrollerButtonToggleProps> = (props) => {
+    return (
+        <div style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "0.5em",
+            cursor: "pointer",
+        }} onClick={() => props.setshowscroller(!props.showscroller)}>
+            <button className="nav-button" onClick={() => props.setshowscroller(!props.showscroller)}>
+                {
+                    props.showscroller ? "hide scroller" : "show scroller"
+                }
+            </button>
+        </div>
+    );
+};
+
 export type {
+    ShowScrollerButtonToggleProps,
     ArtScrollerStartButtonProps,
     ArtScrollerToggleButtonProps,
     ArtScrollerCircleWidthSliderProps,
@@ -666,6 +690,7 @@ export type {
     ArtScrollerSaveNewGifCollectionProps,
 };
 export {
+    ShowScrollerButtonToggle,
     ArtScrollerMainContainer,
     ArtScrollerSection,
     ArtScrollerBorderTop,
