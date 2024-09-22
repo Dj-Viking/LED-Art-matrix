@@ -160,13 +160,6 @@ export const AudioContextStartButton = (props: AudioContextStartButtonProps): JS
         }
     }, [gainNodeRef, dispatch, analyserNodeRef, audioCtxRef]);
 
-    useEffect(() => {
-        // if (analyserNodeRef.current instanceof AnalyserNode) {
-        // }
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [analyserNodeRef, dispatch]);
-
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "0.5em" }}>
             <button style={{cursor: "pointer"}} className="nav-button" onClick={() => props.setStarted(!props.started)}>
