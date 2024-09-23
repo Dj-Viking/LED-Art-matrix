@@ -8,14 +8,12 @@ import { artScrollerSlice } from "./artScrollerSlice";
 import { presetButtonsListSlice } from "./presetButtonListSlice";
 import { GlobalState, MyRootState } from "../types";
 import { useSelector } from "react-redux";
-import { keyboardSlice } from "./keyboardSlice";
 import { audioSlice } from "./audioSlice";
 
 export const toolkitReducer = {
     midiState: midiSlice.reducer,
     audioState: audioSlice.reducer,
     loggedInState: loggedInSlice.reducer,
-    keyboardState: keyboardSlice.reducer,
     ledState: ledSlice.reducer,
     modalState: modalSlice.reducer,
     formState: formSlice.reducer,

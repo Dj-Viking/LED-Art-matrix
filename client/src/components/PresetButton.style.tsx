@@ -236,29 +236,6 @@ const ToggleMIDIMapEditModeButton: React.FC<ToggleMIDIMapEditModeButtonProps> = 
     );
 };
 
-export interface ToggleKeyMapEditModeButtonProps {
-    toggleKeyMapEditMode: () => void;
-}
-
-export const ToggleKeyMapEditModeButton: React.FC<ToggleKeyMapEditModeButtonProps> = (props) => {
-    const ToggleKeyMapEditModeButtonStyle = useSpring(_toggleKeyMapEditModeButton);
-    const { keyMapEditMode } = getGlobalState(useSelector);
-    return (
-        <animated.button
-            style={{ ...ToggleKeyMapEditModeButtonStyle, backgroundColor: `${keyMapEditMode ? "green" : "black"}` }}
-            role="button"
-            data-testid="toggleKeyMapEditMoide"
-            className="preset-button"
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                console.log("listening for edits click event", event);
-                props.toggleKeyMapEditMode();
-            }}
-        >
-            {"Toggle Key Map Edit Mode"}
-        </animated.button>
-    );
-};
-
 export const StyledPresetControlButtonsContainer = styled.div`
     & {
         display: flex;

@@ -14,8 +14,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
         presetButtons,
         saveModalIsOpen,
         figureOn,
-        keyMapEditMode,
-        isListeningForKeyMappingEdit,
         usingMidi,
     } = getGlobalState(useSelector);
 
@@ -37,11 +35,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             if (deleteModeActive) return;
             if (saveModalIsOpen) return;
 
-            if (keyMapEditMode && isListeningForKeyMappingEdit) {
-                console.log("event.key => ", event.key);
-                // update key mapping for the ey that was just pressed
-                // dispatch(keyboardActions.updateKeyMapping(event.key as KeyInputName));
-            }
 
             //clear led screen
             // TODO: change the LED styles to still have the dimensions of being empty but no color as to not remove the dimensional grid from the DOM
@@ -76,8 +69,6 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             setStyle,
             dispatch,
             figureOn,
-            keyMapEditMode,
-            isListeningForKeyMappingEdit,
         ]
     );
 
