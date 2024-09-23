@@ -8,9 +8,7 @@ import { IPresetButton } from "../types";
 import { Modal } from "./Modal/ModalBase";
 import { SavePresetModal } from "./Modal/SavePresetModal";
 import { PresetButtonsList } from "../utils/PresetButtonsListClass";
-import { Slider } from "./Slider";
 import { DeletePresetModal } from "./Modal/DeletePresetConfirmModal";
-import { MIDIListenerWrapper } from "./MIDIListenerWrapper";
 import {
     ResetTimerButton,
     DeleteButton,
@@ -24,15 +22,12 @@ import {
     StyledPresetButtonsParent,
     StyledPresetButton,
 } from "./PresetButton.style";
-import { ledActions } from "../store/ledSlice";
 import { getGlobalState } from "../store/store";
 import { modalActions } from "../store/modalSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { midiActions } from "../store/midiSlice";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { UIInterfaceDeviceName } from "../constants";
-import { keyboardActions } from "../store/keyboardSlice";
-import { KeyMappingClass } from "../utils/KeyMappingClass";
 export interface IPresetButtonsProps {
     children?: React.ReactNode | React.ReactNode[];
 }
@@ -50,9 +45,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         saveModalContext,
         presetButtons,
         midiEditMode,
-        keyMapEditMode,
         midiMappingInUse,
-        keyboardMappingInUse,
         controllerInUse,
     } = getGlobalState(useSelector);
 
@@ -82,10 +75,6 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         },
         [dispatch]
     );
-
-    const toggleKeyMapEditMode = React.useCallback((): void => {
-        dispatch(keyboardActions.toggleKeyEditMode());
-    }, [dispatch]);
 
     function handleOpenNewWindow(event: any): void {
         event.preventDefault();
@@ -163,23 +152,12 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                         uiName
                     );
 
-                    const keyMapping = KeyMappingClass.getControlNameFromControllerInUseMapping(
-                        keyboardMappingInUse.keyMappingPreference["keyboard"],
-                        "resetTimerButton"
-                    );
-
                     return (
                         <StyledPresetButton key={button.id}>
                             {midiEditMode && (
                                 <>
                                     <span>{"<MIDI>"}</span>
                                     <span>{`(${uiMapping})`}</span>
-                                </>
-                            )}
-                            {keyMapEditMode && (
-                                <>
-                                    <span>{"<KEY>"}</span>
-                                    <span>{`(${keyMapping})`}</span>
                                 </>
                             )}
                             <PresetButton index={index} button={{ ...button }} />

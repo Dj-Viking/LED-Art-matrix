@@ -8,7 +8,6 @@ import { CombinedModalState } from "./store/modalSlice";
 import { Action } from "@reduxjs/toolkit";
 import { ToolkitDispatch, ToolkitRootState } from "./store/store";
 import { MIDIInputName, UIInterfaceDeviceName } from "./constants";
-import { KeyboardSliceState } from "./store/keyboardSlice";
 import React from "react";
 
 export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch };
@@ -143,8 +142,7 @@ export interface IPresetButton {
     clickHandler: React.MouseEventHandler<HTMLElement>;
 }
 
-export type GlobalState = KeyboardSliceState &
-    IAudioState &
+export type GlobalState = IAudioState &
     IAccessRecordState &
     CombinedFormState &
     CombinedModalState &

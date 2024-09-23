@@ -25,7 +25,6 @@ export const presetButtonsListSlice = createSlice({
                 let newList = [];
 
                 const id = action.payload;
-                console.log("calling this", id);
 
                 newList = state.presetButtons.map((btn) => {
                     const _btn = btn;

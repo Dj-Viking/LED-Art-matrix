@@ -1,19 +1,21 @@
-import { ledSlice, initialLLedState } from "../../store/ledSlice";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ledSlice, initialLedState } from "../../store/ledSlice";
 import { presetButtonsListSlice, initialPresetButtonListState } from "../../store/presetButtonListSlice";
 import { PresetButtonsList } from "../../utils/PresetButtonsListClass";
 import { GlobalState } from "../../types";
 import { initialMidiSliceState, midiSlice } from "../../store/midiSlice";
-import { SUPPORTED_CONTROLLERS } from "../../constants";
+import { mockBlankStorageMIDIMapping, resetlocalstorage, setuplocalstorage } from "./storetestdata";
+import { DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE } from "../../constants";
 
 let initialState = {
-    ...initialLLedState,
+    ...initialLedState,
     ...initialPresetButtonListState,
     ...initialMidiSliceState,
 } as Partial<GlobalState>;
 
 const resetInitialState = (): Partial<GlobalState> => {
     return {
-        ...initialLLedState,
+        ...initialLedState,
         ...initialPresetButtonListState,
         ...initialMidiSliceState,
     };
@@ -80,16 +82,36 @@ describe("Redux store and slices", () => {
             initialState = {
                 ...resetInitialState(),
                 controllerInUse: "Not Found",
-                midiMappingInUse: SUPPORTED_CONTROLLERS["Not Found"],
-                midiMappings: SUPPORTED_CONTROLLERS,
+                midiMappingInUse: {
+                    "callbackMap": {} as any, // not used??? deprecate it
+                    "hasPreference": false, // using in the code now? if not - fuckin remove it!
+                    "midiMappingPreference": {
+                        "Not Found": DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE as any
+                    } as any,
+                    "recentlyUsed": "Not Found"
+                }
             };
+
+            setuplocalstorage();
         });
 
-        // IDGAF bout this right now
-        it.skip("test setting the controller in use", () => {
+        afterEach(() => {
+            resetlocalstorage();
+        });
+
+        it("test setting the controller in use", () => {
+            
+            // expect(localStorage.getItem(localStorage.key(0) as string))
+
             expect(initialState.controllerInUse).toBe("Not Found");
 
-            const action = midiSlice.actions.setControllerInUse("TouchOSC Bridge");
+            expect(initialState.midiMappingInUse?.midiMappingPreference["Not Found"])
+            .toStrictEqual(mockBlankStorageMIDIMapping["Not Found"]);
+
+            const action = midiSlice.actions.setControllerInUse({
+                "controllerName": "TouchOSC Bridge",
+                "hasPreference": false
+            });
 
             const newState = midiSlice.reducer(initialState as any, action);
 
@@ -97,7 +119,11 @@ describe("Redux store and slices", () => {
 
             expect(newState.controllerInUse).toBe("TouchOSC Bridge");
 
-            expect(newState.midiMappingInUse).toBe(SUPPORTED_CONTROLLERS["TouchOSC Bridge"]);
+            // local storage has blank preference mappings for now
+
+            expect(newState.midiMappingInUse.midiMappingPreference["TouchOSC Bridge"])
+            .toStrictEqual(mockBlankStorageMIDIMapping["TouchOSC Bridge"]);
+
         });
     });
 });

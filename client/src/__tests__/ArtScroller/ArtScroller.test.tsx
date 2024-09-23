@@ -72,6 +72,13 @@ describe("test art scroller turning on with gifs", () => {
         expect(fetch).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/");
 
+        // turn on scroller before the test starts
+        const showscrollerbtn = screen.getByTestId("show-scroller-btn");
+
+        await act(async () => {
+            showscrollerbtn.dispatchEvent(new MouseEvent("click", {bubbles: true}));
+        });
+
         const startBtn = screen.getByTestId("start-art");
         expect(startBtn).toBeInTheDocument();
         expect(startBtn).not.toBeDisabled();
@@ -101,6 +108,13 @@ describe("test art scroller turning on with gifs", () => {
 
         expect(fetch).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/");
+
+        // turn on scroller before the test starts
+        const showscrollerbtn = screen.getByTestId("show-scroller-btn");
+
+        await act(async () => {
+            showscrollerbtn.dispatchEvent(new MouseEvent("click", {bubbles: true}));
+        });
 
         const startBtn = screen.getByTestId("start-art");
         expect(startBtn).toBeInTheDocument();
@@ -229,6 +243,13 @@ describe("test art scroller turning on with gifs", () => {
 
         expect(fetch).toHaveBeenCalledTimes(0);
         expect(screen.getByTestId("location-display")).toHaveTextContent("/");
+
+        // turn on scroller before the test starts
+        const showscrollerbtn = screen.getByTestId("show-scroller-btn");
+
+        await act(async () => {
+            showscrollerbtn.dispatchEvent(new MouseEvent("click", {bubbles: true}));
+        });
 
         const startBtn = screen.getByTestId("start-art");
         expect(startBtn).toBeInTheDocument();

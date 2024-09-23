@@ -247,10 +247,10 @@ class MIDIController implements IMIDIController {
 
     public static getMIDIMappingPreferenceFromStorage(
         name: MIDIInputName,
-        hasPreference: boolean // TODO: implement logic for has preference false if the preference doesn't exist yet and initialize it as something default
+        hasPreference: boolean // TODO: delete this fucking param
     ): MIDIMappingPreference<typeof name> {
-        // TODO: update the data structure for what is stored in local storage
         const result = MIDIController.getTypedMIDILocalStorage(name);
+        console.log("nmame", name, "pref", result);
         return result;
     }
 
@@ -365,10 +365,8 @@ class MIDIController implements IMIDIController {
             // create
             const initPref = new MIDIMappingPreference("XONE:K2 MIDI", dispatch);
             pref = initPref;
-            console.log("pref to initialize into local storage", pref);
             window.localStorage.setItem("XONE:K2 MIDI" as MIDIInputName, JSON.stringify(initPref));
-            const gotPref = window.localStorage.getItem("XONE:K2 MIDI")!;
-            console.log("got pref from local storage", JSON.parse(gotPref));
+            // const gotPref = window.localStorage.getItem("XONE:K2 MIDI")!;
         }
     }
 
