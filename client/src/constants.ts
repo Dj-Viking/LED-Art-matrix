@@ -372,6 +372,21 @@ export const DEFAULT_XONE_MAPPING_PREFERENCE_TABLE: Record<
     "4_p_button": unsetPreference,
 };
 
+export type NotFoundControlNames = "not implemented" | "i said NOT IMPLEMENTED!!!"
+
+export const DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE: Record<
+    NotFoundControlNames,
+    { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
+> = {
+    "not implemented": {
+        "uiName": "" as any,
+        "channel": 0
+    },
+    "i said NOT IMPLEMENTED!!!": {
+        "uiName": "" as any,
+        "channel": 1
+    }
+};
 export const DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE: Record<
     TouchOscBridgeControlNames,
     { uiName: GenericUIMIDIMappingName<MIDIInputName>; channel: number }
@@ -525,16 +540,21 @@ export type GenericControlName<Name extends MIDIInputName | KeyInputName> = Name
     ? KeyInputControlName
     : Name extends "LKMK3"
     ? LKMK3_ControlNames
-    : string; // unimplemented controller name
+    : string; // unimplemented type for a different controller could be anything
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
     ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
     : Name extends "TouchOSC Bridge"
     ? keyof Record<UIInterfaceDeviceName, TouchOscBridgeControlNames>
-    : string; // unimplemented controller name
+    : string; // unimplemented type for a different controller could be anything
+
+export type NotFoundChannelTable = Record<number, string>;
+const NOT_FOUND_CHANNEL_TABLE: NotFoundChannelTable = {
+    0: "not implemented"
+};
 
 export const SUPPORTED_CONTROLLERS = {
-    "Not Found": {} as any,
+    "Not Found": NOT_FOUND_CHANNEL_TABLE,
     "LKMK3 MIDI": LKMK3_MIDI_CHANNEL_TABLE,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
     "Yamaha AG06MK2": YAMAHA_AG06_MIDI_CHANNEL_TABLE,

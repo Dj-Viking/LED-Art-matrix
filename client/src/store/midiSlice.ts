@@ -34,6 +34,7 @@ export const initialMidiSliceState: MIDISliceState = {
         recentlyUsed: "XONE:K2 MIDI",
         callbackMap: {} as any,
         midiMappingPreference: {
+            "Not Found": {} as any,
             "TouchOSC Bridge": {} as any,
             "XONE:K2 MIDI": {} as any,
         } as Partial<IAccessRecordState["midiMappingInUse"]["midiMappingPreference"]> as any,
@@ -135,6 +136,8 @@ export const midiSlice = createSlice({
                 );
 
                 state.controllerInUse = controllerName;
+
+                // so basically midiMappingPreference is mimicking the localstorage keyvalue store
 
                 state.midiMappingInUse.midiMappingPreference[controllerName] = deepCopy(preference?.mapping || {});
 

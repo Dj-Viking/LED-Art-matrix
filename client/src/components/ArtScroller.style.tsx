@@ -681,13 +681,17 @@ interface ShowScrollerButtonToggleProps {
 }
 const ShowScrollerButtonToggle: React.FC<ShowScrollerButtonToggleProps> = (props) => {
     return (
-        <div style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            padding: "0.5em",
-            cursor: "pointer",
-        }} onClick={() => props.setshowscroller(!props.showscroller)}>
+        <div
+            data-testid="show-scroller-btn"
+            style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                padding: "0.5em",
+                cursor: "pointer",
+            }} 
+            onClick={() => props.setshowscroller(!props.showscroller)}
+        >
             <button style={{ cursor: "pointer" }} className="nav-button" onClick={() => props.setshowscroller(!props.showscroller)}>
                 {
                     props.showscroller ? "hide scroller" : "show scroller"

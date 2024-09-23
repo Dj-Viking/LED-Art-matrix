@@ -8,6 +8,7 @@ import {
     DEFAULT_CALLBACK_TABLE,
     UIInterfaceDeviceName,
     DEFAULT_XONE_MAPPING_PREFERENCE_TABLE,
+    DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE,
 } from "../constants";
 import { artScrollerActions } from "../store/artScrollerSlice";
 import { audioActions } from "../store/audioSlice";
@@ -410,6 +411,14 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
 
     #setMIDIMappingBasedOnInputName(name: N): void {
         switch (name) {
+            case "Not Found": 
+                Object.keys(DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE).forEach((key) => {
+                    this.mapping = {
+                        ...this.mapping,
+                        [key]: DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE[key]
+                    };
+                });
+                break;
             case "TouchOSC Bridge":
                 Object.keys(DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
