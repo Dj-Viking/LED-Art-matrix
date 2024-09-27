@@ -17,6 +17,7 @@ const createHSLStyleFromSamplesAndCoords = (
     energyModifier: number,
     deltaTime: number,
 ): string => {
+    // let something = sample + (energyModifier / (deltaTime)) * ((sample_index * y) || 1);
     let something = sample + (energyModifier / (deltaTime * x)) * ((sample_index * y) || 1);
     let wheel = something;
     let fillstyle = `hsl(${wheel}, 100%, 50%)`;
