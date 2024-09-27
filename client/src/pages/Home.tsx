@@ -30,7 +30,6 @@ const Home: React.FC = (): JSX.Element => {
     const history = useHistory();
 
     const [showAudioPlayer, setShowAudioPlayer] = React.useState(false);
-    const [started, setStarted] = React.useState(false);
     const [showscroller, setshowscroller] = React.useState(false);
     const [gain, setGain] = React.useState(INITIAL_GAIN);
 
@@ -47,7 +46,7 @@ const Home: React.FC = (): JSX.Element => {
                 ) : (
                     <>
                         <GainControl gain={gain} setGain={setGain} />
-                        <AudioContextStartButton started={started} setStarted={setStarted}/>
+                        <AudioContextStartButton />
                     </>
                 ) 
             }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-interface */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -82,16 +83,15 @@ export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }
     );
 };
 
-interface AudioContextStartButtonProps { started: boolean, setStarted: React.Dispatch<React.SetStateAction<boolean>> };
-export const AudioContextStartButton = (props: AudioContextStartButtonProps): JSX.Element => {
+export const AudioContextStartButton: React.FC = () => {
     const dispatch = useDispatch();
-    const { audioCtxRef, gainNodeRef, analyserNodeRef } = getGlobalState(useSelector);
+    const { audioCtxRef, gainNodeRef, analyserNodeRef, started } = getGlobalState(useSelector);
     const ctxref = React.useRef<AudioContext>();
     const gainref = React.useRef<GainNode>();
     const analyserref = React.useRef<AnalyserNode>();
 
     useEffect(() => {
-        if (props.started) {
+        if (started) {
             // if i start a new context again it's going to mess up
             // all the connections made in a previous render cycle
             // so only instantiate a new one as the first one that 
@@ -101,7 +101,7 @@ export const AudioContextStartButton = (props: AudioContextStartButtonProps): JS
                 dispatch(audioActions.setAudioCtxRef(ctxref as any));
             }
         }
-    }, [dispatch, props.started]);
+    }, [dispatch, started]);
 
     useEffect(() => {
         if (audioCtxRef.current instanceof AudioContext) {
@@ -162,9 +162,10 @@ export const AudioContextStartButton = (props: AudioContextStartButtonProps): JS
 
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "0.5em" }}>
-            <button style={{cursor: "pointer"}} className="nav-button" onClick={() => props.setStarted(!props.started)}>
+            <button style={{cursor: "pointer"}} className="nav-button" 
+                onClick={() => dispatch(audioActions.setStarted((!started)))}>
                 {
-                    props.started ? "context started" : "start new audio context"
+                    started ? "context started" : "start new audio context"
                 }
             </button>
         </div>
