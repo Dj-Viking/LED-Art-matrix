@@ -7,6 +7,7 @@ export const LOCATION_DISPLAY_ID = "location-display";
 export const LED_AMOUNT = 32;
 export const INITIAL_GAIN = 0.01;
 export const DEBUG = false;
+export const MIDI_MESSAGE_TIMEOUT = 1;
 
 export type MyIndexToKeyMap = Record<number, string>;
 export const MY_INDEX_TO_KEY_MAP = {

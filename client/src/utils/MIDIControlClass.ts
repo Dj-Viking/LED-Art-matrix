@@ -7,6 +7,7 @@ import {
     GenericControlName,
     UIInterfaceDeviceName,
     getControllerTableFromName,
+    MIDI_MESSAGE_TIMEOUT,
 } from "../constants";
 import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
@@ -392,7 +393,7 @@ class MIDIController implements IMIDIController {
         gainNodeRef: React.MutableRefObject<GainNode>,
         analyserNodeRef: React.MutableRefObject<AnalyserNode>
     ): void {
-        const TIMEOUT = 1;
+        
         //
         const channel = midi_event.data[1];
         const midiIntensity = midi_event.data[2];
@@ -408,7 +409,7 @@ class MIDIController implements IMIDIController {
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
                             callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef);
-                        }, TIMEOUT);
+                        }, MIDI_MESSAGE_TIMEOUT);
                     }
                 }
                 break;
@@ -420,7 +421,7 @@ class MIDIController implements IMIDIController {
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
                             callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef);
-                        }, TIMEOUT);
+                        }, MIDI_MESSAGE_TIMEOUT);
                     }
                 }
                 break;
