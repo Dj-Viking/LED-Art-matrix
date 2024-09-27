@@ -9,7 +9,7 @@ param(
     $ServerWatch = $false,
 
     [switch]
-    $All,
+    $All = $true,
 
     [switch]
     $Prettier
