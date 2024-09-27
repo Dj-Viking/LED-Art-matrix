@@ -7,6 +7,23 @@ import { CanvasLED } from "../utils/CanvasLED";
 import { ledActions } from "../store/ledSlice";
 import { LED_AMOUNT } from "../constants";
 
+// TODO: make tons of these other functions to switch which one is being used
+// at a time for specific patterns to change live
+const createHSLStyleFromSamplesAndCoords = (
+    x: number, 
+    y: number, 
+    sample: number,
+    sample_index: number,
+    energyModifier: number,
+    deltaTime: number,
+): string => {
+    let something = sample + (energyModifier / (deltaTime * x)) * ((sample_index * y) || 1);
+    let wheel = something;
+    let fillstyle = `hsl(${wheel}, 100%, 50%)`;
+    
+    return fillstyle;
+};
+
 export const Canvas: React.FC = () => {
     const { 
         animVarCoeff, 
@@ -52,22 +69,6 @@ export const Canvas: React.FC = () => {
             currentCanvas.width = INITIAL_WIDTH;
         }
     }, [INITIAL_WIDTH]);
-
-    const createHSLStyleFromSamplesAndCoords = (
-        x: number, 
-        y: number, 
-        sample: number,
-        sample_index: number,
-        energyModifier: number,
-        deltaTime?: number,
-    ): string => {
-        void(x);
-        let something = sample + (energyModifier / deltaTime!) * ((sample_index * y) || 1);
-        let wheel = something;
-        let fillstyle = `hsl(${wheel}, 100%, 50%)`;
-        
-        return fillstyle;
-    };
 
     const animate = useCallback(
         (time?: number): void => {

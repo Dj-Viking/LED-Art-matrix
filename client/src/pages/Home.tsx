@@ -31,7 +31,6 @@ const Home: React.FC = (): JSX.Element => {
 
     const [showAudioPlayer, setShowAudioPlayer] = React.useState(false);
     const [showscroller, setshowscroller] = React.useState(false);
-    const [gain, setGain] = React.useState(INITIAL_GAIN);
 
     useEffect(() => {
         Auth.loggedIn() ? dispatch(loggedInActions.login()) : dispatch(loggedInActions.logout());
@@ -45,7 +44,7 @@ const Home: React.FC = (): JSX.Element => {
                     <AudioPlayerComponent />
                 ) : (
                     <>
-                        <GainControl gain={gain} setGain={setGain} />
+                        <GainControl />
                         <AudioContextStartButton />
                     </>
                 ) 

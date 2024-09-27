@@ -46,7 +46,7 @@ const GainControlLabel: React.FC = () => {
     );
 };
 
-export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }> = (props): JSX.Element => {
+export const GainControl: React.FC = (): JSX.Element => {
     const dispatch = useDispatch();
     const { gainNodeRef, midiEditMode } = getGlobalState(useSelector);
 
@@ -68,7 +68,6 @@ export const GainControl: React.FC<{ gain: number, setGain: (n:number) => void }
                     }}
                     onInput={(e) => {
                         if (!midiEditMode) {
-                            props.setGain(e.target.value);
                             if (gainNodeRef.current) {
                                 if (!midiEditMode) {
                                     dispatch(audioActions.setGainRefGain(e.target.value));
