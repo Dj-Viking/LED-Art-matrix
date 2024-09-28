@@ -76,6 +76,7 @@ export interface IAudioState {
     samplesLength: number,
     energyModifier: number,
     started: boolean,
+    outputtingToHardware: boolean,
 }
 
 type Base64String = string;

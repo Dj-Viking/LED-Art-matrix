@@ -84,7 +84,7 @@ export const GainControl: React.FC = (): JSX.Element => {
 
 export const AudioContextStartButton: React.FC = () => {
     const dispatch = useDispatch();
-    const { audioCtxRef, gainNodeRef, analyserNodeRef, started } = getGlobalState(useSelector);
+    const { audioCtxRef, gainNodeRef, analyserNodeRef, started, outputtingToHardware } = getGlobalState(useSelector);
     const ctxref = React.useRef<AudioContext>();
     const gainref = React.useRef<GainNode>();
     const analyserref = React.useRef<AnalyserNode>();
@@ -153,11 +153,29 @@ export const AudioContextStartButton: React.FC = () => {
                     
                     gainNodeRef.current.connect(analyserNodeRef.current);
                     gainNodeRef.current.connect(audioCtxRef.current.destination);
+                    dispatch(audioActions.setOutputtingToHardware(true));
                 },
                 (e) => {throw new Error("could not get usermedia" + e);}
             );
         }
-    }, [gainNodeRef, dispatch, analyserNodeRef, audioCtxRef]);
+    }, [dispatch, gainNodeRef, analyserNodeRef, audioCtxRef]);
+
+    React.useEffect(() => {
+        if (
+            audioCtxRef.current instanceof AudioContext
+            && gainNodeRef.current instanceof GainNode 
+        ) {
+            // prevent feedback unless explicitly wanting it for shits and giggles
+            // you'll have to implement it yourself to connect the nodes again programmatically
+            if (outputtingToHardware) {
+                gainNodeRef.current.disconnect(audioCtxRef.current.destination);   
+            }
+        }
+    }, [
+        audioCtxRef,
+        gainNodeRef,
+        outputtingToHardware
+    ]);
 
     return (
         <div style={{ width: "100%", display: "flex", justifyContent: "center", padding: "0.5em" }}>

@@ -6,6 +6,7 @@ import { ledActions } from "../store/ledSlice";
 import { IPresetButton } from "../types";
 import { getGlobalState } from "../store/store";
 import { midiActions } from "../store/midiSlice";
+import { audioActions } from "../store/audioSlice";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
@@ -15,6 +16,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
         saveModalIsOpen,
         figureOn,
         usingMidi,
+        started
     } = getGlobalState(useSelector);
 
     const setStyle = useCallback(
@@ -51,6 +53,14 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 }
             }
 
+            if (event.key === "a" || event.key === "A") {
+                if (started) {
+                    // Note: handle keypress some other way if you want
+                    return;
+                }
+                dispatch(audioActions.setStarted(!started));
+            }
+
             if (event.key === "b" || event.key === "B") {
                 dispatch(artScrollerActions.setFigureOn(figureOn ? false : true));
             }
@@ -62,6 +72,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
             setStyle(preset);
         },
         [
+            started,
             deleteModeActive,
             saveModalIsOpen,
             usingMidi,

@@ -9,13 +9,20 @@ export const initialAudioState: IAudioState = {
     gainNodeRef: {} as any,
     samplesLength: 0,
     energyModifier: 0,
-    started: false
+    started: false,
+    outputtingToHardware: false
 };
 
 export const audioSlice = createSlice({
     name: "audioSlice",
     initialState: initialAudioState,
     reducers: {
+
+        setOutputtingToHardware: (state, a: PayloadAction<boolean>) => {
+            return produce(state, () => {
+                state.outputtingToHardware = a.payload;
+            });
+        },
 
         setStarted: (state, a: PayloadAction<boolean>) => {
             return produce(state, () => {
