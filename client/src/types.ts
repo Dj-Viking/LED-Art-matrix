@@ -77,7 +77,11 @@ export interface IAudioState {
     energyModifier: number,
     started: boolean,
     outputtingToHardware: boolean,
+    analyserPresetname: AnalyserPresetName,
 }
+export type AnalyserPresetName = 
+| "withXmul"
+| "withoutXmul";
 
 type Base64String = string;
 
@@ -137,6 +141,7 @@ export interface IPresetButton {
     key: string;
     isActive: boolean;
     presetName: string;
+    analyserPresetname?: AnalyserPresetName;
     animVarCoeff: string;
     displayName: string;
     testid: string;

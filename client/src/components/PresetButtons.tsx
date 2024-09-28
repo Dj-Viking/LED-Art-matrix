@@ -91,7 +91,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
         if (Auth.loggedIn()) {
             dispatch(presetButtonsListActions.getPresetsAsync());
         } else {
-            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets(dispatch)));
+            dispatch(presetButtonsListActions.setPresetButtonsList(PresetButtonsList.generateOfflinePresets()));
         }
         return () => {
             /*do nothing on unmount */

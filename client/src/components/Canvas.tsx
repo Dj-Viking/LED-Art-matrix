@@ -6,21 +6,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { CanvasLED } from "../utils/CanvasLED";
 import { ledActions } from "../store/ledSlice";
 import { LED_AMOUNT } from "../constants";
+import { AnalyserPresetName } from "../types";
 
-// TODO: make tons of these other functions to switch which one is being used
-// at a time for specific patterns to change live
-const createHSLStyleFromSamplesAndCoords = (
-    x: number, 
-    y: number, 
+const wheelPresetFromAvPresetName = (
+    analyserPresetname: AnalyserPresetName,
     sample: number,
-    sample_index: number,
     energyModifier: number,
     deltaTime: number,
+    sample_index: number,
+    x: number,
+    y: number
 ): string => {
-    // let something = sample + (energyModifier / (deltaTime)) * ((sample_index * y) || 1);
-    let something = sample + (energyModifier / (deltaTime * x)) * ((sample_index * y) || 1);
-    let wheel = something;
-    let fillstyle = `hsl(${wheel}, 100%, 50%)`;
+    
+    let avPreset = 0;
+    // TODO: add these in and make something cool out of them!
+    /// dm5", "waves", "v2", "rainbowTest", "spiral"    
+    switch(analyserPresetname) {
+        case "withXmul":  
+            avPreset = sample + ((energyModifier) / (deltaTime * x)) * ((sample_index * y) || 1);
+        break;
+        case "withoutXmul": 
+            avPreset = sample + (energyModifier / (deltaTime)) * ((sample_index * y) || 1);
+        break;
+        default: break;
+    }
+    
+    let wheel = avPreset;
+    let fillstyle = `hsl(${Math.floor(wheel)}, 100%, 50%)`;
     
     return fillstyle;
 };
@@ -32,7 +44,8 @@ export const Canvas: React.FC = () => {
         isHSL, 
         samplesLength, 
         analyserNodeRef,
-        energyModifier, 
+        energyModifier,
+        analyserPresetname 
     } = getGlobalState(useSelector);
     const dispatch = useDispatch();
 
@@ -131,11 +144,12 @@ export const Canvas: React.FC = () => {
                                     // @ts-ignore fix compiler lib option maybe?? saying float32array doesn't have .at() method..... es2022 
                                     sample = samplesRef.current.at(samples_index);
                                 }
-                                ctx.fillStyle = createHSLStyleFromSamplesAndCoords(
-                                    col, row, 
-                                    sample, samples_index, 
-                                    energyModifier,
-                                    countRef.current
+                                
+                                ctx.fillStyle = wheelPresetFromAvPresetName(
+                                    analyserPresetname,
+                                    sample, energyModifier,
+                                    countRef.current, samples_index,
+                                    col, row
                                 );
                             } else {
                                 ctx.fillStyle = ledRef.current.fillStyle;
@@ -170,7 +184,12 @@ export const Canvas: React.FC = () => {
             }
             //
         },
-        [dimensions.width, isHSL, animVarCoeff, presetName, samplesLength, analyserNodeRef, energyModifier]
+        [
+            dimensions.width, 
+            isHSL, animVarCoeff, presetName, 
+            samplesLength, analyserPresetname, 
+            analyserNodeRef, energyModifier
+        ]
     );
 
     /**

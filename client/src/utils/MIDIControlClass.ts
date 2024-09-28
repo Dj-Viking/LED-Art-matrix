@@ -13,7 +13,7 @@ import { midiActions } from "../store/midiSlice";
 import { ToolkitDispatch } from "../store/store";
 import { MIDIMappingPreference, CallbackMapping } from "./MIDIMappingClass";
 import { deepCopy } from "./deepCopy";
-import { IPresetButton } from "../types";
+import { AnalyserPresetName, IPresetButton } from "../types";
 import { UNIMPLEMENTED } from "../store/actions/midiActionCreators";
 import type React from "react";
 /**
@@ -379,9 +379,10 @@ class MIDIController implements IMIDIController {
         buttonIds: Array<IPresetButton["id"]>,
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>, 
         gainNodeRef: React.MutableRefObject<GainNode>,
-        analyserNodeRef: React.MutableRefObject<AnalyserNode>
+        analyserNodeRef: React.MutableRefObject<AnalyserNode>,
+        analyserPresetName: AnalyserPresetName
     ): void {
-        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds, timeoutRef, gainNodeRef, analyserNodeRef);
+        MIDIController._invokeCallbackOrWarn(pref, name, midi_event, buttonIds, timeoutRef, gainNodeRef, analyserNodeRef, analyserPresetName);
     }
 
     private static _invokeCallbackOrWarn(
@@ -391,7 +392,8 @@ class MIDIController implements IMIDIController {
         buttonIds: IPresetButton["id"][],
         timeoutRef: React.MutableRefObject<NodeJS.Timeout>,
         gainNodeRef: React.MutableRefObject<GainNode>,
-        analyserNodeRef: React.MutableRefObject<AnalyserNode>
+        analyserNodeRef: React.MutableRefObject<AnalyserNode>,
+        analyserPresetName: AnalyserPresetName
     ): void {
         
         //
@@ -408,7 +410,7 @@ class MIDIController implements IMIDIController {
                     const callback = callbackMap[mapping[touchOsc_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
-                            callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef);
+                            callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef, analyserPresetName);
                         }, MIDI_MESSAGE_TIMEOUT);
                     }
                 }
@@ -420,7 +422,7 @@ class MIDIController implements IMIDIController {
                     const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
                     if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
                         timeoutRef.current = setTimeout(() => {
-                            callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef);
+                            callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef, analyserPresetName);
                         }, MIDI_MESSAGE_TIMEOUT);
                     }
                 }

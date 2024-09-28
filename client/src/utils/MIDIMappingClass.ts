@@ -16,7 +16,7 @@ import { ledActions } from "../store/ledSlice";
 import { midiActions } from "../store/midiSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ToolkitDispatch } from "../store/store";
-import { IPresetButton } from "../types";
+import { AnalyserPresetName, IPresetButton } from "../types";
 import { calcPositionFromRange } from "./calcPositionFromRange";
 import { deepCopy } from "./deepCopy";
 
@@ -104,13 +104,31 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
         return ret;
     }
 
-    private static createButtonCallback(dispatch: ToolkitDispatch, btnId: string): void {
+    private static createButtonCallback(dispatch: ToolkitDispatch, btnId: string, isAudio = false, analyserPresetName?: AnalyserPresetName): void {
         dispatch((dispatchcb, getState) => {
+
             const presetButtonsInState = getState().presetButtonsListState.presetButtons;
             const btn = presetButtonsInState.find((btn) => btn.id === btnId)!;
-            dispatchcb(presetButtonsListActions.setActiveButton(btnId));
 
-            PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff);
+            if (!isAudio) {
+                dispatchcb(presetButtonsListActions.setActiveButton(btnId));
+                PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff);
+            } else {
+                // not great but will work for now
+                // TODO: should probably bind uiname into the button
+                switch(btn.keyBinding) {
+                    case "w": 
+                        PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff, true, "withXmul");
+
+                    break;
+                    case "e": 
+                        PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff, true, "withoutXmul");
+                    break;
+
+                    default: break;
+                }
+            }
+
         });
     }
 
@@ -182,51 +200,84 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     );
                 };
             case "button_1_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[0] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[0] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_2_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[1] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[1] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_3_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[2] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[2] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_4_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[3] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[3] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_5_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[4] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[4] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_6_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[5] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[5] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_7_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[6] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[6] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "button_8_position":
-                return (midiIntensity: number, buttonIds?: Array<IPresetButton["id"]>) => {
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
                     if (midiIntensity === 127) {
-                        MIDIMappingPreference.createButtonCallback(dispatch, buttonIds?.[7] as string);
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[7] as string, isAudio, analyserPresetname);
+                        });
+                    }
+                };
+            case "button_9_position":
+                return (midiIntensity: number, buttonIds?: string[], _gainRef?: any, _analyserNodeRef?: React.MutableRefObject<AnalyserNode>, analyserPresetname?: AnalyserPresetName) => {
+                    if (midiIntensity === 127) {
+                        dispatch((dispatchcb, getState) => {
+                            const isAudio = getState().audioState.audioCtxRef.current instanceof AudioContext; 
+                            MIDIMappingPreference.createButtonCallback(dispatchcb, buttonIds?.[8] as string, isAudio, analyserPresetname);
+                        });
                     }
                 };
             case "circleWidth":

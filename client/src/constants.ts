@@ -114,6 +114,7 @@ export type PresetButtonName =
     | "button_6_position"
     | "button_7_position"
     | "button_8_position"
+    | "button_9_position"
     | "resetTimerButton";
 
 export const DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING: Record<XONEK2_ControlNames, number> = {
@@ -174,6 +175,7 @@ export const DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDeviceNam
     button_6_position: "" as any,
     button_7_position: "" as any,
     button_8_position: "" as any,
+    button_9_position: "" as any,
     energy: "" as any,
     smoothing: "" as any,
     gainValue: "" as any,
@@ -417,6 +419,7 @@ export const DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING: Record<UIInterfaceDevic
     button_6_position: "" as any,
     button_7_position: "" as any,
     button_8_position: "" as any,
+    button_9_position: "" as any,
     gainValue: "" as any,
     energy: "" as any,
     smoothing: "" as any,
@@ -456,6 +459,7 @@ export const DEFAULT_CALLBACK_TABLE: Record<UIInterfaceDeviceName, (...args: any
     button_6_position: (..._args: any[]) => void 0,
     button_7_position: (..._args: any[]) => void 0,
     button_8_position: (..._args: any[]) => void 0,
+    button_9_position: (..._args: any[]) => void 0,
     circleWidth: (..._args: any[]) => void 0,
     hPos: (..._args: any[]) => void 0,
     invert: (..._args: any[]) => void 0,

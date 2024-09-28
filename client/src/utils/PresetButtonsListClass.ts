@@ -1,8 +1,11 @@
-import { IPresetButton } from "../types";
+/* eslint-disable no-debugger */
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import { AnalyserPresetName, IPresetButton } from "../types";
 import { MY_INDEX_TO_KEY_MAP, MyIndexToKeyMap } from "../constants";
 import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
 import { ToolkitDispatch } from "../store/store";
+import { audioActions } from "../store/audioSlice";
 
 export interface IDBPreset {
     _id: string;
@@ -13,7 +16,12 @@ export interface IDBPreset {
 
 class PresetButtonsList {
     private _list: IPresetButton[] = [];
-    constructor(clickHandler: IPresetButton["clickHandler"], dbPresets: IDBPreset[] | [], activeId?: string) {
+    constructor(
+        clickHandler: IPresetButton["clickHandler"], 
+        dbPresets: IDBPreset[] | [], 
+        activeId?: string,
+        analyserPresetName?: AnalyserPresetName
+    ) {
         this._list = dbPresets?.map((preset, index: number) => {
             return {
                 id: preset._id,
@@ -23,6 +31,7 @@ class PresetButtonsList {
                 isActive: this._determineActiveOnRender(preset._id, activeId),
                 animVarCoeff: preset.animVarCoeff,
                 presetName: preset.presetName,
+                analyserPresetName: !analyserPresetName ? preset.presetName : analyserPresetName,
                 displayName: this._createDisplayName(preset.displayName, preset.presetName),
                 testid: this._createDisplayName(preset.displayName, preset.presetName),
                 clickHandler: clickHandler,
@@ -34,15 +43,24 @@ class PresetButtonsList {
         return this._list;
     }
 
-    public static setStyle(dispatchcb: React.Dispatch<any>, preset: string, animVarCoeff: string): void {
-        dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
-        dispatchcb(ledActions.setPresetName(preset));
+    public static setStyle(dispatchcb: ToolkitDispatch, preset: string, animVarCoeff: string, isAudio = false, analyserPresetName?: AnalyserPresetName): void {
+        if (!isAudio) {
+            dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
+            dispatchcb(ledActions.setPresetName(preset));
+        } else {
+            dispatchcb(audioActions.setPresetname(analyserPresetName!));
+        }
     }
 
     private _createDisplayName(displayName: string, presetName: string): string {
         // doing this for now since the initial presets always have the same displayName as the presetName
         // and will have an initial displayName of "" when instantiated on the server
-        if (["dm5", "waves", "v2", "rainbowTest", "spiral"].includes(presetName) && displayName === "") {
+        if (["dm5", "waves", "v2", "rainbowTest", "spiral", 
+            "withXmul" as AnalyserPresetName,
+            "withoutXmul" as AnalyserPresetName,
+        ].includes(presetName) 
+            && displayName === ""
+        ) {
             return presetName;
         }
         return displayName;
@@ -61,14 +79,18 @@ class PresetButtonsList {
         return MY_INDEX_TO_KEY_MAP[(index + 1) as keyof MyIndexToKeyMap];
     }
 
-    public static generateOfflinePresets(dispatch: ToolkitDispatch): IPresetButton[] {
-        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "dm5"];
+    public static generateOfflinePresets(): IPresetButton[] {
+        const presetNames = ["rainbowTest", "v2", "waves", "spiral", "dm5", 
+            "withXmul" as AnalyserPresetName,
+            "withoutXmul" as AnalyserPresetName,
+        ];
 
         const tempPresets = presetNames.map((name) => {
             return {
                 _id: keyGen(),
                 presetName: name,
                 displayName: name,
+                // TODO: add to idb preset the analyserpresetname field
                 animVarCoeff: "1",
             } as IDBPreset;
         });

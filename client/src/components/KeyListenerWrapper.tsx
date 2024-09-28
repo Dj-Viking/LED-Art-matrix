@@ -19,6 +19,8 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
         started
     } = getGlobalState(useSelector);
 
+    // TODO: set style with analyserPresetname also
+    // call this instaed PresetButtonsList.setStyle method
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
             dispatch(ledActions.setPresetName(preset.presetName));
