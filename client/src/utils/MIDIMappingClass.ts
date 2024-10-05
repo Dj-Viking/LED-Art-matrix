@@ -16,7 +16,7 @@ import { ledActions } from "../store/ledSlice";
 import { midiActions } from "../store/midiSlice";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { ToolkitDispatch } from "../store/store";
-import { AnalyserPresetName, IPresetButton } from "../types";
+import { AnalyserPresetName } from "../types";
 import { calcPositionFromRange } from "./calcPositionFromRange";
 import { deepCopy } from "./deepCopy";
 
@@ -112,21 +112,11 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
 
             if (!isAudio) {
                 dispatchcb(presetButtonsListActions.setActiveButton(btnId));
-                PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff);
+                PresetButtonsList.setStyle(dispatchcb, btn);
             } else {
                 // not great but will work for now
                 // TODO: should probably bind uiname into the button
-                switch(btn.keyBinding) {
-                    case "w": 
-                        PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff, true, "withXmul");
-
-                    break;
-                    case "e": 
-                        PresetButtonsList.setStyle(dispatchcb, btn.presetName, btn.animVarCoeff, true, "withoutXmul");
-                    break;
-
-                    default: break;
-                }
+                PresetButtonsList.setStyle(dispatchcb, btn, true, btn.analyserPresetName);
             }
 
         });

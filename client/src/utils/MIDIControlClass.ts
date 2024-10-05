@@ -225,7 +225,7 @@ class MIDIController implements IMIDIController {
             const entries = outputs.entries();
 
             for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
-                this.outputs!.push(entries.next().value[1]);
+                this.outputs!.push(entries.next().value![1]);
             }
         }
     }
@@ -236,7 +236,7 @@ class MIDIController implements IMIDIController {
             const entries = inputs.entries();
 
             for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
-                this.inputs!.push(entries.next().value[1]);
+                this.inputs!.push(entries.next().value![1]);
             }
         }
     }
@@ -251,7 +251,6 @@ class MIDIController implements IMIDIController {
         hasPreference: boolean // TODO: delete this fucking param
     ): MIDIMappingPreference<typeof name> {
         const result = MIDIController.getTypedMIDILocalStorage(name);
-        console.log("nmame", name, "pref", result);
         return result;
     }
 
@@ -350,22 +349,16 @@ class MIDIController implements IMIDIController {
 
     // for each new midi controller to support this has to be expanded
     private _initLocalStoragePreferencesIfNotExists(dispatch: ToolkitDispatch): void {
-        let pref = null;
         // unfortunately functions are not serializable to JSON in local storage
         if (!window.localStorage.getItem("TouchOSC Bridge" as MIDIInputName)) {
             // create
             const initPref = new MIDIMappingPreference("TouchOSC Bridge", dispatch);
-            pref = initPref;
-            console.log("pref to initialize into local storage", pref);
             window.localStorage.setItem("TouchOSC Bridge" as MIDIInputName, JSON.stringify(initPref));
-            const gotPref = window.localStorage.getItem("TouchOSC Bridge")!;
-            console.log("got pref from local storage", JSON.parse(gotPref));
         }
 
         if (!window.localStorage.getItem("XONE:K2 MIDI" as MIDIInputName)) {
             // create
             const initPref = new MIDIMappingPreference("XONE:K2 MIDI", dispatch);
-            pref = initPref;
             window.localStorage.setItem("XONE:K2 MIDI" as MIDIInputName, JSON.stringify(initPref));
             // const gotPref = window.localStorage.getItem("XONE:K2 MIDI")!;
         }

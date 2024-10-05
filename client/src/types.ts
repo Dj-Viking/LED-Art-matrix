@@ -133,6 +133,7 @@ export interface ILoggedInState {
 
 export interface IPresetButtonsListState {
     presetButtons: IPresetButton[];
+    activeButton: IPresetButton;
 }
 export interface IPresetButton {
     id: string;
@@ -141,7 +142,7 @@ export interface IPresetButton {
     key: string;
     isActive: boolean;
     presetName: string;
-    analyserPresetname?: AnalyserPresetName;
+    analyserPresetName?: AnalyserPresetName;
     animVarCoeff: string;
     displayName: string;
     testid: string;

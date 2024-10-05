@@ -6,6 +6,7 @@ import { ledActions } from "../store/ledSlice";
 import { keyGen } from "./keyGen";
 import { ToolkitDispatch } from "../store/store";
 import { audioActions } from "../store/audioSlice";
+import { presetButtonsListActions } from "../store/presetButtonListSlice";
 
 export interface IDBPreset {
     _id: string;
@@ -36,18 +37,28 @@ class PresetButtonsList {
                 testid: this._createDisplayName(preset.displayName, preset.presetName),
                 clickHandler: clickHandler,
             };
-        });
+        }) as any[];
     }
 
     public getList(): IPresetButton[] {
         return this._list;
     }
 
-    public static setStyle(dispatchcb: ToolkitDispatch, preset: string, animVarCoeff: string, isAudio = false, analyserPresetName?: AnalyserPresetName): void {
+    public static setStyle(dispatchcb: ToolkitDispatch, preset: IPresetButton, isAudio = false, analyserPresetName?: AnalyserPresetName): void {
         if (!isAudio) {
-            dispatchcb(ledActions.setAnimVarCoeff(animVarCoeff));
-            dispatchcb(ledActions.setPresetName(preset));
+            dispatchcb(ledActions.setAnimVarCoeff(preset.animVarCoeff));
+            dispatchcb(ledActions.setPresetName(preset.presetName));
+            dispatchcb(
+                presetButtonsListActions.checkPresetButtonsActive({
+                    id: preset.id,
+                })
+            );
         } else {
+            dispatchcb(
+                presetButtonsListActions.checkPresetButtonsActive({
+                    id: preset.id,
+                })
+            );
             dispatchcb(audioActions.setPresetname(analyserPresetName!));
         }
     }

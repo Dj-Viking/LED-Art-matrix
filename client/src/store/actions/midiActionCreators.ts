@@ -44,23 +44,20 @@ const midicb = function (
     midi_event: MIDIMessageEvent, _thunkAPI: mythunkapi,
     timeoutRef: React.MutableRefObject<NodeJS.Timeout>
 ): void {
-    // count++;
-
-    // console.log("count of times this was called", count);
     const name = MIDIController.stripNativeLabelFromMIDIInputName(midi_event.currentTarget.name);
 
     // ignore messages sent arbitrarily from yamaha mixer interface thingy for now 
     // since I'm not mapping shit from this at the moment
     if (name.includes("Yamaha AG06MK2")) return;
     
+    const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;
+    const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
     const analyserPresetName = _thunkAPI.getState().audioState.analyserPresetname;
     const analyserNodeRef = _thunkAPI.getState().audioState.analyserNodeRef;
     const gainNodeRef = _thunkAPI.getState().audioState.gainNodeRef;
     const isEditMode = _thunkAPI.getState().midiState.midiEditMode;
     const isListeningForMappingEdit = _thunkAPI.getState().midiState.isListeningForMappingEdit;
     const buttonIds = _thunkAPI.getState().presetButtonsListState.presetButtons.map((btn) => btn.id);
-    const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;
-    const uiName = _thunkAPI.getState().midiState.mappingEditOptions.uiName;
     const channel = midi_event.data[1] || 1;
     const midiIntensity = midi_event.data[2] || 1;
 

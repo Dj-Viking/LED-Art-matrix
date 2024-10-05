@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IPresetButton, IPresetButtonsListState } from "../types";
 import { produce } from "immer";
@@ -6,6 +7,7 @@ import { newReducer } from "../utils/newReducer";
 
 export const initialPresetButtonListState: IPresetButtonsListState = {
     presetButtons: [],
+    activeButton: {} as any
 };
 
 const getDefaultPresetAsync = buildGetDefaultPresetAction;
@@ -30,6 +32,7 @@ export const presetButtonsListSlice = createSlice({
                     const _btn = btn;
                     if (_btn.id === id) {
                         _btn.isActive = true;
+                        state.activeButton = _btn;
                         return _btn;
                     } else {
                         _btn.isActive = false;

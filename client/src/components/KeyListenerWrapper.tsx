@@ -7,6 +7,7 @@ import { IPresetButton } from "../types";
 import { getGlobalState } from "../store/store";
 import { midiActions } from "../store/midiSlice";
 import { audioActions } from "../store/audioSlice";
+import { PresetButtonsList } from "../utils/PresetButtonsListClass";
 
 const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     const dispatch = useDispatch();
@@ -23,13 +24,7 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
     // call this instaed PresetButtonsList.setStyle method
     const setStyle = useCallback(
         (preset: IPresetButton): void => {
-            dispatch(ledActions.setPresetName(preset.presetName));
-            dispatch(
-                presetButtonsListActions.checkPresetButtonsActive({
-                    id: preset.id,
-                })
-            );
-            dispatch(ledActions.setAnimVarCoeff(preset.animVarCoeff));
+            PresetButtonsList.setStyle(dispatch, preset);
         },
         [dispatch]
     );
@@ -55,6 +50,8 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 }
             }
 
+            // be careful if a button is assigned to A key
+            // it will trigger that button too
             if (event.key === "a" || event.key === "A") {
                 if (started) {
                     // Note: handle keypress some other way if you want
@@ -67,6 +64,8 @@ const KeyListenerWrapper: React.FC = ({ children }): JSX.Element => {
                 dispatch(artScrollerActions.setFigureOn(figureOn ? false : true));
             }
 
+            // handle keypresses that are dynamically assigned
+            // to the preset buttons
             const preset = presetButtons.filter((btn) => btn.keyBinding === event.key)[0] as IPresetButton;
 
             if (!preset) return;

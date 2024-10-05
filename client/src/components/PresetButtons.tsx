@@ -79,7 +79,7 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
     function handleOpenNewWindow(event: any): void {
         event.preventDefault();
         window.open(window.location + "LedWindow");
-        PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
+        PresetButtonsList.setStyle(dispatch,  { "presetName": presetName, "animVarCoeff": "1" } as any);
     }
 
     function deleteButtonClickHandler(event: any): void {
@@ -135,16 +135,13 @@ export const PresetButtons: React.FC<IPresetButtonsProps> = (): JSX.Element => {
                 <DeleteButton auth={Auth} clickHandler={deleteButtonClickHandler} />
                 <OpenNewWindowButton handleOpenNewWindow={handleOpenNewWindow} />
                 <ToggleMIDIMapEditModeButton toggleMIDIMapEditMode={toggleMIDIMapEditMode} />
-                {/* <ToggleKeyMapEditModeButton toggleKeyMapEditMode={toggleKeyMapEditMode} /> */}
             </PresetControlButtonsContainer>
 
             <StyledPresetButtonsParent data-testid="buttons-parent">
                 {/* preset style toggle buttons */}
                 {presetButtons?.map?.((button, index) => {
-                    // TODO: dynamic types????
                     const uiName: UIInterfaceDeviceName = ((index: number) => {
                         return `button_${index + 1}_position`;
-                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     })(index) as any;
 
                     const uiMapping = MIDIMappingPreference.getControlNameFromControllerInUseUIMapping(

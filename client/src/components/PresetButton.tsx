@@ -9,52 +9,32 @@ import { getGlobalState } from "../store/store";
 import { MIDIMappingPreference } from "../utils/MIDIMappingClass";
 import { presetButtonsListActions } from "../store/presetButtonListSlice";
 import { UIInterfaceDeviceName } from "../constants";
+import { IPresetButton } from "../types";
 
 interface PresetButtonProps {
     index: number;
-    button: {
-        id: string;
-        role: string;
-        presetName: string;
-        keyBinding: string;
-        displayName: string;
-        animVarCoeff: string;
-        isActive: boolean;
-        testid: string;
-        classList?: string;
-        clickHandler: React.MouseEventHandler<HTMLElement>;
-    };
+    button: IPresetButton;
 }
 
 const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
-    const { id, role, presetName, displayName, animVarCoeff, testid, isActive, clickHandler, keyBinding } = button;
+    const { 
+        id, 
+        role, 
+        displayName, 
+        testid, 
+        isActive, 
+        clickHandler, 
+        keyBinding 
+    } = button;
 
     const dispatch = useDispatch();
-    const { deleteModeActive, midiEditMode } = getGlobalState(useSelector);
+    const { 
+        deleteModeActive, 
+        midiEditMode,
+    } = getGlobalState(useSelector);
 
     const deriveUiNameFromIndex = React.useCallback((index: number): UIInterfaceDeviceName => {
-        switch (index) {
-            case 0:
-                return "button_1_position";
-            case 1:
-                return "button_2_position";
-            case 2:
-                return "button_3_position";
-            case 3:
-                return "button_4_position";
-            case 4:
-                return "button_5_position";
-            case 5:
-                return "button_6_position";
-            case 6:
-                return "button_7_position";
-            case 7:
-                return "button_8_position";
-            default: {
-                // hmm maybe this could work for dynamic stuff? // will need to make a dynamic type somehow
-                return `button_${index + 1}_position` as any;
-            }
-        }
+        return `button_${index + 1}_position` as any;
     }, []);
 
     function determineStyle(isActive: boolean, deleteModeActive: boolean): string {
@@ -90,14 +70,14 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
                         id,
                     })
                 );
-                PresetButtonsList.setStyle(dispatch, presetName, animVarCoeff);
+                PresetButtonsList.setStyle(dispatch, button);
             } else {
                 dispatch(modalActions.setDeleteModalOpen(true));
                 dispatch(modalActions.setDeleteModalContext({ btnId: id, displayName }));
             }
         },
         [
-            animVarCoeff,
+            button,
             clickHandler,
             deleteModeActive,
             deriveUiNameFromIndex,
@@ -106,7 +86,6 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
             id,
             index,
             midiEditMode,
-            presetName,
         ]
     );
 
