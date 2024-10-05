@@ -14,6 +14,7 @@ import {
     SIGNUP_MOCK_PAYLOAD,
     SIGNUP_MOCK_RESULT,
 } from "../../utils/mocks";
+// @ts-ignore
 import "@types/jest";
 import "@testing-library/jest-dom";
 import "@testing-library/jest-dom/extend-expect";
@@ -21,6 +22,8 @@ import user from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { MIDIAccessRecord, MIDIConnectionEvent } from "../../utils/MIDIControlClass";
 import { toolkitStore } from "../../store/store";
+import * as AudioInitModule from "../../components/AudioPlayer/AudioAnalyserInit";
+
 // @ts-ignore need to implement a fake version of this for the jest test as expected
 // did not have this method implemented by default during the test
 window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord> {
@@ -33,6 +36,13 @@ window.navigator.requestMIDIAccess = async function (): Promise<MIDIAccessRecord
         },
     } as MIDIAccessRecord);
 };
+
+jest.mock("../../components/AudioPlayer/AudioAnalyserInit", (): typeof AudioInitModule => {
+    return {
+        ...jest.requireActual("../../components/AudioPlayer/AudioAnalyserInit"),
+        "AudioContextStartButton": (props: any) => <div>mock audio thing</div>
+    };
+});
 
 describe("Tests network error message", () => {
     const originalFetch = global.fetch;
