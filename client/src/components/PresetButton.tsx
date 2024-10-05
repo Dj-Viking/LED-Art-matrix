@@ -94,7 +94,7 @@ const PresetButton: React.FC<PresetButtonProps> = ({ button, index }) => {
             <button
                 style={{ margin: "0 auto" }}
                 tabIndex={-1}
-                id={id}
+                id={button.analyserPresetName + "-" + id}
                 data-testid={testid}
                 role={role}
                 className={determineStyle(isActive, deleteModeActive)}

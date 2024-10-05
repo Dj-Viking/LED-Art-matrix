@@ -15,13 +15,15 @@ const wheelPresetFromAvPresetName = (
     deltaTime: number,
     sample_index: number,
     x: number,
-    y: number
+    y: number,
+    animVarCoeff: string,
 ): string => {
     
     let avPreset = 0;
-    // TODO: add these in and make something cool out of them!
-    /// dm5", "waves", "v2", "rainbowTest", "spiral"    
     switch(analyserPresetname) {
+        case "rainbowTest":
+            avPreset = (y * (energyModifier / 2)) * (sample / sample_index) * x * Number(animVarCoeff) + deltaTime;
+        break;
         case "withXmul":  
             avPreset = sample + ((energyModifier) / (deltaTime * x)) * ((sample_index * y) || 1);
         break;
@@ -149,7 +151,8 @@ export const Canvas: React.FC = () => {
                                     analyserPresetname,
                                     sample, energyModifier,
                                     countRef.current, samples_index,
-                                    col, row
+                                    col, row,
+                                    animVarCoeff
                                 );
                             } else {
                                 ctx.fillStyle = ledRef.current.fillStyle;

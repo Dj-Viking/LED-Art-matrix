@@ -79,9 +79,16 @@ export interface IAudioState {
     outputtingToHardware: boolean,
     analyserPresetname: AnalyserPresetName,
 }
+
 export type AnalyserPresetName = 
 | "withXmul"
-| "withoutXmul";
+| "withoutXmul"
+| "dm5"
+| "waves"
+| "v2"
+| "rainbowTest"
+| "spiral"
+;
 
 type Base64String = string;
 
