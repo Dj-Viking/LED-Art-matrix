@@ -16,13 +16,13 @@ const wheelPresetFromAvPresetName = (
     sample_index: number,
     x: number,
     y: number,
-    animVarCoeff: string,
+    _animVarCoeff?: string,
 ): string => {
     
     let avPreset = 0;
     switch(analyserPresetname) {
         case "rainbowTest":
-            avPreset = (y * (energyModifier / 2)) * (sample / sample_index) * x * Number(animVarCoeff) + deltaTime;
+            avPreset = (y * (energyModifier / 2)) * (sample / sample_index) * x + deltaTime;
         break;
         case "withXmul":  
             avPreset = sample + ((energyModifier) / (deltaTime * x)) * ((sample_index * y) || 1);
