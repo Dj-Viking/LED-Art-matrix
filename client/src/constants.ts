@@ -523,17 +523,23 @@ export type ControllerLookup<Name extends ControllerName> = Record<
 // UNIMPLEMENTED_TABLE
 export type ChannelMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
     ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    : N extends "XONE:K2:XONE:K2  20:0"
+    ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
     : N extends "TouchOSC Bridge"
     ? typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
     : Record<string, never>;
 
 export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
     ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    : N extends "XONE:K2:XONE:K2  20:0"
+    ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
     : N extends "TouchOSC Bridge"
     ? typeof DEFAULT_TOUCHOSC_UI_TO_CONTROLNAME_MAPPING
     : Record<string, never>;
 
 export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? XONEK2_ControlNames
+    : Name extends "XONE:K2:XONE:K2  20:0"
     ? XONEK2_ControlNames
     : Name extends "TouchOSC Bridge"
     ? TouchOscBridgeControlNames
@@ -542,6 +548,8 @@ export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:
     : string; // unimplemented type for a different controller could be anything
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
+    : Name extends "XONE:K2:XONE:K2  20:0"
     ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
     : Name extends "TouchOSC Bridge"
     ? keyof Record<UIInterfaceDeviceName, TouchOscBridgeControlNames>

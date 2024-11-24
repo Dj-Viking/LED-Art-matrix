@@ -80,7 +80,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
         return SUPPORTED_CONTROLLERS[selectedController]![channel] || "unknown control name";
     }, [channel, selectedController]);
 
-    const setOptionCallback = useCallback(
+    const setOption = useCallback(
         (option: string & MIDISliceState["selectedController"]) => {
             dispatch(midiActions.setSelectedController(option));
             // may have a native label given by the browser so strip native label name
@@ -107,9 +107,13 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 {isTesting && <TestMidiComponent />}
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
 
+                <MIDIToggleButton />
+
                 <MIDIWrapperContainer>
 
                     <MIDISelectContainer>
+                        <MIDISelect setOption={setOption} /> 
+                    </MIDISelectContainer>
 
                     <DeviceInterfaceContainer
                         statename={getInput()?.state || "disconnected"}
@@ -125,6 +129,7 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                             <MIDIChannelControl name={getControlName()} />
                         </ControlNameContainer>
                     </DeviceInterfaceContainer>
+
                 </MIDIWrapperContainer>
             </div>
         </>

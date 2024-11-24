@@ -356,6 +356,11 @@ class MIDIController implements IMIDIController {
 
     // for each new midi controller to support this has to be expanded
     private _initLocalStoragePreferencesIfNotExists(dispatch: ToolkitDispatch): void {
+        if (!window.localStorage.getItem("XONE:K2:XONE:K2  20:0" as MIDIInputName)) {
+            // create
+            const initPref = new MIDIMappingPreference("XONE:K2:XONE:K2  20:0", dispatch);
+            window.localStorage.setItem("XONE:K2:XONE:K2  20:0" as MIDIInputName, JSON.stringify(initPref));
+        }
         // unfortunately functions are not serializable to JSON in local storage
         if (!window.localStorage.getItem("TouchOSC Bridge" as MIDIInputName)) {
             // create

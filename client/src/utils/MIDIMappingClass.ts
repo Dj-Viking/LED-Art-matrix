@@ -468,6 +468,14 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
+            case "XONE:K2:XONE:K2  20:0":
+                Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
+                    this.mapping = {
+                        ...this.mapping,
+                        [key]: DEFAULT_XONE_MAPPING_PREFERENCE_TABLE[key],
+                    };
+                });
+                break;
             case "XONE:K2 MIDI":
                 Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
