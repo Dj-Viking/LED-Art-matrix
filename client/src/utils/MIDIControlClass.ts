@@ -403,6 +403,18 @@ class MIDIController implements IMIDIController {
         // optional chain the ui name here because we might have a physical mapping that doesn't exist yet
         // from any supported or not supported MIDI controller
         switch (name) {
+            case "XONE:K2:XONE:K2  20:0": 
+                {
+                    const callbackMap = pref.callbackMap;
+                    const mapping = pref.mapping;
+                    const callback = callbackMap[mapping[XONEK2_MIDI_CHANNEL_TABLE[channel]]?.uiName];
+                    if (MIDIController._warnCallbackIfError(callback, mapping, channel, name)) {
+                        timeoutRef.current = setTimeout(() => {
+                            callback(midiIntensity, buttonIds, gainNodeRef, analyserNodeRef, analyserPresetName);
+                        }, MIDI_MESSAGE_TIMEOUT);
+                    }
+                }
+                break;
             case "TouchOSC Bridge":
                 {
                     const callbackMap = pref.callbackMap;

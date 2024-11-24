@@ -110,11 +110,6 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
                 <MIDIWrapperContainer>
 
                     <MIDISelectContainer>
-                    {/ * somethings fucked with the dropdown ohwell fuck it for now * / }
-                        <MIDISelect ref={selectRef} setOption={setOptionCallback} />
-                    </MIDISelectContainer>
-
-                    <MIDIToggleButton />
 
                     <DeviceInterfaceContainer
                         statename={getInput()?.state || "disconnected"}
