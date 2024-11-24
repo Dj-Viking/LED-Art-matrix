@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "engines": {
-    "node": "20.12.2",
-    "npm": "10.5.0"
+    "node": "*",
+    "npm": "*"
   },
   "scripts": {
     "test": "sh test.sh",
@@ -45,5 +45,6 @@
   },
   "homepage": "https://github.com/Dj-Viking/LED-Art-matrix#readme",
   "dependencies": {
+    "concurrently": "^9.1.0"
   }
 }

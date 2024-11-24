@@ -48,6 +48,8 @@ const midicb = function (
 
     // ignore messages sent arbitrarily from yamaha mixer interface thingy for now 
     // since I'm not mapping shit from this at the moment
+    //
+    if (name.includes("Yamaha AG06MK2:")) return;
     if (name.includes("Yamaha AG06MK2")) return;
     
     const hasPref = _thunkAPI.getState().midiState.midiMappingInUse.hasPreference;

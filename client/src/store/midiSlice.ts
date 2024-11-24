@@ -72,16 +72,10 @@ export const midiSlice = createSlice({
             return produce(state, () => {
                 const activeController = state.inputs.find(
                     (input) =>
-                        MIDIController.stripNativeLabelFromMIDIInputName(input?.name) === state.selectedController
-                );
-                const filtered = state.inputs.filter(
-                    (input) =>
-                        MIDIController.stripNativeLabelFromMIDIInputName(input?.name) !== state.selectedController
+                        input?.name === state.selectedController
                 );
 
-                const newarr: MIDIInput[] = [activeController as any, ...filtered];
-
-                state.inputs = newarr;
+                state.inputs = state.inputs.splice(0, 0, activeController as any); 
             });
         },
         setSelectedController: (state: MIDISliceState, action: PayloadAction<MIDISliceState["selectedController"]>) => {

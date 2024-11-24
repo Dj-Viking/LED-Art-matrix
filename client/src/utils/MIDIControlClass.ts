@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
+    ControllerName,
     MIDIInputName,
     XONEK2_MIDI_CHANNEL_TABLE,
     touchOsc_MIDI_CHANNEL_TABLE,
@@ -225,7 +226,10 @@ class MIDIController implements IMIDIController {
             const entries = outputs.entries();
 
             for (let i = 0; i < MIDI_OUTPUT_LIST_SIZE; i++) {
-                this.outputs!.push(entries.next().value![1]);
+                const value = entries.next().value![1];
+                if (!!value) {
+                    this.outputs!.push(value);
+                }
             }
         }
     }
@@ -236,14 +240,17 @@ class MIDIController implements IMIDIController {
             const entries = inputs.entries();
 
             for (let i = 0; i < MIDI_INPUT_LIST_SIZE; i++) {
-                this.inputs!.push(entries.next().value![1]);
+                const value = entries.next().value![1];
+                if (!!value) {
+                    this.inputs!.push(value);
+                }
             }
         }
     }
 
     public static stripNativeLabelFromMIDIInputName(name: string): MIDIInputName {
         if (!name) return "Not Found";
-        return name.replace(/(\d-\s)/g, "") as MIDIInputName;
+        return name.replace(/(\d*-\s)/g, "") as MIDIInputName;
     }
 
     public static getMIDIMappingPreferenceFromStorage(

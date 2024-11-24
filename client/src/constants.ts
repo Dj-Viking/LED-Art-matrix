@@ -64,6 +64,8 @@ export type LKMK3_ControlNames = "NOT SET YET" | "";
 
 export type LKMK3_MIDIChannelTable = Record<number, LKMK3_ControlNames>;
 
+export type UNIMPLEMENTED_TABLE = Record<number, any>;
+export const _UNIMPLEMENTED_TABLE = {};
 export const LKMK3_MIDI_CHANNEL_TABLE: LKMK3_MIDIChannelTable = {
     1: "NOT SET YET",
 };
@@ -489,6 +491,9 @@ export type ControllerName =
     | "Not Found"
     | "UltraLite mk3 Hybrid"
     | "XONE:K2 MIDI"
+    | "XONE:K2:XONE:K2  20:0"
+    | "Midi Through:Midi Through Port-0 14:0"
+    | "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0"
     | "nanoKontrol2"
     | "LKMK3 MIDI"
     | "UltraLite mk3 Hybrid MIDI Port"
@@ -500,6 +505,12 @@ export type ControllerLookup<Name extends ControllerName> = Record<
     Name,
     Name extends "XONE:K2 MIDI" //-------------------// if
         ? XONEK2_MIDIChannelTable //-----------------// then
+        : Name extends "XONE:K2:XONE:K2  20:0"
+        ? XONEK2_MIDIChannelTable //-----------------// then
+        : Name extends "Midi Through:Midi Through Port-0 14:0"
+        ? UNIMPLEMENTED_TABLE
+        : Name extends "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0"
+        ? UNIMPLEMENTED_TABLE
         : Name extends "TouchOSC Bridge" //----------// else if
         ? TouchOscBridgeControlChannelTable //------// then
         : Name extends "nanoKontrol2" //-------------// else if
@@ -509,6 +520,7 @@ export type ControllerLookup<Name extends ControllerName> = Record<
         : Nullable<Record<number, string>> //--------// else
 >;
 
+// UNIMPLEMENTED_TABLE
 export type ChannelMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
     ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
     : N extends "TouchOSC Bridge"
@@ -544,6 +556,9 @@ export const SUPPORTED_CONTROLLERS = {
     "Not Found": NOT_FOUND_CHANNEL_TABLE,
     "LKMK3 MIDI": LKMK3_MIDI_CHANNEL_TABLE,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
+    "XONE:K2:XONE:K2  20:0": XONEK2_MIDI_CHANNEL_TABLE,
+    "Midi Through:Midi Through Port-0 14:0": _UNIMPLEMENTED_TABLE,
+    "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0": _UNIMPLEMENTED_TABLE,
     "Yamaha AG06MK2": YAMAHA_AG06_MIDI_CHANNEL_TABLE,
     "Yamaha AG06MK2-1": YAMAHA_AG06_MIDI_CHANNEL_TABLE,
     "UltraLite mk3 Hybrid": {} as any,

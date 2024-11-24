@@ -61,42 +61,32 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
 
     const selectRef = React.createRef<HTMLSelectElement>();
 
-    const getInputName = React.useCallback((): MIDIInputName => {
-        const name = MIDIController.stripNativeLabelFromMIDIInputName(
-            accessInputs?.find(
-                (input) => MIDIController.stripNativeLabelFromMIDIInputName(input?.name) === selectedController
-            )?.name || "Not Found"
-        );
-        return name;
-    }, [accessInputs, selectedController]);
-
     function getStrippedInputName(name: string): MIDIInputName {
         return MIDIController.stripNativeLabelFromMIDIInputName(name);
     }
 
     const getInput = React.useCallback((): MIDIInput => {
         return accessInputs?.find(
-            (item) => MIDIController.stripNativeLabelFromMIDIInputName(item?.name) === selectedController
+            (item) => item?.name === selectedController
         )!;
     }, [accessInputs, selectedController]);
 
     const getControlName = React.useCallback((): ControllerName | "unsupported controller" => {
-        const strippedName = MIDIController.stripNativeLabelFromMIDIInputName(selectedController);
 
-        if (!SUPPORTED_CONTROLLERS[strippedName]) {
+        if (!SUPPORTED_CONTROLLERS[selectedController]) {
             return "unsupported controller";
         }
 
-        return SUPPORTED_CONTROLLERS[strippedName]![channel] || "unknown control name";
+        return SUPPORTED_CONTROLLERS[selectedController]![channel] || "unknown control name";
     }, [channel, selectedController]);
 
     const setOptionCallback = useCallback(
         (option: string & MIDISliceState["selectedController"]) => {
-            dispatch(midiActions.setSelectedController(MIDIController.stripNativeLabelFromMIDIInputName(option)));
+            dispatch(midiActions.setSelectedController(option));
             // may have a native label given by the browser so strip native label name
             dispatch(
                 midiActions.setControllerInUse({
-                    controllerName: MIDIController.stripNativeLabelFromMIDIInputName(option),
+                    controllerName: option,
                     hasPreference: midiMappingInUse.hasPreference,
                 })
             );
@@ -116,29 +106,30 @@ const MIDIListenerWrapper: React.FC<MIDIListenerWrapperProps> = (): JSX.Element 
             >
                 {isTesting && <TestMidiComponent />}
                 <MIDIWrapperHeader heading={accessOnline ? "MIDI Devices" : "MIDI OFFLINE"} />
+
                 <MIDIWrapperContainer>
+
                     <MIDISelectContainer>
-                        {usingMidi && accessInputs.length > 0 && (
-                            <MIDISelect ref={selectRef} setOption={setOptionCallback} midi_inputs={accessInputs} />
-                        )}
+                    {/ * somethings fucked with the dropdown ohwell fuck it for now * / }
+                        <MIDISelect ref={selectRef} setOption={setOptionCallback} />
                     </MIDISelectContainer>
+
                     <MIDIToggleButton />
-                    {usingMidi && accessInputs.length > 0 && (
-                        <DeviceInterfaceContainer
-                            statename={getInput()?.state || "disconnected"}
-                            controllerName={getStrippedInputName(getInputName())}
-                        >
-                            <InputName name={getInputName()} />
-                            <DeviceSvgContainer>
-                                <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
-                            </DeviceSvgContainer>
-                            <IntensityBar intensity={intensity || 0} />
-                            <ControlNameContainer>
-                                <ChannelNumber channel={channel || 0} />
-                                <MIDIChannelControl name={getControlName()} />
-                            </ControlNameContainer>
-                        </DeviceInterfaceContainer>
-                    )}
+
+                    <DeviceInterfaceContainer
+                        statename={getInput()?.state || "disconnected"}
+                        controllerName={selectedController}
+                    >
+                        <InputName name={selectedController} />
+                        <DeviceSvgContainer>
+                            <ControlSvg usings={{ usingFader, usingKnob }} intensity_input={intensity} />
+                        </DeviceSvgContainer>
+                        <IntensityBar intensity={intensity || 0} />
+                        <ControlNameContainer>
+                            <ChannelNumber channel={channel || 0} />
+                            <MIDIChannelControl name={getControlName()} />
+                        </ControlNameContainer>
+                    </DeviceInterfaceContainer>
                 </MIDIWrapperContainer>
             </div>
         </>

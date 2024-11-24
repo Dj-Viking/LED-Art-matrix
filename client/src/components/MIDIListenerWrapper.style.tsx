@@ -168,43 +168,42 @@ export const ControlSvg: React.FC<IControlSvgProps> = (props) => {
 interface MIDISelectProps {
     setOption: (option: string & MIDISliceState["selectedController"]) => void;
     children?: ReactNode | ReactNode[];
-    midi_inputs: MIDIInput[];
 }
 
 export const MIDISelect = React.forwardRef<HTMLSelectElement, MIDISelectProps>((props, ref) => {
     const { selectedController, usingMidi, inputs } = getGlobalState(useSelector);
-    const { setOption, midi_inputs } = props;
+    const { setOption } = props;
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(midiActions.sortMIDIInputsByRecentlyused());
-    }, [dispatch, selectedController, usingMidi, inputs.length]);
+        if (inputs.length > 0) {
+            dispatch(midiActions.sortMIDIInputsByRecentlyused());
+        }
+    }, [dispatch, selectedController]);
 
     return (
         <>
-            {usingMidi && midi_inputs.length > 0 && (
-                <select
-                    ref={ref}
-                    className={isLedWindow() ? "no-height" : ""}
-                    data-testid="midi-select"
-                    value={selectedController || "Select A Connected Device"}
-                    onChange={(e) => {
-                        setOption(e.target.value);
-                    }}
-                    style={{ backgroundColor: "black" }}
-                >
-                    <option key={keyGen()} data-testid="select-option" value="Select A Connected Device" disabled>
-                        Select A Connected Device
-                    </option>
-                    {midi_inputs.map((input) => {
-                        return (
-                            <option data-testid="select-option" key={keyGen()} value={input?.name}>
-                                {MIDIController.stripNativeLabelFromMIDIInputName(input?.name)}
-                            </option>
-                        );
-                    })}
-                </select>
-            )}
+            <select
+                ref={ref}
+                className={isLedWindow() ? "no-height" : ""}
+                data-testid="midi-select"
+                value={selectedController || "Select A Connected Device"}
+                onChange={(e) => {
+                    setOption(e.target.value);
+                }}
+                style={{ backgroundColor: "black" }}
+            >
+                <option key={keyGen()} data-testid="select-option" value="Select A Connected Device" disabled>
+                    Select A Connected Device
+                </option>
+                {inputs?.map((input) => {
+                    return Boolean(input) && Boolean(input.name) && (
+                        <option data-testid="select-option" key={keyGen()} value={input?.name}>
+                            {input?.name}
+                        </option>
+                    );
+                }) || <option>waiting for react or some shit</option>}
+            </select>
         </>
     );
 });
