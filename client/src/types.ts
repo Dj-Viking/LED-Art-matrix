@@ -15,12 +15,17 @@ export type MyThunkConfig = { state: ToolkitRootState; dispatch: ToolkitDispatch
 type RecordKey = string | number | symbol;
 declare global {
     interface Navigator {
+        mozGetUserMedia(
+            options: { video?: boolean; audio?: boolean },
+            success: (stream: MediaStream) => void,
+            error?: (error: string) => void
+        ): void;
         getUserMedia(
             options: { video?: boolean; audio?: boolean },
             success: (stream: MediaStream) => void,
             error?: (error: string) => void
         ): void;
-    }
+   }
     type Tuple<First, Second> = [First, Second];
     // make own overloads to the object static class methods
     interface ObjectConstructor {

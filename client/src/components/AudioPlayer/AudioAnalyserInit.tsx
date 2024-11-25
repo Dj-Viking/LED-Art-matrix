@@ -7,6 +7,7 @@ import { audioActions } from "../../store/audioSlice";
 import { INITIAL_GAIN } from "../../constants";
 import { StyledSliderLabel } from "../ArtScroller.style";
 import { MIDIMappingPreference } from "../../utils/MIDIMappingClass";
+import { get_user_media } from "../../utils/helpers"
 
 function getGainControlDisplayValue(gainNodeRef: React.MutableRefObject<GainNode>): number | string {
     if (gainNodeRef.current && gainNodeRef.current.gain && gainNodeRef.current.gain.value) {
@@ -127,36 +128,8 @@ export const AudioContextStartButton: React.FC = () => {
         if (audioCtxRef.current instanceof AudioContext
             && gainNodeRef.current instanceof GainNode
             && analyserNodeRef.current instanceof AnalyserNode
-            
         ) {
-            window.navigator.getUserMedia({ audio: true },
-                async (stream) => {
-                    // just grab the first track since chrome only has one input set as a "microphone input"
-                    const audioTrack = stream.getAudioTracks()[0];
-
-                    stream.removeTrack(audioTrack);
-
-                    await audioTrack.applyConstraints({
-                        autoGainControl: false,
-                        noiseSuppression: false,
-                        echoCancellation: false,
-                    });
-
-                    console.log("audio track", audioTrack);
-                    console.log("audio track constraints", audioTrack.getConstraints());
-
-                    stream.addTrack(audioTrack);
-
-                    const source = audioCtxRef.current.createMediaStreamSource(stream);
-                    
-                    source.connect(gainNodeRef.current);
-                    
-                    gainNodeRef.current.connect(analyserNodeRef.current);
-                    gainNodeRef.current.connect(audioCtxRef.current.destination);
-                    dispatch(audioActions.setOutputtingToHardware(true));
-                },
-                (e) => {throw new Error("could not get usermedia" + e);}
-            );
+            get_user_media(dispatch, gainNodeRef, analyserNodeRef, audioCtxRef);
         }
     }, [dispatch, gainNodeRef, analyserNodeRef, audioCtxRef]);
 

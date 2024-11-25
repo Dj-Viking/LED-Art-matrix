@@ -356,7 +356,12 @@ class MIDIController implements IMIDIController {
 
     // for each new midi controller to support this has to be expanded
     private _initLocalStoragePreferencesIfNotExists(dispatch: ToolkitDispatch): void {
-        if (!window.localStorage.getItem("XONE:K2:XONE:K2  20:0" as MIDIInputName)) {
+        if (!window.localStorage.getItem("XONE:K2 " as MIDIInputName)) {
+            // create
+            const initPref = new MIDIMappingPreference("XONE:K2 ", dispatch);
+            window.localStorage.setItem("XONE:K2 " as MIDIInputName, JSON.stringify(initPref));
+        }
+        if (!window.localStorage.getItem("XONE:K2 " as MIDIInputName)) {
             // create
             const initPref = new MIDIMappingPreference("XONE:K2:XONE:K2  20:0", dispatch);
             window.localStorage.setItem("XONE:K2:XONE:K2  20:0" as MIDIInputName, JSON.stringify(initPref));
@@ -407,8 +412,9 @@ class MIDIController implements IMIDIController {
 
         // optional chain the ui name here because we might have a physical mapping that doesn't exist yet
         // from any supported or not supported MIDI controller
-        switch (name) {
-            case "XONE:K2:XONE:K2  20:0": 
+        switch (true) {
+            case name.includes("XONE:K2 "): 
+            case name.includes("XONE:K2:XONE:K2  20:0"): 
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
@@ -419,8 +425,8 @@ class MIDIController implements IMIDIController {
                         }, MIDI_MESSAGE_TIMEOUT);
                     }
                 }
-                break;
-            case "TouchOSC Bridge":
+                break; 
+            case name.includes("TouchOSC Bridge"):
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;
@@ -432,7 +438,7 @@ class MIDIController implements IMIDIController {
                     }
                 }
                 break;
-            case "XONE:K2 MIDI":
+            case name.includes("XONE:K2 MIDI"):
                 {
                     const callbackMap = pref.callbackMap;
                     const mapping = pref.mapping;

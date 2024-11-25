@@ -491,6 +491,7 @@ export type ControllerName =
     | "Not Found"
     | "UltraLite mk3 Hybrid"
     | "XONE:K2 MIDI"
+    | "XONE:K2 "
     | "XONE:K2:XONE:K2  20:0"
     | "Midi Through:Midi Through Port-0 14:0"
     | "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0"
@@ -506,6 +507,8 @@ export type ControllerLookup<Name extends ControllerName> = Record<
     Name extends "XONE:K2 MIDI" //-------------------// if
         ? XONEK2_MIDIChannelTable //-----------------// then
         : Name extends "XONE:K2:XONE:K2  20:0"
+        ? XONEK2_MIDIChannelTable //-----------------// then
+        : Name extends "XONE:K2 "
         ? XONEK2_MIDIChannelTable //-----------------// then
         : Name extends "Midi Through:Midi Through Port-0 14:0"
         ? UNIMPLEMENTED_TABLE
@@ -525,11 +528,15 @@ export type ChannelMappingPreference<N extends MIDIInputName> = N extends "XONE:
     ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
     : N extends "XONE:K2:XONE:K2  20:0"
     ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
+    : N extends "XONE:K2 "
+    ? typeof DEFAULT_XONE_CONTROLNAME_TO_CHANNEL_MAPPING
     : N extends "TouchOSC Bridge"
     ? typeof DEFAULT_TOUCHOSC_CONTROLNAME_TO_CHANNEL_MAPPING
     : Record<string, never>;
 
 export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MIDI"
+    ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
+    : N extends "XONE:K2 "
     ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
     : N extends "XONE:K2:XONE:K2  20:0"
     ? typeof DEFAULT_XONE_UI_TO_CONTROLNAME_MAPPING
@@ -538,6 +545,8 @@ export type UIMappingPreference<N extends MIDIInputName> = N extends "XONE:K2 MI
     : Record<string, never>;
 
 export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? XONEK2_ControlNames
+    : Name extends "XONE:K2 "
     ? XONEK2_ControlNames
     : Name extends "XONE:K2:XONE:K2  20:0"
     ? XONEK2_ControlNames
@@ -548,6 +557,8 @@ export type GenericControlName<Name extends MIDIInputName> = Name extends "XONE:
     : string; // unimplemented type for a different controller could be anything
 
 export type GenericUIMIDIMappingName<Name extends MIDIInputName> = Name extends "XONE:K2 MIDI"
+    ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
+    : Name extends "XONE:K2 "
     ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
     : Name extends "XONE:K2:XONE:K2  20:0"
     ? keyof Record<UIInterfaceDeviceName, XONEK2_ControlNames>
@@ -564,6 +575,7 @@ export const SUPPORTED_CONTROLLERS = {
     "Not Found": NOT_FOUND_CHANNEL_TABLE,
     "LKMK3 MIDI": LKMK3_MIDI_CHANNEL_TABLE,
     "XONE:K2 MIDI": XONEK2_MIDI_CHANNEL_TABLE,
+    "XONE:K2 ": XONEK2_MIDI_CHANNEL_TABLE,
     "XONE:K2:XONE:K2  20:0": XONEK2_MIDI_CHANNEL_TABLE,
     "Midi Through:Midi Through Port-0 14:0": _UNIMPLEMENTED_TABLE,
     "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0": _UNIMPLEMENTED_TABLE,
