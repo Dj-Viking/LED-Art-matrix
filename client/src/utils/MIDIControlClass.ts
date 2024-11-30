@@ -361,7 +361,7 @@ class MIDIController implements IMIDIController {
             const initPref = new MIDIMappingPreference("XONE:K2 ", dispatch);
             window.localStorage.setItem("XONE:K2 " as MIDIInputName, JSON.stringify(initPref));
         }
-        if (!window.localStorage.getItem("XONE:K2 " as MIDIInputName)) {
+        if (!window.localStorage.getItem("XONE:K2:XONE:K2  20:0" as MIDIInputName)) {
             // create
             const initPref = new MIDIMappingPreference("XONE:K2:XONE:K2  20:0", dispatch);
             window.localStorage.setItem("XONE:K2:XONE:K2  20:0" as MIDIInputName, JSON.stringify(initPref));
