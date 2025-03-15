@@ -22,7 +22,7 @@ const wheelPresetFromAvPresetName = (
     let avPreset = 0;
     switch(analyserPresetname) {
         case "rainbowTest":
-            avPreset = (y * (energyModifier / 2)) * (sample / sample_index) * x + deltaTime;
+            avPreset = (y * (energyModifier / 2)) * (sample / sample_index) * x;
         break;
         case "withXmul":  
             avPreset = sample + ((energyModifier) / (deltaTime * x)) * ((sample_index * y) || 1);
