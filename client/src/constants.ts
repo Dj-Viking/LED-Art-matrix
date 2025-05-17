@@ -501,8 +501,24 @@ export type ControllerName =
     | "TouchOSC Bridge"
     | "UltraLite mk3 Hybrid Sync Port";
 
+// TODO: use this instead ? 
+export enum E_ControllerName {
+    NotFound = "Not Found",
+    UltraLitemk3Hybrid = "UltraLite mk3 Hybrid",
+    XONE_K2_MIDI = "XONE:K2 MIDI",
+    XONE_K2__ = "XONE:K2 ",
+    XONE_K2_XONE_K2__20_0 = "XONE:K2:XONE:K2  20:0",
+    Midi_Through_Midi_Through_Port_0_14_0 = "Midi Through:Midi Through Port-0 14:0",
+    Yamaha_AG06MK2_Yamaha_AG06MK2_MIDI_1_16_0 = "Yamaha AG06MK2:Yamaha AG06MK2 MIDI 1 16:0",
+    nanoKontrol2 = "nanoKontrol2",
+    LKMK3_MIDI = "LKMK3 MIDI",
+    UltraLite_mk3_Hybrid_MIDI_Port = "UltraLite mk3 Hybrid MIDI Port",
+    TouchOSC_Bridge = "TouchOSC Bridge",
+    UltraLite_mk3_Hybrid_Sync_Port = "UltraLite mk3 Hybrid Sync Port",
+}
+
 export type MIDIInputName = string & keyof ControllerLookup<ControllerName>;
-export type ControllerLookup<Name extends ControllerName> = Record<
+export type ControllerLookup<Name extends ControllerName | E_ControllerName> = Record<
     Name,
     Name extends "XONE:K2 MIDI" //-------------------// if
         ? XONEK2_MIDIChannelTable //-----------------// then

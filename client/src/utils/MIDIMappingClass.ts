@@ -451,9 +451,9 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
     }
 
     #setMIDIMappingBasedOnInputName(name: N): void {
-        switch (true) {
+        switch (name) {
             
-            case name.includes("Not Found"): 
+            case "Not Found": 
                 Object.keys(DEFAULT_NOT_FOUND_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
                         ...this.mapping,
@@ -461,7 +461,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
-            case name.includes("TouchOSC Bridge"):
+            case "TouchOSC Bridge":
                 Object.keys(DEFAULT_TOUCHOSC_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
                         ...this.mapping,
@@ -469,7 +469,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
-            case name.includes("XONE:K2:XONE:K2  20:0"):
+            case "XONE:K2:XONE:K2  20:0":
                 Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
                         ...this.mapping,
@@ -477,7 +477,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
-            case name.includes("XONE:K2 MIDI"):
+            case "XONE:K2 MIDI":
                 Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
                         ...this.mapping,
@@ -485,7 +485,7 @@ export class MIDIMappingPreference<N extends MIDIInputName> {
                     };
                 });
                 break;
-            case name.includes("XONE:K2 "):
+            case "XONE:K2 ":
                 Object.keys(DEFAULT_XONE_MAPPING_PREFERENCE_TABLE).forEach((key) => {
                     this.mapping = {
                         ...this.mapping,

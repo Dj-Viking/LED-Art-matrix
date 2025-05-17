@@ -139,9 +139,11 @@ export const GifsController = {
             const gifPromises = gifJson.data.map((data: any) => {
                 const mediaUrl = "https://i.giphy.com/";
                 const extension = ".webp";
-                void mediaUrl;
-                void extension;
-                const gifID = (data.images.original.url as string).split("/")[4];
+				
+				// update 5-17-2025: the api got updated so now the gif id is in a different position
+				// now it seems like it's in the 5th position between the routes when it was 4th position for a long time
+                const gifID = (data.images.original.url as string).split("/")[5];
+
                 return fetch(`${mediaUrl}${gifID}${extension}`);
             });
 

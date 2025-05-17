@@ -111,9 +111,7 @@ exports.GifsController = {
                 const gifPromises = gifJson.data.map((data) => {
                     const mediaUrl = "https://i.giphy.com/";
                     const extension = ".webp";
-                    void mediaUrl;
-                    void extension;
-                    const gifID = data.images.original.url.split("/")[4];
+                    const gifID = data.images.original.url.split("/")[5];
                     return (0, node_fetch_1.default)(`${mediaUrl}${gifID}${extension}`);
                 });
                 const gifResults = yield Promise.all(gifPromises);
